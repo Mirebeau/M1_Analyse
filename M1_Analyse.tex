@@ -1,0 +1,235 @@
+\documentclass[11pt]{article} 
+\usepackage{etoolbox} \newtoggle{perso}
+\toggletrue{perso} % Comment for student version
+\usepackage[mathletters]{ucs}
+\usepackage[utf8x]{inputenc}
+
+\voffset=-2cm
+%\voffset=-3cm
+\hoffset=-1.5cm
+\textwidth=16cm
+\textheight=23cm
+
+\usepackage{amsthm}
+\usepackage{amssymb,amsmath}
+\usepackage{todonotes}
+\usepackage{enumerate}
+\usepackage{abraces}
+\newcommand\overpar[1]{\aoverbrace[L1R]{#1}}
+\usepackage{hyperref}
+\usepackage{pifont} \def\facultatif{\ding{40}} % avion
+
+\def\cA{\mathcal{A}}
+\def\cB{\mathcal{B}}
+\def\cD{\mathcal{D}}
+\def\cE{\mathcal{E}}
+\def\cF{\mathcal{F}}
+\def\cG{\mathcal{G}}
+\def\cK{\mathcal{K}}
+\def\cO{\mathcal{O}}
+\def\cP{\mathcal{P}}
+\def\cS{\mathcal{S}}
+\def\cU{\mathcal{U}}
+\def\cV{\mathcal{V}}
+\def\cW{\mathcal{W}}
+
+\def\bC{\mathbb{C}}
+\def\bF{\mathbb{F}}
+\def\bK{\mathbb{K}}
+\def\bN{\mathbb{N}}
+\def\bP{\mathbb{P}}
+\def\bQ{\mathbb{Q}}
+\def\bR{\mathbb{R}}
+\def\bS{\mathbb{S}}
+\def\bT{\mathbb{T}}
+\def\bU{\mathbb{U}}
+\def\bV{\mathbb{V}}
+\def\bX{\mathbb{X}}
+\def\bY{\mathbb{Y}}
+\def\bZ{\mathbb{Z}}
+
+\def\sm{\setminus}
+\def\vp{\varphi}
+\def\ve{\varepsilon}
+\def\<{\langle} \def\>{\rangle}
+\usepackage{bbm} \def\bbone{\mathbbm{1}}
+\def\bi{\boldsymbol{i}}
+
+\iftoggle{perso}{
+\usepackage[notref]{showkeys}
+\newcommand\todoi[1]{\todo[inline]{#1}}
+\newcommand\notei[1]{\todo[inline,color=yellow]{#1}}
+\newcommand\hiddenproof[1]{\begin{proof}[Preuve (brouillon seul)] #1 \end{proof}}
+\newcommand\inventaire[1]{\paragraph{Inventaire (pour le cours)\\} #1 \hfill $\square$}
+\newcommand\formalizationInstruction[1]{\todo[inline,color=yellow]{#1}}
+\newcommand\claudereport[1]{\todo[inline,color=green]{#1}}
+}{
+\newcommand\todoi[1]{}
+\newcommand\notei[1]{}
+\newcommand\hiddenproof[1]{}
+\newcommand\inventaire[1]{}
+\newcommand\formalizationInstruction[1]{}
+\newcommand\claudereport[1]{}
+}
+
+\usepackage[french]{cleveref} %capitalize,
+\newtheorem{theorem}{Th\'eor\`eme}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remarque}
+\newtheorem{lemma}[theorem]{Lemme}
+\newtheorem{corollary}[theorem]{Corollaire}
+\newtheorem{definition}[theorem]{D\'efinition}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{assumption}[theorem]{Hypoth\`ese}
+\newtheorem{exo}[theorem]{Exercice}
+\newtheorem{exemple}[theorem]{Exemple}
+\newtheorem*{retenir}{\`A retenir absolument}
+\renewcommand*{\proofname}{Preuve}
+%\crefname{exemple}{exemple}{exemples} % Incompatible avec TexPad, donc un exemple à la fois...
+
+\usepackage{nameref} 
+\newcommand{\nref}[1]{\cref{#1}\space(\nameref{#1})}
+\newcommand{\Nref}[1]{\Cref{#1}\space(\nameref{#1})}
+
+% The clever way to do it, below, kills pdfLaTeX. https://tex.stackexchange.com/a/109864
+%\makeatletter
+%\newcommand{\nref}[1]{\cref{#1}\mynameref{#1}{\csname r@#1\endcsname}}
+%\newcommand{\Nref}[1]{\Cref{#1}\mynameref{#1}{\csname r@#1\endcsname}}
+%\def\mynameref#1#2{%
+%  \begingroup
+%    \edef\@mytxt{#2}%
+%    \edef\@mytst{\expandafter\@thirdoffive\@mytxt}%
+%    \ifx\@mytst\empty\else
+%    \space(\nameref{#1})\fi
+%  \endgroup
+%}
+%\makeatother
+
+\def\diff{\mathrm{d}}
+
+\DeclareMathOperator\Adh{Adh}
+\DeclareMathOperator\supp{supp}
+\DeclareMathOperator\diver{div}
+\DeclareMathOperator\Lip{Lip}
+\DeclareMathOperator\Ext{Ext}
+\DeclareMathOperator\Ker{Ker}
+\DeclareMathOperator\Image{Im}
+\DeclareMathOperator\Diag{Diag}
+\DeclareMathOperator\Dom{Dom}
+\DeclareMathOperator\Aff{Aff}
+\DeclareMathOperator\Relint{ri}
+\DeclareMathOperator\Proj{Proj}
+\DeclareMathOperator\Id{Id}
+\DeclareMathOperator\Tr{Tr}
+\DeclareMathOperator\Hull{Hull}
+\DeclareMathOperator\Vect{Vect}
+\DeclareMathOperator\sign{sign}
+\DeclareMathOperator*\argmin{argmin}
+
+\def\loc{\mathrm{loc}}
+\DeclareMathOperator\ordre{ordre}
+\DeclareMathOperator\Leb{Leb}
+\def\kC{\mathfrak{C}}
+\def\weakto{\rightharpoonup}
+
+\newcommand{\vertiii}[1]{{\left\vert\kern-0.25ex\left\vert\kern-0.25ex\left\vert #1 
+    \right\vert\kern-0.25ex\right\vert\kern-0.25ex\right\vert}}
+\usepackage{stmaryrd}
+\newcommand\braii[1]{{\left\llbracket #1 \right\rrbracket}}
+
+
+\def\eqdef{\overset {\tiny \mathrm{def}} \Leftrightarrow}
+\def\csubset{\subset_c}
+
+
+%latex_to_unicode=False
+% The script latex_to_unicode.py will not tamper with this part of the document.
+%latex_to_unicode=True
+
+\title{Analyse fonctionnelle}
+
+\author{Jean-Marie Mirebeau\footnote{
+Universit\'e Paris-Saclay, ENS Paris-Saclay, CNRS, Centre Borelli, F-91190 Gif-sur-Yvette, France.
+}}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Ce cours est une introduction à l'analyse et à l'analyse fonctionnelle, et présente un certain nombre de résultats fondateurs : théorèmes de point fixe (Picard, Brouwer) et autres conséquences classiques de la complétude et de la compacité, dualité et topologie faible, espaces de Sobolev.
+Le cours se conçoit comme une base solide pour ceux qui se destinent à étudier l'analyse ou l'analyse numérique, et pourra également intéresser les candidats à l'agrégation. 
+\end{abstract}
+
+
+\tableofcontents
+
+\paragraph{Références}
+
+Ces \href{https://www.dropbox.com/scl/fi/d3vfdgnaje0iwxyfyejqw/M1_Analyse_Shared.pdf?rlkey=qfngap7sa3uh1xo5ukxt8ddpi&dl=0}{notes de cours (lien vers la dernière version)} sont fortement inspirées du 
+\href{http://talazard.perso.math.cnrs.fr/Livre.pdf}{livre de Thomas Alazard (lien)} 
+\cite{alazard2017analyse} et 
+\href{https://www.dropbox.com/scl/fi/t7tj1pm7pxcc5t67gyizj/Desvillettes_2015_AF.pdf?rlkey=8k1gvfgcmiczqqjxxvwblnugn&dl=1}{du polycopié de Laurent Desvillettes (lien)} 
+\cite{desvilettes2015analyse}, qui ont précédemment enseigné ce cours
+%\footnote{Lien de téléchargement des polycopiés précédents : 
+%\url{http://talazard.perso.math.cnrs.fr/Livre.pdf}\newline
+%\href{https://www.dropbox.com/scl/fi/t7tj1pm7pxcc5t67gyizj/Desvillettes_2015_AF.pdf?rlkey=8k1gvfgcmiczqqjxxvwblnugn&dl=1}{Laurent Desvillettes}
+%\url{http://laurent.desvillettes.free.fr/analyse_fonctionnelle79.pdf} % Site mort en 2024
+%https://dl.dropbox.com/s/2xi2jzwc4htfjw5/Desvillettes_2015_AF.pdf
+%}. 
+
+Le contenu du cours étant assez classique, de nombreuses autres références de qualité et en français sont disponibles, par exemple le livre de Daniel Li \cite{li2013cours}, ou le 
+\href{https://www.ceremade.dauphine.fr/~carlier/poly2010.pdf}{polycopié plus ancien du même cours par Guillaume Carlier (lien)} \cite{carlier2009analyse}.
+
+Je tiens également à mettre en avant les 
+\href{https://www.dropbox.com/scl/fi/3gir3uhkt842idl9sfyc3/main_Shared.pdf?rlkey=xruzgtc6kzfedhjx0uecku0yq&dl=0}{notes de cours indépendantes prises par un groupe d'étudiants mené par Félix Yvonnet en 2023 (lien)}, particulièrement agréables à lire et accompagnées de figures. 
+
+
+\paragraph{Points importants, ou annexes.}
+Chaque sous-chapitre contient une liste de résultats à retenir absolument, fondamentaux pour les applications en analyse fonctionnelle. A l'inverse le symbole \facultatif\ signale des points facultatifs, d'illustration et d'ouverture vers d'autres domaines mathématiques.
+
+\newpage
+\section{Topologie générale}
+\label{sec:topo}
+\input{Include/TopologieGenerale.tex}
+
+\newpage
+\section{Complétude}
+\label{sec:complet}
+\input{Include/Completude.tex}
+
+\newpage
+\section{Compacité}
+\label{sec:compact}
+\input{Include/Compacite.tex}
+
+\newpage
+\section{Dualité et topologie faible}
+\label{sec:dual}
+\input{Include/Dualite.tex}
+
+\newpage
+\section{Espaces de Sobolev}
+\label{sec:Sobolev}
+\input{Include/Sobolev.tex}
+
+%\section{Transformée de Fourier}
+%\label{sec:Fourier}
+%\input{Include/Fourier.tex}
+
+\bibliographystyle{alpha}
+\bibliography{Include/Papers.bib}
+
+\appendix
+
+\section{Fonctions bosse $C^\infty$}
+\label{sec:bosse}
+\input{Include/Bosse.tex}
+
+\section{Espaces Hilbertiens}
+\label{sec:Hilbert}
+\input{Include/Hilbert.tex}
+
+\section{Dualité de Legendre-Fenchel}
+\label{sec:LegendreFenchel}
+\input{Include/LegendreFenchel.tex}
+
+\end{document}

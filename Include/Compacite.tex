@@ -1,0 +1,1223 @@
+La compacité permet fondamentalement d'obtenir des résultats d'existence, via le théorème des bornes atteintes, ou le théorème de point fixe de Brouwer; l'unicité des objets construits devra, le cas échéant, être établie par d'autres méthodes. La compacité est également au coeur de certains résultats d'approximation, par des fonctions simples dans le cadre du théorème de Stone-Weierstrass, ou par des opérateurs de rang fini dans le cadre linéaire. 
+
+
+\inventaire{
+\Nref{subsec:axiomBorelLeb} \\
+\Nref{def:compact}\\
+\Nref{rem:fermeBorelLeb}\\
+\Nref{lem:compImplFerme} (Une partie compacte est fermée)\\
+\Nref{corol:compSsiFerme} (Une partie d'un compact est compacte ssi elle est fermée)\\
+\Nref{prop:compactImage}\\
+\Nref{corol:homeoCompact} (Une bijection continue entre compacts est un homeomorphisme)\\
+\Nref{def:locCompact}\\
+\Nref{def:compactAlex}\\
+
+\Nref{subsec:compactMetric}\\
+\Nref{def:precompact}\\
+\Nref{th:BolzanoWeierstrass}\\
+\Nref{th:Heine}\\
+\Nref{prop:noAdhCv} (Si une seule valeur d'adhérence possible, alors convergence)\\
+
+
+\Nref{subsec:compactRd}\\
+\Nref{prop:compSsiFermeBorne} (Un fermé borné de $R^d$ est compact)\\
+\Nref{corol:bornesAtteintes}\\
+\Nref{corol:normesEquivRd}\\
+\Nref{lem:normaleRiez}\\
+\Nref{th:bouleCompRiez}\\
+
+\Nref{subsec:compactProd}\\
+\Nref{th:compProdTycho}\\
+\Nref{ex:formuleLogique}\\
+\Nref{th:BanachAlaoglu}\\
+\Nref{th:AscoliLip}\\
+\Nref{corol:AscoliEquicont}\\
+\Nref{corol:AscoliCk}\\
+\Nref{corol:AscoliCkNonBorne}\\
+\Nref{prop:hullCompact}\\
+\Nref{th:Caratheodory}\\
+
+\Nref{subsec:Brouwer}\\
+\Nref{th:Brouwer}\\
+\Nref{th:chgVarIntegr}\\
+\Nref{lem:chgVarLax}	\\
+\Nref{rem:chgVarDiffeo} (Formule du changement de variable sans diffeomorphisme)\\
+\Nref{lem:noretractSmooth} (Lemme de non-rétractation, version régulière)\\
+\Nref{corol:noretract}\\
+
+\Nref{subsec:Schauder}\\
+\Nref{th:Schauder}\\
+\Nref{rem:SchauderEvt} (Schauder dans les evt)\\
+\Nref{th:CauchyPeano}\\
+\Nref{rem:preuveCauchyPeano}\\
+
+\Nref{subsec:StoneWeierstrass}\\
+\Nref{th:StoneWeierstrass}\\
+\Nref{lem:StoneUnite} ($\overline A$ est une algèbre unitaire complète)\\
+\Nref{lem:StoneSqrt} ($\overline A$ contient $\sqrt f, |f|, 1/f$)\\
+\Nref{corol:StoneMinMax} ($\overline A$ contient $\max(f,g)$ et $\min(f,g)$.\\
+\Nref{lem:StoneDirac} (Approximation d'un Dirac dans $A$)\\
+\Nref{corol:StoneComplexe} \\
+\Nref{rem:polDens}\\
+\Nref{prop:StoneCtrEx}\\
+
+\Nref{subsec:linCompact}\\
+\Nref{def:linCompact} (Opérateur compact)\\
+\Nref{prop:opCompactComposition}\\
+\Nref{prop:opCompactLimite}\\
+\Nref{prop:opCompactComplCont}\\
+\Nref{def:linSpectre} (Spectre d'un opérateur)\\
+\Nref{th:Fredholm}\\
+\Nref{lem:convK_compact}\\
+\Nref{corol:eqFuncNoyau} (Equation fonctionnelle à noyau)\\
+\Nref{corol:FredholmPrecise}\\ % -> th ?
+%\Nref{def:propriApprox}\\
+%\Nref{prop:limRangFini}
+}
+
+\subsection{Axiome de Borel-Lebesgue} % caractérisation topologique
+\label{subsec:axiomBorelLeb}
+
+
+\begin{retenir}
+	L'axiome de Borel-Lebesgue et sa reformulation pour les fermés, l'image directe d'un compact par une application continue est un compact, la définition d'un espace localement compact séparé.
+	(\Cref{def:compact,rem:fermeBorelLeb,prop:compactImage,def:locCompact})
+\end{retenir}
+
+
+\begin{definition}[Compact]
+\label{def:compact}
+	Un espace topologique $(X, \bU)$ est dit compact s'il est \emph{séparé} et satisfait l'\emph{axiome de Borel-Lebesgue} : de toute couverture de $X$ par des ouverts on peut extraire une sous-couverture finie, i.e.\ pour tout $\cU \subset \bU$
+	\begin{equation*}
+	%\forall \cU \subset \bU, \Big(
+	\cup\, \cU=X \Rightarrow 
+	\exists\, \cU_0\subset \cU,\ \cU_0 \text{ est fini et } \cup\cU_0 = \cU.
+	%\Big).
+	\end{equation*}
+\end{definition}
+
+Une partie d'un espace métrique est dite compacte si c'est un compact pour la topologie induite. Elle est dite \emph{relativement compacte} si son adhérence est compacte (dans un espace métrique complet, c'est équivalent à la \emph{précompacité}, voir les \cref{def:precompact} et \cref{th:BolzanoWeierstrass}).
+
+Par passage au complémentaire de l'axiome de Borel-Lebesgue, on obtient une propriété des fermés. 
+\begin{remark}[Borel-Lebesgue pour les fermés]
+\label{rem:fermeBorelLeb}
+Si $(X,\bU)$ est compact, et si $(F_i)_{i \in I}$ est une famille de fermés dont l'intersection est vide, alors elle admet une sous famille finie dont l'intersection est vide. 	
+
+En particulier, une intersection décroissante de fermés non-vides d'un compact est non-vide (comparer avec \nref{lem:fermeEmboite} dans un complet). Notamment, l'ensemble des valeurs d'adhérence \eqref{eqdef:adherence_suite} d'une suite à valeurs dans un compact est toujours non-vide.
+\end{remark}
+
+Le \cref{corol:compSsiFerme} suivant illustre l'importance de l'hypothèse de séparation dans la \cref{def:compact}, voir la \nref{def:separe}. 
+
+\begin{lemma}
+\label{lem:compImplFerme}
+	Soit $(X,\bU)$ espace topologique séparé. Si $F\subset X$ est compact, alors $F$ est fermé.
+\end{lemma}
+
+\begin{proof}
+Par contraposée, supposons $F$ non fermé.
+	Soit $x \in \overline F \sm F$, et pour tout $y \in F$ soient $V_y\ni x$ et $W_y\ni y$ des ouverts disjoints de $X$, par l'axiome de séparation. 
+	Alors $F = \cup\{W_y \mid y \in F\}$. Cependant si $y_1,\cdots,y_N\in F$, alors $\cup_{n=1}^N W_{y_n}$ est disjoint de $\cap_{n=1}^N V_{y_i}$, qui est un voisinage de $x$, et donc rencontre $F$. Ainsi, on ne peut pas extraire de sous-couverture finie de l'ensemble $F$ de $\{W_y \mid y \in F\}$, et celui-ci n'est donc pas compact. 
+\end{proof}
+
+\begin{corollary}	
+\label{corol:compSsiFerme}
+	Soit $(X, \bU)$ espace compact. Une partie $F \subset X$ est compacte ssi elle est fermée. 
+\end{corollary}
+
+\begin{proof}
+	Supposons $F$ fermé, l'implication réciproque ayant été traitée dans le \cref{lem:compImplFerme}. Soit $\cU$ une couverture de $F$ par des ouverts. Alors $\cU \cup \{X\sm F\}$ est une couverture de $X$ par des ouverts, dont on peut extraire une sous-couverture finie, d'où l'on tire une couverture finie de $F$ en omettant le dernier ensemble $X \sm F$. 
+\end{proof}
+
+
+Alors que les ouverts et fermés sont stables par image \emph{réciproque} continue, voir la \nref{prop:caract_cont}, les compacts sont eux stables par image \emph{directe} continue.
+Il en découlera une observation élémentaire mais fondamentale en optimisation : le \nref{corol:bornesAtteintes}. La notation $K \csubset X$ signifie que $K$ est une partie compacte d'un espace topologique $X$. 
+
+\begin{proposition}[Image continue directe d'un compact]
+\label{prop:compactImage}
+	Soient $(X, \bU)$ et $(Y,\bV)$ des espaces séparés, et soit $f \in C^0(X,Y)$. 
+	Alors pour tout $K \csubset X$, l'image directe $f(K)$ est compacte. 
+\end{proposition}
+
+\begin{proof}
+	La séparation de $f(K)$ s'hérite de celle de $Y$. Par ailleurs si $\cV\subset \bV$ est une couverture de $f(K)$ par des ouverts, alors $\cU := \{f^{-1}(V) \mid V \in \cV\}$ est par continuité de $f$ une couverture de $K$ par des ouverts. 
+	On peut donc en extraire une sous-couverture finie $(f^{-1}(V_i))_{i=1}^I$, d'où l'on tire une couverture finie $(V_i)_{i=1}^I$ de $f(K)$. 
+\end{proof}
+
+\begin{corollary}
+\label{corol:homeoCompact}
+	Soient $(X, \bU)$ et $(Y,\bV)$ des espaces compacts, et soit $f : X \to Y$ une bijection continue. Alors $f^{-1}$ est continue. 
+\end{corollary}
+
+\begin{proof}
+Etant donné $F\subset X$ fermé, on note que $F$ est compact par le \cref{corol:compSsiFerme}, donc $f(F)$ est compact par la \cref{prop:compactImage}, donc $f(F)$ est fermé par le sens réciproque du \cref{corol:compSsiFerme}. 
+Le résultat s'ensuit par la \nref{prop:caract_cont}. 
+%Au vu de la caractérisation des
+\end{proof}
+
+
+Certains espaces (séparés) sont \emph{localement compacts}, l'exemple fondamental étant celui des ouverts de $\bR^d$, compte tenu de la compacité des boules fermés de $\bR^d$, voir la  \cref{prop:compSsiFermeBorne}.
+
+L'hypothèse de séparation est importante dans \cref{def:locCompact}, tout comme dans \nref{def:compact}, et en son absence les propriétés (i-ii) ne sont pas équivalentes. (Il n'y a d'ailleurs pas de consensus sur l'éventuelle notion d'espace localement compact non séparé.)
+
+
+\begin{definition}[Espace localement compact séparé]
+\label{def:locCompact}
+Un espace topologique \emph{séparé} est dit localement compact s'il satisfait l'une des conditions suivantes, qui sont équivalentes:
+\begin{enumerate}[(i)]
+	\item Tout point admet un voisinage compact.
+	\item Tout point admet une base de voisinages compacts. 
+\end{enumerate}
+\end{definition}
+
+\begin{proof}[Preuve de l'équivalence]
+	L'implication (ii) $\Rightarrow$ (i) étant claire, nous supposons donc (i) et montrons (ii).
+	Soit $x \in X$, $K$ un voisinage compact de $X$, et $V$ un voisinage quelconque de $x$. On peut supposer $V\subset K$, quitte à considérer son intersection avec $K$, et on peut supposer $V$ ouvert, quitte à considérer son intérieur. 
+	Pour tout $y \in K \sm \{x\}$, soient $V_y$ et $W_y$ des voisinages ouverts disjoints de $x$ et $y$; noter que $V_y \cap W_y = \emptyset$. 
+	Alors $\{V\} \cup \{W_y \mid y \in K \sm \{x\} \}$ est une couverture de $K$, dont on peut extraire une couverture finie $K = V \cup_{i=1}^I W_{y_i}$. 
+	Ainsi $K \sm \cup_{i=1}^I W_{y_i} \supset V \cap \cap_{i=1}^I V_{y_i}$ est un voisinage compact de $x$ contenu dans $V$, ce qui conclut. 
+\end{proof}
+
+%L'hypothèse de séparation est importante dans \cref{def:locCompact}
+
+
+On vérifie facilement qu'un espace compact privé d'un point est localement compact. Récipro\-quement, 
+un espace localement compact peut être compactifié en lui rajoutant seulement un point, ``à l'infini''. 
+
+%\notei{Loc compact ssi compact privé d'un point}
+
+\begin{definition}[Compactifié d'Alexandrov]
+\label{def:compactAlex}
+	Soit $(X, \bU)$ un espace topologique localement compact séparé. 
+	Son compactifié d'Alexandrov est l'espace $\tilde X := X \sqcup \{\omega\}$, où $\omega$ est un élément additionnel arbitraire, muni de la topologie $\tilde \bU := \bU \cup \{\tilde X \sm K \mid K \csubset X\}$. 
+\end{definition}
+
+\hiddenproof{
+Un compact $X$ privé d'un point $x$ est localement compact. D'abord, $X\sm \{x\}$ est séparé. Ensuite, étant donné $y \in X \sm \{x\}$, choisissons deux voisinages ouverts disjoints $U$ et $V$ de $x$ et $y$, par séparation dans $X$; ainsi $X \sm U \supset V$ est un voisinage compact de $x$ ne contenant pas $y$, comme souhaité pour la condition (i). 
+}
+
+\hiddenproof{
+Vérifions les axiomes de topologie. (i) $\emptyset\in \bU\subset \tilde \bU$ et $\tilde X = \tilde X \sm \emptyset \in \tilde \bU$. (ii) La topologie $\bU$ est stable par union, et $\cup_{i \in I} (\tilde X\sm K_i) = \tilde X \sm \cap_{i \in I} K_i$ est de la forme souhaitée car une intersection de compacts est un compact. Finalement $U \cup (\tilde X \sm K) = \tilde X \sm (K\sm U)$ est de la forme souhaitée car $K \sm U$ est un fermé de $K$ donc un compact.
+(iii) La topologie $\bU$ est stable par intersection de deux éléments, et $(\tilde X \sm K) \cup (\tilde X \sm K') = \tilde X \sm (K \cup K')$ est de la forme souhaitée puisque $K \cup K'$ est compact. Enfin $U \cap (\tilde X \sm K) = U \cap (X \sm K)$ est l'intersection de deux ouverts de $X$ (on a vu que tout compact est fermé, donc son complémentaire dans $X$ est ouvert). 
+
+Vérifions que $\tilde X$ est compact, via l'axiome de Borel-Lebesgue. Considérons une couverture de $\tilde X$ par des ouverts. Notons que l'un d'entre eux contient $\omega$, donc prend la forme $X \sm K$. On peut supposer, quitte à retirer $\omega$ s'il est présent, que les autres membres de la couverture sont des ouverts $(U_i)_{i \in I}$ de $X$. Alors $K \subset \cup_{i \in I} U_i$, donc on peut extraire une sous-couverture finie $U_{i_1},\cdots,U_{i_N}$ de $K$. On conclut en notant que $U_{i_1},\cdots,U_{i_N}, \tilde X \sm K$ est une couverture finie de $\tilde X$.  
+}
+
+
+%\todoi{
+%La remarque sur propriété locale vs sur tout compact ne s'applique pas bien à la Lipschitzianité, car on a besoin de chemins de longueur correctement bornée passant par l'intersection. 
+%Du coup, je ne sais pas si elle est intéressante. 
+%}
+
+%\begin{remark}[Propriété valant localement, ou sur tout compact]
+%	Une propriété $P$ sur un ensemble $X$ est une fonction booléenne $P : \cP(X) \to \{0,1\}$. 
+%	On supposera $P$ stable par union : $P(A) = P(B) = 1 \Rightarrow P(A \cup B)$, et décroissante pour l'inclusion : $P(A)$ et $B\subset A$ $\Rightarrow$ $P(B)$. 
+%	Si $X$ es localement compact, alors les conditions suivantes sont équivalentes : 
+%	\begin{itemize}
+%		\item $P$ est satisfaite localement, i.e. tout point admet un voisinage satisfaisant $P$.
+%		\item $P$ est satisfaite sur tout compact. 
+%	\end{itemize}
+%\end{remark}
+%
+%\begin{proof}
+%	Trivial. Mais pas clair que ça s'applique aux exemples d'intérêt (localement Lipschitz)
+%\end{proof}
+
+\subsection{Compacts métriques}
+\label{subsec:compactMetric}
+La présence d'une métrique apporte de nouvelles caractérisations de la compacité, en particulier la caractérisation séquentielle de Bolzano-Weierstrass qui est particulièrement maniable. % et que nous illustrons par le théorème de Heine d'uniforme continuité des applications continues sur un compact. 
+
+\begin{retenir}
+La triple caractérisation des compacts métriques, le théorème de Heine.
+(\Cref{th:BolzanoWeierstrass,th:Heine}.)
+\end{retenir}
+
+%On dispose dans un espace métrique de caractérisations alternatives de la compacité.
+
+\begin{definition}[Précompacité]
+\label{def:precompact}
+	Un espace métrique $(X,d)$ est dit pré-compact ssi pour tout $\ve>0$ il admet une couverture finie par des boules ouvertes de rayon $\ve$. 
+\end{definition}
+
+Il n'est pas nécessaire en général que les boules soient centrées en des points de $X$. En effet, 
+supposons qu'une partie $X \subset \bX$ d'un espace métrique est couverte par des boules : $X\subset \cup_{i \in I} B(x_i,\ve)$, où $\ve>0$ et $x_i \in \bX$ pour tout indice $i \in I$. Retenons seulement les indices $J \subset I$ tels que $B(x_j,\ve) \cap X\neq \emptyset$, et notons $y_j\in X$ un élément de cet ensemble. Alors $X \subset \cup_{j \in J} B(y_j,2 \ve)$.
+
+ 
+\begin{theorem}[Compacité via Bolzano-Weierstrass]
+\label{th:BolzanoWeierstrass}
+Dans un espace métrique $(X,d)$, les propriétés suivantes sont équivalentes : 
+\begin{enumerate}[(i)]
+	\item $X$ est compact (i.e.\ vérifie l'axiome de Borel-Lebesgue, voir la \cref{def:compact}).
+	\item Toute suite à valeurs dans $X$ admet une valeur d'adhérence (et donc une sous-suite convergente); c'est l'axiome de Bolzano-Weierstrass.
+	\item $X$ est pré-compact et complet.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+	Notons que $X$ est séparé en tant qu'espace métrique. 
+	
+	\emph{Preuve de (i) $\Rightarrow$ (ii).} L'existence de valeurs d'adhérence est observée dans la \cref{rem:fermeBorelLeb} (valable dans un espace compact général), et la convergence d'une sous-suite vers celles-ci dans la \cref{prop:adhSousSuite} (utilise la métrique). 
+
+	\emph{Preuve de (ii) $\Rightarrow$ (iii).} \emph{Complétude :} Si une suite est de Cauchy, alors elle admet une valeur d'adhérence par (ii), donc une sous suite convergente, donc est convergente par les propriétés générales des suites de Cauchy. 
+	\emph{Précompacité :}
+	Soit $\ve>0$, et pour tout $N \geq 0$ tant que c'est possible choisissons un point  
+	$x_N \in X \sm \cup_{n<N} B(x_n,\ve)$ de manière récurrente. Si la suite $(x_n)_{n\in \bN}$ est définie en totalité, alors elle admet une sous-suite convergente, donc deux termes à distance strictement inférieure à $\ve$, ce qui est une contradiction. On en déduit que la suite ne peut pas être construite au delà d'un certain rang $N$, et donc que $X = \cup_{n<N} B(x_n,\ve)$. 
+	
+	\emph{Preuve de (iii) $\Rightarrow$ (ii).}
+%	Soit $A := \{y_r \mid r \in \bN\}$ l'ensemble des valeurs d'une suite
+	Soit une suite $(y_r)_{r \in \bN}$ à valeurs dans $X$, et soit $A := \{y_r \mid r \in \bN\}$ l'ensemble de ses valeurs.
+	Pour tout $n\geq 0$ on se donne un entier $K(n)$ et des boules $B_1^n, \cdots, B_{K(n)}^n$ de rayon $2^{-n}$ recouvrant $X$. 
+	Puis on choisit successivement $B_{k_n}^n$ tels que $A \cap B_{k_0}^0 \cap \cdots \cap B_{k_n}^n$ est infini, et donc contient un terme $y_{\sigma(n)}$ où $\sigma : \bN \to \bN$ est strictement croissante.
+	On voit alors que la suite $(y_{\sigma(n)})_{n \in \bN}$ satisfait le critère de Cauchy, spécifiquement $d(y_{\sigma(p)},y_{\sigma(q)}) \leq 2 \times 2^{-N}$ si $p,q \geq N$, car ces points appartiennent à une même boule de rayon $2^{-N}$. Par complétude, on obtient une sous-suite convergente. 
+	
+	Preuve de (ii) $\Rightarrow$ (i). 
+	Soit $(U_i)_{i \in I}$ une couverture ouverte ouvert de $X$. Observons d'abord que la propriété de Bolzano-Weierstrass implique l'existence d'un \emph{nombre de Lebesgue} $r>0$ tel que $\forall x\in X$, $\exists i \in I$, $B(x,r)\subset U_i$. 
+	
+	En effet, dans le cas contraire, soit $(x_n)_{n \in \bN}$ tel que $B(x_n,2^{-n})$ n'est contenu dans aucun des $U_i$, $i \in I$. Soit $x_*$ une valeur d'adhérence de cette suite, $i \in I$ tel que $x_* \in U_i$, et $r>0$ tel que $B(x_*,r) \subset U_i$. On obtient une contradiction en considérant $n\in \bN$ tel que $d(x_n,x_*) < r/2$ et $2^{-n} < r/2$.
+	
+	On conclut en utilisant la pré-compacité, qui découle de (ii) $\Rightarrow$ (iii) vu plus haut. 
+\end{proof}
+
+
+\begin{theorem}[Heine]
+\label{th:Heine}
+Soit $(X,d)$ métrique compact, et $(Y,d)$ métrique. Alors toute fonction continue $f : X \to Y$ est en fait uniformément continue. 
+\end{theorem}
+
+\begin{proof}
+	Par contraposée, supposons $f$ non-uniformément continue. Alors il existe $\ve>0$ et une suite $(x_n,y_n)$ telle que $d_X(x_n,y_n) \to 0$ et $d_Y(f(x_n),f(y_n)) \geq \ve$ pour tout $n \in \bN$. Par compacité, on a une une sous-suite convergente $x_{\sigma(n)} \to x_*$ lorsque $n \to \infty$; on en déduit que $y_{\sigma(n)} \to x_*$ également.
+	Comme $\max \{d(f(x_n),f(x_*)),\ d(f(y_n),f(x_*))\} \geq d(f(x_n),\ f(y_n))/2 \geq \ve/2$, pour tout $n \in \bN$, on obtient que $f$ n'est pas continue en $x_*$, comme annoncé.
+%	Enfin, l'équicontinuité (resp. uniforme) de $(f_i)_{i \in I}$ est équivalente à celle de $F : X \to \prod_{i \in I} Y : x \mapsto (f_i(x))_{i \in I}$ pour la distance de la convergence uniforme, voir 
+\end{proof}
+
+Sous les hypothèses du \cref{th:Heine}, toute famille de fonctions équicontinue $(f_i : X \to Y)_{i \in I}$ est en fait uniformément équicontinue. 
+Cela découle de la reformulation de l'équicontinuité en termes de continuité usuelle, voir la \cref{rem:equicont}. 	
+
+
+\begin{proposition}
+\label{prop:noAdhCv}
+	Soit $(x_n)_{n \in \bN}$ une suite à valeurs dans un espace métrique compact $X$, n'admettant pas de valeur d'adhérence excepté peut-être $x_*\in X$. Alors $x_n \to x_*$ lorsque $n \to \infty$. 
+\end{proposition}
+
+\begin{proof}
+	Si par l'absurde $x_n \not \to x_*$, alors il existe $\ve>0$ et une extractrice $\vp$ tels que $d(x_{\vp(n)},x_*) \geq \ve$ pour tout $n \in \bN$. 
+	La suite $(x_{\vp(n)})_{n \in \bN}$ est ainsi à valeur dans le compact $X \sm B(x,\ve)$, donc admet une valeur d'adhérence $y_*\in X \sm B(x,\ve)$ voir la \cref{rem:fermeBorelLeb}, qui est aussi valeur d'adhérence de $(x_n)_{n \in \bN}$ et satisfait $d(x_*,y_*) \geq \ve$, d'où la contradiction.
+\end{proof}
+
+\subsection{Compacité en dimension finie}
+\label{subsec:compactRd}
+
+On rappelle la compacité de la boule unité de $\bR^d$, sa conséquence l'unicité de la structure d'evn en dimension finie à équivalence de normes près, et l'obstruction en dimension infinie révélée par le théorème de Riez. 
+
+\begin{retenir}
+La caractérisation des parties compactes de $\bR^d$, les corollaires des bornes atteintes et d'équivalence des normes, le théorème de compacité de Riez. 
+(\Cref{prop:compSsiFermeBorne,corol:bornesAtteintes,corol:normesEquivRd,th:bouleCompRiez})
+\end{retenir}
+
+\begin{proposition}
+\label{prop:compSsiFermeBorne}
+Une partie de $\bR^d$ est compacte ssi elle est fermée et bornée.	
+\end{proposition}
+
+\begin{proof}
+	On sait que $\bR^d$ est complet, et donc une partie de $\bR^d$ est complète ssi elle est fermée.
+	par ailleurs, une partie de $\bR^d$ est précompacte ssi elle est bornée. 
+	(En effet, on pourra recouvrir cette partie par les boules de rayon $\ve > 0$ dont les centres sont disposés aux sommets d'un cube discrétisé $[-M,M]^d \cap (\ve/\sqrt d) \bZ^d$, en choisissant $M$ assez grand.)
+	%Note : supposons $A \subset [-M,M]$ et  supposons $A \subset \cup_{i=1}^I B(x_i,\ve \sqrt d)$. Notons $y_i$ un point de $A \cap B(x_i,\ve)$ si cet ensemble est non-vide, ou un point quelconque sinon. Alors $A \subset \cup_{i=1}^I B(y_i,2\ve)$.)	
+%	(Note : on peut trivialement recouvrir une partie bornée de $\bR^d$ par un nombre fini de boules de rayon $\ve>0$ disposées sur la grille cartésienne $(\ve/\sqrt d) \bZ^d$. donné non centrées en des points de cette partie, donc par un nombre fini de boules de rayon $2\ve$ centrées en des points de cette partie.)
+	On conclut par le critère (iii) du \cref{th:BolzanoWeierstrass}.
+\end{proof}
+
+
+On déduit de la \cref{prop:compSsiFermeBorne} qu'un compact non-vide de $\bR$ contient ses bornes, ce qui a des applications immédiates en optimisation. 
+
+\begin{corollary}[Bornes atteintes]
+\label{corol:bornesAtteintes}
+	Une application continue d'un compact non-vide dans $\bR$ est bornée et atteint ses bornes.
+\end{corollary}
+
+\begin{proof}
+	L'image de l'application est un compact de $\bR$ par la \nref{prop:compactImage}, donc contient ses bornes par la \cref{prop:compSsiFermeBorne}.
+\end{proof}
+
+\begin{corollary}[Equivalence des normes en dimension finie]
+\label{corol:normesEquivRd}
+	Soit $E$ un espace vectoriel de dimension finie, muni de deux normes $\|\cdot\|$ et $\|\cdot\|'$.
+	Alors il existe $C,c>0$ tels que $c\|x\| \leq \|x\|' \leq C \|x\|$ pour tout $x \in E$. 
+\end{corollary}
+
+\begin{proof}
+	On peut supposer, sans nuire à la généralité, que $E = \bR^d$ et $\|x\| := \sum_{i=1}^d |x_i|$. 
+	Alors 
+	\begin{align*}
+	\|x\|' &= \Big\| \sum_{1 \leq i \leq d} x_i e_i\Big\|' \leq \sum_{1 \leq i \leq d} |x_i| \|e_i\|' \leq C \|x\|,&
+	\text{où } C := \max_{1 \leq i \leq d} \|e_i\|'.	
+	\end{align*}
+	Par l'inégalité triangulaire on a $|  \|x\|'-\|y\|' | \leq \|x-y\|' \leq C \|x-y\|$, donc la second norme $\|\cdot\|'$ est $C$-Lipschitz, donc en particulier continue. La constante $c := \inf\{ \|x\|' \mid \|x\| = 1\}$ est atteinte en tant que minimum d'une fonction continue sur un compact, par le \cref{corol:bornesAtteintes}, donc $c>0$, et cette constante convient pour la borne inférieure. 
+\end{proof}
+
+Le théorème de compacité de Riez est une forme de réciproque à la \cref{prop:compSsiFermeBorne} : il établit que la boule unité fermée n'est compacte que dans un evn de dimension finie. % que seuls les evn de dimension finie ont une boule unité fermée compacte.
+\begin{lemma}[Riez]
+\label{lem:normaleRiez}
+	Soit $E$ un evn, soit $F\subsetneq E$ un sous espace vectoriel strict fermé. 
+	Pour tout $\rho<1$, il existe $x \in B'_E(0,1)$ tel que $d(x,F) \geq \rho$.
+	Si $F$ est de dimension finie, alors il existe $x \in B'_E(0,1)$ tel que $d(x,F)=1$.  
+\end{lemma}
+
+\begin{proof}
+	Choisisson $u \in E \sm F$, et observons que $d(u,F) := \inf_{v \in F} \|u-v\|$ est positif par fermeture de $F$. 
+	Si $F$ est de dimension finie, alors par compacité de $F \cap B'(u,d(u,F)+1)$ il existe $v \in F$ tel que $d(u,F) = \|u-v\|$, et on pose $\rho=1$. A l'inverse, si $F$ est de dimension infinie, on peut trouver $v \in F$ tel que $d(u,F) \geq \rho\|u-v\|$ par definition de l'infimum. 
+	Alors $x := \frac{u-v}{\|u-v\|} \in B'_E(0,1)$ convient, puisque $d(x,F) =  d(u/\|u-v\|,F) = d(u,F)/\|u-v\| \geq \rho$. 
+\end{proof}
+
+\begin{theorem}[Compacité de Riez]
+\label{th:bouleCompRiez}
+Pour tout evn $E$, les propositions suivantes sont équiva\-lentes : (i) $E$ est de dimension finie, (ii) $B'_E(0,1)$ est compacte, (iii) $B'_E(0,1) \subset \cup_{1 \leq i \leq I} B_E(x_i,1)$ pour une famille finie $x_1,\cdots,x_I \in E$. 
+\end{theorem}
+
+\begin{proof}
+	Si $E$ est de dimension finie (i), alors par le \cref{corol:normesEquivRd} sa topologie est celle de $\bR^d$, et donc $B'_E(0,1)$ est compacte car fermée et bornée, d'où (ii). L'implication (ii) $\Rightarrow$ (iii) découle de l'axiome de Borel-Lebesgue et de la couverture triviale par des boules ouvertes.
+	
+		Finalement, supposons (iii), et par l'absurde $E$ de dimension infinie. Soit $F := \Vect\{x_1,\cdots,x_I\}$. Par le \cref{lem:normaleRiez} il existe $x \in B_E'(0,1)$ tel que $1 = d(x,F) \leq \min_{1 \leq i \leq I} d(x,x_I)$. C'est une contradiction, ce qui conclut. 
+\end{proof}
+
+
+\subsection{Produits de compacts}
+\label{subsec:compactProd}
+
+Le résultat fondamental de cette section est la compacité d'un produit de compacts, pour la topologie associée à la convergence simple. On en déduit la compacité pour les topologies adéquates de certains ensembles de fonctions : la boule unité du dual d'un evn, et la famille des fonctions $1$-Lipschitziennes entre deux compacts, entre autres. %en particulier. 
+
+\begin{retenir}
+Le théorème de Tychonov, le procédé d'extraction diagonal, le théorème de Banach-Alaoglu, le théorème d'Ascoli.
+(\Cref{th:compProdTycho,th:BanachAlaoglu,th:AscoliLip}.)
+\end{retenir}
+
+
+\begin{theorem}[Tychonov]
+\label{th:compProdTycho}
+Soit $(X_i,\bU_i)_{i \in I}$ une famille d'espaces topologiques compacts, alors le produit $X_* := \prod_{i \in I} X_i$ est compact muni de la topologie produit.
+Le produit d'une famille dénombrable de compacts métriques est un compact métrique.
+\end{theorem}
+
+\begin{proof}[Preuve dans le cas métrisable dénombrable]
+	Le résultat vaut dans le cadre général, mais sa preuve fait intervenir des notions (ultrafiltres) qui sortent du cadre de ce cours. On se contentera donc de l'établir dans le cas d'une famille dénombrable $(X_i,d_i)_{i \in \bN}$ de compacts métriques.
+	
+	La topologie produit correspond alors à la distance suivante : pour $(x_i)_{i \in \bN}, (y_i)_{i \in \bN} \in X_*$,
+	\begin{equation*}
+		d( (x_i)_{i \in \bN}, (y_i)_{i \in \bN}) := \max_{i \in \bN} \min\{2^{-i}, d_i(x_i,y_i)\}.
+	\end{equation*}
+	Considérons une suite à valeurs dans $X_*$, dont l'on écrit le $k$-ième terme $(x_i^k)_{i \in \bN}$. Par la propriété de Bolzano-Weierstrass, on peut trouver $\sigma_0 : \bN \to \bN$ strictement croissante telle $(x_0^{\sigma_0(k)})_{k \in \bN}$ converge dans $X_0$. 
+	De même, on construit pour tout $i \in \bN$ une extractrice $\sigma_i : \bN \to \bN$ telle que 
+	$(x_i^{\sigma_0\circ \cdots \circ \sigma_i(k)})_{k \in \bN}$ converge dans $X_i$.
+	On utilise alors le procédé d'extraction diagonal, en définissant 
+	$\vp(k) := \sigma_0 \circ \cdots \circ \sigma_k(k)$, et en notant que $(x_i^{\vp(k)})_{k \in \bN}$ converge dans $X_i$ pour tout $i \in \bN$, de sorte que la suite dans l'espace produit est convergente. 
+\end{proof}
+
+En choisissant $X_i = X$ dans le théorème précédent, où $X$ est un espace compact, on obtient en particulier que les fonctions à valeur dans un espace compact forment un ensemble compact pour la convergence simple.
+On illustre ce résultat par une application aux formules logiques, sans rapport avec le reste du cours mais qui est un point de départ en théorie des modèles
+\begin{exemple}[Satisfiabilité de formules logiques \facultatif]
+\label{ex:formuleLogique}
+Une formule logique est une application $f : X := \{0,1\}^\bN \to \{0,1\}$ qui ne dépend que d'un nombre fini de variables : 
+$$
+\exists N(f) \in \bN,\ \forall x=(x_0,x_1,\cdots)\in X,\
+f(x) = f(x_0,\cdots,x_{N(f)},0,\cdots,0).
+$$
+Un ensemble $\cF$ de formules logiques est dit satisfiable si $\exists x \in X$, $\forall f \in \cF$, $f(x)=1$. 
+
+Un ensemble de formules logiques est satisfiable ssi toutes ses parties finies sont satisfiables. 
+%Si toute partie finie d'un ensemble $\cF$ de formules logiques est satisfiable, alors $\cF$ est satisfiable : 
+\end{exemple}
+	
+\begin{proof}
+	Par définition de la topologie produit sur $X$, les formules logiques sont des applications continues, et par le \cref{th:compProdTycho} l'ensemble $X$ est compact. On procède par contraposée, en supposant que $\cF$ n'est pas satisfiable, c'est à dire que $\cap_{f \in \cF} f^{-1}(1)= \emptyset$. Il s'agit d'une intersection vide de fermés, donc une sous famille finie est d'intersection vide, ce qui conclut.  
+\end{proof}
+
+\begin{theorem}[Banach-Alaoglu]
+\label{th:BanachAlaoglu}
+La boule unité fermée $B := B'_{E^*}(0,1)$ du dual $E^*$ d'un Banach est compacte pour la topologie $*$faible. 
+Si $E$ est séparable, alors $B$ est un compact métrique.
+\end{theorem}
+
+\begin{proof}[Preuve dans le cas séparable]
+On rappelle que $B$ est métrisable, voir la \cref{prop:bouleMetrisable}. Il suffit donc de montrer que toute suite $(f_n)_{n \in \bN}$ de $B$ admet une sous-suite convergente, par le \nref{th:BolzanoWeierstrass}. 
+Soit $D$ une partie dénombrable dense de $E$. Par un procédé d'extraction diagonal, ou en utilisant la compacité de $\Pi_{x\in D} [-\|x\|,\|x\|]$ ce qui revient au même, on obtient qu'il existe une extractice $\vp : \bN \to \bN$ telle que $(f_{\vp(n)}(x) )_{n \in \bN}$ converge pour tout $x \in D$.
+
+On peut donc supposer, pour alleger les notations et quitte à extraire, que $(f_n)_{n \in \bN}$ converge simplement sur $D$ vers une application $f_*$.
+On note que $\|x-y\| \geq |f_n(x)-f_n(y)| \to |f_*(x)-f_*(y)|$ lorsque $n \to \infty$, pour tous $x,y \in D$, donc $f_*$ est $1$-Lipschitzienne  sur $D$. Elle s'étend donc en une application $1$-Lipschitzienne sur $\overline D = E$, par la \nref{prop:prolongement_complet}, toujours notée $f_*$. 
+
+Montrons maintenant que $f_n$ converge simplement vers $f_*$ sur $E$, c'est à dire que l'on a convergence en topologie *faible comme demandé, ce qui est aussi noté $f_n \rightharpoonup^* f$. En effet, étant donné $x\in E$, et $\ve>0$, on peut choisir $x_0 \in D$ tel que $\|x-x_0\| \leq \ve$, et alors 
+\begin{equation*}
+	|f_*(x)-f_n(x)|\leq 	|f_*(x)-f_*(x_0)| + |f_*(x_0)-f_n(x_0)| + |f_n(x_0)-f_n(x)| \leq 2 \ve + |f_*(x_0)-f_n(x_0)|,
+\end{equation*}
+ce qui est plus petit que $3 \ve$ pour $n$ assez grand. 
+La linéarité de $f_*$ se déduit de la convergence simple : $f_*(\lambda x+y) = \lim_{n \to \infty} f_n(\lambda x+y) = \lim_{n \to \infty} \lambda f_n(x)+f_n(y) = \lambda f_*(x)+f_*(y)$, pour tous $x,y \in E$, $\lambda \in \bK$, ce qui conclut. 
+\end{proof}
+
+%\begin{proof}[Cas général]
+%\def\lin{\mathrm{lin}}
+%On note $B$ la boule unité fermée de $E$, et $X := [-1,1]^B$ qui est un produit de compact donc est compact.
+%Soit également
+%\begin{equation}
+%	X_\lin := \{(l_x)_{x \in B} \in X \mid l_{x+y} = l_x+l_y,\ l_{\lambda x} = \lambda l_x,\ \forall x,y \in B, \forall \lambda \in \bK, \text{ s.t. } x+y \in B, \lambda x \in B\}.
+%\end{equation}
+%Il s'agit d'un fermé de $X$, donc d'un compact. De plus tout élément de $X_\lin$, étendu par homogénéité, définit une forme linéaire sur $E$, qui est bornée par $[-1,1]$ sur la boule unité. 
+%On obtient donc une bijection $X_\lin \to B^*$. 
+%
+%Enfin, cette bijection est continue. En effet, 
+%
+%
+%
+%Notons $B$ la boule unité fermée de $E$. 
+%Le produit $X := [-1,1]^B$ est compact, et l'application $\Phi : B^* \to X : l \mapsto (l(x))_{x \in B}$ est injective et continue. En effet, une base d'ouverts de $X$ est donnée par $\Pi_{x\in B} I_x$, où $I_x\subset [-1,1]$ est un intervalle ouvert et $B_0 := \{x\in B \mid I_x \neq [-1,1]\}$ est fini. Son image réciproque $\{l\in B^* \mid \forall x \in B_0, l(x) \in I_x\}$ est bien un ouvert de $B^*$ pour la topologie faible. 
+%
+%L'image de $\Phi$ se caractérise par 
+%\begin{equation}
+%	\{(l_x)_{x \in B} \mid l_{x+y} = l_x+l_y,\ l_{\lambda x} = \lambda l_x,\ \forall x,y \in B, \forall \lambda \in \bK, \text{ s.t. } x+y \in B, \lambda x \in B\}.
+%\end{equation}
+%En effet ces relations définissent une forme linéaire, en l'étendant à $E$ par homogénéité, et celle-ci est continue car bornée sur la boule unité. Ainsi $\mathrm{Im}(\Phi)$ est fermée, donc compacte. L'application $B^* \mapsto $
+%
+%\end{proof}
+
+
+Une preuve d'un esprit similaire permet d'établir le théorème d'Ascoli. Nous présentons d'abord sa forme la plus simple, puis deux corollaires l'étendant d'une part aux familles de fonctions $K$-Lipschitz, $\alpha$-Holder, ou liées à d'autres modules de continuité, et d'autre part aux dérivées d'ordre supérieur.
+\begin{theorem}[Ascoli]
+\label{th:AscoliLip}
+	Soient $X$ et $Y$ des espaces métriques compacts. Alors l'ensemble des applications $1$-Lipschitz est compact pour la topologie de la convergence uniforme: 
+	\begin{align*}
+		\Lip_1(X,Y) &:= \{ f:X \to Y \mid f \text{ est $1$-Lipschitz}\},&
+		\text{muni de }
+		d(f,g) &:= \max_{x \in X} d_Y(f(x), g(x)).
+	\end{align*}
+\end{theorem}
+
+\begin{proof}
+Le maximum définissant la distance est atteint, voir le \nref{corol:bornesAtteintes}.
+Soit $(f_n)_{n \in \bN}$ une suite de $\Lip_1(X,Y)$. Soit également $D \subset X$ une partie dense. 
+Par le procédé d'extraction diagonal, ou par compacité de $Y^D$, il existe une sous-suite $f_{\vp(n)}$ qui converge simplement sur $D$. Notons $f_* : D \to Y$ sa limite, et observons qu'elle est $1$-Lipschitzienne par passage à la limite, donc s'étend en une fonction $1$-Lipschitz sur $\overline D = X$ par la \nref{prop:prolongement_complet}.
+
+Justifions la convergence uniforme : par compacité de $X$, il existe pour tout $\ve>0$ un ensemble fini $D_\ve \subset D$ tel que $\cup_{x \in D_\ve} B'(x,\ve) = X$. 
+Par finitude de $D_\ve$, il existe un rang $N_\ve$ tel que $d(f_{\vp(n)}(x), f_*(x)) \leq \ve$ pour tous $x \in D_\ve$ et $n \geq N_\ve$. Ainsi, étant donné $x \in X$, on peut choisir $x_\ve\in D_\ve$ tel que $d(x,x_\ve) \leq \ve$ et obtenir pour tout $n \geq N_\ve$
+\begin{equation*}
+	d(f_{\vp(n)}(x), f_*(x)) \leq d(f_{\vp(n)}(x), f_{\vp(n)}(x_\ve)) + d(f_{\vp(n)}(x_\ve), f_*(x_\ve)) + d(f_*(x_\ve), f_*(x)) \leq 3 \ve,
+\end{equation*}
+ce qui établit la convergence uniforme et conclut la preuve. 
+\end{proof}
+
+Les hypothèses du théorème d'Ascoli peuvent être affaiblies dans une certaine mesure.
+Rappelons qu'une famille $\cF \subset C^0(X,Y)$ de fonctions d'un espace métrique $X$ dans un autre $Y$ est équicontinue (resp.\ uniformément équicontinue), voir la \cref{rem:equicont},  ssi il existe pour tout $x \in X$ un module de continuité $\omega_x$ (resp.\ un module de continuité $\omega$) tel que 
+\begin{align*}
+	\forall x,y \in X,\ \forall i \in I,\ d_Y(f_i(x),f_i(y)) &\leq \omega_x (d_X(x,y)). &
+	(\text{resp. } d_Y(f_i(x),f_i(y)) \leq \omega(d_X(x,y)). )
+\end{align*}
+
+\begin{corollary}[Ascoli equicontinu]
+\label{corol:AscoliEquicont}
+	Soient $X$ et $Y$ des espaces métriques compacts, et soit $\cF \subset C^0(X,Y)$ une famille de fonctions équicontinue. Alors $\cF$ est uniformément équicontinue, et $\overline \cF$ est compact pour la topologie de la convergence uniforme. 
+\end{corollary}
+
+\begin{proof}
+	L'uniforme équicontinuité découle du \nref{th:Heine}, et du commentaire le suivant concernant les familles de fonctions. On note $\omega$ le module de continuité correspondant, que l'on peut supposer borné car $Y$ est compact donc borné. Par le \cref{lem:regModuleCont}, on peut donc aussi supposer que $\omega$ est croissant et sous-additif, de sorte que $d_X' := \omega\circ d_X$ est une distance sur $X$, définissant la même topologie. Avec cette nouvelles distances, $\cF$ est un sous-ensemble de $\Lip_1((X,d'_X),(Y,d_Y))$, donc $\overline \cF$ est compact pour la topologie de la convergence uniforme sur $Y$. On conclut en notant que cette dernière dépend de $d_Y$ mais pas du choix de $d_X$.
+\end{proof}
+
+%\begin{corollary}
+%	Soit $\Omega$ un ouvert, et soit $k \in \bN$.
+%	L'ensemble 
+%\end{corollary}
+
+\begin{corollary}[Ascoli $C^k$]
+\label{corol:AscoliCk}
+Soit $\Omega\subset \bR^d$ un ouvert convexe borné, et soit $k \in \bN$. La boule unité de $C^{k+1}_b(\Omega)$ est pré-compacte dans $C_b^k(\Omega)$.
+\end{corollary}
+
+\begin{proof}
+	Adapter la preuve de l'exemple suivant, similaire mais un peu plus technique. 
+\end{proof}
+
+
+
+\begin{corollary}[Ascoli $C^k$ non-borné \facultatif]
+\label{corol:AscoliCkNonBorne}
+Soit $\Omega\subset \bR^d$ un ouvert, et soit $k \in \bN \cup \{\infty\}$. Soit $C(K,\alpha)$ une constante arbitraire associée à tout $K \csubset \Omega$ et tout élément de $\bN^d_{k+1} := \{\alpha \in \bN^d\mid |\alpha|_1 \leq k+1\}$.
+Alors 
+\begin{equation*}
+	\cF := \{ f \in C^{k+1}(\Omega) \mid \forall K \csubset \Omega,\, \forall \alpha \in \bN^d_{k+1},\,   \|\partial_\alpha f\|_{L^\infty(K)} \leq C(K,\alpha)\}
+\end{equation*}
+est une partie précompacte de $C^k(\Omega)$. %, fermée dans le cas $k = \infty$. 
+%est une partie précompacte de $C^k(\Omega)$. Si $k=\infty$, alors c'est une partie compacte.
+%Les constantes $C(K,\alpha)$ dépendent seulement des paramètres indiqués. 
+\end{corollary}
+
+\begin{proof}
+	Soit $(B_n)_{n \in \bN}$ une famille dénombrable de boules fermées telles que $\Omega = \cup_{n \in \bN} \mathring B_n$. (Dans le cas $\Omega\neq \bR^d$, on peut par exemple considérer une suite dense $(x_n)_{n \in \bN}$ dans $\Omega$, et poser $B_n := B'(x_n,r_n)$ avec $r_n := \frac 1 2 d(x_n, \bR^d \sm \Omega)$.)
+	
+	Choisissons $\alpha \in \bN^d_k$, i.e.\ $\alpha \in \bN^d$ tel que $|\alpha|_1 \leq k$. Si $f \in \cF$, alors $\partial_\alpha f$ est $K(n,\alpha)$-Lispchitz sur $B_n$, par convexité de cet ensemble, avec $K(n,\alpha) := \sum_{1 \leq i \leq d} C(B_n, \alpha+e_i)$. De plus $\|\partial_\alpha f\|_{L^\infty(B_n)} \leq C(B_n,\alpha)$.
+	Par le théorème d'Ascoli, $\cF_{n,\alpha} := \{\partial_\alpha f_{|B_n} \mid f \in \cF\}$ est une partie précompacte de $C^0(B_n)$ pour la topologie de la convergence uniforme. 
+	
+	Considérons une suite $(f_r)_{r \in \bN}$ de $\cF$.
+	Par compacité de $\prod_{n \in \bN} \prod_{\alpha\in \bN^d_k} \overline {\cF_{n,\alpha}}$, ou par un procédé d'extraction diagonal, il existe une sous-suite notée $(f_{\vp(r)})_{r \in \bN}$ telle que $\partial_\alpha f_{\vp(r)}$ converge uniformément lorsque $r \to \infty$ sur $B_n$, pour tout $n \in \bN$ et tout $\alpha \in \bN^d_k$.
+	On en déduit que $(f_{\vp(r)})_{r \in \bN}$ est de Cauchy dans $C^k(\Omega)$, muni des semi-normes $\|\partial_\alpha f\|_{L^\infty(K_n)}$ où $\alpha \in \bN^d_k$, où $(K_n)_{n \in \bN}$ est une suite exhaustive arbitraire de compacts de $\Omega$, voir la \cref{prop:exhaustComp}. 
+	(En effet, on peut recouvrir tout compact $K_n$ par un nombre fini des boules ouvertes $(\mathring B_m)_{m \in \bN}$.) 
+	Ainsi la suite $(f_{\vp(r)})_{r \in \bN}$ est convergente pour la topologie de $C^k(\Omega)$, ce qui donne la précompacité.
+\end{proof}
+
+Remarquons que $\cF$ du corollaire précédent est une partie fermée de $C^{k+1}(\Omega)$, par définition. Ainsi $\cF \subset C^\infty(\Omega)$, dans le cas particulier $k=\infty$, est précompacte et fermée, donc compacte.  
+
+
+%\todoi{
+%Compacité dans $C_b^k$ de la boule unité de $C_b^{k+1}$. 
+%Versions locales : si les dérivées sont bornées sur tout compact.
+%}
+
+On rappelle la définition de l'enveloppe convexe d'une partie $K$ d'un $\bR$-ev:
+\begin{align*}
+	\Hull(K) &:= \{ \sum_{0 \leq i \leq I} \lambda_i x_i \mid 
+	I \geq 1,\ \lambda \in \Delta^I,\ \forall 0 \leq i \leq I,\ x_i \in K\}, \\
+	\text{où }\Delta^I &:= \{\lambda = (\lambda_i)_{0 \leq i \leq I} \in \bR_+^{I+1} \mid \sum_{0 \leq i \leq I} \lambda_i = 1\}.
+\end{align*}
+En dimension finie, si $K\subset \bR^d$, alors le \nref{th:Caratheodory} affirme que l'on peut se limiter à $I=d+1$ dans l'expression ci-dessus; on en déduit que $\Hull(K)$ est compact si $K$ est compact.
+En dimension infinie, on a le résultat de \emph{précompacité} suivant pour la topologie forte, qui admet une généralisation due à Krein-Smulian pour la topologie faible.
+
+%\begin{lemma}
+%\label{lem:allToZero}
+%	Supposons que $\ve_k(n) \to 0$ lorsque $n \to \infty$, quel que soit $k \in \bN$. Alors il existe une suite $\vp(n) \to \infty$ telle que pour toute suite $\psi \leq \vp$ on a $\ve_{\psi(n)}(n) \to 0$.  
+%\end{lemma}
+%
+%\begin{proof}
+%	Poser par exemple $\vp(n):= \max \{k \in \llbracket 0,n\rrbracket \mid \forall r \in \llbracket 0,k \rrbracket,\ \vp_r(n) \leq 1/k\}$, avec la convention $1/0 = \infty$ assurant que cet ensemble est non-vide. 
+%\end{proof}
+
+\begin{proposition}[Compacité de l'enveloppe convexe fermée]
+\label{prop:hullCompact}
+	Soit $K$ une partie d'un $\bR$-Banach. Si $\overline K$ est compact, alors $H := \overline {\Hull(K)}$ est compact. 
+\end{proposition}
+
+\begin{proof}
+	Etant donné $\ve>0$, soit $K = \cup_{i=1}^I B(x_i,\ve)$ une couverture finie de $K$ par des boules de rayon $\ve$. Posons $H_\ve := \Hull\{x_i \mid 1 \leq i \leq I\}$, qui est un ensemble compact, en tant qu'image continue de $\Lambda^I$. Par construction, il existe pour tout $x \in H$ un point $x_\ve \in H_\ve$ tel que $\|x-x_\ve\| \leq \ve$. 
+	
+	Soit $(x_n)_{n \in \bN}$ une suite à valeurs dans $H$, et soit $x_n^k \in H_{1/k}$ tel que $\|x_n - x_n^k\| \leq 1/k$, pour tout $k \in \bN^*$. 
+	Par un argument d'extraction diagonal, ou en utilisant la compacité de $\prod_{k \in \bN^*} H_{\frac 1 k}$ ce qui revient au même, il existe une extractrice $\vp$ telle que $x_{\vp(n)}^k$ converge pour tout $k \in \bN^*$, vers une limite notée $x_*^k$ lorsque $n \to \infty$.
+	Par construction on a $\| x_n^k - x_n^l \| \leq \frac 1 k + \frac 1 l$ pour tous $n,k,l>0$, donc $\|x_*^k - x_*^l\| \leq \frac 1 k + \frac 1 l$ par passage à la limite, ce qui montre que $(x_*^k)_{k \in \bN}$ est de Cauchy, donc converge vers une limite notée $x_*^* \in \overline {\Hull(K)}$ lorsque $k \to \infty$.
+	En utilisant l'inégalité triangulaire, on a $\|x_{\vp(n)} - x_*^*\| \leq \|x_{\vp(n)} - x_{\vp(n)}^k\| + \|x_{\vp(n)}^k - x_*^k\| + \|x_*^k-x_*^*\|$. 
+	En choisissant %via le \cref{lem:allToZero}
+	une suite $k(n)\to \infty$ telle que $\|x_{\vp(n)}^{k(n)} - x_*^{k(n)}\| \to 0$ lorsque $n \to \infty$, on conclut que $x_{\vp(n)} \to x_*^* $, d'où la précompacité annoncée.	
+\end{proof}
+
+%\hiddenproof{
+%Argument détaillé pour la construction de $k(n)$. %, qui est une d'extraction diagonale dans une double limite. 
+%Pour tout $n \in \bN$ donné, considérons une suite $\ve_k(n) \to 0$ lorsque $n \to \infty$. (Dans la preuve précédente $\ve_k(n) = \|x^k_{\vp(n)}-x^k_*\|$.)
+%Par hypothèse il existe pour tout $k \in \bN$ une extractrice $\vp_k(r)$ telle que $\ve_k(n) \leq 1/r$ pour tout $n \geq \vp_k(r)$. On peut supposer $\vp_k(r)$ croissante en $k$ également. On note que $\ve_k(\vp_k(k)) \leq 1/k$. On définit $k(n) := \max\{k>0 \mid \vp_k(k) \leq n\}$. C'est une suite croissante, qui tend vers l'infini, et qui convient puisque $\ve_{k(n)}(n) \leq 1/k(n)$.
+%}
+
+Pour être complet, présentons le cas de la dimension finie.
+\begin{theorem}[Caratheodory]
+\label{th:Caratheodory}
+Pour tout $A \subset \bR^d$ on a 
+\begin{equation*}
+	\Hull(A) = \{\sum_{0 \leq i \leq d} \lambda_i x_i\mid \lambda \in \Delta^d,\ x \in A^{d+1}\}.
+\end{equation*}
+On en déduit que $\Hull(K)$ est compact pour tout $K \csubset \bR^d$ compact. 
+\end{theorem}
+
+\begin{proof}
+	Soit $x \in \Hull(A)$, que l'on peut donc écrire $x = \sum_{0 \leq i \leq I} \lambda_i x_i$ avec $\lambda \in \Lambda^I$ et $x_0,\cdots,x_I \in X$. Supposons que l'entier $I$ est minimal dans cette représentation et, par l'absurde, que $I\geq d+1$. Alors, par un argument de dimension, les vecteurs $(x_i-x_0)_{1 \leq i \leq I}$ sont liés, et il existe donc une relation linéaire de la forme
+	\begin{equation*}
+		\sum_{1 \leq i \leq I} \mu_i (x_i-x_0) = 0,
+	\end{equation*}
+	qui est non-triviale, c'est à dire que l'un au moins des $(\mu_i)_{1 \leq i \leq I}$ est non-nul.  
+	On pose $\mu_0 := -\sum_{1 \leq i \leq I} \mu_i$, de sorte que 
+	\begin{align*}
+		\sum_{0 \leq i \leq I} \mu_i x_i &= 0, &
+		\sum_{0 \leq i \leq I} \mu_i &= 0,
+	\end{align*}
+	et que l'un au moins des $\mu_i$ est strictement positif. Soit ensuite $\rho := \max\{\lambda_i / \mu_i \mid 1 \leq i \leq I,\, \mu_i > 0\}$. 
+	Alors 
+	\begin{equation*}
+		x = \sum_{0 \leq i \leq I} (\lambda_i - \rho \mu_i) x_i,
+	\end{equation*}
+	et cette combinaison convexe comporte au moins un coefficient nul. Ceci contredit la minimalité de $I$, d'où la caractérisation annoncée de l'enveloppe convexe. 
+
+	Finalement, $\Hull(K)$ est compact en tant qu'image de l'application continue suivante, dont le domaine est un compact, voir la \cref{prop:compactImage} : \belowdisplayskip=-12pt
+	\begin{align*}
+		\Delta^d \times K^d &\to \bR^d, &
+		( (\lambda_i)_{0 \leq i \leq d} ,(x_i)_{0\leq i \leq d}) \mapsto \sum_{0 \leq i \leq d} \lambda_i x_i.
+	\end{align*}
+\end{proof}
+
+
+%\todoi{Frechet Kolmogorov ? $\to$ Dans $L^p$ ? A voir. Utilise la convolution. Sinon le chapitre sur les $L^p$ sera vide.}
+
+\subsection{Point fixe de Brouwer}
+\label{subsec:Brouwer}
+
+Le \nref{th:Brouwer} est un résultat fondamental de topologie des espaces euclidiens. Ses applications couvrent de nombreux champs des mathématiques, soit par une application directe (e.g.\ existence d'un équilibre de Nash pour un jeu fini probabilisé), soit via des extensions en dimension infinie comme discuté dans la \nref{subsec:Schauder}.
+
+Dans toute cette sous-section, on note $B := B'(0,1)$ la boule unité fermée de $\bR^d$.
+
+\begin{retenir}
+L'énoncé du thèorème de Brouwer, la formule de changement de variable dans une intégrale. %Le principe de preuve par régularisation.
+(\Cref{th:Brouwer,th:chgVarIntegr}.) %,corol:noretract}.)
+\end{retenir}
+
+
+
+%Le but de cette sous-section est d'établir le résultat suivant. 
+\begin{theorem}[Point fixe de Brouwer]
+\label{th:Brouwer}
+	Toute fonction $f \in C^0(B, B)$ admet un point fixe. 
+\end{theorem}
+
+Le théorème de Brouwer s'étend de manière triviale à tout ensemble homéomorphe à une boule, ainsi qu'à tout ensemble $K$ sur lequel une boule $B$ se \emph{rétracte}.
+
+\begin{corollary}	
+	Soit $K \subset \bR^d$ un ensemble sur lequel la boule $B$ se rétracte, i.e.\ $K \subset B$ et il existe $P \in C^0(B,K)$ telle que $P_{|K}=\Id$. Alors toute application continue de $f\in C^0(K,K)$ admet un point fixe. 
+	En particulier, toute application continue d'un convexe compact non-vide de $\bR^d$ dans lui même admet un point fixe.
+\end{corollary}
+
+\begin{proof}
+	\emph{Premier point : }d'après le \nref{th:Brouwer}, la composée $f\circ P$ admet un point fixe $x \in B$. Ainsi $x \in \Image(f) = K$, puis $P(x) = P_{|K}(x) = x$, et donc $x=f(x)$ comme annoncé.
+	\emph{Second point : }quitte à faire une homothétie on peut supposer que $K \subset B$, puis considérer la rétractation $P_{K|B}$ définie par la restriction à $B$ de la projection orthogonale sur $K$.
+\end{proof}
+
+On suit ici la preuve de Peter-Lax, également présentée dans \cite{alazard2017analyse}, qui s'appuie sur une généralisation de la formule de changement de variable dans une intégrale. 
+Rappelons d'abord la forme classique de cette formule, sans démonstration. La matrice (\ref{eq:chgmt_var}, droite) de taille $d \times d$ est appelée matrice jacobienne de $\vp$, et son déterminant est nommé jacobien. 
+\begin{theorem}[Changement de variable dans une intégrale]
+\label{th:chgVarIntegr}
+Soient $U,V \subset \bR^d$ ouverts, $\vp \in C^1(U, V)$ difféomorphisme, et $f : V \to \bR$ intégrable. 
+Alors %, en notant $J$ la matrice jacobienne de $\vp$,
+\begin{align}
+\label{eq:chgmt_var}	
+	\int_V f(x) \diff x &= \int_U f(\vp(x)) |\det J(x)| \diff x,&
+	\text{où }
+	J(x) := \Big[ \frac{\partial \vp_i}{\partial x_j}\Big]_{1 \leq i,j \leq d}.
+\end{align}	
+\end{theorem}
+
+\begin{lemma}[Peter-Lax]
+\label{lem:chgVarLax}
+	Soit $\vp \in C^2(\bR^d,\bR^d)$ telle que $\vp(x) = x$ pour tout $x \notin B$, et soit $f \in \cD(\bR^d)$. Alors 
+	\begin{equation}		
+	\label{eq:chgmt_var_nondiff}
+		\int_{\bR^d} f(x) \diff x = \int_{\bR^d} f(\vp(x)) \det J(x) \diff x.
+	\end{equation}
+\end{lemma}
+
+\begin{proof}[Preuve en dimension $d=2$] On renvoie à \cite{alazard2017analyse} pour le cas général. Soit $c\geq 1$ tel que $\supp(f)\subset Q := [-c,c]^d$.
+On note $g(x) := \int_{-c}^{x_1} f(s,x_2) \diff s$, de sorte que $\partial_1 g = f$. 
+Par dérivation composée, on obtient l'identité
+\begin{equation*}
+	f \circ \vp\, J = f \circ \vp\, (\partial_1 \vp_1 \,\partial_2 \vp_2 - \partial_1 \vp_2 \, \partial_2 \vp_1)
+	= \partial_1 (g \circ \vp) \, \partial_2 \vp_2  -\partial_2 (g \circ \vp) \, \partial_1 \vp_2 .
+\end{equation*}
+Par la formule usuelle de dérivation d'un produit
+%Par intégration par parties 
+\begin{equation*}
+	\int_Q f(\vp(x)) \det J(x)\diff x = \int_Q \Big[ \partial_1 (g\circ \vp \, \partial_2 \vp_2) - \partial_2(g \circ \vp \, \partial_1 \vp_2)\Big] - \int_Q g \circ \vp \, (\partial_1 \partial_2 \vp_2 - \partial_2\partial_1 \vp_2).
+\end{equation*}
+Le membre de droite est somme de deux intégrales. La première ne dépend des valeurs de $g$, $\vp$ et $\partial \vp$ que sur $\partial Q$ (par intégration de la primitive), tandis que la seconde s'annule par le théorème de Schwartz d'interversion des dérivées partielles. Le terme (\ref{eq:chgmt_var_nondiff}, droite) est donc identique pour $\tilde \vp := \Id$, car cette application coincide avec $\vp$ sur $\partial Q$, ce qui conclut.
+\end{proof}
+
+\begin{remark}
+\label{rem:chgVarDiffeo}
+Noter que l' on ne suppose pas que $\vp$ est un difféomorphisme dans \eqref{eq:chgmt_var_nondiff}. Par ailleurs le jacobien intervient dans \eqref{eq:chgmt_var_nondiff}, et sa valeur absolue\footnote{L'hypothèse que $\vp$ est un difféomorphisme dans le \cref{th:chgVarIntegr} impose toutefois que le jacobien est de signe constant sur les composantes connexes de $U$} dans \eqref{eq:chgmt_var}.
+	Lax a montré que le \cref{th:chgVarIntegr} se déduit du \cref{lem:chgVarLax}.
+\end{remark}
+
+
+\begin{lemma}
+\label{lem:noretractSmooth}
+	Soit $\vp \in C^2(\bR^d, \bR^d)$ telle que $\vp(x) = x$ pour tout $x \notin B$. Alors $B \subset \vp(B)$.
+\end{lemma}
+
+\begin{proof}
+	Par l'absurde, soit $y_0 \in B \sm \vp(B)$. Comme $\partial B$ est fixé par $\vp$, par continuité, il existe $y_0 \in \mathring B \sm \vp(B)$. Comme cet ensemble est ouvert, il existe $\ve>0$ tel que $B(y_0, \ve) \subset \mathring B \sm \vp(B)$. 
+	Choisissons $f\in C^\infty(\bR^d)$ telle que $\supp(f) \subset B(y_0,\ve)$ et $\int_{\bR^d} f = 1$.
+	Le \cref{lem:chgVarLax} donne alors la contradiction suivante, ce qui conclut : 
+	\begin{equation*}
+		1 = \int_{\bR^d} f(x) \diff x = \int_{\bR^d} f(\vp(x)) \det J(x) \diff x = 0.
+		\qedhere
+	\end{equation*} 
+\end{proof}
+
+\begin{corollary}[Non rétractation de la boule sur la sphère]
+\label{corol:noretract}
+	Soit $\vp\in C^0(B,B)$ telle que $\vp(x) = x$ pour tout $x\in \partial B$. 
+	Alors $\vp(B) = B$. 
+\end{corollary}
+
+\begin{proof}
+L'énoncé est très similaire au \cref{lem:noretractSmooth}, à l'exception des hypothèses de régularité qui sont affaiblies. Le résultat se déduit du précédent, par un argument de régularisation et de compacité. 
+	Étendons $\vp$ à $\bR^d$ en posant $\vp(x) = x$ pour tout $x \notin B$. 
+	Puis, posons pour tout $\ve>0$
+	\begin{align*}
+		\vp_\ve &:= \eta_\ve \star \vp,&
+		\text{ où }
+		\eta_\ve(x) &:= \tfrac{1}{\ve^d} \eta(\tfrac{x}{\ve}).
+	\end{align*}
+	On a noté $\star$ l'opération de convolution, qui sera discutée plus en détail \cref{sec:Sobolev}. Le noyau de convolution $\eta$ est choisi $C^\infty$, satisfaisant $\supp(\eta) \subset B$ et $\int_B \eta = 1$, voir la \nref{prop:cinfBosse} pour une construction possible. 
+	Par construction, on a $\vp_\ve(x) = x$ pour tout $x \notin B'(0,1+\ve)$, $\vp_\ve \in C^\infty(\bR^d)$, et $\vp_\ve$ converge uniformémént vers $\vp$ lorsque $\ve \to 0$. 
+	Par le \cref{lem:noretractSmooth}, on obtient $\vp_\ve(B'(0,1+\ve)) \supset B'(0,1+\ve)$. 
+	
+	Concluons, par passage à la limite : soit $x \in B$ arbitraire, et pour tout $\ve>0$ soit $y_\ve \in B'(0,1+\ve)$ tel que $\vp_\ve(y_\ve) = x$. Alors il existe par compacité un point $y_* \in B$ et une suite $\ve(n) \to 0$ telle que $y_{\ve(n)} \to y_* \in B$ lorsque $n \to \infty$. Finalement $\vp(y_*) = x$ par convergence uniforme, ce établit $\vp(B) \supset B$, l'inclusion réciproque découlant des hypothèses. 
+\end{proof}
+
+\begin{proof}[Preuve du théorème de Brouwer]
+	Par l'absurde, considérons $f:B\to B$ sans point fixe, 
+	et pour tout $x \in B$ définissions $\vp(x) \in \partial B$ par 	
+%	et définissons $\vp : B \to B$ par 
+	\begin{align*}
+		\{\vp(x)\} &:= \partial B \cap D_x, &
+		\text{où } D_x &:= \{x + \lambda(x-f(x)) \mid \lambda\geq 0\},
+	\end{align*}
+	Le polynôme $P_x(\lambda) := \|x+\lambda (x-f(x))\|^2-1$ a le coefficient dominant $\|x-f(x)\|^2 > 0$, et satisfait $P_x(0) = \|x\|^2-1 \leq 0$ et $P_x(-1) = \|f(x)\|^2-1 \leq 0$, donc a une unique racine positive $\lambda(x)$, dépendant continument de $x \in B$, d'où la continuité de $\vp(x) := x+\lambda(x) (x-f(x))$. De plus $\vp(x) = x$ pour tout $x \in \partial B$ par construction.
+	L'application $\vp$ contredit ainsi le résultat de non-rétractation \cref{corol:noretract}, ce qui conclut.
+%\todoi{Rédiger un peu plus : le polynôme $P_x(\lambda) := \|x+\lambda (x-f(x))\|^2-1$ a un coefficient dominant $\|x-f(x)\|^2 > 0$, et satisfait $P_x(0)\leq 0$ et $P_x(-1) \leq 0$, donc a une unique racine positive, dépendant continument de $x$.}
+\end{proof}
+
+\subsection{Point fixe de Schauder} 
+\label{subsec:Schauder}
+
+Le théorème de point fixe de Schauder étend le théorème de Brouwer en dimension infinie, et permet de montrer l'existence (mais pas l'unicité !) de solutions de certaines EDO et EDP. 
+
+\begin{retenir}
+Le théorème de point fixe de Schauder, et son application au théorème d'existence d'EDO de Cauchy-Arzélà-Peano, preuve comprise.
+(\Cref{th:Schauder,th:CauchyPeano}.)	
+\end{retenir}
+
+\begin{theorem}[Point fixe de Schauder]
+\label{th:Schauder}
+Soit $K$ un convexe fermé non-vide d'un Banach, et soit $f\in C^0(K,K)$. Si $\overline {f(K)}$ est compact alors $f$ admet un point fixe. 
+\end{theorem}
+
+\begin{proof}
+Quitte à remplacer $K$ par le sous-ensemble $\overline {\Hull(f(K))}$, on peut supposer que $K$ est convexe et compact, voir la \cref{prop:hullCompact}.
+Etant donné $\ve>0$, considérons une couverture de la forme $K \subset \cup_{i=1}^I B(x_i, \ve)$, où $I$ est un entier et $x_1,\cdots,x_I \in K$, et posons 
+\begin{align*}
+	g_\ve : K &\to K_\ve := \Hull\{x_i \mid 1 \leq i \leq I\}, &
+	x &\mapsto \frac{\sum_{1 \leq i \leq I} \vp_i(x) x_i}{\sum_{1 \leq i \leq I} \vp_i(x)}, 
+	%&\text{ où }\vp_i(x) &:= \max \{0, \ve-\|x - x_i\|\}.
+\end{align*}
+où $\vp_i(x) := \max \{0, \ve-\|x - x_i\|\}$.
+Par construction, $g$ est bien définie et continue sur $K$ car le dénominateur y est positif, et de plus $\|g(x)-x\| \leq \ve$ pour tout $x \in K$. 
+D'après le théorème de Brouwer, appliqué à $K_\ve \subset K$ qui est compact convexe et de dimension finie $I$, la fonction continue $g_\ve \circ f : K_\ve \to K_\ve$ admet un point fixe noté $x_\ve$. On a donc $\|f(x_\ve)-x_\ve\| \leq \ve$. Par compacité de $K$, on peut trouver une une suite convergente de $x_{\ve_n} \to x_*$ lorsque $n \to \infty$, et ainsi obtenir un point fixe $x_*$ de $f$. 
+\end{proof}
+
+\begin{remark}
+\label{rem:SchauderEvt}
+%La preuve ci-dessus s'adapte sans difficulté au cas où la topologie induite sur $K$ est métrisable (et l'addition et la multiplication scalaire continues), ce qui permet de traiter le cas des evtlcs ayant une famille dénombrable, ou de la topologie *faible sur le dual d'un evn séparable.
+Le théorème de Schauder peut se démontrer sous l'hypothèse plus faible que $E$ est un espace vectoriel topologique; en particulier, il s'applique aux evtlcs, donc aux topologies faibles. 
+Attention, il faut vérifier que $f$ est continue par rapport à la topologie utilisée. 
+\end{remark}
+
+
+Le thèorème de Schauder permet de prouver l'existence de solutions d'EDOs pour des lois d'évolution seulement continues, à comparer avec le \nref{th:Cauchy_Lipschitz} qui établit l'unicité et la stabilité, au prix d'hypothèses de régularité plus fortes.
+\begin{theorem}[Cauchy-Arzelà-Peano]
+\label{th:CauchyPeano}
+	Soient $\Omega \subset \bR^d$ un ouvert, et $f\in C^0(\bR_+ \times \Omega, \bR^d)$. Alors pour tout $x_0 \in \Omega$ il existe $t_0 > 0$ et $u \in C^1([0,t_0],\Omega)$ solution de 
+	\begin{align}
+	\label{eq:PeanoEDO}
+		u(0) &= x_0,&
+		\forall t \in [0,t_0],\, u'(t) &= f(t,u(t)).
+	\end{align}
+\end{theorem}
+
+\begin{proof}
+	Soit $r_0>0$ tel que $B'(x_0,r_0) \subset \Omega$, et soit $t_1>0$. Soit $C_\infty$ une borne supérieure de $\|f\|$ sur le compact $[0,t_1] \times B'(x_0,r_0)$. Soit $0<t_0\leq t_1$ tel que $t_0 C_\infty \leq r_0$, et soit $\omega$ un module d'uniforme continuité de $f$ sur $[0,t_0] \times B'(x_0,r_0)$.
+	
+	Posons $K := C^0([0,t_0],B'(x_0,r_0))$,  qui est un convexe fermé de $(C^0([0,t_0],\bR^d), \|\cdot\|_\infty)$, et 
+	\begin{equation*}
+	F u(t) := x_0 + \int_0^t f(s,u(s)) \diff s	
+	\end{equation*}
+	pour tout $u \in K$, $0 \leq t \leq t_0$. 
+	Alors $F u$ est $C_\infty$-Lipschitz comme primitive d'une fonction bornée par $C_\infty$. Par ailleurs $\|Fu(t)-x_0\| \leq C_\infty t_0 \leq r_0$, de sorte que $F$ stabilise $K$. Notons aussi que l'uniforme continuité de $F$ se déduit de celle de $f$: pour  tout $t \in [0,t_0]$
+	\begin{equation*}
+		\|Fu(t) - Fv(t)\| \leq \int_0^t \|f(s,u(s)) - f(s,v(s))\|\diff s \leq t_0 \omega( \|u-v\|_\infty),
+	\end{equation*}
+	et que l'image de $F$ est contenue dans l'ensemble $\{u \in K\mid u \text{ est $C_\infty$-Lipschitz}\}$ qui est 
+	est compact par le \nref{th:AscoliLip}. Ainsi le \nref{th:Schauder} s'applique à $F$, et tout point fixe est solution de \eqref{eq:PeanoEDO}, ce qui conclut. 
+\end{proof}
+
+\begin{remark}[Preuve alternative] % fondée sur le théorème d'Ascoli
+\label{rem:preuveCauchyPeano}
+	Il existe une preuve plus élémentaire du thèorème de Cauchy-Arzelà-Peano, fondée sur une régularisation par convolution de $f$ et sur le théorème d'Ascoli.
+\end{remark}
+
+
+\subsection{Théorème de Stone-Weierstrass}
+\label{subsec:StoneWeierstrass}
+
+Le théorème de Stone-Weierstrass assure la densité de certaines algèbres de fonctions, et en particulier des fonctions polynomiales réelles sur un domaine compact. En analyse fonctionnelle, il est courant d'établir des résultats sur certains ensembles de fonctions régulières, puis de les étendre par des arguments de continuité et de densité à des espaces plus grands, voir la \cref{sec:Sobolev}. Stone-Weierstrass se présente alors comme une alternative aux arguments fondés sur des convolutions, déjà entrevus dans le \cref{corol:noretract}. 
+
+\begin{retenir}
+Le théorème de Stone-Weierstrass, sa variante complexe, et leur application aux fonctions polynômiales.
+(\Cref{th:StoneWeierstrass,corol:StoneComplexe,rem:polDens}.)
+\end{retenir}
+
+
+\begin{theorem}[Stone-Weierstrass]
+\label{th:StoneWeierstrass}
+	Soit $X$ un espace topologique compact, et soit $A \subset C^0(X,\bR)$ une algèbre\footnote{I.e.\ $A$ est stable par addition, multiplication interne, et externe (par les scalaires).} (pas forcément unitaire a priori) qui : 
+	\begin{enumerate}[(i)]
+		\item sépare les points : $\forall x,y \in X$, $\exists f \in A$, $f(x) \neq f(y)$.
+		\item ne s'annule pas simultanément en un point : $\forall x \in X$, $\exists f \in A$, $f(x)\neq 0$. 
+	\end{enumerate} 
+	Alors $\overline A = C^0(X,\bR)$, pour la topologie de la convergence uniforme donnée par $\|\cdot\|_\infty$. 
+\end{theorem}
+
+Les deux premiers lemmes construisent des éléments bien choisis de l'algèbre fermée $\overline A$ sous la forme de séries. 
+
+\begin{lemma} 
+\label{lem:StoneUnite}
+Sous les hypothèses du \cref{th:StoneWeierstrass}, $\overline A$ et une algèbre unitaire complète. 
+\end{lemma}
+
+\begin{proof}
+	Les propriétés d'algèbre de $\overline A$ sont claires, et la complétude se déduit de sa fermeture dans le Banach $C^0(X,\bR)$. Il reste à montrer que $\overline A$ contient la fonction constante égale à $1$, notée $\bbone$, qui est son unité. Par l'axiome (ii), et la stabilité par la multiplication par un scalaire, pour tout $x \in X$ il existe $f \in A$ telle que $f(x)=1$. 
+	Par compacité, on peut trouver $f_1,\cdots,f_I$ telle que $f := \sum_{1 \leq i \leq I} f_i^2 \in A$ est strictement positive sur $X$. Quitte à multiplier $f$ par un scalaire, on peut supposer que $0< f\leq 1$ sur $X$; par compacité, $f$ est bornée inférieurement par une constante strictement positive.
+	On écrit alors 
+	\begin{equation}
+		\bbone = f \times \frac 1 {1-(1-f)} = \sum_{n \in \bN} f (1-f)^n.
+	\end{equation}
+	Le terme général $f (1-f)^n$ est un polynôme en $f$ sans terme constant, donc un élément de l'algèbre $A$. De plus la série converge uniformément, donc sa somme appartient à $\overline A$, ce qui conclut.
+\end{proof}
+
+\begin{lemma}
+\label{lem:StoneSqrt}
+	Sous les hypothèses du \cref{th:StoneWeierstrass}, soit $f \in \overline A$. Si $f\geq 0$ sur $X$, alors $\sqrt f \in \overline A$. On a toujours $|f|\in \overline A$. Si $f(x) \neq 0$ pour tout $x\in X$, alors $1/f \in \overline A$.
+\end{lemma}
+
+\begin{proof}
+	\emph{Preuve du premier point.}
+	Quitte à multiplier $f$ par une constante, on peut supposer que $0\leq f \leq 1$ sur $X$. 
+	Pour tout $0 < \ve < 1$ on a 
+	\begin{equation}
+		\sqrt{f+\ve} = \sqrt{1+(f+\ve-1)} = \sum_{n \in \bN} \binom{1/2} n (f+\ve-1)^n,
+	\end{equation}
+	où $\binom \alpha n := \alpha (\alpha-1) \cdots (\alpha-n+1) / n !$. 
+	Comme $-1 < f+\ve < 1$ sur $X$, la série converge uniformément. Noter que le premier terme de cette série est une constante, d'où l'utilité du \cref{lem:StoneUnite}. Ainsi $\sqrt{f+\ve} \in \overline A$ pour tout $\ve>0$, et par fermeture $\sqrt f \in \overline A$.  
+	
+	\emph{Preuve du deuxième point.} Observer que $|f| = \sqrt{f^2} \in \overline A$.  
+	
+	\emph{Preuve du troisième point.}
+	Supposons d'abord $f>0$. Quitte à multiplier $f$ par une constante, on peut supposer que $0<f\leq 1$, et alors la série de $1/f = 1/(1-(1-f))$ converge normalement. 
+	Dans le cas général où on a seulement $f(x) \neq 0$ en tout $x\in X$, on note que $|f| \in \overline A$ est strictement positive sur $X$, puis que $1/f = f\times 1/|f| \times 1/|f| \in \overline A$.
+\end{proof}
+
+\begin{corollary}
+\label{corol:StoneMinMax}
+	Sous les hypothèses du \cref{th:StoneWeierstrass}, soient $f,g \in \overline A$. Alors $\min\{f,g\}$, $\max\{f,g\} \in \overline A$.
+\end{corollary}
+
+\begin{proof}
+	Les fonctions $\max \{f,g\} = (f+g+|f-g|)/2$ et $\min \{f,g\} = (f+g-|f-g|)/2$ appartiennent à $\overline A$, par linéarité et par le \cref{lem:StoneSqrt}. 
+\end{proof}
+
+\begin{lemma}
+\label{lem:StoneDirac}
+	Sous les hypothèses du \cref{th:StoneWeierstrass}, 
+	pour tout voisinage ouvert $V$ de tout $x \in X$, et tout $\ve>0$, il exite $f \in A$ telle que $0 \leq f \leq 1$, $f(x)>1-\ve$ et $f< \ve$ sur $X \sm V$. 	
+\end{lemma}
+
+\begin{proof}
+	Etant donné $y \in X$, on dispose par hypothèse (i) de $f_y\in \overline A$ telle que $f_y(x) \neq f_y(y)$. Quitte à considérer $\alpha b + \beta\bbone$, où $\alpha,\beta \in \bR$, on peut supposer que $f_y(x)=1$ et $f_y(y) = 0$, et poser $V_y := \{f_y < \ve\}$. 
+	%Soit $V_y$ un voisinage ouvert de $y$ tel que $f_y < \ve$ hors de $V$, et s
+	Soit $X = V \cup (\cup_{i=1}^I V_{y_i})$ une couverture finie de $X$, par compacité, et soit $f_* := \min_{1 \leq i \leq I} f_{y_i}$. Alors $f_*(x)=1$ et $f_* < \ve$ sur $\cup_{i=1}^I V_{y_i}$, donc $f_* < \ve$ dans le compact $X \sm V$. 
+	On conclut en choisissant $f \in A$ assez proche uniformément de $\max\{\ve/2, \min\{1-\ve/2, f_*\}\} \in \overline A$. 
+\end{proof}
+
+\begin{proof}[Preuve du \cref{th:StoneWeierstrass}]
+Soit $f \in C^0(X, \bR)$, et soit $\ve>0$; on souhaite montrer qu'il existe $f_* \in A$ telle que $\|f-f_*\| \leq \ve$.  Quitte à considérer $\alpha f+ \beta \bbone$, où $\alpha,\beta \in \bR$ et comme $\bbone \in \overline A$, on peut supposer que $f \in C^0(X,[0,1])$.
+Pour tout $x \in X$, soit $V_x := \{y \in X \mid |f(y)-f(x)|< \ve\}$, qui est un voisinage ouvert de $X$. Par compacité, soit $\bX\subset X$ fini tel que $X = \cup_{x\in \bX} V_x$.
+
+%soient $(x_i)_{i=1}^I$ tels que $X = \cup_{1 \leq i \leq I} V_{x_i}$, on notera $V_i := V_{x_i}$. 
+
+Par le \cref{lem:StoneDirac}, pour tout $y \in X$ soit $x_y \in \bX$ tel que $y \in V_{x_y}$ et soit $\vp_y \in A$ telle que $0 \leq \vp_y \leq 1$, $\vp_y(y)>1-\ve$, et $\vp_y < \ve$ hors de $V_{x_y}$. Notons $W_y := \{\vp_y>1-\ve\} \subset V_{x_y}$, et par compacité considérons une couverture finie $X = \cup_{y \in \bY} W_y$ où $\bY \subset X$ est fini.
+Alors $f_*(x) := \max_{y \in \bY} f(y) \vp_{y}(x)$ convient. 
+En effet on a $f(y) \vp_{y} \leq f+2\ve$ sur $V_{x_y}$, et $f(y) \vp_y\leq \ve$ hors de $V_{x_y}$, donc $f_* \leq f+2 \ve$ sur $X$. 
+Par ailleurs étant donné $x\in X$, soit $y \in \bY$ tel que $x \in W_y$, et soit $x':= x_y \in \bX$ de sorte que $W_y \subset V_{x'}$. Alors $|f(x)-f(y)| \leq |f(x)-f(x')| + |f(x')-f(y)| \leq 2 \ve$ et $\vp_y(x) \geq 1-\ve$, donc $f(y) \vp_{y}(x) \geq (f(x)-2 \ve)_+(1-\ve) \geq f(x)-3 \ve$, ce qui conclut. 
+\end{proof}
+
+La généralisation du \nref{th:StoneWeierstrass} s'étend aux fonctions complexes. % requiert une hypothèse supplémentaire de stabilité par conjugaison, que nous illustrons par un contre exemple si omise.
+
+
+\begin{corollary}[Stone-Weierstrass complexe]
+\label{corol:StoneComplexe}
+	Soit $X$ un espace topologique compact, et soit $A \subset C^0(X,\bC)$ une algèbre qui
+	\begin{enumerate}[(i)]
+		\item sépare les points : $\forall x,y \in X$, $\exists f \in A$, $f(x) \neq f(y)$.
+		\item ne s'annule pas simultanément en un point : $\forall x \in X$, $\exists f \in A$, $f(x)\neq 0$.
+		\item est stable par conjugaison complexe : $\forall f \in A$, $\overline f \in A$.
+	\end{enumerate}
+	Alors $\overline A = C^0(X,\bC)$, pour la topologie de la convergence uniforme donnée par $\|\cdot\|_\infty$.
+\end{corollary}
+
+\begin{proof}
+	Par stabilité par conjugaison, si $f \in A$ alors $\Re(f) := (f+\overline f)/2\in A$ et $\Im(f) = (f-\overline f)/(2i)\in A$. On en déduit que la $\bR$-algèbre $A \cap C^0(X,\bR)$ sépare les points et ne s'annule pas simultanément en un point, donc est dense dans $C^0(X,\bR)$. On conclut en approchant indépendamment la partie réelle et imaginaire d'un élément de $C^0(X,\bC)$ donné. 
+\end{proof}
+
+\begin{remark}[Application aux fonctions polynomiales]
+\label{rem:polDens}
+On déduit du \cref{th:StoneWeierstrass} la densité de $\bR[X_1,\cdots,X_d]$ dans $C^0([0,1]^d,\bR)$, pour la convergence uniforme, en toute dimension $d$. 
+De même, $\bC[X_1,\overline X_1,\cdots,X_d,\overline X_d]$ est dense dans $C^0(B^d,\bC)$ où $B := B'_\bC(0,1)$ désigne la boule unité fermée de $\bC$.
+\end{remark}
+
+Attention : l'hypothèse (iii) de stabilité par conjugaison est essentielle dans le \nref{corol:StoneComplexe}, comme l'illustre le résultat élémentaire suivant d'analyse complexe. Celui-ci implique en effet que $\bC[X]$ \emph{n'est pas dense} dans $C^0(B,\bC)$, où $B:=B'_\bC(0,1)$, compte tenu de \eqref{eq:f_int_dB}. 
+%Rappelons que le rayon de convergence d'une suite $(a_n)_{n \in \bN}$ est défini par $R:= \sup\{r \geq 0 \mid a_n r^n \text{ est bornée}\}$.
+
+\begin{proposition}[Contre exemple à Stone-Weierstrass sans la stabilité par conjugaison \facultatif]
+\label{prop:StoneCtrEx}
+Soit $B := B'_\bC(0,1)$ la boule unité fermée du plan complexe, soit $\mathring B$ la boule ouverte, et soit $f \in C^0(B, \bC)$. Les propriétés suivantes sont équivalentes:
+\begin{enumerate}[(i)]
+	\item $f \in \overline{\bC[X]}$
+	\item (Développabilité en série entière.) Il existe une suite $(a_n)_{n \geq 0} \in \bC^\bN$ bornée et telle que pour tout $z \in \mathring B$ on a %, de rayon de convergence au moins $1$, 
+	\begin{equation*}
+		f(z) = \sum_{n \geq 0} a_n z^n.
+	\end{equation*}
+	\item (Expression intégrale le long de $\partial B$.) Pour tout $z \in \mathring B$ on a 
+	\begin{equation}
+	\label{eq:f_int_dB}
+		f(z) = \frac{1}{2i\pi}\int_0^{2 \pi} \frac{f(e^{it})}{e^{it}-z} \, i e^{it} \diff t.		
+	\end{equation}
+\end{enumerate}
+
+\begin{proof}
+	Preuve de (i) $\Rightarrow$ (iii). Supposons que $f(z) = \sum_{k=0}^K a_k z^k$ est un polynôme, de degré noté $K$. 
+	Alors pour tout $z \in \mathring B$ on a 
+	\begin{align}
+	\nonumber
+		\int_0^{2 \pi} \frac{f(e^{it})}{e^{it}-z} e^{it} \diff t 
+		&= \int_0^{2 \pi} \frac{f(e^{it})}{1-z e^{-it}} \diff t \\
+	\label{eq:f_dB_serie}
+		&= \sum_{n \geq 0} \int_0^{2 \pi} f(e^{it}) (z e^{-it})^n \diff t \\
+	\nonumber
+		&= \sum_{0 \leq k \leq K} \sum_{n \geq 0}  z^n \int_0^{2 \pi} a_k e^{ikt}  e^{-int} \diff t \\
+	\nonumber
+		&= 2 \pi \sum_{0 \leq k \leq K} a_k z^k. 
+	\end{align}
+	Noter que la série dans \eqref{eq:f_dB_serie} est normalement convergente, ce qui justifie l'interversion avec l'intégrale.
+	Ainsi \eqref{eq:f_int_dB} est satisfaite pour tout $|z|<1$ et pour toute $f \in \bC[X]$, donc aussi pour toute $f \in \overline \bC[X]$ car cette propriété est fermée sous convergence uniforme.
+	
+	Preuve de (iii) $\Rightarrow$ (ii). Poser $a_n := \int_0^{2 \pi} f(e^{it}) e^{-int} \diff t / (2 \pi)$, puis utiliser l'expression \eqref{eq:f_dB_serie}.
+	
+	Preuve de (ii) $\Rightarrow$ (i). On note que la série dans (ii) est uniformément convergente sur $B'(0,1-\ve)$ pour tout $\ve>0$. On en déduit que $f_\ve \in C^0(B)$, définie par $f_\ve(z) := f( (1-\ve) z)$, est limite uniforme de polynômes. 
+	Finalement, on note que $f$ est uniformément continue sur $B$ par le \cref{th:Heine}, donc $f_\ve \to f$ uniformément lorsque $\ve\to 0$, et ainsi $f \in  \overline{\bC[X]}$ par fermeture, ce qui conclut.
+\end{proof}
+	
+\end{proposition}
+
+\subsection{Opérateurs linéaires compacts}
+\label{subsec:linCompact}
+
+Les opérateurs dits compacts, c.a.d. dont l'image de la boule unité est précompacte, jouent un rôle important en analyse fonctionnelle et en particulier dans la théorie des espaces de Sobolev,  via le \nref{th:Rellich} d'injection compacte. 
+Nous présentons ici quelques propriétés élémentaires, ainsi que le théorème de Fredholm qui est un point de départ en théorie spectrale. 
+%, ainsi que leur lien avec les opérateurs de rang fini. 
+
+
+\begin{retenir}
+	La complète continuité des opérateurs compacts, 
+	le théorème de Fredholm.
+	(\Cref{prop:opCompactComplCont,th:Fredholm})
+%	, et la continuité des opérateurs compacts de la topologie faible dans la forte (sur la boule unité et en supposant la \emph{propriété d'approximation}). 
+%	(\Cref{th:Fredholm,prop:limRangFini})
+\end{retenir}
+
+\begin{definition} %[Opérateur linéaire compact]
+\label{def:linCompact}
+	Un opérateur linéaire continu $T \in L(E,F)$ entre evn $E,F$ est dit compact si $T(B_E(0,1))$ est relativement compact (i.e.\ l'adhérence $\overline{T(B_E(0,1))}$ est compacte).
+	%(i.e.\ $\overline{T(B_E(0,1))}$ est compact). 
+	On note $L_c(E,F)$ leur ensemble.
+\end{definition}
+
+Présentons deux propriétés élémentaires mais fondamentales des opérateurs spectraux.
+%Les opérateurs compacts forment un ensemble fermé par composition et limite. 
+
+\begin{proposition}[Fermeture par composition et limite des opérateurs compacts]
+\label{prop:opCompactComposition}
+	La composition d'un opérateur compact avec un opérateur continu, à droite ou à gauche, est un opérateur compact.
+\end{proposition}
+
+\begin{proof}
+	On désigne par $E,F,G$ des evn, et on note $B := B_E(0,1)$.
+	Si $T \in L_c(E,F)$ et $A \in L(F,G)$, alors $A (\overline  {T B})$ est compact en tant qu'image continue d'un compact, et contient $A T B$ qui est donc relativement comme annoncé.
+	Si $A \in L(E,F)$ et $T \in L_c(F,G)$,  alors $T(A(B)) \subset T(\vertiii{A} B) = \vertiii{A} T(B)$ qui est homothétique à $T(B)$ donc relativement compact.
+\end{proof}
+
+\begin{proposition}
+\label{prop:opCompactLimite}
+	Si $F$ est un Banach, alors l'ensemble $L_c(E,F)$ est fermé dans $L(E,F)$. 
+	Si $F$ est un Hilbert, alors $L_c(E,F) = \overline{ \{u \in L(E,F)\mid u \text{ est de rang fini}\}}$.
+\end{proposition}
+
+\begin{proof}
+Notons $B := B_E(0,1)$, et soit $T \in \overline {L_c(E,F)}$, où $E,T$ sont des evn. Soit aussi $\ve>0$. % arbitraire.
+
+\emph{Premier point}.
+Supposons que  $F$ est un Banach. Soit $T_0 \in L_c(E,F)$ tel que $\|T-T_0\|<\ve$, et soit $K_0 := \overline{T_0(B)}$. Par compacité, il existe une couverture finie $K_0 \subset \cup_{1 \leq i \leq I} B(y_i,\ve)$ avec $y_1,\cdots,y_I \in K_0$. Ainsi $T(B) \subset \cup_{1 \leq i \leq I} B(y_i,2\ve)$, ce qui établit la précompacité de cet ensemble puisque $\ve>0$ est arbitraire, comme annoncé. 
+
+\emph{Second point.}
+Soit $T \in L_c(E,F)$, où $F$ est un Hilbert. Soient $x_1,\cdots,x_I \in F$ tels que $T(B) \subset \cup_{1 \leq i \leq I} B(x_i,\ve)$. Soit $P$ la projection orthogonale sur $\Vect\{x_1,\cdots,x_I\}$. Alors $P \circ T$ est de rang fini, et pour tout $x \in B$ on a $\|T(x)-P(T(x))\| \leq \|T(x)-x_i\| + \|P(x_i - T(x))\| \leq 2 \ve$, où l'indice $1 \leq i \leq I$ est choisi tel que $T(x) \in B(x_i,\ve)$. Le résultat s'ensuit puisque $\ve>0$ est arbitraire.
+\end{proof}	
+
+\begin{proposition}[Complète continuité des opérateurs compacts]
+\label{prop:opCompactComplCont}
+	Soit $T \in L_c(E,F)$ un opé\-rateur linéaire compact entre des evn $E,F$, et soit $x_n \weakto x_*$ une suite à valeurs dans $E$ convergeant faiblement lorsque $n \to \infty$. 
+	Alors $T x_n \to T x_*$ lorsque $n \to \infty$. 
+	Si $E^*$ est séparable, alors la restriction $T : B'_E(0,1) \to F$ est continue de la topologie faible dans la topologie forte. 
+\end{proposition}
+
+\begin{proof}
+	La preuve fait intervenir deux conséquences du théorème de Hahn-Banach: \cref{corol:faibleSepare} (la topologie faible est séparée), et surtout \cref{corol:faibleFortBorne} (une famille faiblement bornée est bornée); 
+	il s'agit d'un analogue pour la topologie faible du \nref{th:BanachSteinhauss} précédemment établi pour la topologie $*$-faible.
+	Comme la suite $x_n$ est faiblement convergente, elle est faiblement bornée, et donc bornée par le \cref{corol:faibleFortBorne}. % (qui découle lui-même du \nref{corol:BanachSteinhaussK}).
+	Soit $R := \sup_{n \in \bN} \|x_n\|$ et $K := \overline {T(B_E(0,1))}$ qui est compact par hypothèse. Considérons une valeur d'adhérence $T x_{\vp(n)} \to y_*$ de la suite image dans $K$. Alors pour tout $\vp \in F^*$, on a $\<\vp, T x_{\vp(n)}\> = \<T^* \vp, x_{\vp(n)}\> \to \<T^* \vp, x_*\> = \<\vp, T x_*\>$ et par ailleurs $\<\vp, T x_{\vp(n)}\> \to \< \vp, y\>$, ainsi $y = x_*$ par le \cref{corol:faibleSepare}.
+	Finalement, $y_*$ est l'unique valeur d'adhérence de la suite $(T x_n)_{n \in \bN}$ à valeurs dans le compact $K$, donc $T x_n \to y_*$ par la \cref{prop:noAdhCv} comme annoncé.	
+	
+	Si $E^*$ est séparable, alors la topologie faible sur $B'_E(0,1)$ est métrisable par une adaptation immédiate de la \cref{prop:bouleMetrisable}, de même que la topologie forte sur l'evn $F$, ce qui permet d'utiliser la caractérisation séquentielle de la continuité \nref{lem:contDistance}.
+\end{proof}
+
+%Si la topologie faible sur $E$ est séparable, et $T \in L_c(E,F)$, alors la restriction $T : B'_E(0,1) \to F$ est continue de la topologie faible dans la topologie forte. 
+
+La suite de cette section est une introduction à l'analyse du spectre des opérateurs compacts.
+
+\begin{definition}
+\label{def:linSpectre}
+Le spectre d'un endomorphisme $T \in L(E)$ d'un Banach $E$ est l'ensemble 	
+\begin{equation*}
+	\sigma(T) := \{\lambda \in \bK \mid \lambda\Id - T \text{ n'a pas d'inverse continu}\},
+\end{equation*}
+dont les éléments sont appelés valeurs spectrales. Une valeur propre est une valeur spectrale $\lambda\in \sigma(T)$ pour laquelle l'espace propre $E_\lambda := \Ker(\lambda \Id-T)$ est non réduit à $\{0\}$.
+\end{definition}
+
+
+%Comme annoncé, nous évoquons d'abord les propriétés spectrales des opérateurs compacts - 
+Si $T\in L_c(E,E)$ est compact, alors $E_1 := \Ker(\Id-T)$ est de dimension finie par le \nref{th:bouleCompRiez}, puisque $B_{E_1}(0,1) \subset T(B_E(0,1))$ est relativement compacte. De même, tout sous-espace propre de $T$ associé à une valeur propre non-nulle est de dimension finie. Le théorème de Fredholm, présenté ci-dessous et précisé dans le \cref{corol:FredholmPrecise}, implique que les seules valeurs spectrales possibles pour un opérateur compact sont $0$ et ses valeurs propres.
+
+\begin{theorem}[Fredholm]
+\label{th:Fredholm}
+	Soit $E$ un Banach, et soit $T \in L_c(E)$ un opérateur compact tel que $\Ker(\Id-T) = \{0\}$. Alors $\Image(\Id-T) = E$, et $\Id-T$ admet un inverse continu.
+\end{theorem}
+
+\begin{proof}
+	Montrons d'abord que $\Image(\Id-T)$ est fermé. 
+	Pour cela, considérons $f \in \overline {\Image(\Id-T)}$, qui est limite d'une suite de terme général noté $f_n = u_n - T u_n \in \Image(\Id-T)$. 
+	Si par l'absurde $\|u_n\| \to \infty$, alors posons $v_n := u_n/\|u_n\|$. Par précompacité de $T(B_E(0,1))$, on dispose d'une sous-suite convergente de la forme $T v_{\vp(n)} \to w$, donc $v_n = T v_n + f_n/\|u_n\| \to w$. On obtient $T w = w$ par continuité de $T$, et $\|w\|=1$ par continuité de la norme, ce qui contredit l'hypothèse $\Ker(\Id-T) = \{0\}$. 
+	Ainsi, $u_n$ reste bornée (quitte à extraire une sous-suite), disons $\|u_n\| \leq R$ pour tout $n \in \bN$, et donc son image par $T$ admet une sous-suite convergente notée $T u_{\vp(n)} \to g$, par précompacité de $T(B_E(0,R))$. 
+	Finalement $u_{\vp(n)} = f_{\vp(n)} + T u_{\vp(n)} \to u_* := f+g$, et donc $f = u_*-T u_*$ par continuité de $T$, ce qui établit la fermeture de $\Image(\Id-T)$.
+
+	Ainsi l'espace $F_1 := \Image(\Id-T)$ est un Banach, et une application du raisonnement précédent à la restriction $T_{|F_1}$ (qui est compact et laisse stable $F_1$) montre que $(\Id-T)F_1$ est fermé dans $F_1$, donc complet puisque $F_1$ est un Banach, donc fermé dans $E$. De même, par une récurrence immédiate, $F_n := (\Id-T)^n E$ est fermé pour tout $n \in \bN$.
+	
+%	Par récurrence, on obtient que $F_n := (\Id-T)^n(E)$ est fermé, donc est un Banach, pour tout $n \in \bN$. 
+	Si par l'absurde $(\Id-T)E \neq E$, considérons $u_0 \in E\sm (\Id-T)E$, et notons que $u_n := (\Id-T)^n(u_0) \in  (\Id-T)^n E\sm (\Id-T)^{n+1}E$ pour tout $n \in \bN$ par injectivité de $\Id-T$, c.f.\ l'hypothèse $\Ker(\Id-T)=\{0\}$. Ainsi, on a une suite strictement décroissante pour l'inclusion de sous-espaces fermés $(F_n)_{n \in \bN}$. 
+	Par le \nref{lem:normaleRiez} il existe $x_n \in F_n \cap B'_E(0,1)$ tel que $d(x_n,F_{n+1}) \geq 1/2$, pour tout $n \in \bN$. Alors $\|T x_p - T x_q\| = \|x_p - [(\Id-T) x_p + Tx_q]\| \geq d(x_p,F_{p+1}) \geq 1/2$, pour tous $p<q \in \bN$. Ceci contredit la compacité de $\overline {T(B_E(0,1))}$, d'où l'on conclut que $(\Id-T)E = E$ comme annoncé.
+	Finalement, $\Id-T$ est une bijection linéaire continue entre Banach, donc admet un inverse continu par le \nref{corol:isomBanach}. 
+\end{proof}
+
+
+Illustrons maintenant la notion d'opérateur compact, et l'alternative de Fredholm avec une équation fonctionnelle, la compacité de l'opérateur découlant du \nref{corol:AscoliEquicont}. 
+Un analogue dans le cadre $L^2$ est présenté au \cref{ex:operCompactL2}, la compacité découlant dans ce cas du \nref{th:FrechetKolmogorov}.
+
+\begin{lemma}[Compacité d'un opérateur intégral]
+\label{lem:convK_compact}
+	Soit $K \in C^0([0,1]^2,\bR)$, et soit 
+	\begin{equation*}
+		\cK(f)(x) := \int_0^1 K(x,y) f(y) \diff y.
+	\end{equation*}
+	pour tous $f \in C^0([0,1],\bR)$ et $x \in [0,1]$. 
+	Alors $\cK$ est un endomorphisme compact de $C^0([0,1],\bR)$. 
+\end{lemma}
+
+\begin{proof}
+	Remarquons d'abord que $\|\cK(f)\|_\infty \leq \|K\|_\infty \|f\|_\infty$. 
+	Soit $\omega$ un module d'uniforme continuité de $K$ sur $[0,1]^2$. Alors pour tous $x,y \in [0,1]$ on a 
+	\begin{equation*}
+		|\cK(f)(x)-\cK(f)(y)| 
+		%= | \int_0^1 (K(x,z)-K(y,z)) f(z) \diff z| 
+		\leq \int_0^1 |K(x,z)-K(y,z)| |f(z)| \diff z \leq \omega(|x-y|) \|f\|_\infty.
+	\end{equation*}
+	Ainsi l'ensemble $\{\cK(f) \mid \|f\|_\infty \leq 1\}$ est uniformément borné et uniformément équicontinu, donc compact par le \nref{corol:AscoliEquicont}.
+\end{proof}
+
+\begin{corollary}
+\label{corol:eqFuncNoyau}
+	Soit $K \in C^0([0,1]^2,\bR_+)$ tel que $K(x,y) = K(y,x)$ pour tous $x,y \in [0,1]$. Alors pour tout $g \in C^0([0,1])$, il existe $f \in C^0([0,1])$ tel que 
+	\begin{equation*}
+		\forall x \in [0,1],\ \int_0^1 K(x,y) (f(y)-f(x)) \diff y - f(x) = g(x). 
+	\end{equation*}
+\end{corollary}
+
+\begin{proof}
+	Posons $k(x) := \int_0^1 K(x,y) \diff y$, pour tout $x\in [0,1]$.
+	On peut réécrire l'égalité souhaitée sous la forme 
+	\begin{equation*}
+		\cK(f) - (1+k) f = g,
+	\end{equation*}
+	avec les notations du \cref{lem:convK_compact}. Soit encore 
+	\begin{align*}
+		\hat \cK(f) - f &= \hat g, &
+		\text{avec } \hat \cK(f) &:= (1+k)^{-1}\cK(f), &
+		\text{et } \hat g := (1+k)^{-1} g.
+	\end{align*}
+	L'opérateur $\hat \cK$ est compact en tant que composition d'un opérateur compact, voir le \cref{lem:convK_compact}, et d'un opérateur continu, et on a bien $\hat g \in C^0([0,1])$.
+	D'après l'alternative de Fredholm, il suffit donc de vérifier que $\hat \cK - \Id$ est injectif, pour obtenir sa surjectivité, et donc l'existence annoncée. Or pour tout $f \in C^0([0,1])$,
+	\begin{align*}
+		\hat \cK(f) = f \ 
+		& \Rightarrow \ \forall x\in [0,1],\, \int_{y \in [0,1]} K(x,y) (f(y)-f(x)) \diff y = f(x)\\
+		& \Rightarrow \int_{x\in [0,1]} \int_{y\in [0,1]}  K(x,y) (f(y)-f(x)) f(x) \, \diff y \, \diff x = \int_0^1 f(x)^2 \diff x.
+	\end{align*}
+	Or la première intégrale se réécrit, par symétrie de $K$, sous la forme suivante, clairement négative
+	\begin{equation*}
+		-\frac 1 2 \int_{x\in [0,1]} \int_{y\in [0,1]} K(x,y) |f(y)-f(x)|^2 \diff y \diff x.
+		\qedhere
+	\end{equation*}	
+\end{proof}
+
+Comme annoncé, nous précisons maintenant le \nref{th:Fredholm}. Pour inspiration, on peut  considérer un autre exemple d'opérateur compact, plus élémentaire : l'opérateur $L^\infty(\bN) \mapsto L^\infty(\bN)$, $(x_n)_{n \geq 0} \mapsto (\lambda_n x_n)_{n \geq 0}$, où $(\lambda_n)_{n \in \bN}$ est une suite convergeant vers $0$. Son spectre est l'ensemble $\{\lambda_n \mid n \in \bN\} \cup \{0\}$. 
+%Encore un autre exemple : l'opérateur
+%$(x_n,y_n)_{n \geq 0} \mapsto (\ve_n (y_n,-x_n))_{n \geq 0}$ avec $\ve_n \to 0$, $\ve_n \neq 0$, défini sur $L^\infty(\bN\times \bN)$.
+%Si $\bK = \bR$, alors $T$ n'a pas de valeur propre, et $0$ est sa seule valeur spectrale. \\
+
+%Le théorème de Fredholm est un résultat de théorie spectrale. Décrivons davantage le spectre d'un opérateur compact. 
+
+\begin{corollary}[Fredholm précisé]
+\label{corol:FredholmPrecise}
+	Soit $E$ un Banach, et $T \in L_c(E)$. Alors % un opérateur compact. Alors :
+	\begin{enumerate}[(i)]
+		\item Si $\dim(E)=\infty$ alors $0 \in \sigma(T)$. (Mais $0$ n'est pas forcément valeur propre.)
+		\item Pour tout $\lambda \in \sigma(T)\sm \{0\}$, il existe $x \in E$ tel que $T x = \lambda x$. (i.e.\ $\lambda$ est valeur propre)
+		\item Pour tout $\lambda \in \sigma(T)$, il existe $m = m(\lambda)$, tel que $\Ker( (\lambda\Id-T)^m ) = \Ker((\lambda\Id-T)^{m+1})$. De plus $\dim \Ker( (\lambda\Id-T)^m ) < \infty$. (i.e.\ la multiplicité de $\lambda$ est finie)
+		%  appelé multiplicité de $\lambda$
+		\item L'ensemble $\sigma(T)\subset B'(0,\|T\|)$ est dénombrable, et $0$ est son seul point d'accumulation possible.
+	\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+	Preuve de (i). Par contraposée, supposons $0 \notin \sigma(T)$. Alors $T^{-1}$ existe et est continu, par définition du spectre, donc $T^{-1}(\overline {T(B'(0,1)}) \supset B'(0,1)$ est compact comme image directe d'un compact par une application continue. Par le \nref{th:bouleCompRiez}, $E$ est donc de dimension finie.
+
+	Preuve de (ii). Appliquer le \nref{th:Fredholm} à $T/\lambda$.
+	
+	Preuve de (iii). 
+	Posons $F_n := \Ker((\lambda\Id-T)^n)$ et montrons d'abord qu'il existe $n\in \bN$ tel que $F_n = F_{n+1}$ (ce qui implique $F_n = F_m$ pour tout $m \geq n$).
+	Sinon, par l'absurde et en utilisant le \nref{lem:normaleRiez}, choisissons $x_n \in F_n$ tel que $\|x_n\| = 1$ et $d(x_n,F_{n-1}) \geq 1/2$, avec la convention $F_{-1} = \{0\}$.
+	Par construction, $(\lambda \Id-T) x_n \in F_{n-1}$ pour tout $n \geq 0$, et de plus $F_n$ est stable par $T$. 
+	Ainsi, pour tous $n>m$ on a $\|T x_n - T x_m\| = 
+	\|\lambda x_n - [(\lambda \Id-T)x_n + T x_m\| \geq |\lambda|/2$.
+	%\|(T-\lambda) x_n + \lambda x_n  - (T-\lambda) x_m - \lambda x_m\| \geq |\lambda|/2$ car $(T-\lambda) x_n + \lambda x_n  - (T-\lambda) x_m  \in F_{m-1}$. 
+	Ceci contredit la compacité de $T$, d'où l'existence de l'entier $m(\lambda)$ annoncée.
+	
+	Par ailleurs, si $x \in \Ker( (\lambda\Id-T)^n)$ alors en développant le binôme de Newton dans l'identité $(\lambda\Id - T)^n x = 0$, on obtient
+	\begin{align*}
+		x &= T P(T) x, & 
+		\text{avec }
+		P(T) &:= - \lambda^{-n} \sum_{0 \leq k\leq n-1} {\textstyle \binom n k} \lambda^k (-T)^{n-1-k}.
+	\end{align*}
+	 Or $T P(T)$ est un opérateur compact, comme composée d'un opérateur continu et d'un opérateur compact. Ainsi $\Ker( (\lambda\Id-T)^n) \cap B'(0,1) \subset T P(T) B'(0,1)$ qui est un ensemble précompact, donc $\Ker( (\lambda\Id-T)^n)$ est de dimension finie par le \nref{th:bouleCompRiez}.
+	
+	Preuve de (iv).
+	Considérons par l'absurde un point d'accumulation non-nul de $\sigma(T)$, noté $\lambda_* \in \bK\sm \{0\}$. Par hypothèse, il existe donc une suite de valeurs spectrales deux à deux distinctes de $T$, notées $(\lambda_n)_{n \in \bN}$ et que l'on peut supposer non-nulles, convergeant vers $\lambda_*$.
+	Par le point (ii) il existe un vecteur propre $x_n \in E\sm \{0\}$ pour $\lambda_n$. Notons $F_n := \Vect\{x_1,\cdots,x_n\}$, et choisissons $y_n\in F_n$ tel que $d(y_n,F_{n-1}) \geq 1/2$ et $\|y_n\|=1$, par le \nref{lem:normaleRiez}. 
+	Alors $(\lambda_n \Id-T) y_n  \in F_{n-1}$. Le raisonnement précédent s'applique : on a 
+	$\|T y_n - T y_m\| = 
+	\| \lambda_n y_n - [(\lambda_n \Id - T) y_n + T y_m]\| \geq |\lambda_n|/2$ pour tous $n>m$, ce qui contredit la compacité de $T$. 
+	
+	Pour tout $\lambda \in \sigma(T)$, on a $|\lambda| \leq \vertiii{T}$; en effet, dans le cas contraire, la série $\lambda^{-1} \sum_{n \geq 0} (T/\lambda)^n$ est sommable, et fournit un inverse à $\lambda \Id - T$. 
+	Comme $0$ est le seul point d'accumu\-lation de $\sigma(T)$, l'ensemble $\sigma(T) \sm B(0,\ve)$ est fini pour tout $\ve>0$. On en déduit que $\sigma(T)$ est dénombrable.
+\end{proof}
+

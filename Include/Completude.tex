@@ -1,0 +1,761 @@
+
+La complétude est un outil fondamental en analyse, assurant l'existence d'une limite unique, ce qui permet de prolonger de manière unique une fonction uniformément continue, de montrer l'existence d'un point fixe unique via le théorème de Picard, ou encore d'établir des résultats d'analyse linéaire abstraits et puissants via le théorème de Baire. 
+
+\inventaire{
+\Nref{subsec:Cauchy}
+\Nref{def:suiteCauchy} \\
+\Nref{def:complet}\\
+\Nref{lem:serie_Banach}\\
+\Nref{prop:fermeComplet} (Les fermés d'un complet sont complets)\\
+\Nref{prop:LEFcomplet} ($L(E,F)$ est complet si $F$ complet)\\
+
+\Nref{subsec:fctsComplets}\\
+\Nref{ex:cont_bornee_Banach} ($C^0_b$ est un Banach)\\
+\Nref{ex:Holder_Banach}\\
+\Nref{ex:Ck_bornee_Banach} ($C^k_b(\Omega)$ et $C^k_b(\overline\Omega)$ sont des Banach)\\
+\Nref{ex:LpBanach} ($L^p$ est un Banach)\\
+\Nref{ex:testDistribFrechet} (Les fonctions test des distributions forment un Fréchet)\\
+\Nref{ex:DKOmegaComplet} ($\cD_K(\Omega)$ est un Fréchet)\\
+\Nref{ex:classeSchwartzFrechet} (La classe de Schwartz est un Fréchet)\\
+
+\Nref{subsec:prolongements}\\
+\Nref{prop:prolongement_complet}\\
+\Nref{prop:espaceComplete}\\
+\Nref{ex:extUnifCont} \\
+
+\Nref{subsec:Picard} \\
+\Nref{th:fixe_Picard} \\
+\Nref{lem:Gronwall} \\
+\Nref{th:Cauchy_Lipschitz} \\
+\Nref{corol:CauchyLipAuton} \\
+\Nref{ex:EDretard} \\
+\Nref{ex:eqFunctIntegr} \\
+
+\Nref{subsec:Baire} \\
+\Nref{lem:fermeEmboite} \\
+\Nref{th:BaireOuvert} \\
+\Nref{corol:BaireFerme} \\
+\Nref{rem:terminologieBaire} \\
+\Nref{ex:GrasQ} (Ensemble gras de mesure nulle, contenant $\bQ$)\\
+\Nref{ex:grasNonDen} (Un ensemble gras, dans un espace sans points isolé, est indénombrable)\\
+
+\Nref{subsec:BaireLin} \\
+\Nref{th:BanachSteinhauss} \\
+\Nref{corol:limSimpleLin} (Limite simple d'applications linéaires) \\
+\Nref{corol:BanachSteinhaussK} \\
+\Nref{ex:FourierDiverge}	 (Une fonction continue dont la série de Fourier diverge en zéro) \\
+\Nref{th:BanachSteinhaussFrechet} \\
+\Nref{th:appliOuverte} \\
+\Nref{corol:isomBanach} \\
+\Nref{corol:equivNormes} \\
+\Nref{th:grapheFerme} 
+}
+
+
+\subsection{Critère de Cauchy}
+\label{subsec:Cauchy}
+
+\begin{retenir}
+	La définition d'une suite de Cauchy, la complétude d'une partie fermée d'un complet, et de l'ensemble des applications linéaires dans un complet.
+	
+	(\Cref{def:suiteCauchy,prop:fermeComplet,prop:LEFcomplet})
+\end{retenir}
+
+
+\begin{definition}[Suite de Cauchy]
+\label{def:suiteCauchy}
+	Soit $(X,d)$ un espace métrique. Une suite $(x_n)_{n\in \bN}$ est de dite de \emph{Cauchy} si elle satisfait au critère suivant:
+	\begin{equation*}
+		\forall \ve>0,\ \exists N \in \bN,\ \forall p,q \geq N,\ d(x_p,x_q) \leq \ve. 
+	\end{equation*}
+\end{definition}
+
+Une suite de Cauchy est bornée, et admet au plus une limite. Une suite de Cauchy qui admet une sous-suite convergente est convergente. Réciproquement, toute suite convergente est de Cauchy. 
+Noter que la propriété de Cauchy, et donc la notion de complétude, n'ont de sens que dans un espace métrique. On peut reformuler ainsi le critère de Cauchy : il existe une suite $(\ve(n))_{n \in \bN}$ tendant vers $0$, et telle que pour tous $p,q\in \bN$
+\begin{equation}
+\label{eqdef:suiteCauchyMin}
+	d(x_p,x_q) \leq \ve(\min(p,q))
+\end{equation}
+\begin{definition}[Complétude]
+\label{def:complet}
+Un espace métrique $(X,d)$ est dit \emph{complet} si toutes ses suites de Cauchy y sont convergentes. 
+Un espace de Banach est un evn complet. 
+Un espace de Fréchet est evtlcs muni d'une famille dénombrable de semi-normes, et complet pour la distance associée.
+\end{definition}
+
+
+La complétude d'un evn peut également s'exprimer en termes de séries, plutôt que de suites.
+Rappelons qu'une série à valeurs dans un evn, écrite formellement ``$\sum_{n \in \bN} x_n$'' est dite \emph{absolument convergente} ssi $\sum_{n\geq 0} \|x_n\| < \infty$, et est dite \emph{convergente} ssi la suite des sommes partielles $(\sum_{n \leq N} x_n)_{N \in \bN}$ admet une limite lorsque $n\to \infty$.
+
+\begin{lemma}[Séries dans un Banach]
+\label{lem:serie_Banach}
+Un evn $E$ est complet ssi toute série absolument convergente y est convergente.   	
+\end{lemma}
+
+\begin{proof}
+	\emph{Supposons $E$ complet.} Soit $(x_n)_{n \in \bN}$ les termes d'une série absolument convergente, et soit $y_N := \sum_{n<N} x_n$ pour tout $N>0$. 
+	Alors pour $p,q \geq N$, disons $p\leq q$, on a $\|y_p-y_q\| \leq \sum_{p \leq n < q} \|x_n\| \leq r_N := \sum_{n \geq N} \|x_n\|$. Par sommabilité, $r_N \to 0$ lorsque $N \to \infty$. Ainsi $y_n$ est de Cauchy, donc converge, comme annoncé. 
+	
+	\emph{Supposons maintenant que les séries absolument convergentes sont convergentes.}
+	Soit $(x_n)_{n \in \bN}$ une suite de Cauchy. 
+	Pour tout $k \in \bN$, soit $N_k$ croissant et tel que $\| x_p-x_q \| \leq 2^{-k}$ pour tous $p,q \geq N_k$. 
+	Posons $y_k := x_{N_{k+1}}-x_{N_k}$, de sorte $\| y_k\| \leq 2^{-k}$, et donc que $\sum_{k \in \bN} \|y_k\|$ converge. 
+	Par hypothèse, les sommes partielles $\sum_{k < K} y_k = x_{N_K}-x_{N_0}$ convergent lorsque $K \to \infty$. Donc la sous-suite $(x_{N_K})_{K\geq 0}$ converge, et donc aussi $(x_n)_{n\in \bN}$ comme annoncé car elle est de Cauchy et admet une sous-suite convergente. 
+\end{proof}
+
+
+Plusieurs constructions mathématiques héritent de la propriété de complétude.
+
+
+\begin{proposition}
+\label{prop:fermeComplet}
+	Une partie $A$ d'un espace métrique complet $(X,d)$, est complète ssi elle est fermée.	
+\end{proposition}
+
+\begin{proof}
+	On utilise la caractérisation ($A$ fermé ssi $\overline A=A$), ainsi que la caractérisation séquentielle de l'adhérence \cref{prop:adhSuite}.
+
+	Si $A$ n'est pas fermé, alors en considérant une suite convergeant vers un point de $\overline A \sm A$, on obtient une suite de Cauchy non-convergente dans $A$, qui n'est donc pas complet.
+	
+	Si $A$ fermé, alors toute suite de Cauchy à valeurs dans $A$ est convergente dans $X$, car celui-ci est complet, et sa limite appartient à $A$ par fermeture, qui est donc complet.
+\end{proof}
+
+
+
+\begin{proposition}
+\label{prop:LEFcomplet}
+Soient $E$ un evn et $F$ un Banach. Alors $L(E,F)$ est un Banach, et en particulier $E^*$ est un Banach. 	
+\end{proposition}
+
+\begin{proof}
+	Soit $(u_n)_{n \in \bN}$ de Cauchy dans $L(E,F)$. On vérifie que $(u_n(x))_{n \in \bN}$ est également de Cauchy, pour tout $x \in E$, par continuité de l'évaluation puisque 
+%$\|u_n(x)-u_m(x)\|_F \leq \|u_n-u_m\|_{L(E,F)} \|x\|_E$, 
+$\|u_n(x)-u_m(x)\| \leq \vertiii{u_n-u_m} \|x\|$, 
+	ce qui permet de définir une application limite $u_\infty(x) := \lim_{n\to \infty} u_n(x)$. On vérifie ensuite que $u_\infty$ est linéaire, par continuité de l'addition et de la multiplication scalaire. Par le critère de Cauchy on a $\vertiii{u_p-u_q}\leq \ve_N$ pour tous $p,q\geq N$, où la suite $\ve_N \to 0$ lorsque $N \to \infty$. Ainsi $\|u_\infty(x)-u_N(x)\| \leq \ve_N$ par passage à la limite pour tout $x \in B := B'_E(0,1)$, d'où le caractère continu de $u_\infty$ et la convergence $\vertiii{u_\infty-u_N} \leq \ve_N \to 0$ lorsque $N \to \infty$.
+\end{proof}
+
+Attention : il n'y a pas de semi-norme naturelle sur le dual d'un Fréchet, qui est seulement muni de la topologie *faible a priori. Le dual d'un Fréchet n'est donc pas un Fréchet en général, à la différence des Banach.
+%A fortiori, on n'a pas de semi-norme naturelle sur $L(E,F)$ où $F$ est un Fréchet ou un evn. 
+
+\subsection{Espaces fonctionnels complets}
+\label{subsec:fctsComplets}
+
+Les plupart espaces fonctionnels classiques, qui sont métrisables, sont complets.
+
+\begin{retenir}
+Les espaces de fonctions bornées qui sont continues, Holder, Lipschitz, ou continument dérivables jusqu'à un certain ordre, sont des Banach, de même que les espaces de Lebesgue $L^p$. Les espaces de fonction test $\cD_K(\Omega)$ et $\cS(\bR^d)$ sont des Frechet. 
+
+(Exemples \ref{ex:cont_bornee_Banach}, \ref{ex:Holder_Banach}, \ref{ex:Ck_bornee_Banach}, \ref{ex:LpBanach}, \ref{ex:testDistribFrechet}, \ref{ex:classeSchwartzFrechet})
+\end{retenir}
+
+\paragraph{Espaces de Banach.}
+
+\begin{exemple}
+\label{ex:cont_bornee_Banach}
+	Soit $(X,\bU)$ un espace topologique, $E$ un Banach. Alors $C^0_b(X,E)$ est un Banach.
+\end{exemple}
+
+\begin{proof}
+	Soit $(u_n)_{n \in \bN}$ de Cauchy dans $C^0_b(X,E)$, qui est muni de la norme uniforme $\|\cdot\|_\infty$. Alors pour tout $x \in X$, $(u_n(x))_{n \in \bN}$ est de Cauchy, donc convergente, et on note $u_*(x)$ sa limite. 
+	
+	La limite $u_* : X\to E$ est continue (resp.\ bornée) en tant que limite uniforme de fonctions continues (resp.\ bornées). Finalement, $\|u_n - u_*\|_\infty \leq \max_{m \geq 0} \|u_n-u_m\|_\infty \to 0$ par le critère de Cauchy, ce qui conclut.  
+\end{proof}
+
+\begin{exemple}[Complétude des espaces de Lipschitz et Holder]
+\label{ex:Holder_Banach}
+	Soit $(X,d)$ un espace métrique, $E$ un Banach, et $\omega : \bR_+ \to \bR_+$ un module de continuité strictement positif hors de $0$. 
+	On pose 
+	\begin{align}
+		|f|_\omega &:= \sup_{x\neq y} \frac{|f(x)-f(y)|}{\omega(d(x,y))},&
+		C_b^\omega(X,E) &:= \{f \in C_b(X,E) \mid |f|_\omega < \infty\}. 
+	\end{align}
+	Alors $C^\omega_b(X,E)$ est un Banach pour la norme $\|\cdot\|_\omega := \|\cdot\|_\infty + |\cdot|_\omega$. 
+	L'espace de Hölder $C^\alpha_b(X,E)$ correspond à $\omega(s):=s^\alpha$, où $0 < \alpha < 1$, et $\Lip_b(X,E)$ à $\omega(s):=s$.
+\end{exemple} 
+
+\begin{proof}
+	On note que $|\cdot|_\omega$ positivement homogène et sous-additive, donc $C_b^\omega$ est bien un espace vectoriel. De plus $\|\cdot\|_\omega$ est une norme sur $C^\omega_b$ car $\|\cdot\|_\infty$ satisfait l'axiome de séparation. 
+	
+	Soit $(f_n)_{n \in \bN}$ une suite de Cauchy. Par complétude de $(C_b(X,E),\|\cdot\|_\infty)$, $f_n$ converge en norme $\|\cdot\|_\infty$ vers une limite $f_\infty \in C_b(X,E)$.
+	Comme $f_n$ est de Cauchy, $|f_n|_\omega$ est bornée par une constante notée $C$, donc pour tous $x \neq y$ on a $\|f_\infty(x)-f_\infty(y)\| = \lim_{n\to \infty} \|f_n(x)-f_n(y)\| \leq C \omega(d(x,y))$, ce qui montre que $|f_\infty|_\omega \leq C$. 
+	De même $\| (f_\infty(x)-f_N(x)) - (f_\infty(y)-f_N(y))\| = \lim_{n \to \infty} \| (f_n(x)-f_N(x)) - (f_n(y)-f_N(y))\| \leq \ve_N \omega(d(x,y))$, où $\ve_N\to 0$ est donnée par le critère de Cauchy, d'où $|f_\infty-f_N|_\omega \leq \ve_N$, ce qui conclut.
+\end{proof}
+
+
+\begin{exemple}
+\label{ex:Ck_bornee_Banach}
+	Soit $\Omega \subset \bR^d$ un ouvert. 
+	Alors $C^k_b(\Omega)$ et $C^k_b(\overline \Omega)$ sont des Banach, $\forall k \in \bN$. 
+\end{exemple}
+
+\begin{proof}
+	Notons $A := \{\alpha\in \bN^d \mid |\alpha|_1\leq k\}$. 
+	Soit $(f_n)_{n \in \bN}$ de Cauchy dans $C^k_b(\Omega)$, de sorte que $\partial_\alpha f_n \in C^0_b(\Omega)$ est de Cauchy pour tout $\alpha \in A$.
+	On note $f^\alpha := \lim_{n\to \infty} \partial_\alpha f_n \in C^0_b(\Omega)$, et il s'agit de montrer que $f^\alpha = \partial_\alpha f_0$. Par récurrence, il suffit de montrer que $f^{\alpha+e_i} = \frac{\partial}{\partial x_i} f^\alpha$ pour tout $\alpha\in A$ avec $|\alpha|_1 < k$ et tout $1 \leq i \leq d$, où $(e_i)_{1 \leq i \leq d}$ désigne la base canonique. 
+	
+	Pour établir cette dernière identité, on observe par passage à la limite de la convergence uniforme sous l'intégrale que 
+	$$
+		f^\alpha(x+\rho e_i) - f^\alpha(x) = \int_0^\rho f^{\alpha+e_i}(x+t e_i) \diff t,
+	$$
+	pour tout $x \in \Omega$ et tout $\rho>0$ tel que $[x,x+\rho e_i] \subset \Omega$.
+	
+	Le cas de $C^k_b(\overline \Omega)$ s'en déduit, en notant qu'une limite uniforme de fonctions continues jusqu'au bord reste continue jusqu'au bord. 
+\end{proof}
+
+
+
+\begin{exemple}
+\label{ex:LpBanach}
+	Soit $(X,\mu)$ un espace mesuré. Alors $L^p(X,\mu)$ est un Banach, $\forall p \in [1,\infty]$. 
+\end{exemple}
+
+\begin{proof}[Preuve \facultatif]
+	La preuve est fondée sur des arguments de théorie de la mesure.
+	On traite seulement le cas $p\in [1,\infty[$. 
+	Compte tenu du \cref{lem:serie_Banach}, on considère $(f_n)_{n \in \bN}$ le terme général d'une série absolument convergente dans $L^p(X,\mu)$. 
+	Soit $S_N(x) := \sum_{n<N} |S_n(x)|$, et $S_\infty(x) := \sum_{n\in \bN} |S_n(x)| \in [0,\infty]$, pour tout $x \in X$.
+	Alors, par le Théorème de convergence monotone (Beppo Levi) et l'inégalité de Minkowski, voir la \cref{def:normeLp}, on a  
+	\begin{equation}		
+		\int_X S_\infty^p \diff \mu 
+		= \lim_{N \to \infty} \int_X S_N(x)^p \diff \mu(x)
+		\leq \lim_{N \to \infty} \Big(\sum_{n < N} \|f_n\|_p \Big)^p
+		= \Big(\sum_{n \in \bN} \|f_n\|_p \Big)^p < \infty
+	\end{equation}
+	On en déduit que $S_\infty(x) < \infty$ pour $\mu$-p.p.\ $x$. 
+
+	On peut alors définir $g_N(x) := \sum_{n <N} f_n(x)$, et $g_\infty(x) := \sum_{n \in \bN} f_n(x)$ par complétude de $\bK$, la somme étant absolument convergente pour $\mu$ presque tout $x$.
+	Alors $|g_\infty(x)-g_N(x)| \leq\sum_{n\geq N} |f_n(x)|$, puis par intégration $\|g_\infty-g_N\|_p \leq  r_N := \sum_{n\geq N} \|f_n\|_p$, et $r_N \to 0$ lorsque $N \to \infty$ car c'est le reste d'une série convergente. 
+	
+\end{proof}
+
+
+\paragraph{Espaces de Fréchet.}
+
+\begin{remark}
+	Considérons un Fréchet, c.a.d un evtlcs $\big(E,(|\cdot|_k)_{k \in \bN}\big)$ muni d'une famille dénombrable de semi-normes, et complet pour la distance $d(x,y) := \max_{k \in \bN} \min\{2^{-k}, |x-y|_k\}$. Une suite $(x_n)_{n \in \bN}$ est de Cauchy (pour la distance $d$) ssi 
+	\begin{equation*}
+		\forall k \in \bN,\ \forall\ve>0,\ \exists N \in \bN,\ \forall p,q\geq N,\ |x_p-x_q|_k \leq \ve.
+	\end{equation*}
+	Elle converge vers une limite $x$ ssi $\lim_{n \to \infty} |x-x_n|_k = 0$, pour tout $k \in \bN$. 
+\end{remark}
+
+
+\begin{exemple}
+\label{ex:testDistribFrechet}
+	Soit $\Omega \subset \bR^d$ un ouvert, et $k \in \bN \cup \{\infty\}$. Alors $C^k(\Omega)$ est un Fréchet muni des semi-normes \eqref{def:cont_nonbornee}. 
+\end{exemple}
+
+\begin{proof}
+	Soit $(f_n)_{n \in \bN}$ une suite de Cauchy de $C^k(\Omega)$, et soit $(K_r)_{r \in \bN}$ une suite exhaustive de compacts de $\Omega$, et $\Omega_r := \mathring K_r$. % comme dans l'\cref{def:cont_nonbornee}.
+	Soit $k' = k$ si $k< \infty$, et soit $k' \in \bN$ arbitraire si $k=\infty$, et soit $r \in \bN$. Alors $(f_{n|\Omega_r})_{n \in \bN}$ converge uniformément ainsi que ses dérivées vers un élément de $C^{k'}_b(\overline{\Omega_r})$, par les arguments de l'\cref{ex:cont_bornee_Banach}.
+	Ceci permet de définir une fonction limite $f \in C^k(\Omega)$, puisque $\cup_{r \in \bN} \Omega_r = \Omega$ et que $k'$ est arbitraire.
+	On vérifie ensuite que $|f-f_n|_{r,\alpha} \to 0$ lorsque $n \to \infty$, pour tous $r \in \bN$ et $\alpha \in \bN^d$ avec $|\alpha|_1 \leq k$, ce qui conclut. 
+%	\cref{def:cont_nonbornee}
+\end{proof}
+
+Les preuves des exemples suivants sont similaires et laissées en exercice. 
+%Nous donnons deux autres exemples, dont les preuves se déduisent de l'e
+
+\begin{exemple}
+\label{ex:DKOmegaComplet}
+	Pour tout ouvert $\Omega\subset \bR^d$, et $K \csubset \Omega$,  $C^\infty_b(\Omega)$ et $\cD_K(\Omega)$ sont des Fréchets. 
+\end{exemple}
+
+\begin{exemple}
+\label{ex:classeSchwartzFrechet}
+	La classe de Schwartz $\cS(\bR^d)$ est un Fréchet. 
+\end{exemple}
+
+%\begin{proof}
+%	Similaire au cas précédent.  
+%\end{proof}
+
+\begin{exemple}
+\label{ex:LplocFrechet}
+	$L^p_\loc(\Omega)$ est un Fréchet, pour tout $p\in [1,\infty]$, $\Omega \subset \bR^d$ ouvert. 
+\end{exemple}
+	
+\notei{Exemple peut être mal choisi. On pourrait traiter $C^\infty_b$ et $L^p_\loc$, pour distinguer le problème du support de celui de l'ordre des dérivées.}
+
+
+\subsection{Prolongements}
+\label{subsec:prolongements}
+
+La notion de complétude fournit des extensions naturelles aux fonctions uniformément continues définies sur des sous-espaces denses, et en particulier aux fonctions linéaires continues. 
+Noter que l'image d'une suite de Cauchy par une fonction uniformément continue, est toujours une suite de Cauchy. 
+
+\begin{retenir}
+Le principe de prolongement d'une application uniformément continue, et de complétion d'un espace.
+(\Cref{prop:prolongement_complet,prop:espaceComplete}.)
+\end{retenir}
+
+
+\begin{proposition}[Prolongement des fonctions uniformément continues]
+\label{prop:prolongement_complet}
+	Soit $(X,d)$ un espace métrique et $(Y,d_Y)$ un complet. Soit $A \subset X$ une partie dense, et $f:A \to Y$ uniformément continue, pour un module de continuité $\omega$ que l'on peut supposer continu. Alors $f$ admet une unique extension continue $F : X \to Y$, qui de plus admet le même module d'uniforme continuité. 
+\end{proposition}
+
+\begin{proof}
+	Soit $x\in X$, et soit $(x_n)_{n \geq 0} \in A^\bN$ une suite convergeant vers $x$. Alors $(x_n)_{n \geq 0}$ est de Cauchy, donc $(f(x_n))_{n \geq 0}$ l'est aussi car $f$ est uniformément continue, donc $f(x_n)$ converge lorsque $n \to \infty$ vers une limite notée $y\in Y$. 
+	
+	Si $(x'_n)_{n \geq 0} \in A^\bN$ est une autre suite arbitraire convergeant vers $x$, alors en notant que $d(f(x_n),f(x'_n)) \leq \omega(d(x_n,x'_n)) \leq \omega(d(x_n,x)+d(x'_n,x))$ on obtient que $f(x'_n) \to y$. On peut donc définir sans ambiguité l'extension par $F(x) = y$. 
+	
+	Finalement si $x_n \to x$ et $x'_n \to x'$ lorsque $n \to \infty$, avec $x_n,x'_n \in A$ et $x,x'\in X$, alors $d(F(x),F(x')) = \lim_{n \to \infty} d(f(x_n),f(x'_n)) \leq \limsup_{n \to \infty} \omega(d(x_n,x'_n)) = \omega(d(x,x'))$. En effet, on a supposé $\omega$ continu, ce qui ne restreint pas la généralité compte tenu du \cref{lem:regModuleCont}.
+\end{proof}
+
+
+La notion de complétude permet également d'étendre l'espace lui même. 
+
+\begin{proposition}[Complété d'un espace métrique]
+\label{prop:espaceComplete}
+Soit $(A,d)$ un espace métrique. Alors il existe un espace métrique complet $X$ dont une partie dense est en bijection isométrique avec $A$. De plus $X$ est unique à isométrie près. 
+\end{proposition}
+
+\begin{proof}
+%	Etant données deux suites de Cauchy, on pose $(x_n)_n \sim (y_n)_n \eqdef d(x_n,y_n) = 0$
+	\emph{Existence :} On définit l'espace quotient de suites de Cauchy % , sur l'ensemble des suites de Cauchy, la relation
+	\begin{align*}
+		X &:= \{(x_n)_{n\in \bN} \in A^\bN \mid (x_n)_n \text{ est de Cauchy}\} / \sim,
+	\end{align*}
+	muni de la relation d'équivalence $(x_n)_n \sim (y_n)_n  \eqdef \lim_{n \to \infty} d(x_n,y_n) = 0$, et de la distance $d( (x_n)_n, (y_n)_n) := \lim_{n \to \infty} d(x_n,y_n)$. 
+	On vérifie facilement qu'il s'agit d'un espace métrique, qui est complet.
+	On a l'injection isométrique $A \to X : x \to (x)_{n\in \bN}$ associant à un point la classe d'équivalence de la suite constante.
+	
+	\emph{Unicité :} Etendre via la \cref{prop:prolongement_complet} l'isométrie définie sur la partie dense $A$. 
+\end{proof}
+
+\hiddenproof{
+Notons que la bonne définition de la distance découle du critère de Cauchy : 
+\begin{equation*}
+	|d(x_n,x'_n)-d(x_p,x'_p)| \leq d(x_n,x_p) + d(x'_n,x'_p) \leq \ve(n\wedge p) + \ve'(n\wedge p),
+\end{equation*}
+de sorte que la suite $(d(x_n,x'_n))_{n \in \bN}$ est de Cauchy dans $\bR$, que l'on sait complet, donc convergente. On a noté $p\wedge q := \min(p,q)$, et introduit les modules de Cauchy $\ve$ et $\ve'$ associés aux deux suites via \eqref{eqdef:suiteCauchyMin}.
+
+Montrons maintenant la complétude de $X$. Considérons une suite de Cauchy $(x^p)_{p \in \bN}$ de $X$, dont des représentants sont les suites $(x^p_n)_{n \in \bN}$, elles mêmes de Cauchy dans $A$. On déduit de ces hypothèses que 
+\begin{equation*}
+	d(x^p_r,x^q_s) \leq \ve_p(r) + \ve_q(s) + \ve(p \wedge q),
+\end{equation*}
+pour tous $p,q,r,s \in \bN$,
+où $\ve(n) \to 0$ et $\ve_k(n) \to 0$ lorsque $n \to \infty$, quel que soit $k \in \bN$. 
+Etant donné $n \in \bN^*$, choisissons $N(n)$ tel que $\ve(n) \leq 1/n$, et $M(n)$ tel que $\ve_{N(n)}(M(n)) \leq 1/n$, puis posons $x^\infty_n := x^{N(n)}_{M(n)}$. Cette suite est de Cauchy car 
+\begin{equation*}
+	d(x^\infty_p,x^\infty_q) = d(x^{N(p)}_{M(p)}, q^{N(q)}_{M(q)}) \leq \ve_{N(p)}(M(p)) + \ve_{N(q)}(M(q)) + \ve(N(p) \wedge N(q)) \leq \frac 1 p + \frac 1 q + \frac 1 {p\wedge q}.
+\end{equation*}
+Par ailleurs
+\begin{equation*}
+	d(x^k_r, x^\infty_r) = d(x^k_r, x^{N(r)}_{M(r)}) \leq \ve_k(r) + \ve_{N(r)}(M(r)) + \ve(k\wedge N(r)) = \ve(k) + o(1),
+\end{equation*}
+lorsque $r \to \infty$. Ainsi $d_X(x^k ,x^\infty)\leq \ve(k)$ et donc $x^k \to x^\infty$ dans $X$. 
+}
+
+
+On peut également étendre des fonctions uniformément continues définies sur des parties non-denses, comme l'illustre le résultat suivant, qui s'applique en particulier aux fonctions Holderiennes et Lipschitziennes. L'hypothèse de sous-additivité du module de continuité n'est pas exagérément restrictive, voir le \cref{lem:regModuleCont}.
+
+\begin{exemple}[Extension de fonctions uniformément continues]
+\label{ex:extUnifCont}
+	Soit $(X,d)$ un espace métrique borné, soit $A \subset X$ non-vide, et soit $f : A \to \bR$ uniformément continue, dont le module de continuité $\omega$ est sous-additif. 
+	Alors la fonction $F : X \to \bR$ définie par 
+	\begin{equation}
+		F(x) := \inf_{y \in A} f(y) + \omega(d(x,y))
+	\end{equation}
+	prolonge $f$ à $X$ et admet le module de continuité $\omega$. 
+\end{exemple}
+
+\begin{proof}
+	On note que $F$ est à valeurs finies car $\omega$ est sous additif et $X$ est borné. 
+	On a $F(x) \leq f(x)$ pour tout $x\in A$ en choisissant $y=x$, mais par ailleurs $f(x)-f(y) \leq \omega(d(x,y))$ pour tout $y\in A$ donc $F(x) \geq f(x)$ sur $A$, d'où $F_{|A} = f$. 
+	
+	Comme $\omega(d(x,z)) \leq \omega(d(x,y)) + \omega(d(y,z))$ par sous-additivité, 
+	on obtient $F(z) = \inf_{y \in A} f(y) + \omega(d(y,z)) \leq F(x) + \omega(d(x,z))$, donc $|F(x)-F(z)| \leq \omega(d(x,z))$ par symétrie, ce qui conclut. 
+\end{proof}
+
+
+\subsection{Point fixe de Picard}
+\label{subsec:Picard}
+
+Le thèorème de point fixe de Picard permet affirme qu'une application contractante d'un espace complet dans lui même admet un point fixe. Il assure également son unicité de ce point fixe, et donne un moyen de l'approcher (par itération) et d'estimer l'erreur commise. C'est un résultat extrêmement robuste, à comparer au \nref{th:Brouwer} qui assure seulement l'existence d'un point fixe. Une application immédiate et fondamentale est le \nref{th:Cauchy_Lipschitz} d'existence des solutions d'EDOs. 
+
+
+\begin{retenir}
+L'énoncé et la preuve du théorème de point fixe de Picard et du lemme de Grönwall. L'énoncé du théorème de Cauchy-Lipschitz. 
+(\Cref{th:fixe_Picard,lem:Gronwall,th:Cauchy_Lipschitz}.)	
+\end{retenir}
+
+\begin{theorem}[Point fixe de Picard]
+\label{th:fixe_Picard}
+	Soit $(X,d)$ un espace métrique complet, et soit $f : X \to X$ une fonction $K$-Lipschitzienne avec $K<1$ (on dit aussi contractante). 
+	
+	Alors $f$ admet un unique point fixe $x_* \in X$, et pour tout $x_0 \in X$ et tout $n \in \bN$ on a 
+	\begin{align}
+		d(x_n,x_*) &\leq K^n \frac{d(x_0,x_1)}{1-K},&
+		\text{où} \quad x_n := f^{\circ n}(x_0).
+	\end{align}
+\end{theorem}
+
+\begin{proof}
+Par récurrence immédiate on obtient $d(x_n,x_{n+1}) \leq K^n d(x_0,x_1)$, pour tout $n \geq 0$. Ainsi, pour tout $N \geq 0$ et tous $p,q\geq N$, on a  $d(x_p,x_q) \leq \sum_{n\geq N} K^n d(x_0,x_1) = K^n d(x_0,x_1)/(1-K)$. On en déduit que $(x_n)_{n \geq 0}$ satisfait le critère de Cauchy, et est donc convergente. Puis $d(x_N,x_*) = \lim_{n \to \infty} d(x_N,x_n) \leq \sum_{n\geq N} K^n d(x_0,x_1) = K^N d(x_0,x_1)/(1-K)$. Noter que $x_*$ est bien un point fixe par continuité de $f$, et qu'il est unique par contractivité.
+\end{proof}
+
+Le \nref{th:fixe_Picard} permet d'établir celui de Cauchy-Lipschitz, c.à.d.\ l'existence, l'unicité, et la stabilité d'une solution $C^1$ de l'équation différentielle ordinaire (EDO)
+\begin{equation}
+\label{eq:EDO}
+	u'(t)=f(t,u(t)),
+\end{equation}
+avec donnée initiale $u(0)$ fixée, et $f$ assez régulière. On en rappelle la preuve ci-dessous.
+
+\begin{lemma}[Grönwall]
+\label{lem:Gronwall}
+	Soit $f \in C^0([0,T], \bR_+)$, et $A,B \geq 0$ tels que pour tout $t \in [0,T]$
+	\begin{equation}
+		f(t) \leq A \int_0^t f(s) \diff s + B.	
+	\end{equation}
+	Alors $f(t) \leq B \exp(A t)$ pour tout $t \in [0,T]$. 
+\end{lemma}
+
+\begin{proof}
+	Posons $F(t) := A \int_0^t f(s) \diff s + B$, $t \in [0,T]$, de sorte que $f \leq F$ sur $[0,T]$. On note que $F\in C^1$ et que $F'(t) = A f(t) \leq A F(t)$, donc $t\in [0,T] \mapsto F(t)\exp(-A t)$ est décroissante. Ainsi $f(t) \leq F(t) \leq F(0) \exp(At) = B \exp(At)$, pour tout $t \in [0,T]$, comme annoncé. 
+\end{proof}
+
+La notation ``$K \csubset \Omega$'' signifie que $K$ est une partie compacte d'un espace topologique $\Omega$. 
+
+\begin{theorem}[Cauchy-Lispchitz, Picard-Lindelöf]
+\label{th:Cauchy_Lipschitz}
+Soit $\Omega\subset \bR^d$ ouvert, et soit $f : \bR_+ \times \Omega \to \bR^d$, continue et localement Lipschitzienne en sa seconde variable, i.e.\
+	\begin{equation}
+	\label{eq:loc_lip2}
+		\forall T \geq 0,\ \forall K \subset_c \Omega,\ \exists C,\ \forall t\in [0,T],\ \forall x,y \in K,\ 
+		\|f(t,x) - f(t,y)\| \leq C\|x-y\|.
+	\end{equation}
+	Alors:
+	\begin{itemize}
+		\item (Existence) Pour tout $x_0 \in \Omega$, il existe $t_0>0$ et une solution $u \in C^1( [0,t_0], \Omega)$ de l'EDO \eqref{eq:EDO}, avec condition initiale $u(t_0) = x_0$. 
+		\item (Stabilité) Si $u,v \in C^1( [0,T], K)$ sont des solutions de \eqref{eq:EDO}, où $T>0$ et $K\csubset \Omega$ est un compact, alors $\|u(t)-v(t)\| \leq e^{C t} \|u(0)-v(0)\|$  où la constante $C$ dépend seulement de $T$ et $K$. 
+	\end{itemize}
+\end{theorem}
+
+\begin{proof}
+	\emph{Existence}.
+	Soit $r>0$ tel que $B'(x_0,r) \subset \Omega$. Soit $t_1 > 0$ et soit $C_{\mathrm{lip}}$ une constante de Lipschitz pour $f$ par rapport à la seconde variable sur $[0,t_1] \times B'(x_0,r)$, et $C_\infty$ une borne pour $f$ sur cet ensemble. 
+	Choisissons $t_0 \in ]0,t_1]$ tel que $t_0 C_\infty \leq r$ et $t_0 C_{\mathrm{lip}} <1$. 
+	Considérons l'espace métrique complet $X := C^0([0,t_0],B'(x_0,r))$, muni de la norme uniforme, et posons pour tout $u \in X$ 
+	\begin{equation*}
+		F (u) (t) := x_0 + \int_0^t f(s,u(s)) \diff s.
+	\end{equation*}
+	Les estimations suivantes montrent que $F : X \to X$ est bien définie, et est contractante : 
+	\begin{align*}
+		\|F u(t) -x_0 \| &\leq \int_0^t \|f(s,u(s))\| \diff s \leq t_0 C_\infty \leq r,\\
+		\|F u(t) - F v(t)\| &\leq \int_0^t \|f(s,u(s)) - f(s,v(s))\|\diff s \leq t_0 C_{\mathrm{lip}} \|u-v\|_\infty.
+	\end{align*}
+	Par le \cref{th:fixe_Picard}, $F$ admet un point fixe, qui est la solution recherchée. 
+	
+	\emph{Stabilité}.
+	Pour tout $t \in [0,T]$ on a 
+	\begin{equation*}
+		\| u(t)-v(t)\| - \|u(0)-v(0)\| \leq \int_0^t  \|u'(s)-v'(s) \| \diff s  = \int_0^t \|f(t,u(t))-f(t,v(t))\|\diff t \leq C \int_0^t \|u-v\| \diff t, 
+	\end{equation*}
+	où $C = C(T,K)$ est une constante de Lipschitz de $f$ par rapport à la deuxième variable sur $[0,T] \times K$. La stabilité s'en déduit via le Lemme de Grönwall appliqué à $t\in [0,T] \mapsto \| u(t)-v(t)\|$.
+\end{proof}
+
+On déduit du \cref{th:Cauchy_Lipschitz} qu'il existe une solution dite maximale\footnote{L'ensemble des solutions est muni de l'ordre (a priori partiel) associé au prolongement. Le point (stabilité) du \cref{th:Cauchy_Lipschitz} montre que cet ordre est en fait total, ce qui permet de construire un plus grand élément.}  $u \in C^1([0,T_{\max}[,\Omega)$ de \eqref{eq:EDO}, où $T_{\max} \in ]0,\infty]$, dont toutes les autres solutions sont des restrictions.
+%que toutes les solutions de \eqref{eq:EDO} sont des restrictions d'une solution définie sur un interval maximal. 
+Noter qu'un autre résultat, le \nref{th:CauchyPeano} qui est fondé sur le point fixe de Brouwer, permet d'établir l'existence - mais pas l'unicité, ni a fortiori la stabilité - d'une solution de \eqref{eq:EDO} sans l'hypothèse \eqref{eq:loc_lip2}. L'énoncé précédent peut être complété dans le cas des systèmes autonomes.
+
+
+
+\begin{corollary}[Alternative dans les systèmes autonomes]
+\label{corol:CauchyLipAuton}
+	Soit $\Omega \subset \bR^d$ ouvert, et soit $f : \Omega \to \bR^d$ localement Lipschitzienne, i.e.\ $\forall K\csubset \Omega, \exists C, \forall x,y \in K, \|f(x)-f(y)\| \leq C \|x-y\|$.
+	Soit $x_0 \in \Omega$, et soit $u : [0,T_{\max}[ \to \Omega$ la solution maximale de l'EDO $u'(t) = f(u(t))$ (c'est à dire ne pouvant pas être prolongée), où $T_{\max} \in \bR_+ \cup \{\infty\}$.
+	Alors on a l'alternative:
+	\begin{itemize}
+		\item (Existence globale) Le temps d'existence est $T_{\max} = \infty$. 
+		\item (Sortie de tout compact) Pour tout compact $K \csubset \Omega$ il existe $0 \leq T_K < T_{\max}$ tel que $u(t) \notin K$ pour tout $t \in [T_K,T_{\max}[$. 
+	\end{itemize} 
+\end{corollary}
+
+\begin{proof}
+%\todoi{N'utilise pas particulièrement la complétude, plutôt la compacité, en particulier pour l'existence de $r$ (distance atteinte, compacité locale). Déplacer.}
+Soit $K \csubset \Omega$ un compact non-vide, et soit $r>0$ tel que $\tilde K := \{x \in \bR^d \mid d(x,K) \leq r\} \csubset \Omega$.
+En notant $C_{\infty}$  une borne uniforme pour $f$ sur $\tilde K$, et $C_{\mathrm{lip}}$ une constante de Lispchitz pour $f$ sur $\tilde K$, on obtient par le raisonnement précédent un temps d'existence $t_K = \min(r/C_\infty,1/(2C_{\mathrm{lip}}))>0$ pour l'EDO considérée, valable pour toute condition initiale appartenant à $K$. 
+En particulier, si le temps d'existence $T_{\max}$ est borné, alors $u(t) \notin K$ pour tout $t \geq T_{\max}-t_K$, comme annoncé.
+\end{proof}
+
+Le schéma de preuve du \nref{th:Cauchy_Lipschitz} est robuste et permet de traiter de nombreuses variantes, comme des EDO avec retard.
+\begin{exemple}[Equation différentielle avec retard]
+\label{ex:EDretard}
+	Il existe une unique $f\in C^1([0,1],\bR)$ telle que $f(0)=1$ et $f'(t)=f(t-t^2)$ pour tout $t \in [0,1]$. 
+\end{exemple}
+
+\begin{proof}
+On pose pour tout $f \in E := C^0([0,1/2],\bR)$ et tout $t\leq 1/2$. 
+\begin{equation}
+\label{eq:EDO_retard_fixe}
+A(f)(t) := 1+\int_0^t f(s-s^2) \diff s
+\end{equation}
+On vérifie facilement que $A$ est $1/2$-Lipschitz sur le Banach $E$, muni de la norme $\|\cdot\|_\infty$. Ainsi elle admet un unique point fixe par le \nref{th:fixe_Picard}, que dans la suite on note $f\in E$. Observons que $f\in C^1$ en tant que primitive d'une fonction continue.
+Finalement, on étend $f$ sur $]1/2,1]$ via la formule explicite (\ref{eq:EDO_retard_fixe}, droite), qui ne dépend que de $f_{|[0,1/2]}$.
+\end{proof}
+
+
+De même, on montre l'existence et l'unicité de solutions à certaines équations fonctionnelles. 
+\begin{exemple}[Equation fonctionnelle intégrale]
+\label{ex:eqFunctIntegr}
+	Soient $k \in C^0([0,1]\times [0,1],]-1,1[)$ et $\vp \in C^0([0,1])$. Alors il existe une unique solution $f\in C^0([0,1])$ à l'équation fonctionnelle
+	\begin{equation*}
+		 \forall x \in [0,1],\ f (x) = \int_0^1 \frac{k(x,y) f(y)}{1+f(y)^2} \diff y + \vp(x)
+	\end{equation*}
+%	\begin{align*}
+%		f &= A(f),&
+%		\text{ où } \forall x \in [0,1], A(f)(x) &:= \int_0^1 \frac{k(x,y) f(y)}{1+f(y)^2} \diff y + \vp(x).
+%	\end{align*}
+\end{exemple}
+
+\begin{proof}
+	Notons $A(f)(x)$ le membre de droite, et $E := C^0([0,1])$ qui est complet pour la norme $\|\cdot\|_\infty$. 
+	Soit également $K := \|k\|_{L^\infty([0,1]^2)}$, notons que $K<1$ par compacité, et montrons que $A : E \to E$ est $K$-Lipschitzienne donc contractante, ce qui permet de conclure par le \nref{th:fixe_Picard}. 
+	La fonction $\psi(s):= s/(1+s^2)$ satisfait $\psi'(s) = (1-s^2)/(1+s^2)^2$, donc est $1$-Lipschitzienne. On en déduit comme annoncé que 
+	\begin{equation*}
+		| A(f)(x)-A(g)(x)| \leq \int_0^1 |k(x,y)| |\psi(f(y))-\psi(g(y))| \diff y 
+		\leq \|k\|_\infty \|f-g\|_\infty.
+		\qedhere
+	\end{equation*} 	
+\end{proof}
+
+
+\subsection{Théorème de Baire}
+\label{subsec:Baire}
+
+Le théorème de Baire fournit une notion d'ensemble \emph{maigre}, stable par union dénombrable, dans tout espace complet. On peut faire l'analogie avec les parties de mesure nulle d'un espace mesuré, mais ces notions sont en fait assez différentes comme l'illustre l'\cref{ex:GrasQ}, et le théorème de Baire a l'avantage de s'appliquer en dimension infinie, voir la \cref{subsec:BaireLin}.
+
+\begin{retenir}
+Le lemme des fermés emboités, le théorème de Baire, et son corollaire s'appliquant aux fermés d'intérieur vide. 
+(\Cref{lem:fermeEmboite,th:BaireOuvert,corol:BaireFerme}.)	
+\end{retenir}
+
+
+\begin{lemma}[Fermés emboités]
+\label{lem:fermeEmboite}
+Soit $(X,d)$ un espace métrique complet, et soit $(F_n)_{n \in \bN}$ une suite de fermés non-vides, décroissants pour l'inclusion, et dont le diamètre $\delta_n := \sup \{d(x,y) \mid x,y \in F_n\}$ tend vers $0$. Alors $\bigcap_{n \in \bN} F_n$ est un singleton. 
+\end{lemma}
+
+\begin{proof}
+	Choisissons $x_n \in F_n$ arbitraire pour tout $n \geq 0$. Alors pour tout $N \geq 0$, $p,q\geq N$, on a $x_p,x_q \in F_N$ et donc $d(x_p,x_q) \leq \delta_N$. Comme $\delta_N\to 0$ lorsque $N \to \infty$, le critère de Cauchy est satisfait.
+\end{proof}
+
+L'hypothèse que le diamètre tend vers $0$ est nécessaire dans le \cref{lem:fermeEmboite}, comme l'illustre le contre exemple $F_n := [n,\infty[ \subset \bR$. 
+Un résultat analogue pour les fermés d'un espace compact permet en revanche de s'en passer, voir la \cref{rem:fermeBorelLeb}. La propriété établie au \cref{lem:fermeEmboite} est en fait équivalente à la complétude de l'espace.
+
+\begin{theorem}[Baire]
+\label{th:BaireOuvert}
+Soit $(X,d)$ un espace métrique complet, et soit $(U_n)_{n \in \bN}$ une suite d'ouverts denses. 
+Alors leur intersection $\bigcap_{n \in \bN} U_n$ est dense. 	
+\end{theorem}
+
+\begin{proof}
+	Soit $x_0\in U_0$ et soit $\ve_0>0$ tel que $B'(x_0,\ve_0) \subset U_0$. On choisit par récurrence, pour tout $n\in \bN$: (i) $x_{n+1} \in B(x_n,\ve_n) \cap U_{n+1}$, et (ii) $\ve_{n+1} \in ]0,2^{-n}]$ tel que $B'(x_{n+1},\ve_{n+1}) \subset B(x_n,\ve_n) \cap U_{n+1}$. 
+
+	On note que les fermés $B'(x_n,\ve_n)$ sont emboités et de diamètre au plus $2\ve_n\to 0$, donc leur intersection contient un point $x_*$ par le \cref{lem:fermeEmboite}.
+	De plus $x_* \in \bigcap_{n \in \bN} U_n$, et $\|x_0-x_*\| \leq \ve_0$. Comme $U_0$ est dense, et  $x_0\in U_0$ et $\ve_0>0$ sont arbitraires, ceci conclut. 
+\end{proof}
+
+Par passage au complémentaire, on obtient:
+
+\begin{corollary}[Baire, complémentaire]
+\label{corol:BaireFerme}
+	Soit $(X,d)$ un espace métrique complet, et soit $(F_n)_{n \in \bN}$ une suite de fermés d'intérieur vide. Alors $\bigcup_{n \in \bN} F_n$ est d'intérieur vide. 
+\end{corollary}
+
+\begin{remark}[Terminologie de Baire]
+\label{rem:terminologieBaire}
+Une intersection dénombrable d'ouverts est appelée un $G_\delta$, et une réunion dénombrable de fermés un $F_\sigma$. Un ensemble est dit maigre s'il est contenu dans un $F_\sigma$ d'intérieur vide, et son complémentaire est dit co-maigre (ou gras) : il contient un $G_\delta$ dense. 	
+\end{remark}
+ 
+Attention : le fait d'être maigre ou gras, pour une partie de $\bR$, n'a pas d'implication sur la mesure de celle-ci, comme le montre l'exemple suivant. 
+\begin{exemple}
+\label{ex:GrasQ}
+	Soit $(q_k)_{k >0}$ une énumération de $\bQ$, et pour tout $n >0$ soit 
+	\begin{equation}
+	U_n := \bigcup_{k >0} \Big]q_k-\frac 1 {nk^2}, q_k + \frac 1 {n k^2}\Big[.	
+	\end{equation}
+	Alors $U_n$ est un ouvert dense de $\bR$, de mesure $|U_n| \leq \pi^2/(6n)$. En particulier, $U_\infty :=  \cap_{n \in \bN} U_n$ est un ensemble gras de mesure nulle, contenant $\bQ$, et son complémentaire est un ensemble maigre de mesure pleine. 
+\end{exemple}
+
+\begin{exemple}	
+\label{ex:grasNonDen}
+	Soit $(X,d)$ un espace métrique complet et sans points isolés, et soit $A \subset X$ un ensemble gras. Alors $A$ est indénombrable. 
+\end{exemple}
+
+\begin{proof}
+	Comme $X$ est sans points isolés, les complémentaires de singleton $X\sm\{x\}$ sont des ouverts denses. Si $A$ était dénombrable, alors $A \cap \bigcap_{x \in A} X \sm \{x\}$ serait à la fois vide et gras, ce qui contredit \nref{th:BaireOuvert}. 
+\end{proof}
+
+
+\subsection{Applications de Baire aux opérateurs linéaires continus} %Conséquences du th.\ 
+\label{subsec:BaireLin}
+
+Le théorème de Baire a plusieurs conséquences importantes pour les applications linéaires entre espaces de Banach.
+
+\begin{retenir}
+	Le théorème de Banach-Steinhauss, de l'application ouverte, et du graphe fermé.
+	(\Cref{th:BanachSteinhauss,th:appliOuverte,th:grapheFerme}.)
+\end{retenir}
+
+
+\begin{theorem}[Banach-Steinhauss]
+\label{th:BanachSteinhauss}
+Soit $E$ un Banach, $F$ un evn, et $\cA \subset L(E,F)$ une famille d'applications linéaires continues, que l'on suppose simplement bornée : 
+\begin{equation}
+	\forall x \in E,\ \sup_{L\in \cA} \|Lx\| < \infty.
+\end{equation}
+Alors $\cA$ est uniformément bornée :
+%\begin{equation}
+$	\sup_{L \in \cA} \vertiii{L} < \infty.$
+%\end{equation}
+\end{theorem}
+
+\begin{proof}
+	Posons, pour tout $k \in \bN$, 
+	\begin{equation}
+		E_k := \{x \in E \mid \forall L \in \cA, \|Lx\| \leq k\}.
+	\end{equation}
+	Alors $E_k$ est un fermé, et $\bigcup_{k \in \bN} E_k = E$, donc par le \nref{corol:BaireFerme}, l'un au moins des $E_k$ est d'intérieur non-vide. Par homogénéité, $E_1$ est d'intérieur non-vide, donc contient une boule ouverte $B(x,r)$, où $x \in E$ et $r>0$. Par symétrie, $B(-x,r) \subset E_1$, et par convexité $B(0,r) \subset E_1$. Par définition de la norme d'opérateur, on a donc $\vertiii{L} \leq r^{-1}$ pour tout $L \in \cA$, ce qui conclut.
+\end{proof}
+
+\begin{corollary}
+\label{corol:limSimpleLin}
+	Soient $E$ un Banach, $F$ un evn, et soit $L_n \in L(E,F)$, $n\in \bN$, une suite d'applications linéaires continues telles que $Lx := \lim_{n \to \infty} L_n x$ existe pour tout $x \in E$. Alors $L\in L(E,F)$ est linéaire continue.
+\end{corollary}
+
+\begin{proof}
+	La linéarité de la limite $L$ est claire. Comme $(L_n x)_{n \in \bN}$ est convergente, pour tout $x \in E$, elle est bornée, et donc $(\vertiii{T_n})_{n \in \bN}$ est bornée par le \nref{th:BanachSteinhauss}, par une constante $C$. Par passage à la limite on obtient $\|Tx\| \leq C \|x\|$, pour tout $x \in E$, donc $\vertiii{T} \leq C$ comme annoncé.
+\end{proof}
+
+
+Le corollaire suivant applique Banach-Steinhauss aux formes linéaires. Il admet un analogue dual  le \cref{corol:faibleSepare}, dont la preuve requiert le \nref{th:HahnBanach} démontré ultérieurement.  
+
+\begin{corollary}[Banach-Steinhauss, pour les formes linéaires]
+\label{corol:BanachSteinhaussK}
+	Soient $E$ un Banach, et $\cA \subset E^*$ un ensemble de formes linéaires continues. Alors $\cA$
+	 %est linéairement borné pour la topologie *faible 
+	est *faiblement borné
+	(i.e.\ $\forall x \in E, \{l(x)\mid x \in A\}$ est borné) ssi $\cA$ est borné. 
+\end{corollary}
+
+\begin{proof}
+Choisir $F := \bK$ dans le \nref{th:BanachSteinhauss}.
+%	La \cref{def:lineairBorne} de bornitude dans un evtlc, et celle \cref{def:topoFaible} des semi-normes définissant la topologie faible, nous placent précisément dans le cadre du \cref{th:BanachSteinhauss}.
+\end{proof}
+
+\begin{exemple}
+\label{ex:FourierDiverge}
+	Il existe une fonction $f\in C^0(\bT, \bC)$, où $\bT := \bR/(2 \pi \bZ)$, dont la série de Fourier diverge en zéro. 
+\end{exemple}
+
+\begin{proof}
+	La somme partielle de la série de Fourier de $f$ en $0$ est donnée par 
+	\begin{equation*}
+		L_n(f) 
+		:= \sum_{|n| \leq N} \int_\bT f(t) \exp(\bi n t) \diff t
+		= \int_\bT f(t) D_n(t) \diff t, 
+	\end{equation*}
+	où $\bi \in \bC$ est le nombre imaginaire unité, et 
+	où on a noté
+	\begin{equation*}
+		D_n(t) := \sum_{|n| \leq N} \exp(\bi n t) = \frac{\sin((2N+1) t/2)}{\sin (t/2)}.
+	\end{equation*}
+	Rappelons que l'espace des fonctions continues périodiques $C^0(\bT,\bC)$ est un Banach, muni de la norme $\|\cdot\|_\infty$. Ainsi
+	\begin{equation*}
+		\vertiii{L_n} = \|D_n\|_{L^1(\bT)} = \int_{-\pi}^{\pi} \frac{|\sin((2n+1)t/2)|}{|\sin(t/2)|} \diff t
+		\geq \int_{-\pi}^{\pi} |\sin((2n+1)t/2)| \frac{\diff t} {|t|}
+		= \int_{-(2n+1)\pi/2}^{(2n+1)\pi/2} |\sin(s)| \frac{\diff s} {|s|},
+	\end{equation*}
+	et la dernière intégrale diverge clairement lorsque $t \to \infty$ lorsque $n \to \infty$. 
+	Le résultat se découle de la contraposée du \cref{corol:BanachSteinhaussK}. 
+\end{proof}
+
+
+Le \nref{th:BanachSteinhauss} s'étend aux les espaces de Fréchet, voir \cite[Theorem 1.33]{alazard2017analyse} pour une discussion plus approfondie.
+
+\begin{theorem}[Banach-Steinhauss dans des Fréchets \facultatif]
+\label{th:BanachSteinhaussFrechet}
+	Soient $(E,(|\cdot|_i)_{i \in I})$ un Fréchet, et $(F,(|\cdot|)_{j \in J})$ un evtlcs, avec $I$ et $J$ dénombrables. Soit $\cA\subset L(E,F)$ une famille d'applications linéaires continues, supposée simplement linéairement bornée : $\forall x\in E$, $\forall j \in J$, $\sup_{u \in \cA} |u(x)|_j < \infty$. Alors $\cA$ est équicontinue : il existe un module de continuité $\omega$ tel que $\forall x,y \in E$, $\forall u \in \cA$, $d_F(u(x),u(y)) \leq \omega(d_E(x,y))$, où les distances sont définies par \eqref{eqdef:evtlc_dist}.
+\end{theorem}
+
+\begin{proof}
+	La preuve mime celle du cas d'un Banach : étant fixé $j \in J$, on note $E_k := \{x\in E \mid \forall L \in \cA,\ |Lx|_j \leq k\}$ qui est un fermé. Le théorème de Baire implique que l'un de ces fermés est d'intérieur non-vide, disons $E_{k_j}$. Par symmétrie et convexité, il contient un voisinage de l'origine, que l'on peut choisir de la forme $V := \{x \in E \mid \forall i \in I_j,\ |x|_i \leq \ve_j\}$ où $\ve_j>0$ et $I_j \subset I$ est fini. On en déduit que $\forall L \in \cA$, $\forall x \in E$, $\forall j \in J$, $|Lx|_j \leq (k_j/\ve_j) \max_{i \in I_j} |x|_i$. 
+	
+	Compte tenu de l'expression \eqref{eqdef:evtlc_dist} des distances, on obtient un module de continuité $\omega$ tel que $\forall x \in E$, $\forall u \in \cA$, $d_F(u(x),0) \leq \omega(d_E(x,0))$. Par linéarité de $u$, il satisfait aux conditions de l'énoncé. 
+\end{proof}
+
+\hiddenproof{
+Détaillons la construction du module de continuité.
+Disons que $|u(x)|_j \leq C_j \max_{i \leq N_j} |x|_i$, et quitte à augmenter $C_j$ supposons que $C_j 2^{-N_j} \geq 2^{-j}$.  
+On choisit le module de continuité $\omega(s) := \max_{j \in \bN} \min\{2^{-j}, C_j s\}$, qui tend bien vers $0$ lorsque $s \to 0$.
+Considérons $x \in E$, $j\in \bN$, et posons $w := \omega(d_E(x,0))$. Si $w \geq 2^{-j}$, alors $\min\{2^{-j}, |u(x)|_j\} \leq 2^{-j} \leq w$ comme souhaité. Si $w < 2^{-j}$, alors $C_j \min \{2^{-i},|x|_i\} < w$ pour tout $i\in \bN$ par définition de $d_E$, donc $C_j |x|_i < w$ pour tout $i \leq N_j$, donc $\min\{2^{-j}, |u(x)|_j\} \leq |u(x)|_j \leq w$ comme souhaité également. Ainsi $d_F(u(x),0) := \max_{j\in \bN} \min \{2^{-j}, |u(x)|_j\} \leq w$ ce qui conclut. 
+}
+
+
+Le théorème de l'application ouverte est une seconde application du \nref{th:BaireOuvert} aux applications linéaires, qui utilise la complétude des espaces de départ \emph{et} d'arrivée. 
+
+\begin{theorem}[Application ouverte]
+\label{th:appliOuverte}
+Soient $E$ et $F$ des Banach et soit $L \in L(E,F)$ linéaire continue et surjective. 
+Alors $\exists \delta>0$, $B_F(0,\delta) \subset L(B_E(0,1))$, et donc l'image par $L$ de tout ouvert est un ouvert. %; de manière équivalente, $\exists C$, $\forall y\in E$, $\exists x \in E$, $Lx = y$ et $\|x\| \leq C \|y\|$.
+
+%\todoi{Ou encore : $T(B_E(0,1))\supset B_F(0,\delta)$ avec $\delta>0$.}
+\end{theorem}
+
+\begin{proof}
+	Par surjectivité, on a $\cup_{n \in \bN} \overline {L(B_E(0,n))} = F$. Par le \nref{corol:BaireFerme} l'un de ces fermés est d'intérieur non-vide, et par symétrie et convexité il contient un voisinage de l'origine. 
+	Il existe donc $n \in \bN$ et $r>0$ tels que $B_F(0,r) \subset \overline{L(B_E(0,n))}$; notons $C_0 := n/r$.
+	Par homogénéité, il existe pour tout $y\in F$ et tout $\ve>0$, un point $x \in E$ tel que $\|x\| \leq C_0 \|y\|$ et $\|y-Lx\| \leq \ve$; la seconde partie de la preuve permet de remplacer cette dernière approximation par une égalité.
+	
+	Etant donné $y_0 \in F\sm \{0\}$, pour tout $n \geq 0$ par récurrence, (i) on choisit $x_n\in E$ tel que $\|y_n-Lx_n\| \leq \|y_n\|/2$ et $\|x_n\| \leq C_0 \|y_n\|$, puis (ii) on pose $y_{n+1} := y_n-L x_n$. Par une récurrence immédiate, $\|y_n\| \leq 2^{-n} \|y_0\|$, donc $\|x_n\| \leq C_0 2^{-n} \|y_0\|$. Par complétude de $E$, la série $x_* := \sum_{n \in \bN} x_n$ converge, et par sommation des normes $\|x_*\| \leq 2 C_0 \|y_0\|$.
+	Finalement, on note que $\|y_0 - L\sum_{n<N} x_n\| = \|y_N\| \to 0$ lorsque $N \to \infty$, donc $\|y_0-Lx_*\|=0$ par continuité de $L$.
+	
+	Nous avons obtenu : $\forall y\in E$, $\exists x \in E$, $Lx = y$ et $\|x\| \leq C \|y\|$, où $C := 2 C_0$. 
+	On en déduit que $L(B(0,1)) \supset B(0,1/C)$ comme annoncé. Puis $L(B(x,r)) \supset B(Lx,r/C)$ par linéarité, et donc l'image d'un voisinage de $x\in E$ arbitraire est un voisinage de $Lx$, ce qui conclut. 
+\end{proof}
+
+
+\begin{corollary}[Isomorphisme de Banach]
+\label{corol:isomBanach}
+	Soient $E,F$ des Banachs et soit $L \in L(E,F)$ linéaire continue et bijective. Alors $L^{-1} \in L(F,E)$ est continue.
+\end{corollary}
+
+\begin{proof}
+Par le \cref{th:appliOuverte}, l'image directe par $L$ d'un ouvert est un ouvert, donc l'image réciproque par $L^{-1}$ d'un ouvert est un ouvert. On conclut par la \nref{prop:caract_cont}.
+\end{proof}
+
+\begin{corollary}[Equivalence des normes]
+\label{corol:equivNormes}
+	Soit $E$ un espace vectoriel, qui est complet pour deux normes $\|\cdot\|$ et $\|\cdot\|'$ données. 
+	S'il existe $C$ tel que $\forall x \in E$, $\|x\|' \leq C \|x\|$, alors il existe $c>0$ tel que $\forall x \in E$, $\|x\|' \geq c \|x\|$.
+\end{corollary}
+
+\begin{proof}
+	Appliquer le \cref{corol:isomBanach} à $\Id : (E,\|\cdot\|) \to (E,\|\cdot\|')$.
+\end{proof}
+
+
+\begin{theorem}[Graphe fermé]
+\label{th:grapheFerme}
+	Soient $(E,\|\cdot\|_E)$ et $(F,\|\cdot\|_F)$ des Banach, et soit $L : E \to F$ linéaire. Alors $L$ est continue ssi son graphe $G := \{ (x,Lx) \mid x \in E\}$ est une partie fermée de $E \times F$. 
+\end{theorem}
+
+\begin{proof}
+Rappelons que $E \times F$ est un Banach muni de la norme $\|(x,y)\|_{E \times F} := \|x\|_E+\|y\|_F$.
+Si $L$ est continue, alors $G = \{ (x,y) \in E \times F	\mid y - Lx = 0\}$ est fermé en tant qu'image réciproque de $\{0\}$ par l'application linéaire continue $(x,y)\in E \times F \mapsto y-Lx \in F$. 
+
+
+Réciproquement, supposons $G$ fermé; c'est donc un Banach. La projection $\Pi : (x,y) \in G \mapsto x \in E$ est continue et bijective, donc par le \nref{corol:isomBanach} sa réciproque est  continue. Ainsi il existe une constante $C$ tel que $\forall x \in E$, $C \|x\|_E \geq \|\Pi^{-1} x\|_{E \times F} = \|x\|_E + \|Lx \|_F$, ce qui implique $\|Lx\| \leq (C-1)\|x\|$ et conclut.
+\end{proof}
+
+\begin{corollary}
+	Soit $E$ un Banach, et soit $E = V\oplus W$ une décomposition en sev supplémentaires. La projection $P : E\to V$ parallèlement à $W$ est continue ssi $V$ et $W$ sont fermés.
+\end{corollary}
+
+\begin{proof}
+	Si $P$ est continue, alors $W := \Ker P$ et $V := \Ker (\Id-P)$ sont fermés. Réciproquement, supposons $V,W$ fermés.
+	Soit $(x_n,v_n)$ une suite du graphe de $P$, donc $x_n \in E$ et $v_n := P x_n$, convergeant vers $(x,v)\in E$. Alors $x_n \in V$ donc $v\in V$ par fermeture de cet espace, et par ailleurs $x_n-v_n \in W$ donc $x-v\in W$ par fermeture également. On en déduit que $v=P x$, et donc que $P$ est continue d'après le théorème du graphe fermé.
+\end{proof}

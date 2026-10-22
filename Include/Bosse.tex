@@ -1,0 +1,107 @@
+La classe des fonctions $C^\infty$ est assez souple pour construire toutes sortes d'approximations, de la fonction de seuil de Heaviside, de la masse de Dirac, ou de diverses fonctions indicatrices, dans cette section. Ces outils interviennent dans la régularisation par convolution, voir la \cref{prop:testDenseWsp}, ou la preuve de certains résultats d'analyse comme la \nref{prop:distribCont}. La souplesse des fonctions $C^\infty$ est à contraster avec la rigidité des fonctions analytiques, voir la \nref{prop:StoneCtrEx}.
+
+
+\begin{retenir}
+L'existence et les propriétés recherchées d'un noyau de convolution. (\Cref{prop:cinfBosse}.)	
+\end{retenir}
+
+\inventaire{
+\Nref{sec:bosse}\\
+\Nref{lem:cinfExpInv}\\
+\Nref{prop:cinfHeaviside}\\
+\Nref{prop:cinfBosse}\\
+\Nref{prop:cinfSupport}\\
+\Nref{prop:cinfPartition}\\
+\Nref{prop:cinfExhaust}
+}
+
+
+\begin{lemma}[Prolongement lisse de la fonction nulle]
+\label{lem:cinfExpInv}
+	La fonction $\vp : \bR\to \bR$ suivante est $C^\infty$: 
+	\begin{equation}
+		\vp(x) := \begin{cases}
+			\exp(-1/x) & \text{si } x>0, \\
+			0 & \text{sinon}.
+		\end{cases}		
+	\end{equation}
+\end{lemma}
+
+\begin{proof}
+	Par construction, $\vp$ est $C^\infty$ sur $\bR^*$. Par récurrence, $\vp^{(n)}(x) = P_n(x)\exp(-1/x)/x^{2n}$ pour tout $n \in \bN$ et tout $x>0$, où $P_n$ un polynôme de degré au plus $n$. On en déduit que $\vp^{(n)}(x) \to 0$ lors que $x\to 0$, pour tout $n \in \bN$, et donc que $\vp\in C^\infty$. 
+\end{proof}
+
+
+
+
+\begin{proposition}[Approximation de Heaviside]
+\label{prop:cinfHeaviside}
+	Il existe $\vp \in C^\infty(\bR)$, croissante, positive, telle que $\vp=0$ sur $]-\infty,0]$ et $\vp=1$ sur $[1,\infty[$. 
+\end{proposition}
+
+\begin{proof}
+	Soit $\vp_0$ la fonction du \cref{lem:cinfExpInv}.
+	On peut choisir $\vp := \vp_1/\vp_1(1)$ où 
+	\begin{equation*}
+		\vp_1(t) := \int_0^t \vp_0(s) \vp_0(1-s) \diff s.
+	\qedhere
+	\end{equation*}
+\end{proof}
+
+
+\begin{proposition}[Noyau de convolution]	
+\label{prop:cinfBosse}
+	Il existe $\vp \in C^\infty(\bR^d)$, radiale, positive, d'intégrale unité, telle que $\vp= 1$ sur $B(0,1/3)$ et $\supp(\vp) \subset B'(0,2/3)$. En particulier $\supp(\vp) \csubset B(0,1)$.
+	%de support contenu dans la boule unité.
+\end{proposition}
+
+\begin{proof}
+	Notons $\vp_\mathrm{heav}$ la fonction de la \cref{prop:cinfHeaviside}, et observons que $\vp_1(t) := \vp_\mathrm{heav}(2-3t)$ satisfait $\vp_1=1$ sur $]-\infty,1/3]$ et $\vp_1=0$ sur $[2/3,\infty[$. 
+	On pose $\vp(x) := c \vp_1(|x|)$ où la constante $c$ est choisie telle que $\int \vp = 1$, qui convient clairement. 
+\end{proof}
+
+
+Les résultats suivants visent à approcher des fonctions indicatrices de manière lisse. Rappelons que $C^\infty_c(\Omega)$ désigne l'ensemble des fonctions indéfiniment dérivables et à support compact sur un domaine ouvert $\Omega \subset \bR^d$.
+
+
+\begin{proposition}[Approximation d'un support]	
+\label{prop:cinfSupport}
+	Soit $\Omega\subset \bR^d$ ouvert et $K \csubset \Omega$ compact. 
+	Alors il existe $\vp\in C^\infty_c(\Omega,[0,1])$ telle que $\vp=1$ sur $K$. 
+\end{proposition}
+
+\begin{proof}
+Soit $r := \min\{\|x-y\| \mid x \in K, y \in \bR^d \sm \Omega\}$. Notons que $r>0$ par compacité de $K$ et fermeture de $\bR^d \sm \Omega$. 
+L'ensemble $K$ étant compact, il admet une couverture $\cup_{i=1}^I B(x_i,r/3)$ par des boules ouvertes de rayon $r/3$ centrées en des points $x_1,\cdots,x_I \in K$. 
+
+Notons $\vp_\mathrm{heav}$ et $\vp_\mathrm{conv}$ les fonctions des \cref{prop:cinfHeaviside,prop:cinfBosse}. Posons 
+\begin{equation}
+	\vp_1(x) := \sum_{1 \leq i \leq I} \vp_\mathrm{conv}\Big(\frac{x-x_i} {r/3}\Big).
+\end{equation}
+Alors $\vp_1\in C^\infty$, $\supp(\vp_1)\csubset \Omega$, et $\vp_1 > 0$ sur $K$.
+Posons $c := \inf_K \vp_1$ et notons que $c>0$ par compacité. 
+On définit finalement $\vp(x) := \vp_\mathrm{heav}(\vp_1(x)/c)$ qui convient.
+\end{proof}
+
+\begin{proposition}[Partition de l'unité]
+\label{prop:cinfPartition}
+	Soit $K \csubset \bR^d$ compact, dont on considère une couverture $K \subset \cup_{i=1}^I \Omega_i$ par des ouverts. Alors il existe $(\vp_i)_{i=1}^I$ telles que $\vp_i \in C^\infty(\bR^d)$, $\supp \vp_i \csubset \Omega_i$, et $\sum_{i=1}^I \vp_i = 1$ sur $K$.
+\end{proposition}
+
+\begin{proof}
+	Définissons $r := \min_{x \in K} \max_{i=1}^I d(x,\bR^d \sm \Omega_i)$, appelé nombre de Lebesgue de la couverture, et notons que $r>0$ par compacité de $K$.  Posons $K_i := \{x \in K \mid d(x,\bR^d \sm \Omega_i) \geq r\}$ et notons que $K_i \csubset \Omega_i$ et que $\cup_{i=1}^I K_i = K$.
+	Choisissons par la \cref{prop:cinfSupport} une fonction $\psi_i \in C^\infty_c(\Omega_i,[0,1])$ telle que $\psi_i=1$ sur $K_i$, pour tout $1 \leq i \leq I$, étendue par $0$ hors de $\Omega_i$. Les fonctions $\vp_i := \psi_i / \sum_{j=1}^I \psi_j$, où $1 \leq i \leq I$, conviennent. 
+\end{proof}
+
+\begin{proposition}[Exhaustion lisse] 
+\label{prop:cinfExhaust}
+Soit $\Omega \subset \bR^d$ un ouvert, et et soit $(K_n)_{n \in \bN}$ une suite exhaustive de compacts, voir la \cref{prop:exhaustComp}; posons $K_{-1} := \emptyset$.
+Alors il existe une suite de fonctions $\vp_n \in C^\infty_c(\bR^d,[0,1])$ telles que $\supp(\vp_n) \subset \mathring K_{n+1}\sm K_{n-1}$ et $\sum_{n \in \bN} \vp_n = 1$ sur $\Omega$. 
+\end{proposition}
+
+\begin{proof}
+Pour tout $n \in \bR$, introduisons $K_{n+1/2}$ tel que $K_n \csubset \mathring K_{n+1/2}$ et $K_{n+1/2} \csubset K_{n+1}$. Par exemple $K_{n+1/2} := \{x \in \bR^d \mid d(x,K_n) \leq r/2\}$ où $r := \inf \{d(x,\bR^d \sm K_{n+1}) \mid x \in K_n\}$. 
+
+	Choisissons $\psi_n \in C^\infty_c(\mathring K_{n+1} \sm  K_{n-1}, [0,1])$ telle que $\psi_n=1$ sur $K_{n+1/2}\sm \mathring K_{n-1/2}$, par la \cref{prop:cinfSupport}, pour tout $n \in \bN$ et avec $K_{-1/2} := \emptyset$. 
+	Alors $\vp_n := \psi_n / \sum_{m \in \bN} \psi_m$ convient; noter qu'en chaque point $x$, la somme contient au plus deux termes non-nuls. 
+\end{proof}

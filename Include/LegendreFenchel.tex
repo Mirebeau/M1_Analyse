@@ -1,0 +1,201 @@
+Cette appendice ouvre sur la thématique de l'optimisation convexe, en tant qu'application du \nref{th:HahnBanach}, et parce que de nombreuses EDPs peuvent s'interpréter dans ce cadre, comme le \nref{th:pbPoisson} ou l'\cref{ex:nonLinMinH1}.
+%En physique, la dissipation de l'énergie d'un système, ou la formulation Lagrangienne de ses lois d'évolution, amènent naturellement à des problèmes d'optimisation. 
+
+\begin{retenir}
+Cet appendice doit être considéré comme une ouverture, dont le contenu n'est pas exigible pour ce cours d'analyse fonctionnelle. La dualité de Legendre-Fenchel, la notion de sous-gradient d'une fonction convexe, et le théorème de Fenchel-Rockafellar sont toutefois fondamentaux en optimisation convexe. (\Cref{th:LegendreFenchel,th:ssGrad,th:FenchelRockafellar}.)
+\end{retenir}
+
+\inventaire{
+\Nref{sec:LegendreFenchel}\\
+\Nref{def:legendre_fenchel}\\
+\Nref{def:domaineFct} (Domaine d'une fonction)\\
+\Nref{lem:FenchelPropre} ($f^*$ propre ssi $f$ a un minorant affine)\\
+\Nref{lem:minorantCvxSci} (Existence d'un minorant affine d'une fonction cvx, sci)\\
+\Nref{th:LegendreFenchel} \\
+\Nref{lem:cvxImplBorne} (Convexe implique localement borné)\\
+\Nref{lem:cvxImplLip} (Convexe implique localement Lipschitz)\\
+\Nref{th:ssGrad}\\
+\Nref{lem:cvxSciAlt} (Alternative pour l'enveloppe sci d'une fonction convexe)\\
+\Nref{th:FenchelRockafellar}
+}
+
+Etant donné un élément $x\in E$ d'un evn, et une forme linéaire continue $\vp \in E^*$, on note parfois $\<\vp,x\> := \vp(x)$ le \emph{crochet de dualité}. 
+
+\begin{definition}[Conjuguée de Legendre-Fenchel]
+\label{def:legendre_fenchel}
+Soit $E$ un evn et $f : E \to \overline \bR$ une fonction. Sa conjuguée de Legendre-Fenchel est définie par 
+	\begin{equation}
+	\label{eqdef:lengedre_fenchel}
+		f^*(\vp) := \sup_{x \in E} \<\vp,x\> - f(x).
+	\end{equation}
+\end{definition}
+
+Par exemple, si $f(x) = \frac 1 2 \|x\|^2_E$, alors on vérifie que $f^*(\vp) = \frac 1 2 \|\vp\|_{E^*}^2$. 
+
+\begin{definition}
+\label{def:domaineFct}
+	Etant donnée une fonction $f : X \to ]-\infty,\infty]$ définie sur un ensemble $X$, on note $\Dom(f) := \{x \in X \mid f(x) < \infty\}$ son domaine, et on dit qu'elle est propre si $\Dom(f) \neq \emptyset$. 
+\end{definition}
+
+
+On montre dans le lemme suivant que $f^*$ est propre ssi $f$ admet un minorant affine continu. Le lemme ultérieur est dédié à la construction de tels minorants affines, pour les fonctions convexes sci.
+
+
+\begin{lemma}
+\label{lem:FenchelPropre}
+	Soit $f : E \to ]-\infty,\infty]$ une fonction propre sur un evn. Alors  $f^* : E \to ]-\infty,\infty]$ est convexe et sci. De plus, $f^*$ est propre ssi $f$ admet un minorant affine continu; plus précisément $f \geq \vp + \alpha$ ssi $f^*(\vp) \leq -\alpha$, pour tous $\alpha \in \bR$, $\vp \in E^*$.
+\end{lemma}
+
+\begin{proof}
+	La fonction $f^*$ est convexe et sci comme supremum de la famille non-vide de fonctions $\vp \in E^* \mapsto \<\vp,x\> - f(x) \in \bR$, associées à chaque $x \in \Dom(f)$, qui sont affines et continues, donc convexes et sci. Le second point est immédiat compte tenu de la définition \eqref{eqdef:lengedre_fenchel} de $f^*$.
+\end{proof}
+
+\begin{lemma}
+\label{lem:minorantCvxSci}
+	Soit $f : E \to ]-\infty,\infty]$ convexe et sci, et soient $x_0 \in E$ et $t_0 < f(x_0)$. Alors il existe $\alpha \in \bR$, $\vp \in E^*$ tels que $f > \alpha + \vp$ sur $E$, et $\alpha + \vp(x_0) > t_0$. 
+\end{lemma}
+
+\begin{proof}
+	Le sur graphe $C := \{(x,t) \mid f(x) \leq t\} \subset E \times \bR$ est convexe et fermé, voir la \cref{prop:surGrapheSCI}. 
+	Par ailleurs une forme linéaire sur $E \times \bR$ est continue ssi elle prend la forme $(x,t) \mapsto \vp(x) - \lambda t$ avec $\vp \in E^*$ et $\lambda \in \bR$. 
+
+	Par le \nref{th:separFermeComp} il existe $(\vp,\lambda) \in E^* \times \bR_+$ et $\delta>0$ tels que $\vp(x)-\lambda t +\delta \leq  \vp(x_0) - \lambda t_0$ pour tout $x\in E$ et $t \geq f(x)$ avec $\delta>0$. 
+	Supposons d'abord $f(x_0) < \infty$.  
+	En choisissant $x=x_0$ on obtient $\lambda >0$, et donc le minorant affine continu $x\in E \mapsto \vp(x-x_0)/\lambda +t_0$.
+		
+	Supposons maintenant $f(x_0) = \infty$. En considérant un point $x\in \Dom(f)$, on obtient que $\lambda \geq 0$. Si $\lambda>0$ c'est terminé, et sinon on a obtenu $\vp \in E^*$ tel que $\vp(x) +\delta \leq \vp(x_0)$ pour tout $x\in \Dom(f)$. Choisissons un minorant affine $f_1$ de $f$, qui existe par l'argument précédent puisque qu'on peut supposer $f$ propre (sinon le résultat est trivial). 
+	Alors $f_1(x) + \mu (\vp(x-x_0)+\delta)$ est un minorant affine de $f$ pour tout $\mu \geq 0$, et prend la valeur $f_1(x_0)+\mu \delta$ en $x_0$, qui est arbitrairement grande lorsque $\mu \to \infty$, ce qui conclut. 
+\end{proof}
+
+
+Le théorème de dualité de Legendre Fenchel assure que $f = f^{**}$ (moyennant l'identification $E=E^{**}$) pour toute fonction $f : E \to ]-\infty,\infty]$ propre, convexe et sci sur un espace réflexif $E$. On peut faire le lien avec la \nref{prop:cvxFaibleFerme} affirmant similairement que $C = C^{\circ\circ}$ pour tout convexe, fermé contenant l'origine d'un espace réflexif.
+
+\begin{theorem}[Dualité de Legendre-Fenchel]
+\label{th:LegendreFenchel}
+	Soit $f : E \to ]-\infty,\infty]$ une fonction propre et admettant un minorant affine sur un evn (c'est toujours le cas si $f$ est convexe et sci). 
+	Alors $f^{**}$ est convexe, sci, propre, et $f^{**} \leq f$ sur $E$ avec égalité ssi $f$ est convexe et sci. 
+\end{theorem}
+
+\begin{proof}
+	Par le lemme précédent, $f^*$ est convexe et sci, donc admet un minorant affine par le \cref{lem:minorantCvxSci}, et propre. 
+	Ainsi $f^{**}$ est convexe, sci, et propre comme annoncé. 
+	Par construction, on a $f(x) \geq \<\vp,x\> - f^*(\vp)$ pour tout $\vp \in E^*$, donc $f \geq f^{**}$ en prenant le supremum. 
+	
+	Supposons $f$ convexe et sci. Soit $x_0 \in E$ et soit $t_0 < f(x_0)$. Par le \cref{lem:minorantCvxSci}, on a un minorant affine $f \geq \alpha + \vp$ tel que $\alpha + \vp(x_0) \geq t_0$. Alors $f^*(\vp) \leq - \alpha$, et donc $f^{**} (x_0) \geq \vp(x_0) + \alpha \geq t_0$. Il s'ensuit que $f^{**} \geq f$, et donc $f=f^{**}$ ce qui conclut.
+\end{proof}
+
+La dualité de Legendre-Fenchel permet d'exprimer une fonction convexe comme enveloppe de fonctions affines. 
+On peut remarquer que si $f\leq g$ alors $f^*\geq g^*$ et donc $f^{**} \leq g^{**}$; on en déduit que  $f^{**}$ est la plus grande fonction convexe sci bornée supérieurement par $f$ (supposée admettre un minorant affine).
+
+Dans le \cref{th:ssGrad} suivant, on montre l'existence d'une fonctions affine tangente à une fonction convexe, aux points de l'intérieur de son domaine de définition. % relatif du domaine de définition. 
+
+
+
+\begin{lemma}
+\label{lem:cvxImplBorne}
+	Soit $f$ une fonction convexe s.c.i.\ sur un Banach. Alors $f$ est localement bornée sur $\mathring \Dom(f)$. 
+\end{lemma}
+
+\begin{proof}
+	Supposons $B'(0,\ve) \subset \Dom(f)$, quitte à considérer une translation $x \mapsto f(x-x_*)$ où $x_* \in \mathring \Dom(f)$, et montrons que $f$ est bornée au voisinage de $0$.
+	Comme $f$ est sci, les ensembles $(\{f \leq n\})_{n \in \bN}$ sont fermés. Comme leur union est $\Dom(f)$, l'un d'entre eux est d'intérieur non-vide. Par le \cref{corol:BaireFerme}, il existe donc $x_0 \in E$, $r>0$ et $n \in \bN$ tels que $f\leq n$ sur $B'(x_0,r)$. 
+	Par convexité, $f(\ve h/(1+\ve)) \leq \ve f(x_0+h)/(1+\ve) + f(-\ve x_0)/(1+\ve)$, donc $f \leq M_0 := \ve n /(1+\ve) + f(-\ve x_0)/(1+\ve)$ sur $B'(0,r_0)$ avec $r_0 := \ve r/(1+\ve)$.
+\end{proof}
+
+\begin{lemma}
+\label{lem:cvxImplLip}
+	Soit $f : E \to ]-\infty,\infty]$ une fonction convexe sur un evn. Soit supposons $f \leq f(x) + M$ sur $B'(x,r)$, où $x \in E$, $r>0$, $M > 0$. 
+	Alors $|f(x)-f(y)|\leq (M/r) \|x-y\|$ pour tout $y \in B'(x,r)$. On en déduit que $f$ est $2 M/r$-Lipschitz sur $B'(x,r/3)$. 
+\end{lemma}
+
+\begin{proof}
+	Supposons d'abord $f(0)=0$ et $f \leq 1$ sur $B'(0,1)$. Alors pour tout $x \in B'(0,1)$ et $t \geq 1$, on a par convexité $f(t x)-f(0) \geq t(f(x)-f(0))$, donc $f(x) \leq \|x\|$ en choisissant $t = 1/\|x\|$. Egalement $f(x)+f(-x) \geq 0$ par convexité, donc $f(x) \geq -f(-x) \geq -\|x\|$. L'estimation annoncée s'en déduit en considérant $(f( (\cdot+x)/r) - f(x))/M$.
+	
+	Passons à la propriété de régularité Lipschitz. Par le résultat précédent, on a $|f(y)-f(x)|\leq M/3$ pour tout $y\in B'(x,r/3)$, et donc $f \leq f(y) + \frac 4 3 M$ sur $B_y := B(y,2 r/3) \subset B'(x,r)$. Par la première partie, $|f(y)-f(z)| \leq (\frac 4 3 M) / (\frac 2 3 r) = 2 M/r$ pour tout $z \in B_y$. On conclut en notant que $B'(x,r/3) \subset B_y$. 
+\end{proof}
+
+%\notei{La notion d'intérieur relatif a été supprimée du cours}
+
+
+\begin{theorem}[Sous gradient d'une fonction convexe \facultatif]
+\label{th:ssGrad}
+	Soient $E$ un Banach et $f : E \to ]-\infty,\infty]$ convexe et sci. Alors $f$ est localement Lipschitz sur $\mathring\Dom(f)$. De plus %Si $x \in \Relint(\Dom(f))$ 
+	\begin{equation*}
+		\partial f(x) := \{\vp \in E^* \mid \forall y \in E, f(y) \geq f(x) + \vp(y-x)\},
+	\end{equation*}
+	est un ensemble non-vide pour tout $x \in \mathring \Dom(f)$, appelé \emph{sous gradient} de $f$ en $x$.
+\end{theorem}
+
+\begin{proof}	
+	Notons $D := \mathring{\Dom(f)}$ et soit $x_0 \in D$. 
+	La restriction $f_{|D}$ est localement bornée par le \cref{lem:cvxImplBorne}, donc localement Lipschitz comme annoncé par le \cref{lem:cvxImplLip}, et donc l'ensemble $\{(x,t)\mid x \in D,\, f(x) < t\}$ est ouvert. On peut donc séparer $(x_0,f(x_0))$ de $D$ par le \nref{th:separOuvertPt} appliqué à l'evn $\bR \times E$: il existe $(\lambda,\vp) \in \bR \times E^*$ tels que $\lambda f(x_0) - \vp(x_0) < \lambda t - \vp(x)$ pour tous $x\in D$, $t>f(x)$. En choisissant $x=x_0$ on obtient $\lambda >0$. Alors $f(x) \geq f(x_0) + \vp(x-x_0)/\alpha$ comme annoncé pour tout $x \in D$, donc pour tout $x \in E$ puisque $D$ est un voisinage de $x_0$ et $f$ est convexe, comme annoncé. Ainsi $\partial f(x_0) \neq \emptyset$. 
+%	Finalement, supposons seulement $x\in \Relint(\Dom(f))$. 
+%	Quitte à translater on peut supposer que l'espace affine $F := \Aff(C)$ contient l'origine, et donc c'est un Banach car il est fermé. Par le résultat précédent, il existe $\vp_F \in F^*$ telle que $f(y) \geq f(x) + \vp_F(y-x)$ pour tout $y \in F$. Par le \cref{corol:prol_forme_evn} on a une extension continue $\vp\in E^*$ de $\vp_F$, et par hypothèse $f(y) = \infty \geq f(x) + \vp_F(y-x)$ pour tout $y \in E\sm F$, ce qui conclut.  
+\end{proof}
+
+On conclut avec un résultat fondamental d'optimisation : la dualité de Fenchel-Rockafellar. 
+L'hypothèse $(A \Dom f) \cap \mathring\Dom g \neq \emptyset$ admet des affaiblissements et variantes, étudiés dans la littérature.
+%Noter que l'hypothèse $(A \Dom f) \cap \mathring\Dom g \neq \emptyset$ admet des affaiblissements, comme $\Relint (A\Dom f-\Dom g) \neq \emptyset$, ainsi que plusieurs variantes ($\Relint$ désignant l'intérieur relatif).
+Rappelons aussi que si $A\in L(E,F)$, alors $A^\top \in L(F^*,E^*) : \vp \mapsto \vp \circ A$ désigne l'application transposée.
+
+
+\begin{lemma}
+\label{lem:cvxSciAlt}
+	Soit $E$ evn et $f : E \to ]-\infty,\infty]$ convexe. Posons $g(x) := \liminf_{y \to x} f(y)$, pour tout $x \in E$, son enveloppe sci (on note parfois $g = f_*$). Alors on a l'alternative : 
+	\begin{enumerate}[(a)]
+		\item $g: E \to ]-\infty,\infty]$ est convexe, sci, et satisfait $g^* = f^*$.
+		\item $g : E \to \{-\infty,\infty\}$ prend seulement deux valeurs, et $\{g = -\infty\} = \overline{\Dom f}$. %\{f < \infty\} 
+	\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+	Supposons qu'il existe $x_* \in E$ tel que $g(x_*) = -\infty$, et donc qu'il existe une suite convergente $x_n \to x_*$ lorsque $n \to \infty$, telle que $g(x_n) \leq -n^3$ pour tout $n \in \bN$.
+	Soit $y_* \in \overline{\Dom f}$, de sorte qu'il existe une suite convergente $y_n \to y_*$ lorsque $n \to \infty$, telle que $f(y_n) \leq  n$ a partir d'un certain rang. 
+	Alors $z_n := y_n (1-1/ n) + x_n /n$ satisfait $z_n \to y_*$ lorsque $n \to \infty$, et $f(z_n) \to -\infty$ par convexité. 
+	Ainsi, si $g$ prend la valeur $-\infty$ en un point, alors l'alternative (b) est satisfaite. 
+	Sinon, $g : E \to ]-\infty,\infty]$ est par construction clairement convexe, sci, et satisfait $g^*=f^*$, ce qui conclut. 
+\end{proof}
+
+\begin{theorem}[Fenchel-Rockafellar \facultatif]
+\label{th:FenchelRockafellar}
+Soient $E$ et $F$ des Banach, et $A \in L(E,F)$ un opérateur linéaire continu. Soient $f: E \to ]-\infty,\infty]$ et $g : F \to ]-\infty,\infty]$, convexes, s.c.i., et telles que $(A \Dom f) \cap \mathring\Dom\, g \neq \emptyset$. 
+Alors 
+\begin{equation*}
+	\sup_{y \in F^*} -f^*(-A^\top y) - g^*(y) = \inf_{x \in E} f(x) + g(A x).
+\end{equation*}
+\end{theorem}
+
+\begin{proof}
+	Les membres de gauche et droite de l'égalité à démontrer, notés $\alpha$ et $\beta$, s'écrivent %respectivement
+	\begin{align*}
+		\alpha &:= \sup_{y \in F^*} \inf_{x \in E} c(x,y), & 
+		\beta &:= \inf_{x \in E} \sup_{y \in F^*} c(x,y), &
+		\text{où } c(x,y) := f(x) + \<A x,y\> - g^*(y).
+	\end{align*}
+	On a donc $\alpha \leq \beta$ par construction, et il suffit d'établir que $\alpha \geq \beta$ (i.e.\ l'absence de saut de dualité, ``duality gap'' en anglais).
+	En particulier, on peut supposer $\beta \neq - \infty$, sinon il n'y a rien à démontrer; noter que $\beta \neq \infty$ par hypothèse.
+	Définissons $\cF : F \to ]-\infty,\infty]$ par 
+	\begin{equation*}
+		\cF(u) := \inf_{x \in E} f(x) + g(A x+u). 
+	\end{equation*}
+	Cette fonction est convexe, et satisfait $\cF(0) = \beta \in \bR$.
+	
+%	Montrons que $\cF$ est s.c.i.\ en $0$. Quitte à translater, on peut supposer $0 \in (A \Dom f) \cap \Relint(\Dom g)$. Notons $\tilde F := \overline {\Aff(\Dom g)}$ et $\tilde E := A^{-1} \tilde F$, qui sont des sev fermés de $E$ et $F$ donc des Banach. Quitte à remplacer $E$ et $F$ par $\tilde E$ et $\tilde F$ on peut supposer $0 \in (A \Dom f) \cap \mathring \Dom g$. 
+On dispose par hypothèse de $x_* \in E$, $\ve > 0$ et $M \in \bR$ tels que $f(x_*) + g(A x_* + u)  \leq M$ pour tout $u\in B_F(0,\ve)$, voir le \cref{lem:cvxImplBorne}. 	
+	Soient $u_n \to 0$ et $x_n\in E$ telles que $f(x_n) + g(A x_n +u_n) \to \liminf_{u \to 0} \cF(u)$. Alors 
+	\begin{equation*}
+		f((1-t_n) x_n + t_n x_*) + g(A [(1-t_n) x_n + t_n x_*] )
+		\leq (1-t_n) [f(x_n) + g(A x_n + u_n)] + t_n [f(x_*) + g(A x_* - u_n (1+\tfrac 1 {t_n}))]
+	\end{equation*}
+	par convexité de $(x,u) \mapsto f(x) + g(Ax + u)$, avec $t_n \in ]0,1]$. Choisissons $t_n \to 0$ telle que $u_n (1+\frac 1 {t_n}) \in B_F(0,\ve)$ pour tout $n \in \bN$ assez grand. Comme $f$ et $g$ sont  s.c.i., l'inégalité précédente donne $\cF(0) = \liminf_{u \to 0} \cF(u)$, c'est à dire que $\cF$ est s.c.i.\ au point $0$.  
+
+	Pour tout $y \in F^*$ on a 
+	\begin{align*}
+		\cF^*(y) &= \sup_{u\in F} \sup_{x \in E} \<y,u\> -f(x) - g(Ax+u)\\
+		&= \sup_{x \in E} \sup_{v \in F} \<y,v-Ax\> - f(x) - g(v)\\
+		&=\sup_{x \in E} \<y, -Ax\> - f(x) + g^*(y)\\
+		&= f^*(-A^\top y) + g^*(y). 
+	\end{align*}
+	On a utilisée (i) l'expression de $\cF$, (ii) l'interversion des supremum, toujours licite, et le changement de variable $v=Ax+u$, (iii - iv) la définition de la conjuguée de Legendre-Fenchel.
+	Comme $\cF$ est convexe, et sci au point $0$ avec une valeur $\cF(0) = \beta$ finie, elle correspond au cas (a) du \cref{lem:cvxSciAlt}. On a donc $\cF(0) = \cF^{**}(0) = \sup_{y \in F^*} - f^*(-A^\top y) - g^*(y)$ comme annoncé.
+\end{proof}

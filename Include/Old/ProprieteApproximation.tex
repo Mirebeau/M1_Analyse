@@ -1,0 +1,80 @@
+%\todoi{Plus d'exemples d'applications ? (On résoudra des laplaciens, opérateurs compacts définis par convolution avec un noyau, ...)}
+
+\todoi{Remplacer par argument plus direct : l'image d'une suite faiblement convergente par un opérateur compact est fortement convergente. Conclure à la continuité si la boule unité est métrisable pour la topologie faible (réflexivité, séparabilité).
+
+Voir aussi : opérateur complètement continu.
+}
+
+
+Terminons cette section par une discussion des opérateurs continus de rang fini entre des evn $E$ et $F$, dont l'ensemble est noté $L_f(E,F)$. Clairement, un opérateur $T \in L(E,F)$ est de rang fini ssi il peut s'écrire sous la forme 
+\begin{equation}
+\label{eq:rgFini}
+	T(x) = \sum_{1 \leq i \leq I} \vp_i(x) f_i
+\end{equation}
+où $I$ est un entier, $\vp_1,\cdots,\vp_I \in E^*$ sont des formes linéaires continues, et $f_1,\cdots,f_I \in F$ est une base de l'image de $T$.
+
+\hiddenproof{
+Prendre une base $f_1,\cdots, f_I$ de $T(E)$ qui est de dimension finie par hypothèse, noter $f_1^*,\cdots,f_I^* \in T(E)^*$ la base duale, puis poser $\vp_i := f_i^* \circ T$. 
+}
+
+
+\begin{proposition}
+	Soient $E,F$ des evn et $T \in \overline{L_f(E,F)}$. La restriction $T : B'_E(0,1)\to F$ est continue de la topologie faible dans la topologie forte. 	
+\end{proposition}
+
+\begin{proof}
+	Un opérateur de rang fini est continu de la topologie faible dans la topologie forte (sur l'espace entier), puisque $\vp_1,\cdots,\vp_I \in E^*$ sont continues pour la topologie faible sur $E$, et que l'addition et la multiplication externe sont continues pour la topologie forte sur $F$. On conclut en notant qu'une limite uniforme (sur la boule $B'_E(0,1)$) d'applications continues (pour les topologies ici choisies) est continue. 
+\end{proof}
+
+La \emph{propriété d'approximation}, définie ci-dessous, permet d'approcher les opérateurs compacts par des opérateurs de rang fini, voir la \cref{prop:limRangFini}.
+
+\begin{definition}[Propriété d'approximation]
+\label{def:propriApprox}
+	Un evn $E$ a la propriété d'approximation si pour tout compact $K \csubset E$ et tout $\ve>0$ il existe $T \in L_f(E)$ tel que $\|T x-x\| \leq \ve$ pour tout $x \in K$. 
+\end{definition}
+
+\begin{proof}[Preuve que tout Hilbert a la propriété d'approximation]
+	Soit $K \subset E$ compact et soit $\ve>0$. Par compacité de $K$, il existe un entier $I \in \bN^*$ et  $x_1,\cdots,x_I \in K$ tels que $K \subset \cup_{1 \leq i \leq I}  B(x_i,\ve)$. La projection orthogonale sur $\Vect\{x_1,\cdots,x_I\}$ satisfait alors aux conditions de l'énoncé. 
+\end{proof}
+
+Il est connu que $L^p(X,\mu)$ a la propriété d'approximation pour tout espace mesuré $(X,\mu)$, et aussi $C_b^0(Y)$ pour tout espace métrique $Y$. 
+
+
+%A cet effet nous introduisons la notion de base de Schauder.
+
+%\todoi{Peut être mieux de parler directement de la propriété d'approximation : 
+%Pour tout compact 
+%}
+%
+%\begin{definition}[Base de Schauder]
+%Une base de Schauder d'un evn $E$ est une famille $(e_n)_{n \in \bN}$ telle que pour tout $x \in E$, il existe une unique suite $(\lambda_n(x))_{n \in \bN}$ telle que $\|x-\sum_{0 \leq n \leq N} \lambda_n(x) e_n\| \to 0$ lorsque $N \to \infty$. 
+%\end{definition}
+%
+%On pose $P_n(x) := \sum_{0 \leq n \leq N} \lambda_n(x) e_n$, appelées projections canoniques, et on admet que $\sup_{n\in \bN} \vertiii{P_n} < \infty$ si $E$ est un Banach; c'est une conséquence subtile du \cref{corol:equivNormes} d'équivalence des normes, voir \cite[Théorème 4.10]{fabian2011banach}. 
+%Un evn admettant une base de Schauder est séparable. 
+%
+%Tout espace de Hilbert séparable admet une base de Schauder, a savoir n'importe quelle base Hilbertienne, et les projections canoniques sont orthogonales et de norme unité. 
+%La base de Haar est une base de Schauder de $L^p([0,1])$. Les espaces $L^p$ d'e
+
+\begin{proposition}[Limites d'opérateurs de rang fini]
+\label{prop:limRangFini}
+	Soit $E$ un evn et $F$ un Banach.
+	Alors $L_c(E,F)$ est fermé, et $\overline {L_f(E,F)} \subset L_c(E,F)$ avec égalité si $F$ a la propriété d'approximation. %possède une base de Schauder.
+\end{proposition}
+
+\begin{proof}
+	On note $B := B'_E(0,1)$. 
+	\emph{Preuve de la fermeture de $L_c(E,F)$.} Soient $T \in \overline {L_c(E,F)}$ et $\ve>0$. Soit $T_0 \in L_c(E,F)$ tel que $\|T-T_0\|<\ve$, et soit $K_0 := \overline{T_0(B)}$. Par compacité, il existe une couverture finie $K_0 \subset \cup_{1 \leq i \leq I} B(y_i,\ve)$ avec $y_1,\cdots,y_I \in K_0$. Ainsi $T(B) \subset \cup_{1 \leq i \leq I} B(y_i,2\ve)$, ce qui établit la précompacité de cet ensemble puisque $\ve>0$ est arbitraire, comme annoncé. 
+	
+	\todoi{On pourrait préciser un peu le dernier argument ci-dessus.}
+	
+	\emph{Preuve de l'inclusion $\overline{L_f(E,F)} \subset L_c(E,F)$.}
+	Si $T\in L_f(E,F)$, alors $\overline {T(B)}$ est un fermé borné de l'image de $T$, qui est de dimension finie, donc $\overline {T(B)}$ est compact. Ainsi $T \in L_c(E,F)$, et l'on conclut par fermeture de $L_c(E,F)$.
+	
+	\emph{Preuve de l'inclusion réciproque.}
+	Supposons $T$ compact, notons $K := \overline{T(B)}$. Soit $\ve>0$ et soit $T_\ve$ un opérateur comme dans la \nref{def:propriApprox}. Alors $\|T-T_\ve \circ T\| \leq \ve$ et $T_\ve \circ T \in L_f(E,F)$, comme annoncé. 
+	
+%	Supposons que $F$ a une base de Schauder, donc il existe une suite $(P_n)_{n \in \bN}$ d'opérateurs de rang fini uniformément bornée $\vertiii{P_n} \leq C$, tels que $P_n(x) \to x$ pour tout $x \in F$ lorsque $n \to \infty$. 
+%	Supposons $T$ compact, notons $K := \overline{T(B)}$. Soit $\ve>0$ et soit $y_1,\cdots,y_I \in K$ tels que $K \subset \cup_{1 \leq i \leq I} B(y_i,\ve)$. 
+%	Soit $n\in \bN$ tel que $\|P_n(y_i)-y_i\|\leq \ve$ pour tout $1 \leq i \leq I$. Soit $x \in B$, de sorte que $\|y_i-T x\| < \ve$ pour un certain $1 \leq i \leq I$; alors $\|P_n \circ T x - T x\| \leq \|P_n(T x-y_i)\| + \|P_n y_i -y_i\| + \|y_i-Tx\| \leq (C+2) \ve$, et $P_n \circ T$ est de rang fini, comme annoncé.
+\end{proof}
