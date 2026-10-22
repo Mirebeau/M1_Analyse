@@ -3,7 +3,7 @@ Le point de départ est le théorème de Hahn-Banach, qui établit que le dual c
 La sous-section suivante est dédiée à la propriété de réflexivité qui, lorsqu'elle est satisfaite, permet d'identifier $E$ avec son bidual $E^{**}$. Finalement, on présente les formes géométriques du théorème de Hahn-Banach.
 
 Deux annexes complètent cette discussion.
-L'\cref{sec:Hilbert} présente le cadre hilbertien, dans lequel la discussion précédente devient essentiellement triviale grâce au \nref{th:reprRiez} et au  \nref{th:projConvexe}. 
+L'\cref{sec:Hilbert} présente le cadre hilbertien, dans lequel la discussion précédente devient essentiellement triviale grâce au \nref{th:reprRiesz} et au  \nref{th:projConvexe}. 
 L'\cref{sec:LegendreFenchel} est une introduction à l'optimisation convexe, via le \nref{th:LegendreFenchel} et le \nref{th:FenchelRockafellar}.
 
 Pour la simplicité, on considère seulement des $\bR$-evn dans cette section.
@@ -53,8 +53,7 @@ Le théorème de Hahn-Banach permet d'établir l'existence de prolongements cont
 
 
 \begin{retenir}
-Le Lemme de Zorn et le théorème de Hahn Banach, avec les définitions associées. Le prolongement de même norme d'une forme linéaire, et le critère de densité associé.
-\claudereport{Typo : ``Hahn Banach'' $\to$ ``Hahn-Banach'' (aussi dans la preuve du \cref{corol:dens_banach}).}
+Le Lemme de Zorn et le théorème de Hahn-Banach, avec les définitions associées. Le prolongement de même norme d'une forme linéaire, et le critère de densité associé.
 (\Cref{def:inductif,lem:Zorn,def:sousLin,th:HahnBanach,corol:prol_forme_evn,corol:dens_banach}.)
 \end{retenir}
 
@@ -86,16 +85,14 @@ Soit $\cA$ un ensemble d'ensembles non vides. Alors il existe $f : \cA \to \cup\
 	Soit $\cA$ un ensemble d'ensembles non-vides, et soit $\cB := \cup \cA$ sa réunion. On définit $E := \{f : A \to \cB \mid A \subset \cA \text{ et } \forall a \in A, f(a) \in a\}$ l'ensemble des fonctions de choix partielles sur $\cA$, ordonné par la restriction : $(f_0 : A_0 \to \cB) \leq (f_1 : A_1 \to \cB)$ ssi $A_0 \subset A_1$ et $f_{1|A_0} = f_0$. 
 	Cet ensemble est inductif : si $(f_i : A_i \to \cB)_{i \in I}$ est une famille totalement ordonnée, alors on peut définir $A_* := \cup_{i \in I} A_i$ et $f_* : A_* \to \cB$ par ses restrictions $f_{*|A_i} = f_i$ pour tout $i \in I$, qui sont consistantes les unes avec les autres par définition de l'ordre, ce qui donne un majorant de la famille. 
 	
-	Par le Lemme de Zorn, l'ensemble $E$ admet un élément maximal noté $f_0 : A_0 \to \cB$. Si par l'absurde $A_0 \neq \cA$, alors on peut choisir $a \in \cA\sm A_0$ et un élément $\alpha \in a$, puis considérer l'extension définie par $A_1 := A_0 \cup\{a\}$ et $f_1(a) := \alpha$, $f_{1|A_0} = f_0$. Cela contredit la maximalité de $f_0$, d'où une contradiction. 
-\claudereport{Typo : redondance ``Cela contredit la maximalité de $f_0$, d'où une contradiction''.}
+	Par le Lemme de Zorn, l'ensemble $E$ admet un élément maximal noté $f_0 : A_0 \to \cB$. Si par l'absurde $A_0 \neq \cA$, alors on peut choisir $a \in \cA\sm A_0$ et un élément $\alpha \in a$, puis considérer l'extension définie par $A_1 := A_0 \cup\{a\}$ et $f_1(a) := \alpha$, $f_{1|A_0} = f_0$. Cela contredit la maximalité de $f_0$, et achève ce raisonnement par l'absurde. 
 	Ainsi $A_0 = \cA$ et $f_0$ est une fonction de choix sur $\cA$, ce qui conclut. % établit l'axiome du choix, et conclut la preuve. 
 \end{proof}
 
 
 \begin{definition}[Fonction sous-linéaire]
 \label{def:sousLin}
-Une fonction $\rho : E \to \bR$, sur un $\bR$-espace vectoriel $E$, est dite sous linéaire si elle est positivement $1$-homogène et convexe. De manière équivalente
-\claudereport{Typo : ``sous linéaire'' $\to$ ``sous-linéaire''.}
+Une fonction $\rho : E \to \bR$, sur un $\bR$-espace vectoriel $E$, est dite sous-linéaire si elle est positivement $1$-homogène et convexe. De manière équivalente
 \begin{align*}
 	\rho(\lambda x) &= \lambda \rho(x),&
 	\rho(x+y) &\leq \rho(x)+\rho(y), &
@@ -115,18 +112,14 @@ Noter qu'une semi-norme est une application sous-linéaire qui de plus est \emph
 \begin{proof}
 Introduisons l'ensemble des extensions partielles satisfaisant aux hypothèses : 
 \begin{equation*}
-	\cE := \{\vp : G \to \bR \mid G \text{ s.e.v de } E  \text{ t.q. }  F \subset G,\,  \vp \leq \rho \text{ sur } G,\, \vp \text{ linéaire et } \vp_{|F} = \vp_F,\}
+	\cE := \{\vp : G \to \bR \mid G \text{ s.e.v.\ de } E  \text{ t.q. }  F \subset G,\,  \vp \leq \rho \text{ sur } G,\, \vp \text{ linéaire et } \vp_{|F} = \vp_F,\}
 \end{equation*}
-\claudereport{Typo : virgule finale dans la définition de $\cE$ ; ``s.e.v'' $\to$ ``s.e.v.''.}
 L'ensemble $\cE$ est ordonné par la restriction : $(\vp : G\to \bR) \leq (\psi : H \to \bR)$ ssi $G \subset H$ et $\psi_{|G} = \vp$. 
-Cet ensemble est inductif : si $(\vp_i : F_i \to E)_{i \in I}$ est totalement ordonnée, alors on peut définir $F_* := \cup_{i \in I} F_i$ et $\vp_* : F_* \to E$ par ses restrictions $\vp_{*|F_i} = \vp_i$ qui sont consistantes, ce qui donne un majorant. Il contient $\vp_F : F \to \bR$, donc est non-vide.
-\claudereport{Typo : ``$\vp_i : F_i \to E$'' $\to$ ``$\vp_i : F_i \to \bR$'' (idem ``$\vp_* : F_* \to E$'').}
+Cet ensemble est inductif : si $(\vp_i : F_i \to \bR)_{i \in I}$ est totalement ordonnée, alors on peut définir $F_* := \cup_{i \in I} F_i$ et $\vp_* : F_* \to \bR$ par ses restrictions $\vp_{*|F_i} = \vp_i$ qui sont consistantes, ce qui donne un majorant. Il contient $\vp_F : F \to \bR$, donc est non-vide.
 
-Par le \nref{lem:Zorn}, $\cE$ admet un élement maximal, noté $\vp : G \to \bR$. Supposons par l'absurde que $G \neq E$, autrement le résultat est prouvé. Soit $x \in E \sm G$ et soit $H := \{\lambda x+e \mid \lambda \in \bR,\, e \in G\}$ l'espace vectoriel engendré. On souhaite définir une extension $\psi : H \to \bR$ de la forme $\psi(\lambda x + e) = \lambda \alpha + \vp(e)$ pour tous $\lambda \in \bR$, $e \in G$, ce qui contredira la maximalité de $\vp$.
-\claudereport{Typo : ``élement'' $\to$ ``élément'' (aussi ``Element'' et ``élement'' dans la \cref{prop:conjugueDual}).}
+Par le \nref{lem:Zorn}, $\cE$ admet un élément maximal, noté $\vp : G \to \bR$. Supposons par l'absurde que $G \neq E$, autrement le résultat est prouvé. Soit $x \in E \sm G$ et soit $H := \{\lambda x+e \mid \lambda \in \bR,\, e \in G\}$ l'espace vectoriel engendré. On souhaite définir une extension $\psi : H \to \bR$ de la forme $\psi(\lambda x + e) = \lambda \alpha + \vp(e)$ pour tous $\lambda \in \bR$, $e \in G$, ce qui contredira la maximalité de $\vp$.
 
-Il faut pour cela montrer l'existence de $\alpha \in \bR$ tel que $\lambda \alpha + \vp(e) \leq \rho(\lambda x + e)$ pour tous $\lambda \in \bR$ et $e \in E$. 
-\claudereport{Typo : ``pour tous $\lambda \in \bR$ et $e \in E$'' $\to$ ``$e \in G$''.}
+Il faut pour cela montrer l'existence de $\alpha \in \bR$ tel que $\lambda \alpha + \vp(e) \leq \rho(\lambda x + e)$ pour tous $\lambda \in \bR$ et $e \in G$. 
 On peut se ramener à $\lambda = \pm 1$, en utilisant la positive homogénéité de $\rho$, d'où la condition équivalente suivante : %et cette condition est donc équivalente à : 
 \begin{equation*}
 	\sup_{e \in G} \vp(e) - \rho(e-x) \leq \alpha \leq \inf_{f \in G} \rho(f+x)-\vp(f). 
@@ -153,8 +146,8 @@ Le \nref{th:HahnBanach} s'applique aux evn en choisissant typiquement $\rho$ pro
 
 \begin{proof}
 	Si $F$ est dense et $\vp \in E^*$ est nulle sur $F$, alors par continuité $\vp = 0$ sur $E$, comme annoncé. 
-	Réciproquement, supposons $\overline F \neq E$, et par le \nref{lem:normaleRiez} choisissons $x_0\in E$ tel que $\|x_0\|_E = 1$ et $d(x_0,F)\geq 1/2$. Posons $\vp : \overline F \oplus \bR x_0 \to \bR$, définie par $\vp(x + \lambda x_0) := \lambda$, et notons que $\|x+\lambda x_0\| \geq d(x+\lambda x_0,F) = |\lambda| d(x_0,F) \geq |\lambda|/2$, de sorte que $\vp$ est continue. 
-	Par le \cref{corol:prol_forme_evn} de Hahn Banach, $\vp$ admet un prolongement continu et de même norme, qui est donc une forme linéaire continue s'annulant sur $F$ mais pas sur $E$. 
+	Réciproquement, supposons $\overline F \neq E$, et par le \nref{lem:normaleRiesz} choisissons $x_0\in E$ tel que $\|x_0\|_E = 1$ et $d(x_0,F)\geq 1/2$. Posons $\vp : \overline F \oplus \bR x_0 \to \bR$, définie par $\vp(x + \lambda x_0) := \lambda$, et notons que $\|x+\lambda x_0\| \geq d(x+\lambda x_0,F) = |\lambda| d(x_0,F) \geq |\lambda|/2$, de sorte que $\vp$ est continue. 
+	Par le \cref{corol:prol_forme_evn} de Hahn-Banach, $\vp$ admet un prolongement continu et de même norme, qui est donc une forme linéaire continue s'annulant sur $F$ mais pas sur $E$. 
 \end{proof}
 
 \begin{exemple}
@@ -182,12 +175,10 @@ Pour tout sous-espace de dimension finie $F$ d'un evn $E$, il existe une project
 \end{corollary}
 
 \begin{proof}
-	Soit $(e_1,\cdots,e_n)$ une base de $F$, et soit $(\vp_1,\cdots,\vp_n) \in F^*$ la base duale, c'est à dire que $\vp_i(\delta_j) = \delta_{ij}$ pour tous $1 \leq i,j \leq n$. Le projecteur s'obtient en prolongeant chacune des $\vp_i$ de manière continue à $E$ par le \cref{corol:prol_forme_evn}, et en posant $P_F(x) := \sum_{1 \leq i \leq n} \vp_i(x) e_i$. 
-\claudereport{Typo : ``$\vp_i(\delta_j) = \delta_{ij}$'' $\to$ ``$\vp_i(e_j) = \delta_{ij}$''.}
+	Soit $(e_1,\cdots,e_n)$ une base de $F$, et soit $(\vp_1,\cdots,\vp_n) \in F^*$ la base duale, c'est-à-dire que $\vp_i(e_j) = \delta_{ij}$ pour tous $1 \leq i,j \leq n$. Le projecteur s'obtient en prolongeant chacune des $\vp_i$ de manière continue à $E$ par le \cref{corol:prol_forme_evn}, et en posant $P_F(x) := \sum_{1 \leq i \leq n} \vp_i(x) e_i$. 
 \end{proof}
 
-\subsection{Reflexivité}
-\claudereport{Typo : ``Reflexivité'' $\to$ ``Réflexivité'' (aussi dans le titre de la \cref{def:reflexif}).}
+\subsection{Réflexivité}
 \label{subsec:reflexivite}
 
 La propriété de réflexivité, lorsqu'elle est satisfaite, permet d'identifier un evn $E$ avec son bidual $E^{**}$, et la topologie faible sur $E$ avec la topologie *faible sur $E^{**}$. Les résultats fondés sur cette dernière topologie, comme le \nref{th:BanachAlaoglu}, s'appliquent donc aux espaces réflexifs.
@@ -198,7 +189,7 @@ La définition d'un espace réflexif, l'inégalité de Hölder et la dualité da
 \end{retenir}
 
 
-\begin{definition}[Reflexivité]
+\begin{definition}[Réflexivité]
 \label{def:reflexif}
 	La fonction d'évaluation $\Phi : E \to E^{**}$, d'un evn dans son bidual, est définie par
 	\begin{equation*}
@@ -210,9 +201,9 @@ La définition d'un espace réflexif, l'inégalité de Hölder et la dualité da
 
 Pour étudier les propriétés de la fonction d'évaluation $\Phi$ nous introduisons la notion de \emph{conjugué dual}, dont l'existence est assurée par le \nref{th:HahnBanach}. Comme illustré dans le \cref{th:HolderIneq} consacré aux espaces de Lebesgue $L^p$, il peut exister plusieurs conjugués duaux, et plusieurs éléments peuvent avoir le même conjugué dual.
 
-\begin{proposition}[Element conjugué dual]
+\begin{proposition}[Elément conjugué dual]
 \label{prop:conjugueDual}
-	Pour tout élement  $x \in E$ d'un evn, il existe $\vp\in E^*$ telle que 
+	Pour tout élément  $x \in E$ d'un evn, il existe $\vp\in E^*$ telle que 
 	\begin{align*}
 		\vp(x) &= \|x\|_E \|\vp\|_{E^*}, &
 		\|\vp\|_{E^*} &= \|x\|_E.
@@ -227,7 +218,7 @@ Pour étudier les propriétés de la fonction d'évaluation $\Phi$ nous introdui
 \end{proof}
 
 A titre illustratif, mentionnons quelques conséquences immédiates des propriétés de $\Phi$.
-%L'application $\Phi$ permet d'importer sur un evn $E$ des résultats montr \nref{corol:BanachSteinhaussK} 
+%L'application $\Phi$ permet d'importer sur un evn $E$ des résultats montr \nref{corol:BanachSteinhausK} 
 
 
 \begin{corollary}
@@ -248,7 +239,7 @@ D'après le \nref{lem:evtlc_separe}, il faut montrer que $(\forall \vp \in E^*,\
 \begin{proof}
 	%Une partie $A \subset E$ est faiblement bornée ssi $\{\vp(a) \mid a \in A\}$ est borné pour tout $\vp \in E^*$; de manière équivalente $\Phi(A) \subset E^{**}$ est *faiblement bornée. 
 	Remarquer que $\Phi(A) \subset E^{**}$ est *faiblement bornée, et que $E^* = L(E,\bR)$ est complet comme tout espace dual, voir la \cref{prop:LEFcomplet}.
-	Par le \nref{corol:BanachSteinhaussK}, $\Phi(A)$ est donc fortement bornée, donc $A\subset E$ aussi par isométrie.
+	Par le \nref{corol:BanachSteinhausK}, $\Phi(A)$ est donc fortement bornée, donc $A\subset E$ aussi par isométrie.
 \end{proof}
 
 
@@ -325,7 +316,7 @@ Un espace de Hilbert $H$ satisfait l'identité du parallélogramme $\|x+y\|^2 + 
 
 \paragraph{Dualité dans les espaces de Lebesgue.}
 Deux exposants $p,q \in [1,\infty]$ sont dits conjugués si 
-%Commençons par l'inégalité de Holder, qui montre que $L^p$ s'injecte isométriquement dans $(L^q)^*$ si les exposants $p$ et $q$ sont conjugués, c'est à dire si 
+%Commençons par l'inégalité de Holder, qui montre que $L^p$ s'injecte isométriquement dans $(L^q)^*$ si les exposants $p$ et $q$ sont conjugués, c'est-à-dire si 
 \begin{equation*}
 	\frac 1 p + \frac 1 q = 1.
 \end{equation*}
@@ -339,9 +330,8 @@ L'objectif de cette fin de section est d'établir l'identification $L^p(X,\mu)^*
 %et qui donne par son cas d'égalité le conjugué dual d'un élément. %On montre ensuite dans le \cref{th:lpDualLq} que cette injection est bijective, pour $p<\infty$. 
 %Dans toute la suite, $(X,\mu)$ désigne un espace mesuré. 
 
-\begin{theorem}[Inégalité de Holder]	
+\begin{theorem}[Inégalité de Hölder]	
 \label{th:HolderIneq}
-\claudereport{Typo : ``Holder'' $\to$ ``Hölder'' (aussi dans la preuve du \cref{th:lpDualLq}).}
 Soient $p,q\in [1,\infty]$ satisfaisant $\frac 1 p + \frac 1 q = 1$. Pour tous $f\in L^p(X,\mu)$ et $g\in L^q(X,\mu)$ on a $fg \in L^1$ et 
 \begin{equation}
 \label{eq:Holder}
@@ -367,8 +357,7 @@ Par homogénéité de l'inégalité \eqref{eq:Holder} considérée, on peut supp
 comme annoncé. On en déduit $fg \in L^1$ et l'inégalité demandée. Le cas d'égalité dans \eqref{eq:Holder} se déduit de celui de l'inégalité de Young. 
 \end{proof}
 
-L'uniforme convexité des espaces de Lebesgues $L^p(X,\mu)$, $1 < p < \infty$ découle des inégalités de Clarkson.
-\claudereport{Typo : ``Lebesgues'' $\to$ ``Lebesgue''.}
+L'uniforme convexité des espaces de Lebesgue $L^p(X,\mu)$, $1 < p < \infty$ découle des inégalités de Clarkson.
 Rappelons la première d'entre elles\footnote{
 Pour être complet, la seconde énonce que 
 $
@@ -417,21 +406,21 @@ Alors $g\in L^q \mapsto \vp_g \in (L^p)^*$ est une injection isométrique, bijec
 \end{theorem}
 
 \begin{proof}[Preuve, seulement dans le cas $1 < p < \infty$ pour la bijectivité]
-D'après l'inégalité de Holder, 
+D'après l'inégalité de Hölder, 
 la for\-me linéaire $\vp_g \in (L^p)^*$ est continue et de norme au plus $\|g\|_q$. Par le cas d'égalité, on a l'injection et l'isométrie. Il reste à établir la surjectivité.
 
 Supposons d'abord que $2 \leq p < \infty$. Notons $E := (L^p)^*$ et $F = \{\vp_g \mid g \in L^q\} \subset E$, qui est un sous espace complet car isométrique à $L^q$, donc fermé. 
 Supposons par l'absurde que $F \neq E$, de sorte qu'il existe $\vp \in E^*\sm \{0\}$ telle que $F \subset \Ker(\vp)$, par le \nref{corol:dens_banach}.
 
-Par la \nref{prop:ClarksonIneq}, l'espace $L^p$ est uniformément convexe donc réflexif. L'élément du bidual $\vp \in E^* = (L^p)^{**}$ s'écrit donc $\vp = \Phi(f)$, c'est à dire $\vp(\psi) =  \psi(f)$ pour toute $\psi \in E$, pour un certain $f \in L^p$, non-nul car $\vp$ l'est. Par le cas d'égalité dans l'inégalité de Hölder, il existe $g \in L^q$ telle que $\Phi(f)(g) := \int_X f g \neq 0$, ce qui contredit l'hypothèse que $\vp$ s'annule sur $F$. 
+Par la \nref{prop:ClarksonIneq}, l'espace $L^p$ est uniformément convexe donc réflexif. L'élément du bidual $\vp \in E^* = (L^p)^{**}$ s'écrit donc $\vp = \Phi(f)$, c'est-à-dire $\vp(\psi) =  \psi(f)$ pour toute $\psi \in E$, pour un certain $f \in L^p$, non-nul car $\vp$ l'est. Par le cas d'égalité dans l'inégalité de Hölder, il existe $g \in L^q$ telle que $\Phi(f)(g) := \int_X f g \neq 0$, ce qui contredit l'hypothèse que $\vp$ s'annule sur $F$. 
 
-Nous avons établi que $F=E$, c'est à dire l'identification isométrique bijective $L^p(X,\mu)^* = L^q (X,\mu)$. Par ailleurs $L^q(X,\mu)^* = L^p(X,\mu)^{**} = L^p(X,\mu)$ par réflexivité de $L^p$, ce qui conclut.
+Nous avons établi que $F=E$, c'est-à-dire l'identification isométrique bijective $L^p(X,\mu)^* = L^q (X,\mu)$. Par ailleurs $L^q(X,\mu)^* = L^p(X,\mu)^{**} = L^p(X,\mu)$ par réflexivité de $L^p$, ce qui conclut.
 \end{proof}
 
 %Les normes $\|x\|_1 := \sum_{i=1}^d |x_i|$ et $\|x\|_\infty := \max_{i=1}^d |x_i|$ sont bien duales sur l'espace de dimension finie $\bR^d$. En revanche
 %L'espace $\bR^d$ de dimension finie $d$, 
 
-Pour terminer, nous montrons que $\ell^1\subsetneq (\ell^\infty)^*$, où $\ell^p := L^p(\bN)$ muni de la mesure de comptage, c'est à dire la non-bijectivité de l'inclusion du \cref{th:lpDualLq} dans le cas $p=\infty$, et la non-réflexivité de $\ell^1$. En revanche, les evn de dimension finie $(\bR^d,\|\cdot\|_1)$ et $(\bR^d,\|\cdot\|_\infty)$, correspondant à un domaine $X$ fini, sont bien duaux isométriques l'un de l'autre. 
+Pour terminer, nous montrons que $\ell^1\subsetneq (\ell^\infty)^*$, où $\ell^p := L^p(\bN)$ muni de la mesure de comptage, c'est-à-dire la non-bijectivité de l'inclusion du \cref{th:lpDualLq} dans le cas $p=\infty$, et la non-réflexivité de $\ell^1$. En revanche, les evn de dimension finie $(\bR^d,\|\cdot\|_1)$ et $(\bR^d,\|\cdot\|_\infty)$, correspondant à un domaine $X$ fini, sont bien duaux isométriques l'un de l'autre. 
 
 \begin{exemple}[Non réflexivité]	
 \label{ex:nonReflex}
@@ -443,15 +432,13 @@ De plus il existe $\vp \in (\ell^\infty)^*$ telle que $\vp( (x_n)_{n \in \bN} ) 
 \end{exemple}
 
 \begin{proof}
-Considérons $\vp \in (l_0^\infty)^*$, posons $x_n := \vp(\delta_n)$ où $\delta$ est le symbole de Kronecker, et notons $\sigma_n$ le signe de $x_n$.
-La continuité de $\vp\in (\ell^\infty_0)^*$ donne $\sum_{0 \leq n \leq N} |x_n| = \vp(\sigma_0 \delta_1+\cdots+ \sigma_N\delta_N) \leq \|\vp\|_{(\ell^\infty_0)^*}$ pour tout $N\in \bN$, puisque $\|\sigma_0 \delta_1+\cdots+ \sigma_N\delta_N\|_\infty = 1$, donc $(x_n)_{n\in \bN} \in \ell^1$. 
-\claudereport{Typo : ``$\sigma_0 \delta_1+\cdots+ \sigma_N\delta_N$'' $\to$ ``$\sigma_0 \delta_0+\cdots+ \sigma_N\delta_N$'' (deux occurrences) ; notations ``$l^\infty_0$'' et ``$\ell^\infty_0$'' à uniformiser.}
-Ainsi  $\tilde \vp(y) := \sum_{n\in \bN} x_n y_n$ est continue sur $l_0^\infty$, et donc $\tilde \vp = \vp$ par densité des suites à support fini. On a montré que $(l_0^\infty)^* = \ell^1$, comme annoncé.
+Considérons $\vp \in (\ell_0^\infty)^*$, posons $x_n := \vp(\delta_n)$ où $\delta$ est le symbole de Kronecker, et notons $\sigma_n$ le signe de $x_n$.
+La continuité de $\vp\in (\ell^\infty_0)^*$ donne $\sum_{0 \leq n \leq N} |x_n| = \vp(\sigma_0 \delta_0+\cdots+ \sigma_N\delta_N) \leq \|\vp\|_{(\ell^\infty_0)^*}$ pour tout $N\in \bN$, puisque $\|\sigma_0 \delta_0+\cdots+ \sigma_N\delta_N\|_\infty = 1$, donc $(x_n)_{n\in \bN} \in \ell^1$. 
+Ainsi  $\tilde \vp(y) := \sum_{n\in \bN} x_n y_n$ est continue sur $\ell_0^\infty$, et donc $\tilde \vp = \vp$ par densité des suites à support fini. On a montré que $(\ell_0^\infty)^* = \ell^1$, comme annoncé.
 
 Supposons maintenant $\vp\in (\ell^1)^*$, définissons de même $x_n := \vp(\delta_n)$ et $\sigma_n$ son signe, et notons que $|x_n| = \vp(\sigma_n \delta_n) \leq \|\vp\|_{(\ell^1)^*}$ puisque $\|\delta_n\|_1 = 1$. Ainsi la suite $(x_n)_{n \in \bN} \in \ell^\infty$, et on conclut comme précédemment que $(\ell^1)^* = \ell^\infty$, comme annoncé. 
 
-Soit $F \subset \ell^\infty$ le sous espace vectoriel des suites convergentes. On définit $\vp_F((x_n)_{n \in \bN}) := \lim_{n \to \infty} x_n$ sur cet espace, qui est une forme linéaire continue de norme $1$. Puis par le \cref{corol:prol_forme_evn} on étend $\vp$ à $\ell^\infty$ en conservant sa norme, comme annoncé.
-\claudereport{Typo : ``on étend $\vp$'' $\to$ ``on étend $\vp_F$''.}
+Soit $F \subset \ell^\infty$ le sous espace vectoriel des suites convergentes. On définit $\vp_F((x_n)_{n \in \bN}) := \lim_{n \to \infty} x_n$ sur cet espace, qui est une forme linéaire continue de norme $1$. Puis par le \cref{corol:prol_forme_evn} on étend $\vp_F$ à $\ell^\infty$ en conservant sa norme, comme annoncé.
 Si par l'absurde on pouvait écrire $\vp( (x_n)_{n\in \bN}) = \sum_{n\in \bN} x_n y_n$, pour une certaine suite $(y_n)_{n \in \bN} \in \ell^1$, alors on obtiendrait $\sum_{n \geq N} y_n = 1$ pour tout $N\in \bN$ (en considérant la suite constante égale à $1$ à partir du rang $N$, qui est bien convergente), ce qui est impossible. Ainsi $(\ell^\infty)^* \neq \ell^1$, comme annoncé, ce qui conclut.
 \end{proof}
 
@@ -466,13 +453,10 @@ Le théorème de séparation d'un ouvert convexe et d'un point, et de séparatio
 (\Cref{th:separOuvertPt,th:separFermeComp}.)
 \end{retenir}
 
-Commençons par décrire la jauge d'un convexe, qui jouera le rôle de la fonction sous-additive dans le \nref{th:HahnBanach}. Noter que la jauge de la boule unité d'un evn est sa norme. 
-\claudereport{Imprécision : ``fonction sous-additive'' $\to$ ``fonction sous-linéaire''.}
+Commençons par décrire la jauge d'un convexe, qui jouera le rôle de la fonction sous-linéaire dans le \nref{th:HahnBanach}. Noter que la jauge de la boule unité d'un evn est sa norme. 
 
-Pour la lisibilité, et en l'absence d'ambiguité, on se permet dans la suite de noter 
-\claudereport{Typo : ``ambiguité'' $\to$ ``ambiguïté''.}
-$\{f < 1\} := \{x \in E \mid f(x) < 1\} = f^{-1}(]-\infty,1])$, et de même pour $\{f\leq 1\}$, pour toute $f : E \to \bR$.
-\claudereport{Typo : ``$f^{-1}(]-\infty,1])$'' $\to$ ``$f^{-1}(]-\infty,1[)$''.}
+Pour la lisibilité, et en l'absence d'ambiguïté, on se permet dans la suite de noter 
+$\{f < 1\} := \{x \in E \mid f(x) < 1\} = f^{-1}(]-\infty,1[)$, et de même pour $\{f\leq 1\}$, pour toute $f : E \to \bR$.
 
 \begin{proposition}[Jauge d'un convexe]
 \label{prop:jaugeCvx}
@@ -502,13 +486,11 @@ On a
 
 \begin{lemma}
 \label{lem:jaugeOuvertCvx}
-	Soit $C$ un convexe contenant $0$ d'un $\bR$-evn. Si $C$ est ouvert, alors $p_C : E \to \bR$ est Lipschitz et $C = \{p_C < 1\}$. Si $C$ est fermé, alors $p_C : E \to \bR$ est semi-continue inférieurement, et $C = \{p_C \leq 1\}$.
-\claudereport{Imprécision : si $C$ est seulement fermé, $p_C$ peut valoir $+\infty$ : écrire $p_C : E \to [0,\infty]$.}
+	Soit $C$ un convexe contenant $0$ d'un $\bR$-evn. Si $C$ est ouvert, alors $p_C : E \to \bR$ est Lipschitz et $C = \{p_C < 1\}$. Si $C$ est fermé, alors $p_C : E \to [0,\infty]$ est semi-continue inférieurement, et $C = \{p_C \leq 1\}$.
 \end{lemma}
 
 \begin{proof}
-	Supposons $C$ ouvert, et donc $B(0,r) \subset p_C$ pour un certain $r>0$. Alors $p_C(x) \leq \|x\|/r$ et donc $p_C(x) - \|h\|/r \leq p_C(x) - p_C(-h) \leq p_C(x+h) \leq p_C(x) + p_C(h) \leq p_C(x) + \|h\|/r$ d'où la $r^{-1}$-Lipschitzianité. Enfin $\{p_C < 1\}$ est l'intérieur de $\{p_C\leq 1\}$, donc est égal à l'ouvert $C$. 
-\claudereport{Typo : ``$B(0,r) \subset p_C$'' $\to$ ``$B(0,r) \subset C$''.}
+	Supposons $C$ ouvert, et donc $B(0,r) \subset C$ pour un certain $r>0$. Alors $p_C(x) \leq \|x\|/r$ et donc $p_C(x) - \|h\|/r \leq p_C(x) - p_C(-h) \leq p_C(x+h) \leq p_C(x) + p_C(h) \leq p_C(x) + \|h\|/r$ d'où la $r^{-1}$-Lipschitzianité. Enfin $\{p_C < 1\}$ est l'intérieur de $\{p_C\leq 1\}$, donc est égal à l'ouvert $C$. 
 	
 	Supposons $C$ fermé, et notons que $x/p_C(x) \in C$ par fermeture dès que $p_C(x) >0$, soit encore $C = \{p_C \leq 1\}$ par homogénéité comme annoncé. 
 	Les ensembles $\{p_C \leq \lambda\}$ pour $\lambda \in ]0,\infty[$ sont homothétiques à $C$ donc fermés, et le cône asymptotique $\{p_C \leq 0\} = \cap_{t>0} t C$ est fermé comme intersection de fermés, d'où la semi-continuité inférieure. 
@@ -536,7 +518,7 @@ La preuve des résultats suivants fait intervenir la \emph{somme de Minkowski} d
 \begin{corollary}
 \label{corol:separOuvertPt}
 	Soit $C$ un ouvert convexe d'un evn $E$ ne contenant pas $0$, alors il existe $\vp \in E^*$ telle que $\vp>0$ sur $C$.
-	Soient $A$ un convexe et $B$ un ouvert convexe d'un evn $E$, disjoints, alors il existe $\vp \in E^*$ et $\alpha \in \bR$ tels que $\vp(a) \leq \alpha < \vp (b)$ pour tous $a \in A$ et $b \in B$. 
+	Soient $A$ un convexe et $B$ un ouvert convexe d'un evn $E$, non-vides et disjoints, alors il existe $\vp \in E^*$ et $\alpha \in \bR$ tels que $\vp(a) \leq \alpha < \vp (b)$ pour tous $a \in A$ et $b \in B$. 
 \end{corollary}
 
 \begin{proof} 
@@ -544,8 +526,7 @@ La preuve des résultats suivants fait intervenir la \emph{somme de Minkowski} d
 	\emph{Premier point.} Choisissons $x_0 \in C$, et notons que $0 \in C-x_0$, et que $-x_0 \notin C-x_0$.
 	Par le \cref{th:separOuvertPt} appliqué à $C-x_0$ et $-x_0$, il existe $\vp \in E^*$ telle que $\vp(-x_0)=1$ et $\vp<1$ sur $C-x_0$; ainsi $-\vp>0$ sur $C$, comme annoncé. 
 	
-	\emph{Second point.} Posons $C:=B-A = \{b-a\mid a \in A, b \in B\}$ qui est un ouvert convexe ne contenant pas $0$. Soit $\vp\in E^*$ telle $\vp>0$ sur $C$, donc $\vp(a) \leq \vp(b)$ pour tous $(a,b)\in A \times B$. On pose $\alpha = \inf_B \vp$, et on note que $\vp(B)$ est ouvert car $\vp\neq 0$ et $B$ est ouvert, donc $\vp(A) \subset ]-\infty,\alpha]$ et $\vp(B)\subset ]\alpha,\infty[$ comme annoncé.
-\claudereport{Typo : ``telle $\vp>0$'' $\to$ ``telle que $\vp>0$''. Imprécision : supposer $B \neq \emptyset$ pour que $\alpha$ soit fini.}
+	\emph{Second point.} Posons $C:=B-A = \{b-a\mid a \in A, b \in B\}$ qui est un ouvert convexe ne contenant pas $0$. Soit $\vp\in E^*$ telle que $\vp>0$ sur $C$, donc $\vp(a) \leq \vp(b)$ pour tous $(a,b)\in A \times B$. On pose $\alpha = \inf_B \vp$, et on note que $\vp(B)$ est ouvert car $\vp\neq 0$ et $B$ est ouvert, donc $\vp(A) \subset ]-\infty,\alpha]$ et $\vp(B)\subset ]\alpha,\infty[$ comme annoncé.
 \end{proof}
 
 
@@ -558,8 +539,7 @@ La preuve des résultats suivants fait intervenir la \emph{somme de Minkowski} d
 \begin{proof}
 	Posons $F := B-A = \{b-a \mid a\in A, b \in B\}$ qui est convexe et non-vide. \emph{Montrons que $F$ est fermé} : considérons une suite convergente $b_n-a_n \to c_*$ lorsque $n \to \infty$, avec $a_n \in A$ et $b_n\in B$. Extrayons une sous-suite convergente $b_{\sigma(n)} \to b_*\in B$ par compacité. Par différence $a_{\sigma(n)} \to a_* := b_* - c_*$  lorsque $n \to \infty$, et par fermeture $a_* \in A$, donc $c_* = b_*-a_* \in B-A$ comme souhaité. 
 	
-	Notons que $0 \notin F$, et donc par fermeture il existe $r>0$ tel que $B(0,r) \cap F =\emptyset$. Le convexe ouvert $F-B(0,r)$ ne contient pas $0$, et donc par le \cref{corol:separOuvertPt} il existe $\vp \in E^*$ telle que $\vp>0$ sur $F-B(0,r)$. On en déduit que $\vp(b)-\vp(a) \geq r\|\vp\|_{E^*} > 0$ pour tous $a\in A$ et $B \in B$, comme annoncé.
-\claudereport{Typo : ``$B \in B$'' $\to$ ``$b \in B$''.}
+	Notons que $0 \notin F$, et donc par fermeture il existe $r>0$ tel que $B(0,r) \cap F =\emptyset$. Le convexe ouvert $F-B(0,r)$ ne contient pas $0$, et donc par le \cref{corol:separOuvertPt} il existe $\vp \in E^*$ telle que $\vp>0$ sur $F-B(0,r)$. On en déduit que $\vp(b)-\vp(a) \geq r\|\vp\|_{E^*} > 0$ pour tous $a\in A$ et $b \in B$, comme annoncé.
 	Pour le dernier point, considérer la forme linéaire $\psi := 2\vp/(\sup_A \vp+\inf_B\vp)$, le dénominateur étant strictement positif puisque $0 \leq \sup_A \vp < \inf_B \vp$.
 \end{proof}
 
@@ -583,8 +563,7 @@ L'ensemble polaire d'une partie $C$ d'un evn $E$ est défini par
 	On note $\kC(E)$ l'ensemble des \emph{convexes fermés contenant $0$} d'un evn $E$ .
 \end{definition}
 Observons que $C^\circ \in \kC(E^*)$, et que $C^\circ$ est *faiblement fermé.
-Si $C$ est un cône, c'est à dire s'il est stable par multiplication par des scalaires positifs, alors c'est aussi le cas de l'ensemble polaire, que l'on peut écrire sous la forme $C^\circ = \{\vp \in E^*\mid \forall x \in C, \vp(x) \leq 0\}$.
-\claudereport{Typo : ``c'est à dire'' $\to$ ``c'est-à-dire'' (à corriger dans tout le document).}
+Si $C$ est un cône, c'est-à-dire s'il est stable par multiplication par des scalaires positifs, alors c'est aussi le cas de l'ensemble polaire, que l'on peut écrire sous la forme $C^\circ = \{\vp \in E^*\mid \forall x \in C, \vp(x) \leq 0\}$.
 Par construction $B'_E(0,1)^\circ = B'_{E^*}(0,1)$. 
 
 \begin{proposition}[Dualité polaire \facultatif]
@@ -623,15 +602,14 @@ Si de plus $C$ est borné et $E$ est réflexif, alors $C$ est faiblement compact
 \end{proof}
 
 On déduit du \cref{corol:cvxFermeBdComp} qu'une fonction $f$ convexe et s.c.i.\ (semi continue inférieurement, voir la \cref{def:semiContinuite}) est également s.c.i.\ pour la topologie faible, puisque les ensembles de sous-niveau $\{f \leq \lambda\}$ sont convexes et fermés, donc faiblement fermés. 
-Cette observation, et la propriété de compacité faible établie dans le \cref{corol:cvxFermeBdComp}, permet dans le résultat suivant de montrer l'existence de minimiseurs à des problèmes d'optimisation convexes, et à certaines de leurs perturbations. 
-\claudereport{Typo : ``permet'' $\to$ ``permettent''.}
+Cette observation, et la propriété de compacité faible établie dans le \cref{corol:cvxFermeBdComp}, permettent dans le résultat suivant de montrer l'existence de minimiseurs à des problèmes d'optimisation convexes, et à certaines de leurs perturbations. 
 
-L'\nref{ex:nonLinMinH1} en est une application représentative. Dans celui-ci, la fonction $g$ est la composition d'une application linéaire compacte et d'une fonction non-linéaire continue, donc est faiblement continue par la \nref{prop:opCompactComplCont} sur tout borné, comme souhaité.
-\claudereport{Problème : le \cref{corol:minFctCvxRefl} suppose $g$ faiblement continue sur $E$, alors qu'ici on a seulement la continuité séquentielle faible sur les bornés ; adapter l'hypothèse (la preuve n'utilise que les bornés).}
+L'\nref{ex:nonLinMinH1} en est une application représentative. Dans celui-ci, la fonction $g$ est la composition d'une application linéaire compacte et d'une fonction non-linéaire continue, comme souhaité. 
+Par la \nref{prop:opCompactComplCont}, et comme l'espace de départ $H^1$ est un Hilbert séparable, $g$ est faiblement continue sur les bornés comme nécessaire ici.
 
 \begin{corollary}[Minimisation par convexité et compacité \facultatif]
 \label{corol:minFctCvxRefl}
-	Soit $f : E \to ]-\infty,\infty]$ convexe s.c.i. sur un evn $E$ réflexif, soit $g : E \to \bR$ faiblement continue, et soit $M \in \bR$. %soient $M,N,R \in \bR$.
+	Soit $f : E \to ]-\infty,\infty]$ convexe s.c.i. sur un evn $E$ réflexif, soit $g : E \to \bR$ faiblement continue sur les bornés, et soit $M \in \bR$. %soient $M,N,R \in \bR$.
 	\begin{itemize}
 		\item Si $\{x\in E\mid f(x) \leq M\}$ est non-vide et borné, alors $f$ admet un minimiseur. 
 		\item Si $\{x \in E\mid f(x)+g(x)\leq M\}$ est non-vide et borné, alors $f+g$ admet un minimiseur. 
@@ -640,10 +618,11 @@ L'\nref{ex:nonLinMinH1} en est une application représentative. Dans celui-ci, l
 
 \begin{proof}
 \emph{Premier point.} Comme $f$ est convexe et s.c.i., l'ensemble $E_M := \{x\in E \mid f(x) \leq M\}$ est convexe et fermé, donc faiblement fermé. Ainsi $f$ est s.c.i.\ pour la topologie faible. 
-Ainsi $(E_m)_{\inf(f)<m\leq M}$ est une famille emboitée de fermés non-vides, contenus par hypothèse dans une boule $B'(0,R)$ qui est compacte par le \nref{th:BanachAlaoglu}. L'intersection $\cap_{\inf(f) < m\leq M} E_m = \{x \in E \mid f(x) = \inf(f)\}$ est donc non-vide par la \nref{rem:fermeBorelLeb}, comme annoncé.
-\claudereport{Typo : ``emboitée'' $\to$ ``emboîtée'' (idem ``emboités'').}
+Ainsi $(E_m)_{\inf(f)<m\leq M}$ est une famille emboîtée de fermés non-vides, contenus par hypothèse dans une boule $B'(0,R)$ qui est compacte par le \nref{th:BanachAlaoglu}. L'intersection $\cap_{\inf(f) < m\leq M} E_m = \{x \in E \mid f(x) = \inf(f)\}$ est donc non-vide par la \nref{rem:fermeBorelLeb}, comme annoncé.
 
-\emph{Second point.} La fonction $g$ est continue pour la topologie faible, donc s.c.i.\ pour cette topologie, tout comme $f$. Ainsi $f+g$ est faiblement s.c.i.\ comme somme de fonctions faiblement s.c.i. \eqref{eq:somme_sci}, donc les ensembles $E'_m := \{x \in E\mid f(x)+g(x)\leq m\}$ pour $\inf(f+g) < m\leq M$ sont fermés pour la topologie faible, inclus dans un compact, et de plus non-vides et emboités. Comme précédemment, l'ensemble des minimiseurs $\cap_{\inf(f+g) < m\leq M} E'_m = \{x \in E \mid f(x)+g(x) = \inf(f+g)\}$ est non-vide, ce qui conclut. 
+\emph{Second point.} 
+Soit $B$ une boule fermée contenant l'ensemble d'intérêt $\{x \in E\mid f(x)+g(x)\leq M\}$ dans son intérieur.
+La fonction $g$ est continue sur $B$ pour la topologie faible, donc s.c.i.\ pour cette topologie, tout comme $f$. Ainsi $f+g$ est faiblement s.c.i.\ sur $B$ comme somme de fonctions faiblement s.c.i. \eqref{eq:somme_sci}. Les ensembles $E'_m := \{x \in E\mid f(x)+g(x)\leq m\}$ pour $\inf(f+g) < m\leq M$ sont donc fermés pour la topologie faible, inclus dans un compact, et de plus non-vides et emboîtés. Comme précédemment, l'ensemble des minimiseurs $\cap_{\inf(f+g) < m\leq M} E'_m = \{x \in E \mid f(x)+g(x) = \inf(f+g)\}$ est non-vide, ce qui conclut. 
 %	On note que $\{f\leq M\}$ est convexe fermé borné, donc faiblement compact par le \cref{corol:cvxFermeBdComp}. 
 %	Ainsi les ensembles $\{f \leq M'\}$ pour $\inf(f)<M'\leq M$ sont fermés dans $\{f\leq M\}$ donc faiblement compacts, et de plus non non-vides et emboités, donc d'intersection non-vide par la \cref{rem:fermeBorelLeb}, comme annoncé. 
 %	

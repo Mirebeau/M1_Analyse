@@ -1,37 +1,31 @@
 
-La structure Hilbertienne permet de définir la projection sur un convexe fermé, et d'identifier l'espace avec son dual via le théorème de Riez, voir les \cref{th:projConvexe,th:reprRiez}. Ces résultats puissants trivialisent pour l'essentiel les questions de réflexivité et de séparation de convexes étudiées dans le cas des espaces de Banach, voir les \cref{subsec:reflexivite,subsec:HahnBanachGeom}.
-\claudereport{Typo : ``Riez'' $\to$ ``Riesz'' (dans tout l'appendice).}
+La structure Hilbertienne permet de définir la projection sur un convexe fermé, et d'identifier l'espace avec son dual via le théorème de Riesz, voir les \cref{th:projConvexe,th:reprRiesz}. Ces résultats puissants trivialisent pour l'essentiel les questions de réflexivité et de séparation de convexes étudiées dans le cas des espaces de Banach, voir les \cref{subsec:reflexivite,subsec:HahnBanachGeom}.
 
 Dans cette section, $\bK$ désigne le corps $\bR$ ou $\bC$.
 
 \begin{retenir}
-	L'inégalité de Cauchy-Schwartz, la définition et la caractérisation de la projection sur un convexe fermé, le théorème de Représentation de Riez, de la base Hilbertienne.
-	(\Cref{prop:CauchySchwartz,th:projConvexe,th:reprRiez,th:baseHilbert}.)
+	L'inégalité de Cauchy-Schwarz, la définition et la caractérisation de la projection sur un convexe fermé, le théorème de Représentation de Riesz, de la base Hilbertienne.
+	(\Cref{prop:CauchySchwarz,th:projConvexe,th:reprRiesz,th:baseHilbert}.)
 \end{retenir}
-\claudereport{Typo : ``Cauchy-Schwartz'' $\to$ ``Cauchy-Schwarz'' (dans tout l'appendice).}
 
 \inventaire{
 \Nref{def:prehilbert} \\
-\Nref{prop:CauchySchwartz} \\
+\Nref{prop:CauchySchwarz} \\
 \Nref{def:Hilbert} \\
 \Nref{th:projConvexe} \\
-\Nref{th:reprRiez} \\
+\Nref{th:reprRiesz} \\
 \Nref{ex:l2Hilbert} (Hilbert $L^2(X,\mu)$)\\
 \Nref{prop:decompOrth} \\
-\Nref{prop:decompOrth} \\
 \Nref{prop:decompCone} \\
-\Cref{ex:coneSdp}(Cone dual de $S_d^+$) \\
+\Cref{ex:coneSdp}(Cône dual de $S_d^+$) \\
 \Nref{th:baseHilbert}
 }
-\claudereport{Inventaire : \textbackslash Nref\{prop:decompOrth\} apparaît deux fois ; ``Cone'' $\to$ ``Cône''.}
 
 \begin{definition}[Espace préhilbertien]
 \label{def:prehilbert}
-	Une forme sequilinéaire sur un $\bK$-espace vectoriel $E$ est une application $\vp : E \times E \to \bK$ qui satisfait pour tous $x,x',y,y' \in E$, $\lambda \in \bK$ : 
-\claudereport{Typo : ``sequilinéaire'' $\to$ ``sesquilinéaire''.}
+	Une forme sesquilinéaire sur un $\bK$-espace vectoriel $E$ est une application $\vp : E \times E \to \bK$ qui satisfait pour tous $x,x',y,y' \in E$, $\lambda \in \bK$ : 
 	\begin{itemize}
-		\item (Linéarité à droite) $\vp(x,\lambda y) = \overline \lambda \vp(x,y)$, $\vp(x,y+y')=\vp(x,y)+\vp(x,y')$. %, $\forall x,y,y' \in E$, $\lambda \in \bK$
-\claudereport{Erreur : ``(Linéarité à droite) $\vp(x,\lambda y) = \overline\lambda \vp(x,y)$'' $\to$ ``$\lambda\vp(x,y)$''. Attention, cette convention n'est pas suivie dans l'\cref{ex:l2Hilbert} ($\<f,g\> = \int \overline g f$ est linéaire à gauche), à la fin de la preuve du \cref{th:reprRiez} (il faut $\vp(x) = \<x_*,x\>/\|x_*\|^2$), ni dans le \cref{th:baseHilbert} ($\<e_n,x\>$).}
+		\item (Linéarité à droite) $\vp(x,\lambda y) = \lambda \vp(x,y)$, $\vp(x,y+y')=\vp(x,y)+\vp(x,y')$. %, $\forall x,y,y' \in E$, $\lambda \in \bK$
 		\item (Antilinéarité à gauche) $\vp(\lambda x,y) = \overline \lambda \vp(x,y)$, $\vp(x+x',y)=\vp(x,y)+\vp(x',y)$.  
 	\end{itemize}
 	Elle est dite 
@@ -50,19 +44,18 @@ Tous les éléments $x,y$ d'un espace préhilbertien, satisfont les égalités s
 \end{align*}
 la seconde étant appelée identité du parallélogramme. 
 
-\begin{proposition}[Inégalité de Cauchy-Schwartz]
-\label{prop:CauchySchwartz}
+\begin{proposition}[Inégalité de Cauchy-Schwarz]
+\label{prop:CauchySchwarz}
 Soit $(E,\<\cdot ,\cdot\>)$ un espace préhilbertien. Alors pour tous $x,y \in E$, 
 \begin{equation}
-\label{eq:CauchySchwartz}
+\label{eq:CauchySchwarz}
 	|\<x,y\>| \leq \|x\| \|y\|, 
 \end{equation}
 et $\|\cdot\|$ définit une norme sur $E$. L'égalité a lieu ssi $x$ et $y$ sont colinéaires. 
 \end{proposition}
 
 \begin{proof}
-	L'égalité \eqref{eq:CauchySchwartz} est évidente si $x$ et $y$ sont colinéaires, on peut donc supposer qu'ils ne le sont pas. 
-\claudereport{Typo : ``L'égalité \textbackslash eqref\{eq:CauchySchwartz\}'' $\to$ ``L'inégalité''.}
+	L'égalité a clairement lieu dans \eqref{eq:CauchySchwarz} si $x$ et $y$ sont colinéaires. On  suppose désormais qu'ils ne le sont pas. 
 	Soit $\alpha\in \bK$, $|\alpha|=1$, tel que $\Re(\alpha\<x,y\>) = |\<x,y\>|$.
 	Considérons le polynôme %du second degré 
 	\begin{equation*}
@@ -72,10 +65,9 @@ et $\|\cdot\|$ définit une norme sur $E$. L'égalité a lieu ssi $x$ et $y$ son
 		= \|x\|^2 + 2t|\<x,y\>| + t^2\|y\|^2,
 	\end{equation*}
 	d'indéterminée $t \in \bR$.
-	Comme $P$ est du second degré et ne s'annule pas, son discriminant est strictement négatif, d'où \eqref{eq:CauchySchwartz}. 
+	Comme $P$ est du second degré et ne s'annule pas, son discriminant est strictement négatif, d'où \eqref{eq:CauchySchwarz}. 
 	
-	La fonction $\|\cdot\|$ est clairement définie, positive et homogène, conformément aux axiomes de la \nref{def:norme}. Il reste donc a vérifier l'inégalité triangulaire : $\|x+y\|^2 = \|x\|^2 + 2\Re(\<x,y\>) + \|y\|^2 \leq \|x\|^2 + 2 \|x\| \|y\| + \|y\|^2 = (\|x\|+\|y\|)^2$, $\forall x,y \in E$, ce qui conclut. 
-\claudereport{Typo : ``a vérifier'' $\to$ ``à vérifier''.}
+	La fonction $\|\cdot\|$ est clairement définie, positive et homogène, conformément aux axiomes de la \nref{def:norme}. Il reste donc à vérifier l'inégalité triangulaire : $\|x+y\|^2 = \|x\|^2 + 2\Re(\<x,y\>) + \|y\|^2 \leq \|x\|^2 + 2 \|x\| \|y\| + \|y\|^2 = (\|x\|+\|y\|)^2$, $\forall x,y \in E$, ce qui conclut. 
 \end{proof}
 
 \begin{definition}[Hilbert]
@@ -87,14 +79,12 @@ Un espace préhilbertien complet est un Hilbert.
 \begin{theorem}[Projection sur un convexe fermé]
 \label{th:projConvexe}
 Soit $H$ Hilbert et $K\subset H$ un convexe fermé non-vide. 
-Pour tout $x \in E$, le problème suivant admet une unique solution
-\claudereport{Typo : ``$x \in E$'' $\to$ ``$x \in H$'' (et ``$P_K : E \to K$'' $\to$ ``$P_K : H \to K$'').}
-%Alors $P_K : E \to K$ solution de 
+Pour tout $x \in H$, le problème suivant admet une unique solution
 \begin{equation}
 \label{eqdef:proj_cvx_ferme}
 	P_K(x) := \argmin_{y \in K} \|x-y\|,
 \end{equation}
-définissant la projection $P_K : E \to K$. Elle est caractérisée par la condition d'angle obtus : pour tout $y \in K$
+définissant la projection $P_K : H \to K$. Elle est caractérisée par la condition d'angle obtus : pour tout $y \in K$
 \begin{equation}
 \label{eq:proj_obtus}
 	\Re\<x-P_K(x), y-P_K(x)\> \leq 0.
@@ -121,14 +111,13 @@ On déduit aussi de cette preuve l'unicité du minimiseur de \eqref{eqdef:proj_c
 Considérons $x_* := P_K(x)$, et $y\in K$ arbitraire. On a $(1-t) x_*+ ty \in K$ pour tout $t \in [0,1]$, par convexité de $K$, puis
 \begin{equation}
 \label{eq:caract_proj_proof}
-	\|x_*-x\|^2 \leq \|(1-t) x_* + t y - x\|^2 = \|x-x_*\|^2 - 2 t \Re(\<x-x_*,y-x_*\>) + t^2 \|y-x_*\|
+	\|x_*-x\|^2 \leq \|(1-t) x_* + t y - x\|^2 = \|x-x_*\|^2 - 2 t \Re(\<x-x_*,y-x_*\>) + t^2 \|y-x_*\|^2
 \end{equation}
 par minimalité de $x_*$ dans \eqref{eqdef:proj_cvx_ferme}. On en déduit $\Re(\<x-x_*,y-x_*\>)\leq 0$ par un développement limité en $t=0^+$, comme annoncé. 
-\claudereport{Typo : ``$t^2 \|y-x_*\|$'' $\to$ ``$t^2 \|y-x_*\|^2$'' (idem ``$+ \|y-x_*\|$'' ligne suivante).}
 Réciproquement, considérons $x_* \in K$ tel que $\Re(\<x-x_*,y-x_*\>)\leq 0$ pour tout $y \in K$.
-Alors $\|y-x\|^2 = \|x-x_*\|^2 - 2 \Re(\<x-x_*,y-x_*\>) + \|y-x_*\| \geq \|x-x_*\|^2$ pour tout $y \in K$, donc $x_*$ minimise \eqref{eqdef:proj_cvx_ferme}, comme annoncé.
+Alors $\|y-x\|^2 = \|x-x_*\|^2 - 2 \Re(\<x-x_*,y-x_*\>) + \|y-x_*\|^2 \geq \|x-x_*\|^2$ pour tout $y \in K$, donc $x_*$ minimise \eqref{eqdef:proj_cvx_ferme}, comme annoncé.
 
-Finalement \eqref{eq:proj_moyennee} s'obtient en sommant les inégalités $\Re\<x-P_K(x), P_K(y)-P_K(x)\> \leq 0$ et $\Re\<y-P_K(y), P_K(x)-P_K(y)\> \leq 0$, issues de \eqref{eq:proj_obtus}. La Lipschitzianité de $P_K$ en découle par la \nref{prop:CauchySchwartz}.
+Finalement \eqref{eq:proj_moyennee} s'obtient en sommant les inégalités $\Re\<x-P_K(x), P_K(y)-P_K(x)\> \leq 0$ et $\Re\<y-P_K(y), P_K(x)-P_K(y)\> \leq 0$, issues de \eqref{eq:proj_obtus}. La Lipschitzianité de $P_K$ en découle par la \nref{prop:CauchySchwarz}.
 \end{proof}
 
 La propriété \eqref{eq:proj_moyennee} est équivalente à la $1$-Lipschitzianité de $Q := 2P_K-\Id$. On dit que $P_K := (\Id+Q)/2$ est un \emph{opérateur moyenné}: c'est la moyenne de l'identité et d'un opérateur $1$-Lipschitz.
@@ -136,23 +125,21 @@ La propriété \eqref{eq:proj_moyennee} est équivalente à la $1$-Lipschitziani
 
 Le résultat suivant montre que l'on peut identifier un Hilbert à son dual. Les normes se correspondent isométri\-quement, ainsi que les topologies faible et *faible. 
 
-\begin{theorem}[Représentation de Riez]
-\label{th:reprRiez}
-Soit $H$ un espace de Hilbert. Alors $H \mapsto H^* : x \mapsto \vp_x := \<x,\cdot\>$, est une bijection isométrique anti-linéaire.  
-\claudereport{Typo : ``$H \mapsto H^*$'' $\to$ ``$H \to H^*$''.}
+\begin{theorem}[Représentation de Riesz]
+\label{th:reprRiesz}
+Soit $H$ un espace de Hilbert. Alors $H \to H^* : x \mapsto \vp_x := \<x,\cdot\>$, est une bijection isométrique anti-linéaire.  
 \end{theorem}
 
 \begin{proof}
-	\emph{Preuve de l'isométrie}. On a $\|\vp_x\|_{H^*} \geq \vp_x( x/\|x\|) = \|x\|$ pour tout $x \neq 0$, et par ailleurs $|\vp_x(y)| = |\<x,y\>| \leq \|x\| \|y\|$ par Cauchy-Schwartz, d'où $\|\vp_x\|_{H_*} = \|x\|$, comme annoncé.
-\claudereport{Typo : ``$\|\vp_x\|_{H_*}$'' $\to$ ``$\|\vp_x\|_{H^*}$''.}
+	\emph{Preuve de l'isométrie}. On a $\|\vp_x\|_{H^*} \geq \vp_x( x/\|x\|) = \|x\|$ pour tout $x \neq 0$, et par ailleurs $|\vp_x(y)| = |\<x,y\>| \leq \|x\| \|y\|$ par Cauchy-Schwarz, d'où $\|\vp_x\|_{H^*} = \|x\|$, comme annoncé.
 	
 	\emph{Preuve de la surjectivité}. Soit $\vp \in H^*\sm \{0\}$, et soit $K := \vp^{-1}\{0\}$ son noyau, qui est convexe en tant qu'hyperplan, et fermé car $\vp$ est continue. 
-	Soit $x_0\in H$ tel que $\vp(x_0)=1$, qui existe par homogénéité, et soit $x_* := x_0 - P_K(x_0)$, de sorte que $\vp(x_*) = \vp(x_0) = 1$ et $\<x_*,y\> = 0$ pour tout $y \in K$. Alors pour tout $x\in H$ on a $\vp(x-\vp(x) x_*) = 0$ par linéarité, donc $x-\vp(x) x_* \in K$, donc $\<x_*,x-\vp(x) x_*\> = 0$, donc $\vp(x) = \<x,x_*\>/\|x_*\|^2$ ce qui conclut. 
+	Soit $x_0\in H$ tel que $\vp(x_0)=1$, qui existe par homogénéité, et soit $x_* := x_0 - P_K(x_0)$, de sorte que $\vp(x_*) = \vp(x_0) = 1$ et $\<x_*,y\> = 0$ pour tout $y \in K$. Alors pour tout $x\in H$ on a $\vp(x-\vp(x) x_*) = 0$ par linéarité, donc $x-\vp(x) x_* \in K$, donc $\<x_*,x-\vp(x) x_*\> = 0$, donc $\vp(x) = \<x_*,x\>/\|x_*\|^2$ ce qui conclut. 
 \end{proof}
 
 \begin{exemple}
 \label{ex:l2Hilbert}
-	Soit $(X,\mu)$ un espace mesuré. Alors $L^2(X,\mu)$ est un Hilbert, muni du produit scalaire $\<f,g\> := \int_X \overline g(x) f(x) \diff\mu(x)$, voir l'\cref{ex:LpBanach}. En particulier, toute forme linéaire continue s'y écrit $f \mapsto \int_X \overline g(x) f(x) \diff\mu(x)$, pour un certain $g \in L^2(X, \mu)$.
+	Soit $(X,\mu)$ un espace mesuré. Alors $L^2(X,\mu)$ est un Hilbert, muni du produit scalaire $\<f,g\> := \int_X \overline f(x) g(x) \diff\mu(x)$, voir l'\cref{ex:LpBanach}. En particulier, toute forme linéaire continue s'y écrit $g \mapsto \int_X \overline f(x) g(x) \diff\mu(x)$, pour un certain $f \in L^2(X, \mu)$.
 \end{exemple}
 
 %Les résultats suivants illustrent les décompositions d'élements d'un Hilbert obtenues grâce 
@@ -161,17 +148,14 @@ La projection orthogonale permet de décomposer les éléments d'un Hilbert.
 \begin{proposition}[Décomposition orthogonale]
 \label{prop:decompOrth}
 	Soit $H$ Hilbert. 
-	La projection sur sous-espace vectoriel fermé $F \subset H$ est caractérisée par la condition $\<x-P_F(x),y\> = 0$, $\forall y \in F$.
-\claudereport{Typo : ``La projection sur sous-espace'' $\to$ ``sur un sous-espace''.}
+	La projection sur un sous-espace vectoriel fermé $F \subset H$ est caractérisée par la condition $\<x-P_F(x),y\> = 0$, $\forall y \in F$.
 	De plus $F \oplus F^\perp = H$, $P_F+P_{F^\perp} = \Id$, et $P_F$ et $P_{F^\perp}$ sont linéaires continues, où $F^\perp := \{y \in H \mid \forall x \in F,\, \<x,y\>=0\}$ désigne le sous-espace orthogonal.
 \end{proposition}
 
 \begin{proof}
-	Soit $x \in H$ et $p := P_F(x) \in F$. D'après \eqref{eq:proj_obtus} on a $\Re\<x-p,y-p\> \leq 0$ pour tout $y \in F$. Donc $\Re\<x-p,y\> = 0$ pour tout $y \in F$, par stabilité additive de $F$, et donc $\<x-p,y\> = 0$, par stabilité de $F$ par multiplication par un scalaire, comme annoncé. La linéarité de cette caractérisation de $P_F(x)$ implique la linéarité du projecteur $P_F$, qui est également continu par le \cref{th:projConvexe}, comme annoncé. % (en effet $\<x+\lambda x' -P_F(x)-\lambda P_F(x'),y\>=0$ pour tout $y \in F$, où $x,x' \in H$ et $\lambda \in \bK$). 
-	%De plus on a $z := x-p\in F^\perp$, et $\|p\|^2 + \|x-p\|^2 = \|x\|^2$ d'où la continuité (on pouvait aussi déduire la continuité du caractère $1$-Lipschitz en général du projecteur orthogonal). 
+	Soit $x \in H$ et $p := P_F(x) \in F$. D'après \eqref{eq:proj_obtus} on a $\Re\<x-p,y-p\> \leq 0$ pour tout $y \in F$. Donc $\Re\<x-p,y\> = 0$ pour tout $y \in F$, par stabilité additive de $F$, et donc $\<x-p,y\> = 0$, par stabilité de $F$ par multiplication par un scalaire, comme annoncé. La linéarité de cette caractérisation de $P_F(x)$ implique la linéarité du projecteur $P_F$, qui est également continu par le \cref{th:projConvexe}, comme annoncé.
 	
-	Notons $z := x-p$, et observons que $z \in F^\perp$ par la discussion précédente. Par ailleurs $x-z = y \in F \subset (F^\perp)^\perp$, donc par la caractérisation \eqref{eq:proj_obtus} on a $z = P_{F^\perp} x$. Ainsi $x = P_F x + P_{F^\perp} x$, comme annoncé, et ainsi $F + F^\perp = H$. Remarquons finalement que $F \cap F^\perp = \{0\}$ (si $x \in F \cap F^\perp$, alors $\|x\|^2 = \<x,x\> = 0$), donc $F \oplus F^\perp = H$ comme annoncé, ce qui conclut.
-\claudereport{Typo : ``$x-z = y \in F$'' $\to$ ``$x-z = p \in F$''.}
+	Notons $z := x-p$, et observons que $z \in F^\perp$ par la discussion précédente. Par ailleurs $x-z = p \in F \subset (F^\perp)^\perp$, donc par la caractérisation \eqref{eq:proj_obtus} on a $z = P_{F^\perp} x$. Ainsi $x = P_F x + P_{F^\perp} x$, comme annoncé, et ainsi $F + F^\perp = H$. Remarquons finalement que $F \cap F^\perp = \{0\}$ (si $x \in F \cap F^\perp$, alors $\|x\|^2 = \<x,x\> = 0$), donc $F \oplus F^\perp = H$ comme annoncé, ce qui conclut.
 \end{proof}
 
 Une variante du résultat classique précédent traite des cônes convexes fermés. Rappelons qu'un cône convexe est une partie $K$ d'un espace $\bR$-vectoriel telle que $\lambda x+\mu y \in K$ pour tous $x,y \in K$ et tous $\lambda,\mu \geq 0$. 
@@ -193,21 +177,18 @@ Une variante du résultat classique précédent traite des cônes convexes ferm�
 	A l'inverse, en choisissant $y'=0$ on obtient $\<z,0-y\>\leq 0$, donc $\<z,y\>=0$. Finalement $\<x-z,z'-z\> = \<y,z'-z\> = \<y,z'\> \leq 0$ pour tout $z' \in K^\circ$, donc $z = P_{K^\circ}(x)$, ce qui conclut.  
 \end{proof}
 
-\begin{exemple}[Cone dual de $\bR_+^d$ et $\cS^+_d$ \facultatif]
+\begin{exemple}[Cône dual de $\bR_+^d$ et $\cS^+_d$ \facultatif]
 \label{ex:coneSdp}
-\claudereport{Typo : ``Cone dual'' $\to$ ``Cône dual''.}
 	On note parfois $K^* := - K^\circ  = \{y \in H\mid \forall x \in K, \<x,y\> \geq 0\}$ le cône dual, d'un cône $K$ donné. 
 	Un cône est dit auto-dual si $K = K^*$. Par exemple $\bR_+^d \subset \bR^d$ et $\cS_d^+ \subset \cS_d$ sont des cônes auto-duaux. La décomposition de la \cref{prop:decompCone} associée au cône $\bR_+^d$ correspond aux parties positive et négative de $x=(x_i)_{1 \leq i \leq d} \in \bR^d$~: 
 	\begin{align*}
 		x &= x^+ - x^-, &\text{où } x^+_i &:= \max\{0,x_i\},\ x^-_i := \max\{0,-x_i\}
 	\end{align*}
-	De même, le décomposition de la \cref{prop:decompCone} associée au cône $\bS_+^d$ correspond aux parties positive et négative du spectre : pour $D \in \cS_d$, diagonalisée sous la forme $U^\top \Diag(\lambda_1,\cdots,\lambda_d) U$ avec $U$ une matrice orthogonale, on a 
-\claudereport{Typos : ``le décomposition'' $\to$ ``la décomposition'' ; ``$\bS_+^d$'' $\to$ ``$\cS_d^+$''.}
+	De même, la décomposition de la \cref{prop:decompCone} associée au cône $\cS_+^d$ correspond aux parties positive et négative du spectre : pour $D \in \cS_d$, diagonalisée sous la forme $U^\top \Diag(\lambda_1,\cdots,\lambda_d) U$ avec $U$ une matrice orthogonale, on a 
 	\begin{equation*}
 		D  
-		= U^\top \Diag(\max \{\lambda_1,0\},\cdots,\max \{\lambda_1,0\}) U - U^\top \Diag(\max \{-\lambda_1,0\},\cdots,\max \{-\lambda_d,0\}) U.
+		= U^\top \Diag(\max \{\lambda_1,0\},\cdots,\max \{\lambda_d,0\}) U - U^\top \Diag(\max \{-\lambda_1,0\},\cdots,\max \{-\lambda_d,0\}) U.
 	\end{equation*}
-\claudereport{Typo : ``$\max\{\lambda_1,0\},\cdots,\max\{\lambda_1,0\}$'' $\to$ ``$\max\{\lambda_1,0\},\cdots,\max\{\lambda_d,0\}$''.}
 \end{exemple}
 
 %En optimisation, le cône normal est le dual du cône intérieur, en un point $x$ d'un convexe $K$.
@@ -222,18 +203,17 @@ Une variante du résultat classique précédent traite des cônes convexes ferm�
 %Si nécessaire, évoquer le fait que les Hilbert séparables de dimension infinie sont isomorphes à $L^2(\bN,\bK)$.
 %}
 
-La structure Hilbertienne est si forte que $\ell^2 := L^2(\bN,\bK)$ est, à isométrie linéaire près, son seul représentant intéressant, comme le montre la proposition suivante qui conclut cette introduction. 
-\claudereport{Imprécision : ``la proposition suivante'' $\to$ ``le théorème suivant''.}
+La structure Hilbertienne est si forte que $\ell^2 := L^2(\bN,\bK)$ est, à isométrie linéaire près, son seul représentant intéressant, comme le montre le théorème suivant qui conclut cette introduction. 
 
 \begin{theorem}[Base Hilbertienne]
 \label{th:baseHilbert}
 Soit $H$ un espace de Hilbert. Sont équivalents : 
 \begin{enumerate}[(i)]
 	\item $H$ est séparable et de dimension infinie.
-	\item $H$ admet une \emph{base hilbertienne}, c'est à dire une famille $(e_n)_{n\in \bN}$ de vecteurs unitaires deux à deux orthogonaux, telle que $\Vect\{e_n \mid n \in \bN\}$ est dense dans $H$.
+	\item $H$ admet une \emph{base hilbertienne}, c'est-à-dire une famille $(e_n)_{n\in \bN}$ de vecteurs unitaires deux à deux orthogonaux, telle que $\Vect\{e_n \mid n \in \bN\}$ est dense dans $H$.
 	\item Il existe une bijection linéaire et isométrique entre $H$ et $\ell^2 := L^2(\bN,\bK)$.
 \end{enumerate}
-En supposant (ii), la bijection de (iii) est donnée par $x \in H \mapsto (\<x,e_n\>)_{n \in \bN} \in \ell^2$, et sa réciproque par $(x_n)_{n \in \bN} \mapsto \sum_{n \in \bN} x_n e_n$.
+En supposant (ii), la bijection de (iii) est donnée par $x \in H \mapsto (\<e_n,x\>)_{n \in \bN} \in \ell^2$, et sa réciproque par $(x_n)_{n \in \bN} \mapsto \sum_{n \in \bN} x_n e_n$.
 \end{theorem}
 
 \begin{proof}
@@ -243,9 +223,9 @@ En supposant (ii), la bijection de (iii) est donnée par $x \in H \mapsto (\<x,e
 	On vérifie alors facilement que $e_n := (x_n - P_{F_n}(x_n)) / \|x_n - P_{F_n}(x_n)\|$, pour tout $n \in \bN$, définit une base Hilbertienne.
 	
 	\emph{Preuve de (ii) $\Rightarrow$ (iii).}
-	La projection orthogonale de $x \in H$ sur $F_N$ est donnée par $P_{F_N}(x) = \sum_{n< N} \<x,e_n\>e_n$, pour tout $N \geq 0$, d'après le critère de la \cref{prop:decompOrth}, et donc $\|P_{F_N}(x)\|^2 = \sum_{n<N} |\<x,e_n\>|^2$. 
-	Ainsi $\|x\|^2 - \sum_{n<N} |\<x,e_n\>|^2 = \|x-P_{F_N}(x)\|^2 \to 0$ lorsque $N \to \infty$, ce qui montre la bonne définition et l'isométrie.
-	Réciproquement, si $(x_n)_{n\in \bN} \in \ell^2$, alors les sommes partielles $s_N := \sum_{n<N} x_n e_n$ satisfont le critère de Cauchy, puisque $\|s_n-s_m\|^2 = \sum_{n\leq k <m} |x_k|^2$, donc convergent vers un élément $x\in H$ par complétude, et celui-ci satisfait $\<x,e_n\> = \lim_{N \to \infty} \<s_N, e_n\> = x_n$ pour tout $n \in \bN$ par continuité du produit scalaire.
+	La projection orthogonale de $x \in H$ sur $F_N$ est donnée par $P_{F_N}(x) = \sum_{n< N} \<e_n,x\>e_n$, pour tout $N \geq 0$, d'après le critère de la \cref{prop:decompOrth}, et donc $\|P_{F_N}(x)\|^2 = \sum_{n<N} |\<e_n,x\>|^2$. 
+	Ainsi $\|x\|^2 - \sum_{n<N} |\<e_n,x\>|^2 = \|x-P_{F_N}(x)\|^2 \to 0$ lorsque $N \to \infty$, ce qui montre la bonne définition et l'isométrie.
+	Réciproquement, si $(x_n)_{n\in \bN} \in \ell^2$, alors les sommes partielles $s_N := \sum_{n<N} x_n e_n$ satisfont le critère de Cauchy, puisque $\|s_n-s_m\|^2 = \sum_{n\leq k <m} |x_k|^2$, donc convergent vers un élément $x\in H$ par complétude, et celui-ci satisfait $\<e_n,x\> = \lim_{N \to \infty} \<e_n,s_N\> = x_n$ pour tout $n \in \bN$ par continuité du produit scalaire.
 	
 	\emph{Preuve de (iii) $\Rightarrow$ (i).} Les éléments de $\ell^2$ à support fini et coefficients dans $\bQ$ forment une famille dénombrable et dense, d'où la séparabilité. De plus $\ell^2$ contient la famille libre infinie  $(\delta^N)_{N\geq 0}$, sa base hilbertienne canonique, définie par $\delta^N_n = 1$ si $n=N$ et $\delta^N_n = 0$ sinon.
 \end{proof}

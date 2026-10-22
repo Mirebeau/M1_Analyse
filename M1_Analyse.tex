@@ -1,6 +1,6 @@
 \documentclass[11pt]{article} 
 \usepackage{etoolbox} \newtoggle{perso}
-\toggletrue{perso} % Comment for student version
+%\toggletrue{perso} % Comment for student version
 \usepackage[mathletters]{ucs}
 \usepackage[utf8x]{inputenc}
 
@@ -60,7 +60,10 @@
 \newcommand\todoi[1]{\todo[inline]{#1}}
 \newcommand\notei[1]{\todo[inline,color=yellow]{#1}}
 \newcommand\hiddenproof[1]{\begin{proof}[Preuve (brouillon seul)] #1 \end{proof}}
-\newcommand\inventaire[1]{\paragraph{Inventaire (pour le cours)\\} #1 \hfill $\square$}
+
+\newcommand\inventaire[1]{}
+%\newcommand\inventaire[1]{\paragraph{Inventaire (pour le cours)\\} #1 \hfill $\square$}
+
 \newcommand\formalizationInstruction[1]{\todo[inline,color=yellow]{#1}}
 \newcommand\claudereport[1]{\todo[inline,color=green]{#1}}
 }{
@@ -160,7 +163,7 @@ Le cours se conçoit comme une base solide pour ceux qui se destinent à étudie
 \end{abstract}
 
 
-\tableofcontents
+%\tableofcontents
 
 \paragraph{Références}
 
