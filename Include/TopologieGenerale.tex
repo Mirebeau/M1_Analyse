@@ -11,8 +11,7 @@ Cette section est principalement constituée de rappels de topologie générale,
 \begin{retenir}
 La définition d'une topologie, de la topologie engendrée, et d'une base de voisinages. 
 La caractérisation séquentielle de l'adhérence \emph{si} l'espace topologique a une base dénombrable de voisinages. 
-L'axiome de séparation de Haussdorff, la définition et la caractérisation de la continuité.
-\claudereport{Typo : ``Haussdorff'' $\to$ ``Hausdorff''.}
+L'axiome de séparation de Hausdorff, la définition et la caractérisation de la continuité.
 (\Cref{def:topo,def:topoEngendree,def:base_vois,prop:adhSuite,def:separe,def:continuite,prop:caract_cont}.)
 \end{retenir}
 
@@ -273,8 +272,7 @@ Alors $\bU_0$ est une base d'ouverts pour la topologie $\bU$.
 
 \begin{proof}
 	Choisissons, comme suggéré par l'énoncé, $U_x \in \bU_0$ tel que $x \in U_x \subset U$ pour tous $x \in U \in \bU$. 
-	On $X \in \bU$ par définition, et donc $X = \cup_{x \in X} X_x \subset \cup_{U \in U_0} U$ comme souhaité pour le point (i). 
-\claudereport{Typos (preuve) : ``On $X \in \bU$'' $\to$ ``On a $X \in \bU$'' ; ``$X_x$'' $\to$ ``$U_x$'' ; ``$U \in U_0$'' $\to$ ``$U \in \bU_0$''.}
+	On a $x \in \bU$ par définition, et donc $X = \cup_{x \in X} U_x \subset \cup_{U \in \bU_0} U$ comme souhaité pour le point (i). 
 	Le point (ii) s'obtient en notant que $U \cap V \in \bU$, pour tous $U,V \in \bU_0$, et en choisissant $W = [U\cap V]_x$. 
 	Finalement, pour tout $U \in \bU$ on a $U = \cup_{x \in U} U_x$, donc tout élément de $\bU$ s'écrit comme union d'éléments de $\bU_0$, et réciproquement $\bU$ est bien une topologie contenant $\bU_0$. 
 %	Par définition $X \in \bU$, et donc par hypothèse tout point $x \in X$ est contenu dans un certain $U_0 \in bU_0$, ce qui établit le point (i) de la \cref{prop:baseOuverts}. Si $U,V \in \bU_0$, alors $U \cap V \in \bU$ et donc l'hypothèse assure que (ii) est également satisfait. 
@@ -403,8 +401,7 @@ Une suite $(x_n)_{n \in \bN}$ a valeurs dans un espace topologique $(X,\bU)$ con
 
 \begin{proof}
 	Preuve de l'inclusion $\subset$ :
-	Soit $x \in \overline A$, et soit $(V_n)_{n \in \bN}$ une base de voisinages de $X$, que l'on peut supposer décroissante pour l'inclusion. D'après la \cref{prop:adh_vois} il existe $x_n \in A \cap V_n$. La suite $(x_n)_{n \in \bN}$ converge alors vers $x$. Preuve de l'inclusion $\supset$ : découle de la caractérisation de l'adhérence de la \cref{prop:adh_vois}. (Ce sens n'utilise pas la base dénombrable).
-\claudereport{Typo : ``une base de voisinages de $X$'' $\to$ ``de $x$''.}
+	Soit $x \in \overline A$, et soit $(V_n)_{n \in \bN}$ une base de voisinages de $x$, que l'on peut supposer décroissante pour l'inclusion. D'après la \cref{prop:adh_vois} il existe $x_n \in A \cap V_n$. La suite $(x_n)_{n \in \bN}$ converge alors vers $x$. Preuve de l'inclusion $\supset$ : découle de la caractérisation de l'adhérence de la \cref{prop:adh_vois}. (Ce sens n'utilise pas la base dénombrable).
 \end{proof}
 
 \begin{proposition}[Convergence d'une sous suite vers toute valeur d'adhérence d'une suite]
@@ -423,11 +420,9 @@ Une suite $(x_n)_{n \in \bN}$ a valeurs dans un espace topologique $(X,\bU)$ con
 \end{proposition}
 
 \begin{proof}
-	Soit $x \in \Adh((x_n)_{n \in \bN})$, et soit $(V_n)_{n \in \bN}$ une suite de voisinages de $x$ décroissante pour l'inclusion. On choisit par récurrence $x_{\vp(n)} \in \{x_m \mid m> \vp(n-1)\} \cap V_n$, avec la convention $\vp(-1):=-1$; cette extractrice satisfait aux conditions. 
-\claudereport{Imprécision : il faut prendre une \emph{base} dénombrable de voisinages $(V_n)_n$ de $x$, décroissante (et non une suite quelconque de voisinages), sinon la suite extraite ne converge pas vers $x$.}
+	Soit $x \in \Adh((x_n)_{n \in \bN})$, et soit $(V_n)_{n \in \bN}$ une base de voisinages de $x$ décroissante pour l'inclusion. On choisit par récurrence $x_{\vp(n)} \in \{x_m \mid m> \vp(n-1)\} \cap V_n$, avec la convention $\vp(-1):=-1$; cette extractrice satisfait aux conditions. 
 	
-	Réciproquement, s'il existe une extractrice $\vp$ telle que $x_{\vp(n)} \to x$ lorsque $n \to \infty$, alors tout voisinage $V \in \cV_x$ contient tous les termes $(x_\vp(n))_{n \geq N(V)}$ à partir d'un certain rang $N(V)$. Ainsi $V$ intersecte $\{x_n\mid n \geq N\}$, quel que soit l'entier $N\in \bN$, donc $x\in \overline{\{x_n\mid n \geq N\}}$ ce qui conclut. (Ce sens n'utilise pas la base dénombrable.)
-\claudereport{Typo : ``$(x_\vp(n))$'' $\to$ ``$(x_{\vp(n)})$''.}
+	Réciproquement, s'il existe une extractrice $\vp$ telle que $x_{\vp(n)} \to x$ lorsque $n \to \infty$, alors tout voisinage $V \in \cV_x$ contient tous les termes $(x_{\vp(n)})_{n \geq N(V)}$ à partir d'un certain rang $N(V)$. Ainsi $V$ intersecte $\{x_n\mid n \geq N\}$, quel que soit l'entier $N\in \bN$, donc $x\in \overline{\{x_n\mid n \geq N\}}$ ce qui conclut. (Ce sens n'utilise pas la base dénombrable.)
 \end{proof}
 
 Finalement, expliquons le terme ``filtre'' en entête de la \cref{def:filtre_vois}.
@@ -436,8 +431,7 @@ Finalement, expliquons le terme ``filtre'' en entête de la \cref{def:filtre_voi
 \label{rem:axiomFiltre}
 Un filtre d'un ensemble ordonné $(\cP, \preceq)$ est une partie $\cV \subset \cP$, non-vide, et satisfaisant aux axiomes: 
 \begin{itemize}
-	\item (Upper closure) Si $V \in \cV$ et $W \in \cP$ satisfont $V \preceq W$, alors $W \in \cP$.
-\claudereport{Typo : ``alors $W \in \cP$'' $\to$ ``alors $W \in \cV$''.}
+	\item (Upper closure) Si $V \in \cV$ et $W \in \cP$ satisfont $V \preceq W$, alors $W \in \cV$.
 	\item (Downward directed) Si $V_0,V_1 \in \cV$, alors il existe $W \in \cV$ tel que $W\preceq V_0$ et $W \preceq V_1$.
 \end{itemize}
 Le filtre $\cV = \cP$ est dit trivial. 
@@ -466,10 +460,9 @@ Dans un espace séparé, toute suite admet au plus une limite.
 
 La plupart des espaces rencontrés en analyse et analyse fonctionnelle, et donc dans ce cours, sont T2. À l'inverse, la topologie de Zariski, fondamentale en algèbre, satisfait seulement la propriété T1 plus faible.
 
-\begin{remark}[Axiome T1 de Kolmogorov \facultatif]
+\begin{remark}[Axiome T1 de Fréchet \facultatif] % Dit d'accessibilité
 \label{rem:T1}
 Un espace topologique $(X, \bU)$ satisfait l'axiome T1 si étant donné deux points distincts, chacun admet un voisinage ne contenant pas l'autre. 
-\claudereport{Terminologie : l'axiome de Kolmogorov est T0 ; T1 est l'axiome de Fréchet (ou d'accessibilité).}
 Cet axiome ne \emph{garantit pas l'unicité} de la limite. 
 \end{remark}
 
@@ -487,8 +480,7 @@ Cet axiome ne \emph{garantit pas l'unicité} de la limite.
 
 \begin{proof}[Preuve que les fermés de Zariski satisfont aux axiomes de la \cref{rem:fermes}]
 L'ensemble vide s'obtient en choisissant $I=1$ et $P_1=1$, et l'ensemble total en posant $I=0$. 
-Si le fermé de Zariski $F$ est associé aux polynômes $(P_i)_{1 \leq i \leq I}$, et $G$ aux polynômes $(Q_j)_{1 \leq j \leq J}$, alors $F \cup G$ est associé à la famille double $(P_i Q_j)^{1 \leq i \leq I}_{1 \leq j \leq J}$. Si $F_\alpha$ est associé aux polynômes $(P^\alpha_i)_{1 \leq i \leq I(\alpha)}$, pour tout paramètre $\alpha \in A$, alors $\cap_{\alpha\in A} F_\alpha$ est associé à une famille génératrice finie quelconque de l'idéal engendré par $\{F^\alpha_i \mid \alpha \in A,\, 1 \leq i \leq I(\alpha)\}$ dans l'anneau $\bC[X_1,\cdots,X_d]$, qui est Noetherien d'après le théorème de la base de Hilbert.
-\claudereport{Typo (preuve) : ``$\{F^\alpha_i \mid \ldots\}$'' $\to$ ``$\{P^\alpha_i \mid \ldots\}$''.}
+Si le fermé de Zariski $F$ est associé aux polynômes $(P_i)_{1 \leq i \leq I}$, et $G$ aux polynômes $(Q_j)_{1 \leq j \leq J}$, alors $F \cup G$ est associé à la famille double $(P_i Q_j)^{1 \leq i \leq I}_{1 \leq j \leq J}$. Si $F_\alpha$ est associé aux polynômes $(P^\alpha_i)_{1 \leq i \leq I(\alpha)}$, pour tout paramètre $\alpha \in A$, alors $\cap_{\alpha\in A} F_\alpha$ est associé à une famille génératrice finie quelconque de l'idéal engendré par $\{P^\alpha_i \mid \alpha \in A,\, 1 \leq i \leq I(\alpha)\}$ dans l'anneau $\bC[X_1,\cdots,X_d]$, qui est Noetherien d'après le théorème de la base de Hilbert.
 \end{proof}
 
 
