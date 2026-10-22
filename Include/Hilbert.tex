@@ -1,5 +1,6 @@
 
 La structure Hilbertienne permet de définir la projection sur un convexe fermé, et d'identifier l'espace avec son dual via le théorème de Riez, voir les \cref{th:projConvexe,th:reprRiez}. Ces résultats puissants trivialisent pour l'essentiel les questions de réflexivité et de séparation de convexes étudiées dans le cas des espaces de Banach, voir les \cref{subsec:reflexivite,subsec:HahnBanachGeom}.
+\claudereport{Typo : ``Riez'' $\to$ ``Riesz'' (dans tout l'appendice).}
 
 Dans cette section, $\bK$ désigne le corps $\bR$ ou $\bC$.
 
@@ -7,6 +8,7 @@ Dans cette section, $\bK$ désigne le corps $\bR$ ou $\bC$.
 	L'inégalité de Cauchy-Schwartz, la définition et la caractérisation de la projection sur un convexe fermé, le théorème de Représentation de Riez, de la base Hilbertienne.
 	(\Cref{prop:CauchySchwartz,th:projConvexe,th:reprRiez,th:baseHilbert}.)
 \end{retenir}
+\claudereport{Typo : ``Cauchy-Schwartz'' $\to$ ``Cauchy-Schwarz'' (dans tout l'appendice).}
 
 \inventaire{
 \Nref{def:prehilbert} \\
@@ -21,12 +23,15 @@ Dans cette section, $\bK$ désigne le corps $\bR$ ou $\bC$.
 \Cref{ex:coneSdp}(Cone dual de $S_d^+$) \\
 \Nref{th:baseHilbert}
 }
+\claudereport{Inventaire : \textbackslash Nref\{prop:decompOrth\} apparaît deux fois ; ``Cone'' $\to$ ``Cône''.}
 
 \begin{definition}[Espace préhilbertien]
 \label{def:prehilbert}
 	Une forme sequilinéaire sur un $\bK$-espace vectoriel $E$ est une application $\vp : E \times E \to \bK$ qui satisfait pour tous $x,x',y,y' \in E$, $\lambda \in \bK$ : 
+\claudereport{Typo : ``sequilinéaire'' $\to$ ``sesquilinéaire''.}
 	\begin{itemize}
 		\item (Linéarité à droite) $\vp(x,\lambda y) = \overline \lambda \vp(x,y)$, $\vp(x,y+y')=\vp(x,y)+\vp(x,y')$. %, $\forall x,y,y' \in E$, $\lambda \in \bK$
+\claudereport{Erreur : ``(Linéarité à droite) $\vp(x,\lambda y) = \overline\lambda \vp(x,y)$'' $\to$ ``$\lambda\vp(x,y)$''. Attention, cette convention n'est pas suivie dans l'\cref{ex:l2Hilbert} ($\<f,g\> = \int \overline g f$ est linéaire à gauche), à la fin de la preuve du \cref{th:reprRiez} (il faut $\vp(x) = \<x_*,x\>/\|x_*\|^2$), ni dans le \cref{th:baseHilbert} ($\<e_n,x\>$).}
 		\item (Antilinéarité à gauche) $\vp(\lambda x,y) = \overline \lambda \vp(x,y)$, $\vp(x+x',y)=\vp(x,y)+\vp(x',y)$.  
 	\end{itemize}
 	Elle est dite 
@@ -57,6 +62,7 @@ et $\|\cdot\|$ définit une norme sur $E$. L'égalité a lieu ssi $x$ et $y$ son
 
 \begin{proof}
 	L'égalité \eqref{eq:CauchySchwartz} est évidente si $x$ et $y$ sont colinéaires, on peut donc supposer qu'ils ne le sont pas. 
+\claudereport{Typo : ``L'égalité \textbackslash eqref\{eq:CauchySchwartz\}'' $\to$ ``L'inégalité''.}
 	Soit $\alpha\in \bK$, $|\alpha|=1$, tel que $\Re(\alpha\<x,y\>) = |\<x,y\>|$.
 	Considérons le polynôme %du second degré 
 	\begin{equation*}
@@ -69,6 +75,7 @@ et $\|\cdot\|$ définit une norme sur $E$. L'égalité a lieu ssi $x$ et $y$ son
 	Comme $P$ est du second degré et ne s'annule pas, son discriminant est strictement négatif, d'où \eqref{eq:CauchySchwartz}. 
 	
 	La fonction $\|\cdot\|$ est clairement définie, positive et homogène, conformément aux axiomes de la \nref{def:norme}. Il reste donc a vérifier l'inégalité triangulaire : $\|x+y\|^2 = \|x\|^2 + 2\Re(\<x,y\>) + \|y\|^2 \leq \|x\|^2 + 2 \|x\| \|y\| + \|y\|^2 = (\|x\|+\|y\|)^2$, $\forall x,y \in E$, ce qui conclut. 
+\claudereport{Typo : ``a vérifier'' $\to$ ``à vérifier''.}
 \end{proof}
 
 \begin{definition}[Hilbert]
@@ -81,6 +88,7 @@ Un espace préhilbertien complet est un Hilbert.
 \label{th:projConvexe}
 Soit $H$ Hilbert et $K\subset H$ un convexe fermé non-vide. 
 Pour tout $x \in E$, le problème suivant admet une unique solution
+\claudereport{Typo : ``$x \in E$'' $\to$ ``$x \in H$'' (et ``$P_K : E \to K$'' $\to$ ``$P_K : H \to K$'').}
 %Alors $P_K : E \to K$ solution de 
 \begin{equation}
 \label{eqdef:proj_cvx_ferme}
@@ -116,6 +124,7 @@ Considérons $x_* := P_K(x)$, et $y\in K$ arbitraire. On a $(1-t) x_*+ ty \in K$
 	\|x_*-x\|^2 \leq \|(1-t) x_* + t y - x\|^2 = \|x-x_*\|^2 - 2 t \Re(\<x-x_*,y-x_*\>) + t^2 \|y-x_*\|
 \end{equation}
 par minimalité de $x_*$ dans \eqref{eqdef:proj_cvx_ferme}. On en déduit $\Re(\<x-x_*,y-x_*\>)\leq 0$ par un développement limité en $t=0^+$, comme annoncé. 
+\claudereport{Typo : ``$t^2 \|y-x_*\|$'' $\to$ ``$t^2 \|y-x_*\|^2$'' (idem ``$+ \|y-x_*\|$'' ligne suivante).}
 Réciproquement, considérons $x_* \in K$ tel que $\Re(\<x-x_*,y-x_*\>)\leq 0$ pour tout $y \in K$.
 Alors $\|y-x\|^2 = \|x-x_*\|^2 - 2 \Re(\<x-x_*,y-x_*\>) + \|y-x_*\| \geq \|x-x_*\|^2$ pour tout $y \in K$, donc $x_*$ minimise \eqref{eqdef:proj_cvx_ferme}, comme annoncé.
 
@@ -130,10 +139,12 @@ Le résultat suivant montre que l'on peut identifier un Hilbert à son dual. Les
 \begin{theorem}[Représentation de Riez]
 \label{th:reprRiez}
 Soit $H$ un espace de Hilbert. Alors $H \mapsto H^* : x \mapsto \vp_x := \<x,\cdot\>$, est une bijection isométrique anti-linéaire.  
+\claudereport{Typo : ``$H \mapsto H^*$'' $\to$ ``$H \to H^*$''.}
 \end{theorem}
 
 \begin{proof}
 	\emph{Preuve de l'isométrie}. On a $\|\vp_x\|_{H^*} \geq \vp_x( x/\|x\|) = \|x\|$ pour tout $x \neq 0$, et par ailleurs $|\vp_x(y)| = |\<x,y\>| \leq \|x\| \|y\|$ par Cauchy-Schwartz, d'où $\|\vp_x\|_{H_*} = \|x\|$, comme annoncé.
+\claudereport{Typo : ``$\|\vp_x\|_{H_*}$'' $\to$ ``$\|\vp_x\|_{H^*}$''.}
 	
 	\emph{Preuve de la surjectivité}. Soit $\vp \in H^*\sm \{0\}$, et soit $K := \vp^{-1}\{0\}$ son noyau, qui est convexe en tant qu'hyperplan, et fermé car $\vp$ est continue. 
 	Soit $x_0\in H$ tel que $\vp(x_0)=1$, qui existe par homogénéité, et soit $x_* := x_0 - P_K(x_0)$, de sorte que $\vp(x_*) = \vp(x_0) = 1$ et $\<x_*,y\> = 0$ pour tout $y \in K$. Alors pour tout $x\in H$ on a $\vp(x-\vp(x) x_*) = 0$ par linéarité, donc $x-\vp(x) x_* \in K$, donc $\<x_*,x-\vp(x) x_*\> = 0$, donc $\vp(x) = \<x,x_*\>/\|x_*\|^2$ ce qui conclut. 
@@ -151,6 +162,7 @@ La projection orthogonale permet de décomposer les éléments d'un Hilbert.
 \label{prop:decompOrth}
 	Soit $H$ Hilbert. 
 	La projection sur sous-espace vectoriel fermé $F \subset H$ est caractérisée par la condition $\<x-P_F(x),y\> = 0$, $\forall y \in F$.
+\claudereport{Typo : ``La projection sur sous-espace'' $\to$ ``sur un sous-espace''.}
 	De plus $F \oplus F^\perp = H$, $P_F+P_{F^\perp} = \Id$, et $P_F$ et $P_{F^\perp}$ sont linéaires continues, où $F^\perp := \{y \in H \mid \forall x \in F,\, \<x,y\>=0\}$ désigne le sous-espace orthogonal.
 \end{proposition}
 
@@ -159,6 +171,7 @@ La projection orthogonale permet de décomposer les éléments d'un Hilbert.
 	%De plus on a $z := x-p\in F^\perp$, et $\|p\|^2 + \|x-p\|^2 = \|x\|^2$ d'où la continuité (on pouvait aussi déduire la continuité du caractère $1$-Lipschitz en général du projecteur orthogonal). 
 	
 	Notons $z := x-p$, et observons que $z \in F^\perp$ par la discussion précédente. Par ailleurs $x-z = y \in F \subset (F^\perp)^\perp$, donc par la caractérisation \eqref{eq:proj_obtus} on a $z = P_{F^\perp} x$. Ainsi $x = P_F x + P_{F^\perp} x$, comme annoncé, et ainsi $F + F^\perp = H$. Remarquons finalement que $F \cap F^\perp = \{0\}$ (si $x \in F \cap F^\perp$, alors $\|x\|^2 = \<x,x\> = 0$), donc $F \oplus F^\perp = H$ comme annoncé, ce qui conclut.
+\claudereport{Typo : ``$x-z = y \in F$'' $\to$ ``$x-z = p \in F$''.}
 \end{proof}
 
 Une variante du résultat classique précédent traite des cônes convexes fermés. Rappelons qu'un cône convexe est une partie $K$ d'un espace $\bR$-vectoriel telle que $\lambda x+\mu y \in K$ pour tous $x,y \in K$ et tous $\lambda,\mu \geq 0$. 
@@ -182,16 +195,19 @@ Une variante du résultat classique précédent traite des cônes convexes ferm�
 
 \begin{exemple}[Cone dual de $\bR_+^d$ et $\cS^+_d$ \facultatif]
 \label{ex:coneSdp}
+\claudereport{Typo : ``Cone dual'' $\to$ ``Cône dual''.}
 	On note parfois $K^* := - K^\circ  = \{y \in H\mid \forall x \in K, \<x,y\> \geq 0\}$ le cône dual, d'un cône $K$ donné. 
 	Un cône est dit auto-dual si $K = K^*$. Par exemple $\bR_+^d \subset \bR^d$ et $\cS_d^+ \subset \cS_d$ sont des cônes auto-duaux. La décomposition de la \cref{prop:decompCone} associée au cône $\bR_+^d$ correspond aux parties positive et négative de $x=(x_i)_{1 \leq i \leq d} \in \bR^d$~: 
 	\begin{align*}
 		x &= x^+ - x^-, &\text{où } x^+_i &:= \max\{0,x_i\},\ x^-_i := \max\{0,-x_i\}
 	\end{align*}
 	De même, le décomposition de la \cref{prop:decompCone} associée au cône $\bS_+^d$ correspond aux parties positive et négative du spectre : pour $D \in \cS_d$, diagonalisée sous la forme $U^\top \Diag(\lambda_1,\cdots,\lambda_d) U$ avec $U$ une matrice orthogonale, on a 
+\claudereport{Typos : ``le décomposition'' $\to$ ``la décomposition'' ; ``$\bS_+^d$'' $\to$ ``$\cS_d^+$''.}
 	\begin{equation*}
 		D  
 		= U^\top \Diag(\max \{\lambda_1,0\},\cdots,\max \{\lambda_1,0\}) U - U^\top \Diag(\max \{-\lambda_1,0\},\cdots,\max \{-\lambda_d,0\}) U.
 	\end{equation*}
+\claudereport{Typo : ``$\max\{\lambda_1,0\},\cdots,\max\{\lambda_1,0\}$'' $\to$ ``$\max\{\lambda_1,0\},\cdots,\max\{\lambda_d,0\}$''.}
 \end{exemple}
 
 %En optimisation, le cône normal est le dual du cône intérieur, en un point $x$ d'un convexe $K$.
@@ -207,6 +223,7 @@ Une variante du résultat classique précédent traite des cônes convexes ferm�
 %}
 
 La structure Hilbertienne est si forte que $\ell^2 := L^2(\bN,\bK)$ est, à isométrie linéaire près, son seul représentant intéressant, comme le montre la proposition suivante qui conclut cette introduction. 
+\claudereport{Imprécision : ``la proposition suivante'' $\to$ ``le théorème suivant''.}
 
 \begin{theorem}[Base Hilbertienne]
 \label{th:baseHilbert}

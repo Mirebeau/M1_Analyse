@@ -12,6 +12,7 @@ Cette section est principalement constituée de rappels de topologie générale,
 La définition d'une topologie, de la topologie engendrée, et d'une base de voisinages. 
 La caractérisation séquentielle de l'adhérence \emph{si} l'espace topologique a une base dénombrable de voisinages. 
 L'axiome de séparation de Haussdorff, la définition et la caractérisation de la continuité.
+\claudereport{Typo : ``Haussdorff'' $\to$ ``Hausdorff''.}
 (\Cref{def:topo,def:topoEngendree,def:base_vois,prop:adhSuite,def:separe,def:continuite,prop:caract_cont}.)
 \end{retenir}
 
@@ -273,6 +274,7 @@ Alors $\bU_0$ est une base d'ouverts pour la topologie $\bU$.
 \begin{proof}
 	Choisissons, comme suggéré par l'énoncé, $U_x \in \bU_0$ tel que $x \in U_x \subset U$ pour tous $x \in U \in \bU$. 
 	On $X \in \bU$ par définition, et donc $X = \cup_{x \in X} X_x \subset \cup_{U \in U_0} U$ comme souhaité pour le point (i). 
+\claudereport{Typos (preuve) : ``On $X \in \bU$'' $\to$ ``On a $X \in \bU$'' ; ``$X_x$'' $\to$ ``$U_x$'' ; ``$U \in U_0$'' $\to$ ``$U \in \bU_0$''.}
 	Le point (ii) s'obtient en notant que $U \cap V \in \bU$, pour tous $U,V \in \bU_0$, et en choisissant $W = [U\cap V]_x$. 
 	Finalement, pour tout $U \in \bU$ on a $U = \cup_{x \in U} U_x$, donc tout élément de $\bU$ s'écrit comme union d'éléments de $\bU_0$, et réciproquement $\bU$ est bien une topologie contenant $\bU_0$. 
 %	Par définition $X \in \bU$, et donc par hypothèse tout point $x \in X$ est contenu dans un certain $U_0 \in bU_0$, ce qui établit le point (i) de la \cref{prop:baseOuverts}. Si $U,V \in \bU_0$, alors $U \cap V \in \bU$ et donc l'hypothèse assure que (ii) est également satisfait. 
@@ -402,6 +404,7 @@ Une suite $(x_n)_{n \in \bN}$ a valeurs dans un espace topologique $(X,\bU)$ con
 \begin{proof}
 	Preuve de l'inclusion $\subset$ :
 	Soit $x \in \overline A$, et soit $(V_n)_{n \in \bN}$ une base de voisinages de $X$, que l'on peut supposer décroissante pour l'inclusion. D'après la \cref{prop:adh_vois} il existe $x_n \in A \cap V_n$. La suite $(x_n)_{n \in \bN}$ converge alors vers $x$. Preuve de l'inclusion $\supset$ : découle de la caractérisation de l'adhérence de la \cref{prop:adh_vois}. (Ce sens n'utilise pas la base dénombrable).
+\claudereport{Typo : ``une base de voisinages de $X$'' $\to$ ``de $x$''.}
 \end{proof}
 
 \begin{proposition}[Convergence d'une sous suite vers toute valeur d'adhérence d'une suite]
@@ -421,8 +424,10 @@ Une suite $(x_n)_{n \in \bN}$ a valeurs dans un espace topologique $(X,\bU)$ con
 
 \begin{proof}
 	Soit $x \in \Adh((x_n)_{n \in \bN})$, et soit $(V_n)_{n \in \bN}$ une suite de voisinages de $x$ décroissante pour l'inclusion. On choisit par récurrence $x_{\vp(n)} \in \{x_m \mid m> \vp(n-1)\} \cap V_n$, avec la convention $\vp(-1):=-1$; cette extractrice satisfait aux conditions. 
+\claudereport{Imprécision : il faut prendre une \emph{base} dénombrable de voisinages $(V_n)_n$ de $x$, décroissante (et non une suite quelconque de voisinages), sinon la suite extraite ne converge pas vers $x$.}
 	
 	Réciproquement, s'il existe une extractrice $\vp$ telle que $x_{\vp(n)} \to x$ lorsque $n \to \infty$, alors tout voisinage $V \in \cV_x$ contient tous les termes $(x_\vp(n))_{n \geq N(V)}$ à partir d'un certain rang $N(V)$. Ainsi $V$ intersecte $\{x_n\mid n \geq N\}$, quel que soit l'entier $N\in \bN$, donc $x\in \overline{\{x_n\mid n \geq N\}}$ ce qui conclut. (Ce sens n'utilise pas la base dénombrable.)
+\claudereport{Typo : ``$(x_\vp(n))$'' $\to$ ``$(x_{\vp(n)})$''.}
 \end{proof}
 
 Finalement, expliquons le terme ``filtre'' en entête de la \cref{def:filtre_vois}.
@@ -432,6 +437,7 @@ Finalement, expliquons le terme ``filtre'' en entête de la \cref{def:filtre_voi
 Un filtre d'un ensemble ordonné $(\cP, \preceq)$ est une partie $\cV \subset \cP$, non-vide, et satisfaisant aux axiomes: 
 \begin{itemize}
 	\item (Upper closure) Si $V \in \cV$ et $W \in \cP$ satisfont $V \preceq W$, alors $W \in \cP$.
+\claudereport{Typo : ``alors $W \in \cP$'' $\to$ ``alors $W \in \cV$''.}
 	\item (Downward directed) Si $V_0,V_1 \in \cV$, alors il existe $W \in \cV$ tel que $W\preceq V_0$ et $W \preceq V_1$.
 \end{itemize}
 Le filtre $\cV = \cP$ est dit trivial. 
@@ -463,6 +469,7 @@ La plupart des espaces rencontrés en analyse et analyse fonctionnelle, et donc 
 \begin{remark}[Axiome T1 de Kolmogorov \facultatif]
 \label{rem:T1}
 Un espace topologique $(X, \bU)$ satisfait l'axiome T1 si étant donné deux points distincts, chacun admet un voisinage ne contenant pas l'autre. 
+\claudereport{Terminologie : l'axiome de Kolmogorov est T0 ; T1 est l'axiome de Fréchet (ou d'accessibilité).}
 Cet axiome ne \emph{garantit pas l'unicité} de la limite. 
 \end{remark}
 
@@ -481,6 +488,7 @@ Cet axiome ne \emph{garantit pas l'unicité} de la limite.
 \begin{proof}[Preuve que les fermés de Zariski satisfont aux axiomes de la \cref{rem:fermes}]
 L'ensemble vide s'obtient en choisissant $I=1$ et $P_1=1$, et l'ensemble total en posant $I=0$. 
 Si le fermé de Zariski $F$ est associé aux polynômes $(P_i)_{1 \leq i \leq I}$, et $G$ aux polynômes $(Q_j)_{1 \leq j \leq J}$, alors $F \cup G$ est associé à la famille double $(P_i Q_j)^{1 \leq i \leq I}_{1 \leq j \leq J}$. Si $F_\alpha$ est associé aux polynômes $(P^\alpha_i)_{1 \leq i \leq I(\alpha)}$, pour tout paramètre $\alpha \in A$, alors $\cap_{\alpha\in A} F_\alpha$ est associé à une famille génératrice finie quelconque de l'idéal engendré par $\{F^\alpha_i \mid \alpha \in A,\, 1 \leq i \leq I(\alpha)\}$ dans l'anneau $\bC[X_1,\cdots,X_d]$, qui est Noetherien d'après le théorème de la base de Hilbert.
+\claudereport{Typo (preuve) : ``$\{F^\alpha_i \mid \ldots\}$'' $\to$ ``$\{P^\alpha_i \mid \ldots\}$''.}
 \end{proof}
 
 
@@ -490,6 +498,7 @@ Si le fermé de Zariski $F$ est associé aux polynômes $(P_i)_{1 \leq i \leq I}
 \begin{definition}[Continuité en un point]
 \label{def:continuite}
 	Soient $(X,\bU)$, $(Y,\bV)$, des espaces topologiques. Une application $f:X \to Y$ est continue en $x \in X$ si l'image réciproque de tout voisinage de $f(x)$ est un voisinage de $X$. 
+\claudereport{Typo : ``est un voisinage de $X$'' $\to$ ``de $x$''.}
 	\begin{equation}
 	\label{eq:cont_at_x}
 		\forall V \in \cV_{f(x)},\ f^{-1}(V) \in \cV_x. 
@@ -672,6 +681,7 @@ Un module de continuité est une application $\omega : \bR_+ \to [0,\infty]$, te
 \end{definition}
 
 Nous avons fait dans la \cref{def:moduleCont} des hypothèses minimales concernant la régularité de $\omega$. Sans nuire à la généralité, on pourrait toutefois les renforcer, comme l'illustre le résultat suivant. Si $d$ est une distance et $\omega$ un module de continuité croissant, sous-additif et non-identiquement nul, alors $\omega\circ d$ est également une distance, définissant la même topologie. 
+\claudereport{Imprécision : pour que $\omega\circ d$ soit une distance, il faut aussi que $\omega$ soit à valeurs finies (la \cref{def:moduleCont} autorise la valeur $\infty$).}
 \begin{lemma}[Régularisation d'un module de continuité]
 \label{lem:regModuleCont}
 	Soit $\omega_0 : \bR_+ \to \bR_+$ un module de continuité localement borné. Alors il existe un module de continuité $\omega_*$ qui le majore, est croissant, et est $C^\infty$ sur $\bR_+^*$. 
@@ -681,6 +691,7 @@ Nous avons fait dans la \cref{def:moduleCont} des hypothèses minimales concerna
 
 \begin{proof}
 	L'application $\omega_1 : \bR_+ \to \bR_+$ définie par $\omega_1(t) := \sup\{\omega_0(t) \mid 0 \leq s \leq t\}$ tend vers $0$ en $0$, majore $\omega_0$, et est croissante donc mesurable. 
+\claudereport{Typo : ``$\sup\{\omega_0(t) \mid 0 \leq s \leq t\}$'' $\to$ ``$\sup\{\omega_0(s) \mid 0 \leq s \leq t\}$''.}
 	
 	Si $\omega_0$ est à croissance sous linéaire à l'infini, alors c'est aussi le cas de $\omega_1$. On pose dans ce cas 
 	\begin{equation}
@@ -727,6 +738,7 @@ Les conditions suivantes sont équivalentes
 	L'équivalence (i) $\Leftrightarrow$ (ii) est classique et découle de \eqref{eq:cont_at_x_direct} et de la base de voisinages \eqref{eqdef:base_vois_metric}.
 	L'équivalence (ii) $\Leftrightarrow$ (iii) est triviale. 
 	L'implication (iii) $\Rightarrow$ (iv) s'obtient en posant $\omega_x(\delta) := \sup \{d_Y(f(x),f(x')) \mid x' \in B(x,\delta)\}$, et réciproquement (iv) $\Rightarrow$ (iii) en utilisant que $\omega_x$ tend vers $0$ en $0$. 
+\claudereport{Problème : avec la boule ouverte, $x' \notin B(x,d_X(x,x'))$, donc on n'obtient pas $d_Y(f(x),f(x')) \leq \omega_x(d_X(x,x'))$ ; prendre la boule fermée $B'(x,\delta)$.}
 	L'implication (iv) $\Rightarrow$ (v) est claire. Montrons que non (iii) $\Rightarrow$ non (v) : en ce cas, par négation des quantificateurs, il existe $\ve>0$ et pour tout $n\geq 1$ un point $x_n \in X$ tel que $d(x,x_n)\leq 1/n$ et $d(f(x),f(x_n)) \geq \ve$, de sorte que $x_n \to x$ et $f(x_n) \not \to f(x)$ lorsque $n\to \infty$.
 \end{proof}
 
@@ -836,6 +848,7 @@ Un $\bK$-espace vectoriel normé (evn) est muni de la distance $d(x,y) := \|x-y\
 
 \begin{definition}[Fonctions Lipschitziennes, Holderiennes]
 \label{def:normeHolder}
+\claudereport{Typo : ``Holderiennes'' $\to$ ``Höldériennes'' (orthographe ``Holder''/``Hölder'' à uniformiser dans tout le document).}
 	L'ensemble $C^0_b(X,\bK)$ des fonctions continues bornées sur un espace topologique $X$ est un $\bK$-evn muni de la norme 
 		\begin{equation}
 			\|f\|_\infty := \sup_{x\in X} |f(x)|. 
@@ -847,6 +860,7 @@ L'ensemble $C^\alpha_b(X,\bK)$ des fonctions $\alpha$-Holderiennes bornées sur 
 			|f|_{C^\alpha} &:= \sup_{x\neq y} \frac{|f(x)-f(y)|}{d(x,y)^\alpha}
 		\end{align}
 De même les fonctions Lipschitiennes bornées, avec la norme $\|f\|_\infty + \Lip(f)$, où 
+\claudereport{Typo : ``Lipschitiennes'' $\to$ ``Lipschitziennes''.}
 \begin{align*}
 	\Lip(f) := \sup_{x \neq y} \frac{|f(x)-f(y)|}{d(x,y)}.
 \end{align*}
@@ -925,6 +939,7 @@ pour tout $\ve>0$ et toute partie finie $I_0 \subset I$.
 \end{definition}
 
 Une suite $x_n$ d'un evtlc $(E,(|\cdot|_i)_{i \in I})$ converge vers un point $x$ ssi $|x-x_n| \to 0$ lorsque $n \to \infty$ pour tout $i \in I$.
+\claudereport{Typo : ``$|x-x_n| \to 0$'' $\to$ ``$|x-x_n|_i \to 0$''.}
 Tout evn est de manière triviale un evtlc, dont la famille de semi-normes est réduite à un élément. 
 Noter que la topologie sur un evtlc n'est pas automatiquement séparée; cela doit être justifié, typiquement par le lemme suivant. On abrège \emph{evtlc séparé} en evtlcs.
 
@@ -954,6 +969,7 @@ Une application linéaire $u : E \to F$ entre evtlc $(E,(|\cdot|_i)_{i \in I})$ 
 	Par homogénéité on en déduit \eqref{eq:cont_lin_evtlc} avec $C_j := \ve^{-1}$. 
 	
 	Réciproquement, supposons la condition satisfaite. Par linéarité, il suffit de montrer que $u$ est continue en $0$. Considérons un voisinage de l'origine de $F$, que l'on peut choisir dans la base \eqref{eq:evtlc_vois}, donc de la forme $\{y \in F \mid \forall j \in J_0,\ |x|_j < \ve\}$ avec $J_0 \subset J$ fini et $\ve>0$. Alors il contient l'image de $\{x \in F \mid \forall i \in \cup_{j \in J_0} I_j,\ |x|_i < \ve/\max_{j \in J_0} C_j\}$, qui est bien un voisinage de l'origine. 
+\claudereport{Typos (preuve) : ``$|x|_j < \ve$'' $\to$ ``$|y|_j < \ve$'' ; ``$\{x \in F \mid \ldots\}$'' $\to$ ``$\{x \in E \mid \ldots\}$''.}
 \end{proof}
 
 On en déduit qu'une application linéaire d'un evtlc $(E,(|\cdot|_i)_{i \in I})$ vers un evn $(F,\|\cdot\|_F)$, ou vers le corps de base $\bK$, est continue ssi il existe $I_0\subset I$ fini et une constante $C$ tels que 
@@ -965,6 +981,7 @@ On en déduit qu'une application linéaire d'un evtlc $(E,(|\cdot|_i)_{i \in I})
 \begin{remark}[Somme ou maximum de semi-normes]
 \label{rem:sommeMaxEvtlc}
 	Certains auteurs remplacent le maximum par une somme dans \eqref{eq:cont_lin_evtlc}, \eqref{eq:cont_lin_evtlc_evn} ainsi que \eqref{eqdef:evtlc_dist} et \eqref{eqdef:met_faible_boule}. Les notions obtenues sont équivalentes, quitte à modifier la certaines constantes. L'utilisation d'un maximum, préférée ici, donne souvent des preuves un peu plus simples. 
+\claudereport{Typo : ``quitte à modifier la certaines constantes'' $\to$ ``quitte à modifier certaines constantes''.}
 \end{remark}
 
 
@@ -976,6 +993,7 @@ On peut faire cette hypothèse sans nuire à la généralité, quitte à consid�
 	|x|_N' := \max_{1 \leq n \leq N} |x|_n % \{ |x|_n \mid n \leq N\}.
 \end{equation*}
 Noter que $|\cdot|_n = |\cdot|_n'$ si la famille initiale était déjà graduée. 
+\claudereport{Incohérence d'indices : $\max_{1 \leq n \leq N}$ alors que les semi-normes sont indexées par $n \in \bN$ (et $n \leq N$ dans \eqref{eqdef:boule_graduee}) ; écrire $0 \leq n \leq N$.}
 Une base de voisinages de $x\in E$ est donnée par les ensembles suivants : pour tout $N \in \bN$ et tout $\ve>0$
 \begin{equation}
 \label{eqdef:boule_graduee}
@@ -1002,12 +1020,14 @@ En notant $\log_2 \eta := \ln \eta/ \ln 2$ le logarithme en base $2$ d'un réel 
 
 \begin{proof}
 L'expression de la boule est claire, en remarquant que $\min\{2^-n,|x-y|_n\}<\eta$ est toujours satisfait si $n\geq -\ln_2 \eta$, et est équivalent à $|x-y|_n < \eta$ sinon. 
+\claudereport{Typos (preuve) : ``$2^-n$'' $\to$ ``$2^{-n}$'' ; ``$\ln_2$'' $\to$ ``$\log_2$''.}
 On en déduit les inclusions suivantes, pour tout $N \in \bN$ et tous $\epsilon,\eta>0$, montrant que $d$ définit une base de voisinages équivalente à \eqref{eqdef:boule_graduee}, donc la même topologie
 \belowdisplayskip=-12pt
 \begin{align*}
 	B_d(x, \min \{\ve,2^{-N-1}\}) &\subset B_N(x,\ve), &
 	B_{\lfloor \log_2 \eta \rfloor}(x,\eta) &\subset B_d(x,\eta). 
 \end{align*}
+\claudereport{Erreur de signe : pour $\eta<1$, $\lfloor \log_2 \eta \rfloor$ est négatif ; l'indice doit être $\lfloor -\log_2 \eta \rfloor$.}
 \end{proof}
 
 \notei{Suppression de l'uniforme continuité des applications linéaires, assez triviale et inutile.}
@@ -1024,6 +1044,7 @@ On en déduit les inclusions suivantes, pour tout $N \in \bN$ et tous $\epsilon,
 \begin{definition}[Partie linéairement bornée]
 \label{def:lineairBorne}
 	Une partie $A$ d'un evtlcs $(E,(|\cdot|_i)_{i \in I})$ est dite linéairement bornée ssi chaque semi-norme est bornée sur $A$ : $\forall i \in I$, $\sup\{|x|_i\mid i \in I\}$ est borné. 
+\claudereport{Typo : ``$\sup\{|x|_i\mid i \in I\}$'' $\to$ ``$\sup\{|x|_i\mid x \in A\}$''.}
 	
 	Si la famille de semi-normes est dénombrable, et si $d$ désigne la distance \eqref{eqdef:evtlc_dist}, alors on a la caractérisation équivalente : $\forall \ve>0$, $\exists \delta>0$, $\delta A \subset B_d(0,\ve)$. 
 \end{definition}
@@ -1057,6 +1078,7 @@ La classe de Schwartz est un espace de fonctions indéfiniment dérivables à d�
 		|f|_{n,\alpha} := \sup_{x \in \bR^d} (1+|x|^2)^\frac n 2 |\partial_\alpha f(x)|
 	\end{equation}
 	On note $\cS(\bR^n)$ le sous-ensemble des fonctions sur lequel toutes ces semi-normes sont finies, qui est donc un evtlcs métrisable. On obtient une suite graduée de (semi-)normes en posant (par exemple) $|f|_n := \max_{|\alpha|_1 \leq n} \|f\|_{n,\alpha}$ pour tout $n \in \bN$.
+\claudereport{Typos : ``$\cS(\bR^n)$'' $\to$ ``$\cS(\bR^d)$'' ; ``$\|f\|_{n,\alpha}$'' $\to$ ``$|f|_{n,\alpha}$''.}
 \end{definition}
 
 
@@ -1075,6 +1097,7 @@ Etant donné un ouvert $\Omega\subset \bR^d$, il existe une suite $(K_n)_{n \in 
 
 \begin{proof}
 	Prendre par exemple $K_n := \{x \in B'(0,n)\mid d(x,\bR^d \sm \Omega) \geq 1/n\}$. 
+\claudereport{Imprécision : pour $n=0$, $1/n$ n'est pas défini ; commencer à $n \geq 1$ (ou utiliser $1/(n+1)$).}
 \end{proof}
 
 Par convention $\|f\|_{L^p(K)}$ désigne $\|f_{|K}\|_{L^p(K)}$ si $f$ est définie sur un domaine contenant $K \subset \bR^d$, $f$ et $K$ étant supposés mesurables. 
@@ -1156,18 +1179,21 @@ Soit $\Omega\subset \bR^d$ ouvert. On munit $\cD(\Omega)$ de la topologie d'evtl
 \begin{equation*}
 	|f|_{\omega,\eta} := \max_{x \in \Omega} \Big(\omega(x) \max_{\alpha \leq \eta(x)} |\partial_\alpha f(x)|\Big).
 \end{equation*}
+\claudereport{Imprécision : ``$\max_{\alpha \leq \eta(x)}$'' $\to$ ``$\max_{|\alpha|_1 \leq \eta(x)}$''.}
 Pour une forme linéaire $\vp$ sur $\cD(\Omega)$, sont équivalentes (i) $\vp$ est continue sur $\cD(\Omega)$, soit encore 
 	\begin{equation}
 	\label{eq:distrib_cont}
 		\exists \omega, \eta \in C^0(\bR,\bR_+),\ \forall f \in \cD(\Omega),\ |\vp(f)| \leq |f|_{\omega,\eta},
 	\end{equation}
 et (ii) $\vp$ est une distribution, soit encore \eqref{eq:distrib_cont_loc}. 
+\claudereport{Typo : dans \eqref{eq:distrib_cont}, ``$\omega, \eta \in C^0(\bR,\bR_+)$'' $\to$ ``$C^0(\Omega,\bR_+)$''.}
 \end{proposition}
 
 \begin{proof}
 %L'équivalence de (i) avec (iii) est claire au vu du critère \eqref{eq:cont_lin_evtlc_evn}.
 \emph{Preuve de (i) $\Rightarrow$ \eqref{eq:distrib_cont}.}
  Si $\vp$ est continue, alors il existe  une constante $C$, un entier $N$ et des fonctions $(\omega_n,\eta_n)_{n=1}^N$ tels que $|\vp(f)|\leq C \max_{n=1}^N |f|_{\omega_n,\eta_n}$. On conclut en posant $\omega := C\max_{n=1}^N \omega_n$ et $\eta := C\max_{n=1}^N \eta_n$.
+\claudereport{Imprécision : poser $\eta := \max_{n} \eta_n$, sans le facteur $C$ ($\eta$ est un ordre de dérivation).}
 	La réciproque \eqref{eq:distrib_cont} $\Rightarrow$ (i) est évidente. 
 %Preuve de (i) $\Leftrightarrow$ \eqref{eq:distrib_cont_loc}. Il suffit de remarquer que $(|\cdot|_n)_{n \in \bN}$ est une suite graduée de semi-normes. 
 
@@ -1176,6 +1202,7 @@ et (ii) $\vp$ est une distribution, soit encore \eqref{eq:distrib_cont_loc}.
 %	Soit $(\Omega_n)_{n \in \bN}$ une suite d'ouverts tels que $\overline {\Omega_n} \csubset \Omega_{n+1}$ et $\cup_{n \in \bN} \Omega_n = \Omega$. 
 Soit $K_n$ une suite exhaustive de compacts de $\Omega$.	
 Notons $\omega_n := C_{K_n}$ et $\eta_n := n_{K_n}$ pour la lisibilité. 	Soit $\chi_n$, $C^\infty$, positive, telle que $\chi_n=1$ sur $K_{n-1}$ et $\supp(\chi_n) \subset \mathring K_n$, puis $\rho_n := \chi_n - \chi_{n-1}$, avec les conventions $\Omega_{-1}=\emptyset$ et $\chi_{-1} = \chi_{-2} =0$.
+\claudereport{Notation non définie : $\Omega_n$ (convention $\Omega_{-1}=\emptyset$, et $\Omega_n \sm \overline \Omega_{n-2}$ plus bas) n'est pas introduit ; sans doute $\Omega_n := \mathring K_n$.}
 	On obtient
 	\begin{align*}
 %	\label{eq:distrib0_lin}
@@ -1197,6 +1224,7 @@ Notons $\omega_n := C_{K_n}$ et $\eta_n := n_{K_n}$ pour la lisibilité. 	Soit $
 \subsubsection{La topologie faible}
 
 La topologie faible, sur un evn ou un evtlcs, est comme son nom l'indique une topologie plus grossière - possédant moins d'ouverts - que la topologie usuelle, en dimension infinie. L'un de ses intérêts principaux, on le verra, est le \cref{th:BanachAlaoglu} de Banach-Alaoglu, montrant la compacité *faible de la boule unité d'un espace dual en dimension infinie, ce qui est exclu dans le cas de la topologie usuelle d'un evn d'après le \cref{th:bouleCompRiez} de Riez.
+\claudereport{Typo : ``Riez'' $\to$ ``Riesz'' (Frigyes Riesz ; à corriger dans tout le document : \cref{lem:normaleRiez,th:bouleCompRiez,th:reprRiez}, etc.).}
 
 \begin{definition}[Topologie faible et *faible]
 \label{def:topoFaible}
@@ -1239,6 +1267,7 @@ En revanche, sous certaines conditions, leur restriction à la boule unité, ou 
 		|v(y_k)-u(y_k)| \leq |v(y_k)-v(x_{n_k})| + |v(x_{n_k})-u(x_{n_k})| + |u(x_{n_k}) - u(y_k)| < 3 \ve /3 = \ve.
 	\end{equation}
 	Réciproquement $B_d(u,\eta) \cap B^*$ est exactement de la forme \eqref{eq:vois_faible_boule_evtlc}, au vu de \eqref{eq:boule_evtlc}, en choisissant $\ve=\eta$, $K := \lfloor\log_2 \eta\rfloor$, et $y_k := x_k$ pour $k\leq K$. 
+\claudereport{Erreur de signe : $K := \lfloor -\log_2 \eta \rfloor$ (et non $\lfloor \log_2 \eta \rfloor$), comme dans la preuve de la \cref{prop:distanceEvtlcs}.}
 \end{proof}
 
 %\todoi{On peut supposer que $E$ est un evtlc, mais il faut adapter la notion de bornitude. Par exemple supposer que $\forall x \in E$, $\forall l \in B$, $|l(x)| \leq C \sum_{i \in I_0} |x|_i$ où $I_0$ est fini. Cela revient en gros à se ramener à un evn, avec la norme $x\mapsto \sum_{i \in I_0} |x|_i$. 

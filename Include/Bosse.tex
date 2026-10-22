@@ -29,6 +29,7 @@ L'existence et les propriétés recherchées d'un noyau de convolution. (\Cref{p
 
 \begin{proof}
 	Par construction, $\vp$ est $C^\infty$ sur $\bR^*$. Par récurrence, $\vp^{(n)}(x) = P_n(x)\exp(-1/x)/x^{2n}$ pour tout $n \in \bN$ et tout $x>0$, où $P_n$ un polynôme de degré au plus $n$. On en déduit que $\vp^{(n)}(x) \to 0$ lors que $x\to 0$, pour tout $n \in \bN$, et donc que $\vp\in C^\infty$. 
+\claudereport{Typos : ``où $P_n$ un polynôme'' $\to$ ``où $P_n$ est un polynôme'' ; ``lors que'' $\to$ ``lorsque''.}
 \end{proof}
 
 
@@ -52,6 +53,7 @@ L'existence et les propriétés recherchées d'un noyau de convolution. (\Cref{p
 \begin{proposition}[Noyau de convolution]	
 \label{prop:cinfBosse}
 	Il existe $\vp \in C^\infty(\bR^d)$, radiale, positive, d'intégrale unité, telle que $\vp= 1$ sur $B(0,1/3)$ et $\supp(\vp) \subset B'(0,2/3)$. En particulier $\supp(\vp) \csubset B(0,1)$.
+\claudereport{Erreur : $\vp = 1$ sur $B(0,1/3)$ est incompatible avec l'intégrale unité (la preuve donne $\vp = c$ sur $B(0,1/3)$).}
 	%de support contenu dans la boule unité.
 \end{proposition}
 
@@ -79,6 +81,7 @@ Notons $\vp_\mathrm{heav}$ et $\vp_\mathrm{conv}$ les fonctions des \cref{prop:c
 	\vp_1(x) := \sum_{1 \leq i \leq I} \vp_\mathrm{conv}\Big(\frac{x-x_i} {r/3}\Big).
 \end{equation}
 Alors $\vp_1\in C^\infty$, $\supp(\vp_1)\csubset \Omega$, et $\vp_1 > 0$ sur $K$.
+\claudereport{Problème : $\vp_\mathrm{conv}((x-x_i)/(r/3))$ n'est strictement positive que sur $B(x_i,2r/9)$, ce qui ne recouvre pas forcément $K$ ; utiliser $(x-x_i)/r$ (support dans $B'(x_i,2r/3) \subset \Omega$, positivité sur $B(x_i,2r/3) \supset B(x_i,r/3)$).}
 Posons $c := \inf_K \vp_1$ et notons que $c>0$ par compacité. 
 On définit finalement $\vp(x) := \vp_\mathrm{heav}(\vp_1(x)/c)$ qui convient.
 \end{proof}
@@ -91,16 +94,19 @@ On définit finalement $\vp(x) := \vp_\mathrm{heav}(\vp_1(x)/c)$ qui convient.
 \begin{proof}
 	Définissons $r := \min_{x \in K} \max_{i=1}^I d(x,\bR^d \sm \Omega_i)$, appelé nombre de Lebesgue de la couverture, et notons que $r>0$ par compacité de $K$.  Posons $K_i := \{x \in K \mid d(x,\bR^d \sm \Omega_i) \geq r\}$ et notons que $K_i \csubset \Omega_i$ et que $\cup_{i=1}^I K_i = K$.
 	Choisissons par la \cref{prop:cinfSupport} une fonction $\psi_i \in C^\infty_c(\Omega_i,[0,1])$ telle que $\psi_i=1$ sur $K_i$, pour tout $1 \leq i \leq I$, étendue par $0$ hors de $\Omega_i$. Les fonctions $\vp_i := \psi_i / \sum_{j=1}^I \psi_j$, où $1 \leq i \leq I$, conviennent. 
+\claudereport{Problème : $\sum_j \psi_j$ s'annule loin de $K$, donc $\vp_i := \psi_i/\sum_j\psi_j$ n'est pas définie (ni $C^\infty$) sur $\bR^d$ ; par ex. multiplier par une fonction $\chi \in C^\infty_c$ égale à $1$ sur $K$ et à support dans $\{\sum_j \psi_j > 0\}$.}
 \end{proof}
 
 \begin{proposition}[Exhaustion lisse] 
 \label{prop:cinfExhaust}
 Soit $\Omega \subset \bR^d$ un ouvert, et et soit $(K_n)_{n \in \bN}$ une suite exhaustive de compacts, voir la \cref{prop:exhaustComp}; posons $K_{-1} := \emptyset$.
+\claudereport{Typo : ``et et soit'' $\to$ ``et soit''.}
 Alors il existe une suite de fonctions $\vp_n \in C^\infty_c(\bR^d,[0,1])$ telles que $\supp(\vp_n) \subset \mathring K_{n+1}\sm K_{n-1}$ et $\sum_{n \in \bN} \vp_n = 1$ sur $\Omega$. 
 \end{proposition}
 
 \begin{proof}
 Pour tout $n \in \bR$, introduisons $K_{n+1/2}$ tel que $K_n \csubset \mathring K_{n+1/2}$ et $K_{n+1/2} \csubset K_{n+1}$. Par exemple $K_{n+1/2} := \{x \in \bR^d \mid d(x,K_n) \leq r/2\}$ où $r := \inf \{d(x,\bR^d \sm K_{n+1}) \mid x \in K_n\}$. 
+\claudereport{Typo : ``Pour tout $n \in \bR$'' $\to$ ``Pour tout $n \in \bN$''.}
 
 	Choisissons $\psi_n \in C^\infty_c(\mathring K_{n+1} \sm  K_{n-1}, [0,1])$ telle que $\psi_n=1$ sur $K_{n+1/2}\sm \mathring K_{n-1/2}$, par la \cref{prop:cinfSupport}, pour tout $n \in \bN$ et avec $K_{-1/2} := \emptyset$. 
 	Alors $\vp_n := \psi_n / \sum_{m \in \bN} \psi_m$ convient; noter qu'en chaque point $x$, la somme contient au plus deux termes non-nuls. 

@@ -1,5 +1,6 @@
 
 Les espaces de Sobolev, qui expriment que les dérivées d'une fonction jusqu'à un ordre $n$ donné sont intégrables à une puissance $p$ donnée, constituent un cadre naturel pour l'étude des problèmes variationnels et des EDPs, par exemple. Cette section décrit les injections entre ces espaces, et notamment le théorème d'injection compacte de Rellich, ainsi les techniques liées que sont la régularisation par convolution et le théorème de compacité de Frechet-Kolmogorov.\\
+\claudereport{Typos : ``ainsi les techniques'' $\to$ ``ainsi que les techniques'' ; ``Frechet'' $\to$ ``Fréchet'' (aussi dans le bloc à retenir, le titre du \cref{th:FrechetKolmogorov} et la \cref{subsec:injCompacte}).}
 
 Dans toute cette partie, $\Omega$ désigne un ouvert de $\bR^d$. %, sauf mention contraire.
 En préliminaire de cette section, nous énonçons deux résultats de densité, l'un dans $L^p$ et l'autre dans l'espace des fonctions test $\cD(\Omega)$.
@@ -57,6 +58,7 @@ En préliminaire de cette section, nous énonçons deux résultats de densité, 
 \Nref{ex:nonLinMinH1}\\
 \Nref{rem:bouleW1pFerme}
 }
+\claudereport{Typo dans l'inventaire : \textbackslash nref\{corol:ingSurCritOm\} est décrit comme ``Injection sous critique'' alors qu'il s'agit du cas sur-critique.}
 
 
 \begin{proposition}[Densité dans $L^p$ des fonctions continues à support compact]	
@@ -68,6 +70,7 @@ Soit $(X,d)$ un espace métrique localement compact muni d'une mesure borélienn
 	\mu(A) &= \inf\{\mu(U) \mid U \supset A, U \text{ ouvert}\}.
 \end{align}
 Alors $C^0_c(X)$, l'ensembles des fonctions continues à support compact, est dense dans $L^p(X,\mu)$ pour tout $1 \leq p < \infty$; 
+\claudereport{Typo : ``l'ensembles'' $\to$ ``l'ensemble''.}
 en particulier, $C^0_c(\Omega)$ est dense dans $L^p(\Omega)$, pour tout ouvert $\Omega \subset \bR^d$.
 \end{proposition}
 
@@ -84,6 +87,7 @@ en particulier, $C^0_c(\Omega)$ est dense dans $L^p(\Omega)$, pour tout ouvert $
 %	Comme $X$ est localement compact, et $K$ est compact, il existe $U'$ ouvert d'adhérence compacte tel que $K \csubset U' \subset \overline {U'} \csubset U$.
 	
 	Posons $f(x) := d(x,X\sm V)/(d(x,K) + d(x,X\sm V)$, qui est continue et à support $\supp(f) \subset \overline V$ compact. Alors $f-\bbone_A : X \to [-1,1]$ est nulle hors de $V\sm K$, donc $\|f-\bbone_A\|_p^p \leq \mu(U\sm K) \leq \ve$, comme souhaité.
+\claudereport{Typo : parenthèse non fermée dans ``$d(x,X\sm V)/(d(x,K) + d(x,X\sm V)$''.}
 	La dernière affirmation découle de la régularité de la mesure de Lebesgue sur un ouvert de $\bR^d$, ce qui conclut.
 \end{proof}
 
@@ -101,6 +105,7 @@ On note $\alpha \preceq \beta$ l'ordre partiel coordonnée par coordonnée sur $
 		I_\alpha f := (I_1)^{\alpha_1} \cdots (I_d)^{\alpha_d} f.
 	\end{align*}
 	Alors $\|I_\alpha f\|_\infty \leq \|f\|_\infty$, les opérateurs d'intégration $(I_\alpha)_{\alpha \in \bN^d}$ et de dérivation $(\partial_\beta)_{\beta \in \bN^d}$ commutent deux à deux, et $\partial_\alpha I_\beta f = \partial_{\alpha-\beta} f$ si $\alpha \succeq \beta$ et $f \in C^{|\alpha|_1-|\beta|_1}$. %([0,1]^d)$.
+\claudereport{Erreur : $I_i$ et $\partial_i$ ne commutent pas ($I_i \partial_i f = f - f_{|x_i=0}$) ; seuls $I_i$ et $\partial_j$, $j\neq i$, commutent.}
 \end{lemma}
 
 
@@ -114,14 +119,18 @@ On note $\alpha \preceq \beta$ l'ordre partiel coordonnée par coordonnée sur $
 Il suffit de traiter le cas où $\Omega$ est borné, car les fonctions test sont à support compact; quitte à faire une homothétie, on peut donc supposer que $\Omega \subset ]0,1[^d$.
 Soit $K \csubset \Omega$, et soit $\rho_K \in \cD(\Omega)$ égale à $1$ sur $K$, voir la \cref{prop:cinfSupport}.
 Soit $\vp \in \cD_K(\Omega)$ et $\alpha \in \bN^d$. Soit $(P_n)_{n \in \bN}$ une suite de polynômes à coefficients rationnels convergeant uniformément vers $\partial_\alpha \vp$ sur $[0,1]^d$. Une telle suite existe \cref{rem:polDens} issue du théorème de Stone-Weierstrass. On a alors, pour tout $\beta \preceq \alpha$, en utilisant le \cref{lem:intDerivIter},
+\claudereport{Typo : ``Une telle suite existe \textbackslash cref\{rem:polDens\}'' $\to$ ``existe d'après la \textbackslash cref\{rem:polDens\}''.}
 \begin{align*}
 	\|\partial_\beta (\vp - \rho_K I_\alpha P_n)\|_\infty
 	&\leq \| I_{\alpha-\beta} (\partial_\alpha \vp -  P_n)\|_\infty + \|(1-\rho_K)I_{\alpha-\beta} P_n\|_\infty + \sum_{\gamma \leq \beta, \gamma \neq 0} \binom \beta \gamma \|\partial_\gamma \rho_K \, I_{\alpha-\gamma} P_n\|_\infty, \\
 	&\leq \|\partial_\alpha \vp -  P_n\|_\infty + C(K,\alpha) \|P_n\|_{L^\infty(\Omega \sm K)},
 \end{align*}
+\claudereport{Problème : la majoration de $\|(1-\rho_K) I_{\alpha-\beta} P_n\|_\infty$ par $C\|P_n\|_{L^\infty(\Omega\sm K)}$ n'est pas justifiée ($I_{\alpha-\beta}P_n$ hors de $K$ dépend de $P_n$ sur $K$) ; utiliser plutôt $(1-\rho_K) I_{\alpha-\beta} P_n = (1-\rho_K)I_{\alpha-\beta}(P_n - \partial_\alpha\vp)$, car $\partial_\beta \vp = 0$ hors de $K$. Indices : $\partial_{\beta-\gamma} I_\alpha = I_{\alpha-\beta+\gamma}$, et non $I_{\alpha-\gamma}$.}
 où $C(K,\alpha)$ désigne une constante dépendant du compact $K$ et de l'indice de dérivation $\alpha$.
 On a utilisé (i) la règle de Liebniz de dérivation d'un produit, et (ii) le fait que $1-\rho_K$ et $\partial_\gamma \rho_K$ sont nulles sur $K$.
+\claudereport{Typo : ``Liebniz'' $\to$ ``Leibniz'' (aussi dans la preuve du \cref{corol:noyauGreen}).}
 Or $\|\partial_\alpha \vp -  P_n\|_\infty \to 0$  lorsque $n \to \infty$ par hypothèse, et $\|P_n\|_{L^\infty(\Omega \sm K)} \leq \|\partial_\alpha \vp -  P_n\|_\infty \to 0$ puisque $\supp(\vp) \subset K$. On en déduit que $\rho_K I_\alpha P_n \to \vp$ dans la norme $|f|_\alpha := \max_{\beta\leq \alpha} \|\partial_\beta f\|_\infty$. 
+\claudereport{Typo : ``$\max_{\beta\leq \alpha}$'' $\to$ ``$\max_{\beta\preceq \alpha}$''.}
 En notant que $I_\alpha P$ est un polynôme, et en introduisant une suite exhaustive $(K_r)_{r \in \bN}$ de compacts de $\Omega$, voir la \cref{prop:exhaustComp}, on conclut que $\{\rho_{K_r} Q \mid r \in \bN, Q \in \bQ[X_1,\cdots,X_d]\}$ est une partie dénombrable dense de $\cD(\Omega)$.
 \end{proof}
 
@@ -145,6 +154,7 @@ Rappelons d'abord l'inégalité de Jensen, ensuite illustrée par les espaces de
 \begin{proposition}[Inégalité de Jensen]
 \label{prop:Jensen}
 Soit $(X,\mu)$ un espace probabilisé, soit $f : X \to \bR^d$ intégrable, et soit $g : \bR^d \to ]-\infty,\infty]$ convexe et s.c.i. Alors
+\claudereport{Imprécision : les intégrales sont écrites $\diff x$ au lieu de $\diff \mu(x)$.}
 \begin{equation*}
 	g\Big(\int_X f(x) \diff x\Big) \leq \int_X g(f(x)) \diff x.
 \end{equation*}
@@ -164,6 +174,7 @@ Soit $(X,\mu)$ un espace probabilisé, soit $f : X \to \bR^d$ intégrable, et so
 \begin{corollary}
 \label{corol:lpInclusLq}
 	Soit $(X,\mu)$ est un espace mesuré de mesure finie, et soient $1 \leq p \leq q \leq \infty$. Alors $L^p(X,\mu) \supset L^q(X,\mu)$, et pour toute $f \in L^q(X,\mu)$ 
+\claudereport{Typo : ``Soit $(X,\mu)$ est un espace mesuré'' $\to$ ``Soit $(X,\mu)$ un espace mesuré''.}
 \begin{equation*}
 	\mu(X)^{-\frac 1 p} \|f\|_p \leq \mu(X)^{-\frac 1 q} \|f\|_q.
 \end{equation*}
@@ -172,12 +183,14 @@ Soit $(X,\mu)$ un espace probabilisé, soit $f : X \to \bR^d$ intégrable, et so
 
 \begin{proof}
 Il s'agit de montrer que $(\int_X f(x)^p \diff \mu(x)/\mu(X))^{\frac q p} \leq \int_X f(x)^q \diff \mu(x)/\mu(X)$. Cela correspond à la \nref{prop:Jensen} appliquée à $\tilde f := |f|^p$, la fonction $g(s) := |s|^{\frac q p}$ qui est continue et convexe car $q\geq p$, et à la mesure de probabilité $\mu/\mu(X)$.
+\claudereport{Imprécision : le cas $q=\infty$ n'est pas couvert par $g(s) := |s|^{q/p}$.}
 Noter que le \nref{th:HolderIneq} aurait pu être utilisé ici à la place de Jensen. 
 % (évident si $\mu(X)=0$).
 %L'inclusion s'en déduit car toute partie compacte de $\Omega$ est de mesure de Lebesgue finie.
 \end{proof}
 
 L'inégalité de Jensen permet est également au coeur de la définition de la convolution.
+\claudereport{Typo : ``L'inégalité de Jensen permet est également'' $\to$ ``est également''.}
 
 \begin{proposition}[Convolution dans $L^p$]
 \label{prop:convolLp}
@@ -253,6 +266,7 @@ Dans toute la suite, étant donnée $\rho \in L^1(\bR^d)$ supportée dans $B'(0,
 \end{align*}
 pour tous $\ve>0$ et $x\in \bR^d$. En particulier, $(f\star \rho_\ve) (x)$ ne dépend des valeurs de $f$ que sur $B(x,\ve)$. 
 On rappelle que $C^0_0(\bR^d)$ désigne l'ensemble des fonctions continues tendant vers $0$ à l'infini.
+\claudereport{Redondance : $C^0_0(\bR^d)$ est déjà défini juste avant le \cref{lem:convolTranslat}.}
 
 %\begin{equation*}
 %	(f\star \rho)_{|K} = 
@@ -322,6 +336,7 @@ $\cD(\Omega)$ est dense dans $L^p(\Omega)$ pour tout $1 \leq p < \infty$. %En pa
 \label{corol:convolTestFun}
 	Soient $\rho,\phi \in \cD(\Omega)$. 
 	Alors $\rho_\ve \star \phi \to  (\int_{\bR^d} \rho)\, \phi$ lorsque $\ve \to 0$ dans $\cD(\Omega)$.
+\claudereport{Problème : énoncé avec $\rho \in \cD(\Omega)$ (plutôt $\rho\in\cD(\bR^d)$ supportée dans $B'(0,1)$) ; $m(\rho)$, utilisé dans la preuve, n'est pas défini ; et $\ve\supp(\rho)+\supp(\phi) \subset \Omega$ seulement pour $\ve$ assez petit, pas pour tout $0<\ve \leq 1$.}
 	%Alors $\rho_\ve \star \phi \to m(\rho) \phi$ lorsque $\ve \to 0$ dans $\cD(\Omega)$, où $m(\rho) := \int_{\bR^d} \rho$. 
 \end{corollary}
 
@@ -335,6 +350,7 @@ La convolution permet, outre les propriétés de densité, d'établir un résult
 
 \begin{theorem}[Frechet-Kolmogorov]
 \label{th:FrechetKolmogorov}
+\claudereport{Typo : ``Frechet-Kolmogorov'' $\to$ ``Fréchet-Kolmogorov''.}
 	Soit $p \in [1,\infty[$ et $\cF$ une partie bornée de $L^p(\Omega)$ t.q.\ %satisfaisant aux hypothèses suivantes :
 	\begin{enumerate}[(i)]
 		\item (Régularité sous translation) Pour tout $K \csubset \Omega$, il existe un module de continuité $\omega_K$ t.q.\
@@ -352,12 +368,16 @@ La convolution permet, outre les propriétés de densité, d'établir un résult
 \begin{proof}
 On note $\|\cdot\|_p := \|\cdot\|_{L^p(\Omega)}$.
 Dans la suite, on étend implicitement toute fonction $f \in \cF$ sur $\bR^d\sm \Omega$, par exemple par $0$, pour que toutes les quantités soient bien définies; on peut vérifier que les résultats ne dépendent pas de cette extension, grâce specifiquement à l'utilisation de la fonction indicatrice lissée $\phi$ et à la petitesse du vecteur $h\in \bR^d$ ci-dessous.
+\claudereport{Typo : ``specifiquement'' $\to$ ``spécifiquement''.}
 
 	Commençons par introduire un certains nombre d'objets.
+\claudereport{Typo : ``un certains nombre'' $\to$ ``un certain nombre''.}
 	Soit $\ve>0$, arbitraire mais fixé dans la preuve.
 	Soit $K_0 \csubset \Omega$ donné par par propriété (ii) pour la valeur $\ve$. 
+\claudereport{Typo : ``par par propriété (ii)'' $\to$ ``par la propriété (ii)''.}
 	Soit $K_1 \csubset \Omega$ tel que $K_0 \csubset \mathring K_1$ et soit $\vp \in C^1_c(\Omega,[0,1])$ telle que $\vp=1$ sur $K_0$ et $\supp(\vp) \subset \mathring K_1$.
 	On a pour toute $f \in \cF$ et tout $|h| \leq d(K_1, \partial \bR^d \sm \Omega)$
+\claudereport{Typo : ``$d(K_1, \partial \bR^d \sm \Omega)$'' $\to$ ``$d(K_1, \bR^d \sm \Omega)$''.}
 %	Soit $\omega$ un module de continuité tel que 
 	\begin{equation}
 	\label{eq:fphfp}
@@ -387,6 +407,7 @@ Dans la suite, on étend implicitement toute fonction $f \in \cF$ sur $\bR^d\sm 
 \end{proof}
 
 Le \nref{th:FrechetKolmogorov} permet de montrer la compacité de l'opérateur intégral suivant, analogue à l'exemple \cref{lem:convK_compact}.
+\claudereport{Typo : ``analogue à l'exemple \textbackslash cref\{lem:convK\_compact\}'' $\to$ ``analogue au \textbackslash cref\{lem:convK\_compact\}''.}
 
 \begin{exemple}[Compacité d'un opérateur intégral, version $L^2$]
 \label{ex:operCompactL2}
@@ -395,6 +416,7 @@ Pour tout $K \in L^2([0,1]^2,\bR)$, l'endomorphisme de $L^2([0,1])$ défini par 
 
 \begin{proof}
 La bonne définition et la continuité de $\cK$ découlent de l'inégalité de Cauchy-Schwartz : %\nref{prop:CauchySchwartz}
+\claudereport{Typo : ``Cauchy-Schwartz'' $\to$ ``Cauchy-Schwarz'' (Hermann Schwarz ; aussi plus bas dans ce chapitre, et dans la \cref{sec:Hilbert}).}
 %	Par Cauchy-Schwartz, on obtient la bonne définition et la continuité de $\cK$:
 	\begin{align*}
 		|\cK(f)(x)|^2 &\leq \Big(\int_0^1 K(x,y)^2 \diff y\Big) \Big( \int_0^1 f(y)^2 \diff y\Big), &
@@ -402,6 +424,7 @@ La bonne définition et la continuité de $\cK$ découlent de l'inégalité de C
 		\| \cK(f)\|^2_{L^2([0,1])} \leq \|K\|_{L^2([0,1]^2)} \|f\|_{L^2([0,1])}, 
 	\end{align*}
 	la seconde inégalité s'obtenant à partir de la première par intégration par rapport à $x \in [0,1]$. 
+\claudereport{Typo : ``$\| \cK(f)\|^2 \leq \|K\|_{L^2} \|f\|_{L^2}$'' $\to$ ``$\|K\|_{L^2}^2 \|f\|_{L^2}^2$''.}
 	Par ailleurs en notant $I_\ve := [\ve,1-\ve] \subset I := [0,1]$, on obtient %de sorte que $d(x,\partial I) \leq \ve$ ssi $x \in [0,\ve] \cup [1-\ve,1]$, on a 
 	\begin{equation*}
 		\|\cK(f)\|_{L^2(I \sm I_\ve)}^2 = 
@@ -409,12 +432,14 @@ La bonne définition et la continuité de $\cK$ découlent de l'inégalité de C
 		\|f\|^2_2 \int_{x \notin I_\ve, y \in I} K(x,y)^2 \diff x \, \diff y.
 	\end{equation*}
 	D'autre part, pour tout $h\in \bR^d$ tel que $|h| \leq \ve$, on a 
+\claudereport{Typo : ``$h\in \bR^d$'' $\to$ ``$h \in \bR$'' (ici $d=1$).}
 	\begin{align*}
 		\|\cK(f)-\tau_h \cK(f) \|_{L^2(I_\ve)}^2 &= 
 		\int_{x \in I_\ve} \Big| \int_{y\in I} K(x,y) f(y) \diff y - \int_{y\in I} K(x-h,y) f(y) \diff y \Big|^2 \diff x \\
 		&\leq \|f\|^2_2 \int_{x \in I_\ve, y \in I} \big(K(x,y)-K(x-h,y)\big)^2 \diff x \diff y.
 	\end{align*}
 	En utilisant la densité des fonctions continues dans $L^2([0,1]^2)$, on obtient que les intégrales de $K$ apparaissant dans les r.h.s.\ des deux dernières estimations tendent vers $0$ lorsque $\ve\to 0$. L'ensemble $\{\cK(f)\mid \|f\|_2 \leq 1\}$ satisfait donc les hypothèses du \cref{th:FrechetKolmogorov}; il est donc précompact, et ainsi l'opérateur $\cK$ est compact, comme annoncé.
+\claudereport{Typo : ``r.h.s.'' $\to$ ``membres de droite''.}
 \end{proof}
 
 
@@ -426,6 +451,7 @@ Nous définissons dans cette sous-section les espaces de Sobolev, qui sont const
 
 \begin{retenir}
 La définition et des espaces de Sobolev, la densité de $\cD(\Omega)$ dans ceux-ci, le théorème de prolongement, le problème de Poisson.
+\claudereport{Typo : ``La définition et des espaces de Sobolev'' $\to$ ``La définition des espaces de Sobolev''.}
 (\Cref{def:Sobolev,prop:testDenseWsp,th:prolSobolev,th:pbPoisson}.)	
 \end{retenir}
 
@@ -491,10 +517,12 @@ En particulier, on a pour tout $p \in [1,\infty]$ l'injection continue $L^p(\Ome
 \begin{corollary}[Distributions image de $L^p$]
 \label{corol:distribLp}
 Soit $T \in \cD(\Omega)^*$, $p\in ]1,\infty]$ et $q$ t.q.\ $\frac 1 p + \frac 1 q = 1$. On a (a) $|T(\phi)| \leq C\|\phi\|_q$ pour tous $\forall \phi \in \cD(\Omega)$, ssi (b) il existe $f \in L^p(\Omega)$, telle que $T = U_f$. 
+\claudereport{Typo : ``pour tous $\forall \phi$'' $\to$ ``pour toute $\phi$''.}
 \end{corollary}
 
 \begin{proof} 
 Si (a) est satisfaite, alors $T$ définit une forme linéaire continue sur $L^q(\Omega)$, car $\cD(\Omega)$ est dense dans cet espace par la \cref{prop:densC0Lp}, d'où l'existence de $f\in L^p$ par le \nref{th:lpDualLq}.
+\claudereport{Imprécision : la densité de $\cD(\Omega)$ dans $L^q$ est le \cref{corol:testDenseLp} (et non la \cref{prop:densC0Lp}).}
 
 Réciproquement, supposons (b). On a $L^p(\Omega) \subset L^1_\loc(\Omega)$ par le \cref{corol:lpInclusLq}, donc $U_f$ est bien définie par \cref{prop:distribL1Loc}, et on conclut par le \nref{th:HolderIneq}.
 \end{proof}
@@ -516,6 +544,7 @@ pour toute $\phi \in \cD(\Omega)$. Alors $\partial_\alpha T \in \cD(\Omega)^*$, 
 
 Nous arrivons à la définition des espaces de Sobolev.
 La condition $\partial_\alpha f \in L^p(\Omega)$ apparaissant dans celle-ci signifie que la dériviée distributionnelle $\partial_\alpha f \in \cD^*(\Omega)$ appartient sous-ensemble $L^p(\Omega) \subset \cD^*(\Omega)$ défini par l'identification de la \cref{prop:distribL1Loc}. 
+\claudereport{Typos : ``dériviée'' $\to$ ``dérivée'' ; ``appartient sous-ensemble'' $\to$ ``appartient au sous-ensemble''.}
 
 
 %La condition ``$\partial_\alpha f \in L^p(\Omega)$'' apparaissant dans celle-ci est un abus de notation, devant être compris comme suit : ``il existe $g \in L^p(\Omega)$ telle que $\partial_\alpha U_f = U_g$, en tant qu'éléments de $\cD^*(\Omega)$.''
@@ -529,12 +558,14 @@ La condition $\partial_\alpha f \in L^p(\Omega)$ apparaissant dans celle-ci sign
 		W^{s,p}(\Omega) &:= \{f \in L^p(\Omega) \mid \forall |\alpha|_1 \leq s,\, \partial_\alpha f \in L^p(\Omega)\}, &
 		\|f\|_{W^{s,p}(\Omega)}^p &:= \sum_{|\alpha|_1\leq s} \|\partial_\alpha f\|_{L^p(\Omega)}^p.
 	\end{align*}
+\claudereport{Problème : pour $p=\infty$, la formule $\|f\|_{W^{s,p}}^p := \sum_{|\alpha|_1\leq s} \|\partial_\alpha f\|_p^p$ n'a pas de sens ; utiliser par ex. $\max_{|\alpha|_1\leq s}\|\partial_\alpha f\|_\infty$.}
 \end{definition}
 
 
 \begin{proposition}
 \label{prop:SobolevBanach}
 	Pout tous $s \in \bN$ et $p \in [1,\infty]$, l'espace $W^{s,p}(\Omega)$ est un Banach. Si $p=2$, c'est un espace de Hilbert, aussi noté $H^s(\Omega) := W^{s,2}(\Omega)$.
+\claudereport{Typo : ``Pout'' $\to$ ``Pour''.}
 \end{proposition}
 
 \begin{proof}
@@ -573,6 +604,7 @@ Elle permet de régulariser, et de montrer des résultats de densité, au sein d
 \begin{proof}
 %On note que $T\star \rho \in C^0(\bR^d)$, car la translation est continue sur $\cD(\bR^d)$. D'un autre côté, c
 Définissons $T*\rho \in \cD^*(\Omega)$ par $\<T * \rho,\phi\> := \<T,\overline \rho \star \phi\>$.
+\claudereport{Imprécisions (preuve) : $\cD^*(\Omega)$, $\cD_K(\Omega)$ $\to$ $\cD^*(\bR^d)$, $\cD_K(\bR^d)$ ; ``$|\<T,\rho \star \phi\>|$'' $\to$ ``$|\<T,\overline\rho \star \phi\>|$''.}
 Soit $K$ un compact, $K' := K + \supp(\rho)$ qui est également compact, et $s\in \bN$ l'ordre de la distribution $T$ restreinte à $K'$. On a pour toute $\phi \in \cD_K(\Omega)$
 \begin{equation*}
 	|\<T*\rho,\phi\>| = |\<T,\rho \star \phi\>| 
@@ -583,6 +615,7 @@ compte tenu de l'identité $\partial_\alpha(\overline \rho \star \phi) = (\parti
 Il s'ensuit que $T * \rho \in L^\infty_\loc(\bR^d)$, par le \nref{corol:distribLp}. Comme le même raisonnement montre que $\partial_\beta (T * \rho) \in L^\infty_\loc(\bR^d)$ pour $\beta \in \bN^d$, on obtient que $T * \rho \in C^\infty(\bR^d)$.
 
 Considérons  $\eta \in \cD(\Omega)$ avec $\int \eta = 1$. Alors $\<T * \rho, \eta_\ve \> = \<T,\overline \rho \star \eta_\ve\>$ converge à la fois vers $T*\rho(0)$ et $T\star \rho(0)$ lorsque $\ve\to 0$, puisque $\overline \rho \star \eta_\ve \to \rho$ dans $\cD(\Omega)$ par le  \cref{corol:convolTestFun}.  De même $T*\rho(x)=T\star \rho(x)$ pour tout $x \in \bR^d$.
+\claudereport{Typo : ``$\overline \rho \star \eta_\ve \to \rho$'' $\to$ ``$\to \overline\rho$''.}
 On en déduit que les définitions notées $*$ et $\star$ de la convolution d'une distribution coïncident, ce qui établit (i). 
 Finalement, les propriétés (ii) et (iii) annoncées découlent immédiatement de la définition notée $*$ de la convolution.
 \end{proof}
@@ -595,8 +628,10 @@ Finalement, les propriétés (ii) et (iii) annoncées découlent immédiatement 
 
 \begin{proof}
 	On a $f \star \rho_\ve \to f$ lorsque $\ve \to 0$ pour la topologie de $L^p$ par la \cref{prop:convolApprox}, et de même $\partial_\alpha (f \star \rho_\ve) = (\partial_\alpha f) \star \rho_\ve \to \partial_\alpha f$ pour la topologie de $L^p$, d'où la convergence annoncée. On a utilisé implicitement le fait que la convolution au sens des distributions et au sens de $L^p$ coincident sur $L^p(\bR^d) \times \cD(\bR^d)$, voir les \cref{prop:convolLp,def:convolDistrib} (ce qui découle de leur coincidence sur $\cD(\bR^d)\times \cD(\bR^d)$ et de leur continuité pour la topologie de $L^p(\bR^d) \times \cD(\bR^d)$).
+\claudereport{Typos : ``coincident'', ``coincidence'' $\to$ ``coïncident'', ``coïncidence''.}
 	
 	Pour établir la densité de $\cD(\bR^d)$, il est nécessaire de considérer des approximations ayant un support borné. Pour cela, considérons $\chi_n \in C^\infty (\bR^d , [0,1])$, pour tout $n \in \bN^*$, une fonction radiale, telle que $\chi_n = 1$ sur $B'(0,n)$ et $\supp(\chi_n) \subset B(0,n+1)$, et dont les dérivées sont bornées indépendamment de $n$. (Par exemple $\chi_n(x) = 1-\sigma(|x|-n)$ où $\sigma \in C^\infty( \bR , [0,1])$ satisfaisant $\sigma_{|]-\infty,0]}=0$ et $\sigma_{[1,\infty[} = 1$ est une approximation de la fonction Heaviside, voir la \cref{prop:cinfHeaviside}.) Alors $\|\partial_\alpha (f \chi_n) - \partial_\alpha f\|_p \leq C(\alpha) \sum_{|\beta|_1 \leq |\alpha|_1} \| \partial_\beta f\|_{L^p(\bR^d \sm B(0,n))}$, pour tous $\alpha \in \bN^d$ et $f \in W^{s,p}(\bR^d)$, où la constante $C$ est indépendante de $n$ (utiliser la formule \eqref{eq:deriv_binom} du binôme pour calculer $\partial_\alpha (f \chi_n)$). Ainsi $\|\partial_\alpha (f \chi_n) - \partial_\alpha f\|_{W^{s,p}} \to 0$ lorsque $n \to \infty$. Par ailleurs $\|(f \chi_n)\star \rho_\ve - f \chi_n\|_{W^{s,p}} \to 0$ lorsque $\ve\to 0$ d'après le premier point établi, et comme $(f \chi_n)\star \rho_\ve \in \cD(\bR^d)$ cet ensemble est dense dans $W^{s,p}(\bR^d)$, ce qui conclut.
+\claudereport{Typos : ``$\sigma_{[1,\infty[} = 1$'' $\to$ ``$\sigma_{|[1,\infty[} = 1$'' ; ``$\|\partial_\alpha (f \chi_n) - \partial_\alpha f\|_{W^{s,p}}$'' $\to$ ``$\|f \chi_n - f\|_{W^{s,p}}$''.}
 \end{proof}
 
 
@@ -630,13 +665,16 @@ Soient $\Omega \subset \bR^d$ un ouvert régulier, $s\in \bN$ et $p \in [1,\inft
 \begin{corollary}
 \label{corol:testDenseWspO}
 	Soient $\Omega \subset \bR^d$ un ouvert régulier, $s \in \bN$ et $p \in [1,\infty]$. Alors $\{\phi_{|\Omega} \mid \phi \in \cD(\bR^d)\}$ est dense dans $W^{s,p}(\Omega)$. 
+\claudereport{Erreur : la densité est fausse pour $p=\infty$ ; supposer $p<\infty$ (comme dans la \cref{prop:testDenseWsp}).}
 \end{corollary}
 
 \begin{proof}
 	Soit $u\in W^{s,p}(\Omega)$, $Pu\in W^{s,p}(\bR^d)$ son extension par \eqref{th:prolSobolev}, et $(\phi_n)_{n \in \bN}$ une suite dans $\cD(\bR^d)$ convergeant vers $Pu$ dans $W^{s,p}(\bR^d)$ par la \cref{prop:testDenseWsp}. Alors $\phi_{n|\Omega} \to u$ dans $W^{s,p}(\Omega)$ comme souhaité. 
+\claudereport{Typo : ``par \textbackslash eqref\{th:prolSobolev\}'' $\to$ ``par le \textbackslash cref\{th:prolSobolev\}''.}
 \end{proof}
 
 Nous terminons cette section par une présentation du problème de Poisson. La preuve choisie, particulièrement directe, est fondée sur le théorème de représentation de Riez.
+\claudereport{Typo : ``Riez'' $\to$ ``Riesz''.}
 Cependant, elle se généralise difficilement, car elle requiert une forme bilinéaire $Q$ définissant un produit scalaire et une norme équivalents à ceux de $H^1(\Omega)$. 
 Le théorème classique de Lax-Milgram, qui ne requiert pas la symétrie de $Q$, aurait également pu s'appliquer.
 Une autre preuve alternative utilisant la compacité faible est présentée dans \cite{desvilettes2015analyse}, voir aussi l'\nref{ex:nonLinMinH1}. 
@@ -696,6 +734,7 @@ où $n_{|\partial \Omega}$ désigne la normale extérieure. De même, le problè
 \label{subsec:injSousCrit}
 
 Le théorème d'injection de Sobolev sous-critique montre que les éléments de $W^{s,p}(\bR^d)$, où $s>0$ et $p\in [1,\infty[$, sont intégrables à une puissance $p_*>p$. En d'autres termes, abaisser l'exigence de régularité $s$ permet d'augmenter l'intégrabilité $p$. 
+\claudereport{Incohérence de notation : ``$p_*$'' ici, ``$p^*$'' dans le \cref{th:injSousCrit}.}
 
 \begin{retenir}
 Le théorème d'injection sous-critique entre espaces de Sobolev.
@@ -721,6 +760,7 @@ pour tout $0< \alpha \leq d$. Par contraste, ces fonctions n'appartiennent à au
 
 \begin{theorem}[Inegalite de Young faible, admis]
 \label{th:YoungFaible}
+\claudereport{Typo : ``Inegalite'' $\to$ ``Inégalité'' (aussi dans le titre du \cref{th:Young}). Problème : il manque une constante $C(p,q,d)$ dans l'inégalité de Young faible.}
 	Soient $p,q,r'\in ]1,\infty[$ tels que $1+ \frac 1 {r'} = \frac 1 p + \frac 1 q$. 
 	On a 
 	$\|f\star g \|_{r'} \leq \|f\|_p \|g\|_{q,w}$ pour tous $f \in L^p(\bR^d)$ et $g\in L^{q,w}(\bR^d)$.
@@ -732,6 +772,7 @@ La convolution dans l'inégalité de Young doit s'interpréter comme l'unique pr
 Le second ingrédient de la preuve de l'injection de Sobolev sous-critique est la proposition suivante, exprimant toute fonction régulière et à support compact comme la convolution de son gradient avec un noyau vectoriel radial. Elle est liée au \nref{corol:noyauGreen}, donnant la solution fondamentale de l'opérateur Laplacien dans $\bR^d$.
 
 Rappelons le théorème des accroissements finis, montrant que pour toute $u \in C^1(\bR^d)$ et tous $x,y \in \bR^d$ on a 
+\claudereport{Imprécision : la formule \eqref{eq:int_seg} est le théorème fondamental de l'analyse, et non le théorème des accroissements finis.}
 \begin{equation}
 \label{eq:int_seg}
 	u(y)-u(x) = \int_0^1 \<\nabla u((1-t) x+t y),(y-x)\> \diff t	.
@@ -790,6 +831,7 @@ Dans le résultat suivant la notation ``$C(s,p,d)$'' désigne ``une constante d�
 
 \begin{proof}
 On prouve seulement le cas $p>1$. Noter que le cas $p=1$, dû à Gagliardo-Niremberg, est plus difficile en général, sauf si $d=2$ auquel cas on dispose d'une preuve élémentaire \cite{desvilettes2015analyse}.
+\claudereport{Typo : ``Niremberg'' $\to$ ``Nirenberg''.}
 
 Par une récurrence immédiate, il suffit de considérer le cas où $s=1$. 
 Définissons $h(x) := \frac 1 {|x|^{d-1}}$ sur $\bR^d$, et notons que $h \in L^{q,w}(\bR^d)$ avec $q := \frac d {d-1}$, comme observé dans \eqref{eq:powLpw}. 
@@ -858,11 +900,14 @@ Comme annoncé, nous prouvons l'inégalité de Young usuelle, dont la variante f
 	La bonne définition et la continuité de la forme trilinéaire $I : L^p \times L^q \times L^r \to \bR$ s'ensuit. 
 	
 	Etant données $f,g,h\in C^0_c$, on a $I(f,g,h) = \int (f\star g)(x) h(x) \diff x$ donc $\|f\star g\|_{r'} \leq \|f\|_p \|g\|_r$, en choisissant $h$ correspondant au cas d'égalité dans le
+\claudereport{Typo : ``$\|f\star g\|_{r'} \leq \|f\|_p \|g\|_r$'' $\to$ ``$\|f\|_p \|g\|_q$''.}
 	\nref{th:HolderIneq}. Si $p,q\in [1,\infty[$, alors par densité de $C^0_c$ dans $L^p$ et $L^q$ (\cref{corol:testDenseLp}) la convolution admet une unique extension continue $L^p \times L^q \to L^{r'}$, comme annoncé. Finalement, dans le cas où $p=\infty$, on a forcément $q=1$ et $r'=\infty$, donc le le résultat est trivial par intégrabilité et d'ailleurs déjà vu dans la \nref{prop:convolLp}, ce qui conclut.
+\claudereport{Typo : ``le le résultat'' $\to$ ``le résultat''.}
 \end{proof}
 
 
 Le noyau de Green, solution fondamentale de l'opérateur laplacien sur $\bR^d$, permet d'exprimer une fonction régulière et à support compact une convolution de son Laplacien, de manière analogue au \cref{prop:convolPow} qui l'exprimait comme convolution de son gradient. 
+\claudereport{Typos : ``exprimer une fonction régulière ... une convolution'' $\to$ ``comme une convolution'' ; ``au \textbackslash cref\{prop:convolPow\}'' $\to$ ``à la''.}
 
 Dans le résultat suivant, la notation $\delta_0$ désigne la masse de Dirac à l'origine, qui est une distribution d'ordre $0$ définie par $\<\delta_0,\vp\> = \vp(0)$ pour toute $\vp \in \cD(\bR^d)$. La convolution doit être comprise au sens de la \nref{def:convolDistrib}.
 
@@ -878,6 +923,7 @@ La fonction $G : \bR^d \to \bR$ définie par
 	\end{cases}
 \end{equation*}
 satisfait $-\Delta G = \delta_0$ au sens des distributions sur $\bR^d$, où $c(d) := 1/(\max \{1,d-2\} |\bS_{d-1}|)$. 
+\claudereport{Erreur : la constante $c(d)$ est introduite mais n'apparaît pas dans $G$ ; il faut $G(x) := c(d)\times(\ldots)$ pour avoir $-\Delta G = \delta_0$ et $\nabla G = -V$.}
 En particulier, $\vp = -\Delta (G \star \vp)$ pour toute $\vp \in \cD(\bR^d)$. 
 \end{corollary}
 
@@ -887,6 +933,7 @@ Notons $V(x) := |\bS_{d-1}|^{-1} x/\|x\|^d$, le champ de vecteurs intervenant da
 Observons que $G \in C^\infty(\bR^d \sm \{0\})$, et que $\nabla G = - V$ sur $\bR^d \sm \{0\}$.
 	%Tout d'abord notons que $\nabla g = -\alpha(d) V \in C^\infty(\bR^d\sm \{0\})$, avec $\alpha(d) = d-2$ si $d\geq 3$ et $\alpha(d)=1$ si $d\in\{1,2\}$. 
 	Le première étape de la preuve consiste à montrer que l'égalité $\nabla G = - V$ est également vraie en tant que distributions sur $\bR^d$. Etant donnée une fonction test (vectorielle) $\phi \in \cD(\Omega,\bR^d)$ on calcule
+\claudereport{Typos : ``Le première étape'' $\to$ ``La première étape'' ; ``$\phi \in \cD(\Omega,\bR^d)$'' $\to$ ``$\phi \in \cD(\bR^d,\bR^d)$''.}
 	\begin{equation*}
 		- \<\nabla G,\phi\>_{\cD' \times \cD} 
 		= \<G,\diver \phi\>_{\cD' \times \cD} 
@@ -894,6 +941,7 @@ Observons que $G \in C^\infty(\bR^d \sm \{0\})$, et que $\nabla G = - V$ sur $\b
 		= \lim_{\delta \to 0^+} \int_{B(R) \sm B(\delta)} G \diver \phi,
 	\end{equation*}
 	où $R>0$ est tel que $\supp (\phi) \subset B(R)$. On a utilisé (i) la \nref{prop:deriv_distrib}, (ii) la définition de la distribution associée la une fonction $G \in L^1_\loc(\bR^d)$, voir la \cref{prop:distribL1Loc}, (iii) la fait que $\phi$ est à support compact, et l'intégrabilité de $G$ sur un voisinage de $0$. Par ailleurs
+\claudereport{Typos : ``associée la une fonction'' $\to$ ``associée à une fonction'' ; ``(iii) la fait'' $\to$ ``(iii) le fait''.}
 	\begin{equation*}
 		\int_{B(R) \sm B(\delta)} G \diver \phi = \int_{B(R) \sm B(\delta)} \diver(G \phi) - \<\nabla G,\phi\> = \int_{\partial B(R)} G\<\phi,\bn\> - \int_{\partial B(\delta)} G\<\phi,\bn\> - \int_{B(R) \sm B(\delta)} \<\nabla G,\phi\>,
 	\end{equation*}
@@ -913,6 +961,7 @@ Observons que $G \in C^\infty(\bR^d \sm \{0\})$, et que $\nabla G = - V$ sur $\b
 
 Le Théorème d'injection sur-critique de Sobolev complète le précédent, et montre que les éléments de $W^{s,p}(\bR^d)$ où $s\in \bN$ et $p \in [1,\infty[$ satisfont $s p>d$, sont des fonctions continues.
 Ces deux résultat laissent ouverte la question des injections dites \emph{critiques}, pour lesquelles  $s p = d$, qui doivent être traitées au cas par cas et pour lesquelles on se réfèrera à la litérature. 
+\claudereport{Typos : ``Ces deux résultat'' $\to$ ``Ces deux résultats'' ; ``litérature'' $\to$ ``littérature''.}
 
 \begin{retenir}
 	Le théorème d'injection sur-critique entre espaces de Sobolev.
@@ -920,6 +969,7 @@ Ces deux résultat laissent ouverte la question des injections dites \emph{criti
 \end{retenir}
 
 La preuve est fondée sur une variante de l'identité de convolution établir à la \cref{prop:convolPow}.
+\claudereport{Typo : ``établir à la'' $\to$ ``établie à la''.}
 \begin{proposition}
 \label{prop:convolPow2}
 Pour toute $f \in C^1(\bR^d)$, et tous $x \in \bR^d$ et $r>0$, on a 
@@ -964,6 +1014,7 @@ Pour exploiter la proposition précédente, nous aurons besoin du calcul suivant
 \end{equation}
 pour tout $r>0$, où $\bS := \bS_{d-1}$ désigne la sphère unité de $\bR^d$.
 On désigne par $C^\alpha$ est l'espace des fonctions de régularité $\alpha$-Hölder, où $\alpha\in ]0,1[$, et on note $C^\alpha_0$ le sous espace de celles qui tendent vers $0$ à l'infini. 
+\claudereport{Typo : ``On désigne par $C^\alpha$ est l'espace'' $\to$ ``On désigne par $C^\alpha$ l'espace''.}
 
 
 \begin{theorem}[Injection sur-critique $W^{1,p} \subset C^{1-d/p}_0$, $p>d$]
@@ -980,6 +1031,7 @@ Soit $d \in \bN^*$ la dimension, et $p \in ]d,\infty[$ un exposant. Toute foncti
 \begin{proof}
 On montre ci-dessous les inégalités annoncées sous l'hypothèse supplémentaire $u \in \cD(\bR^d)$. 
 Il s'ensuit que application linéaire $(\cD(\bR^d), \|\cdot\|_{W^{s,p}}) \to (C^\alpha_0, \|\cdot\|_{C^\alpha})$ est continue, donc admet un prolongement unique à $W^{s,p}(\bR^d)$ par densité de $\cD(\bR^d)$, voir la \cref{prop:testDenseWsp}.
+\claudereport{Typos : ``que application'' $\to$ ``que l'application'' ; ``$W^{s,p}$'' $\to$ ``$W^{1,p}$'' (ici $s=1$, aussi ligne suivante).}
 On peut alors passer à la limite les inégalités (\ref{eq:inj_sur_critique}, gauche) puis (\ref{eq:inj_sur_critique}, droite) en notant qu'elles ne font intervenir que des quantités continues vis à vis des normes $\|\cdot\|_{W^{s,p}}$ et $\|\cdot\|_{C^\alpha}$, ce qui conclut.
 
 % , en supposant $d>1$ Ou est-ce utilisé ?
@@ -988,6 +1040,7 @@ On peut alors passer à la limite les inégalités (\ref{eq:inj_sur_critique}, g
 	|B| |u(x)-u_B| \leq \int_{B} |u(x)-u(z)| \diff z \leq  \int_{B(x,r)} |u(x)-u(z)| \diff z \leq \frac{r^d}{d} \|\nabla f\|_{L^p(B(x,r))} \| h\|_{L^q(B(0,r))},
 \end{equation*} 
 la \cref{prop:convolPow2} et le \nref{th:HolderIneq}, en notant $q$ l'exposant conjugué de $p$, i.e.\ $\frac 1 p + \frac 1 q =1$. 
+\claudereport{Typo : ``$\nabla f$'' $\to$ ``$\nabla u$'' (aussi dans l'équation suivante).}
 %De plus on a par \eqref{eq:normLqPow}
 %\begin{equation*}
 %	\|h\|^q_{L^q(B(0,r))} = |\bS| \int_0^r s^{-q(d-1)} s^{d-1} \diff s = |\bS| \frac{r^{(d-1)(1-q)+1}}{(d-1)(1-q)+1}.
@@ -1006,12 +1059,14 @@ Pour établir (\ref{eq:inj_sur_critique}, gauche) on note $\tilde B := B(x,1)$ l
 	\leq C \|\nabla u\|_{L^p(\tilde B)} + C'\|u\|_{L^p(\tilde B)},
 \end{equation}
 on utilisé (i) la moyenne $u_{\tilde B}$, (ii) l'argument précédent pour contrôler l'écart à la moyenne, (iii) \cref{corol:lpInclusLq} pour comparer les normes $L^1$ et$L^p$ sur l'espace de mesure finie $\tilde B$, où $C = C(d,p)$ et $C'=C'(d,p)$. 
+\claudereport{Typos : parenthèse en trop dans ``$\|u\|_{L^1(\tilde B))}$'' ; ``on utilisé'' $\to$ ``où l'on a utilisé'' ; ``et$L^p$'' (espace manquante).}
 
 Finalement, reste à établir la convergence vers $0$ à l'infini de toute $u \in W^{1,p}(\bR^d)$, $p>d$. 
 Etant donné $\ve>0$, soit $R$ tel que $\|\nabla u\|_{L^p(\bR^d \sm B(0,R))} \leq \ve $ et $\| u\|_{L^p(\bR^d \sm B(0,R))} \leq \ve$. Alors $|u(x)| \leq (C+C') \ve$ dès que $|x| \geq R+1$ par \eqref{eq:surCritBd}, d'où la convergence vers $0$, ce qui conclut. 
 \end{proof}
 
 Pour compléter le résultat précédent, mentionnons que $W^{1,\infty}$ est l'espace des fonctions bornées et Lipschitz. (Contrairement à l'énoncé précédent, elles ne sont donc pas $C^1$, et ne tendent pas vers $0$ à l'infini, en général.)
+\claudereport{Imprécision : ``Contrairement à l'énoncé précédent, elles ne sont donc pas $C^1$'' : l'énoncé précédent n'affirme pas de régularité $C^1$.}
 
 \begin{corollary}
 \label{corol:ingSurCritOm}
@@ -1052,6 +1107,7 @@ Soit $\Omega \subset \bR^d$ un ouvert régulier, et soient $s \in \bN^*$ et $p \
 	L'hypothèse $p(s_0+1) > d$ est équivalente à $q>d$, donc $u$ est continue par le \cref{th:injSurCrit} (injection sur-critique), comme annoncé. 
 	
 	Reste à traiter le cas $p=\infty$, qui est trivial puisque $W^{1,p}$ est constitué de fonctions Lipschitz, ainsi que le critique où $p s_0 = d$. Pour ce dernier, on note que $u \vp_{|\Omega} \in W^{s,p'}(\Omega)$ pour toute $\vp \in \cD(\bR^d)$ et tout $p'<p$ (par dérivation d'un produit, et le \cref{corol:lpInclusLq} qui s'applique puisque $\supp(\vp)$ est de mesure finie), donc $u \vp_{|\Omega}$ est continue par l'argument précédent, et donc $u$ est continue puisque $\vp$ est arbitraire.
+\claudereport{Typo : ``ainsi que le critique'' $\to$ ``ainsi que le cas critique''. Imprécision : l'argument avec $p'<p$ ne fonctionne pas si $p=1$.}
 \end{proof}
 
 
@@ -1089,6 +1145,7 @@ Soit $\omega \csubset \Omega$ compact tel que $\omega_h := \omega+B'(0,|h|) \sub
 		\int_\omega |u(x+h)-u(x)|^p \diff x \leq |h|^p \int_0^1 \int_\omega \|\nabla u(x+t h) \|^p \diff x \diff t \leq |h|^p \int_{\omega_h} \|\nabla u(x)\|^p \diff x,
 	\end{equation*}
 	par (i) intégration sur $\omega$ du résultat précédent, et interversion de Fubini, puis (ii) par inclusion du domaine translaté $\omega + t h \subset \omega_h$. On conclut par de densité de $C^1_c(\Omega)$ dans $W^{1,p}(\omega_h)$, puisque $\omega_h \csubset \Omega$. 
+\claudereport{Typo : ``par de densité'' $\to$ ``par densité''.}
 %(A priori, en considérant l'adhérence de $C^1_c(\Omega)$, on obtient \eqref{eq:uhdup} pour tout $u \in W^{1,p}_0(\Omega)$. Cependant, \eqref{eq:uhdup} vaut pour tout $K \csubset \omega$
 %Si $\omega + B'(0,h) \csubset \Omega$, on a $\|\tau_h u-u\|_{p,\omega} \leq |h| \|\nabla u\|_{p,\omega+B'(0,h)}$ pour toute $u \in W^{1,p}_0(\Omega)$ par densité 
 \end{proof}
@@ -1104,12 +1161,14 @@ Soit $\omega \csubset \Omega$ compact tel que $\omega_h := \omega+B'(0,|h|) \sub
 
 \begin{proof}
 	Si $p_0<\infty$ et $p_1 = \infty$, le résultat revient à la majoration triviale $\int_X f^{p_\theta} \leq \int_X f^{p_0} \|f\|_\infty^{p_\theta-p_0}$. On peur donc supposer dans la suite que $p_0,p_1 \in [1,\infty[$.
+\claudereport{Typo : ``On peur'' $\to$ ``On peut''.}
 	Posons $g := |f|^{p_\theta}$, qui est positive. Alors 
 	\begin{equation*}
 		\|f\|_{p_\theta}^{p_\theta} = \int_X f^{p_\theta} = \int_X g^{1-\theta} g^\theta  \leq \|g^{1-\theta} \|_r \| g^\theta \|_{r'} = \|f\|_{p_0}^{(1-\theta) p_\theta} \|f\|_{p_1}^{\theta p_\theta},
 	\end{equation*}
 	d'après l'inégalité de Hölder, 
 	on l'on a noté $r := p_0/{((1-\theta) p_\theta)}$ et $r':=p_1/(\theta p_\theta)$, qui sont par hypothèse des exposants conjugués i.e.\ $\frac 1 r + \frac 1 {r'} = 1$. Le résultat est prouvé.
+\claudereport{Typo : ``on l'on a noté'' $\to$ ``où l'on a noté''.}
 \end{proof}
 
 \begin{theorem}[Rellich]
@@ -1154,6 +1213,7 @@ En combinant les résultats de compacité du \nref{th:Rellich} et du \nref{th:Ba
 \label{corol:Rellich}
 	Soit $\Omega \subset \bR^d$ un un ouvert borné régulier et $p \in ]1,\infty[$ un exposant.
 	Pour toute suite $(u_n)_{n \in \bN}$ bornée dans $W^{1,p}(\Omega)$, il existe $u_* \in W^{1,p}(\Omega)$ et une extractrice $\vp$ telle que $\nabla u_{\vp(n)} \weakto \nabla u_* \in L^p(\Omega,\bR^d)$ faiblement, et de plus $u_{\vp(n)} \to u_*$ fortement dans $L^q(\Omega)$ ou $C(\overline \Omega)$ selon les conditions du \nref{th:Rellich}. 
+\claudereport{Typos : ``un un ouvert'' $\to$ ``un ouvert'' ; ``une extractrice $\vp$ telle que'' $\to$ ``tels que''.}
 	%De plus, $\nabla u_* = V_*$ au sens des distributions. 
 \end{corollary}
 
@@ -1166,6 +1226,7 @@ En combinant les résultats de compacité du \nref{th:Rellich} et du \nref{th:Ba
 
 \begin{proof} %[Preuve alternative]
 	L'espace $W^{1,p}(\Omega)$ et un Banach, séparable par densité de $\cD(\Omega)$, et réflexif par les inégalités de Clarkson. Par \cref{th:BanachAlaoglu}, on peut donc extraire une suite faiblement convergente $u_n \weakto u_* \in W^{1,p}(\Omega)$. La convergence faible de $u_{\vp(n)}$ dans $W^{1,p}$ implique la convergence faible de $\nabla u_{\vp(n)}$ dans $L^p$. 
+\claudereport{Typos : ``et un Banach'' $\to$ ``est un Banach'' ; ``$u_n \weakto u_*$'' $\to$ ``$u_{\vp(n)} \weakto u_*$'' (idem ``$u_n \to u_*$'' ligne suivante).}
 	Par le \nref{th:Rellich}, l'injection de $W^{1,p}$ dans $L^q$ ou $C(\overline \Omega)$ est un opérateur compact, et donc d'après \nref{prop:opCompactComplCont} on a la convergence forte $u_n \to u_*$ dans la topologie associée.	
 %	Comme $W^{1,p}(\Omega)$ a la propriété d'approximation, et comme l'inclusion de Sobolev de $W^{1,p}$ dans $L^q$ ou $C^0$ est compacte d'après le \nref{th:Rellich}, elle implique également la convergence forte dans cette dernière topologie par la \nref{prop:limRangFini}.
 \end{proof}
@@ -1187,7 +1248,9 @@ En combinant les résultats de compacité du \nref{th:Rellich} et du \nref{th:Ba
 		|J_1(u)| &\leq \|f\|_2 \|u\|_2, &
 		|J_2(u)-J_2(v)| &\leq \|\nabla F\|_\infty \|u-v\|_1 \leq \|\nabla F\|_\infty |\Omega|^\frac 1 2  \|u-v\|_2.
 	\end{align*}
+\claudereport{Typo : ``$\|\nabla F\|_\infty$'' $\to$ ``$\|F'\|_\infty$''.}
 	Ainsi $J(u) \geq \frac 1 2 (\|\nabla u \|^2_2 + \|u\|^2_2) - C\|u\|_2 -C'$, pour des constantes $C,C'$ appropriées. Si $(u_n)_{n \in \bN}$ est une suite minimisante pour $J$, alors $\|u_n\|_2$ et $\|\nabla u_n\|_2$ sont bornées par l'estimation précédente, et donc il existe une extractrice telle que $\nabla u_{\vp(n)}$ converge faiblement dans $L^2$ et $u_n$ converge fortement, par le \cref{th:Rellich} de Rellich. Comme $J_0$ est faiblement s.c.i., et $J_1$ et $J_2$ sont (fortement) continues dans $L^2$, on peut passer à la limite et obtenir un minimiseur. 
+\claudereport{Typo : ``$u_n$ converge fortement'' $\to$ ``$u_{\vp(n)}$ converge fortement dans $L^2$''.}
 	
 	Alternativement, les conditions sont remplies pour appliquer le \cref{corol:minFctCvxRefl}. 
 	%(comme $H^1(\Omega)$ est un Hilbert, il est réflexif).
@@ -1197,11 +1260,13 @@ Le théorème de Rellich soulève naturellement la question de la fermeture, et 
 
 \begin{remark}[Fermetude dans $L^q$ de la boule unité de $W^{1,p}$]
 \label{rem:bouleW1pFerme}
+\claudereport{Typo : ``Fermetude'' $\to$ ``Fermeture''.}
 Soit $\Omega$ un ouvert régulier, et $p \in ]1,\infty]$ et $q \in [1,\infty]$ des exposants tels qu'on ait une inclusion continue $W^{1,p}(\Omega) \subset L^q(\Omega)$. Alors la boule unité de $W^{1,p}(\Omega)$ est fermée dans $L^q(\Omega)$.  	
 \end{remark}
 
 \begin{proof}
 	Pour $p \in ]1,\infty[$, l'espace $W^{1,p}(\Omega)$ est uniformément convexe par la \cref{prop:ClarksonIneq} (Inégalités de Clarkson). Il est donc réflexif, et donc sa boule unité est faiblement compacte par le \cref{th:BanachAlaoglu} de Banach-Alaoglu. L'image directe de cette boule unité par l'inclusion de Sobolev dans $L^q$, qui est une application linéaire continue donc faiblement continue, est donc également faiblement compacte par la \nref{prop:compactImage}, donc faiblement fermée, donc fermée. 
+\claudereport{Imprécision : la \cref{prop:ClarksonIneq} ne couvre que $p\geq 2$ (pour $1<p<2$, seconde inégalité de Clarkson, seulement mentionnée en note).}
 	
 	Dans le cas $p=\infty$, la boule unité de $W^{1,\infty}(\Omega)$ est constituée des fonctions $u : \Omega \to \bR$ telles que $|u(x)|\leq 1$ et $|u(x)-u(y)| \leq |x-y|$ pour tous $x,y\in \Omega$ tels que $[x,y] \subset \Omega$.
 	Toute suite de telles fonctions admet une sous-suite uniformément convergente sur tout compact $K \subset \Omega$ par le \nref{th:AscoliLip}, ce qui permet de passer ces inégalités à la limite et donc d'établir la fermeture.
@@ -1210,3 +1275,4 @@ Soit $\Omega$ un ouvert régulier, et $p \in ]1,\infty]$ et $q \in [1,\infty]$ d
 \end{proof}
 
 En revanche, la boule unité de $W^{1,1}(]-1,1[)$ n'est pas fermée dans $L^{\infty}(]-1,1[)$. Par exemple, la suite d'approximations de la fonction de Heaviside définie par $u_n(x) := \max\{0,\min\{1,n x\}\}$ est bornée dans $W^{1,1}(]-1,1[)$, converge dans $L^p(]-1,1[)$ pour tout $p \in [1,\infty[$ (cas critique), mais sa limite a une discontinuité en $0$ donc n'appartient pas à $W^{1,1}$ (la fonction de Heaviside appartient en fait à l'espace $\mathrm{BV}(\Omega)$ des fonctions à variation bornée). 
+\claudereport{Problème : la suite $u_n$ ne converge pas dans $L^\infty$ ; l'exemple montre la non-fermeture dans $L^p$, $p<\infty$. De plus $\|u_n\|_{W^{1,1}} \approx 2$ : renormaliser pour rester dans la boule unité.}
