@@ -131,7 +131,7 @@ instance (d : ℕ) : TopologicalSpace (Zariski d) :=
       have := isZariskiClosed_zeroLocus d
         {p | ∃ F ∈ A, ∃ (I : ℕ) (P : Fin I → MvPolynomial (Fin d) ℂ) (i : Fin I),
           F = {x | ∀ i, eval x (P i) = 0} ∧ p = P i}
-      show IsZariskiClosed d (⋂₀ A)
+      change IsZariskiClosed d (⋂₀ A)
       convert this using 2
       ext x
       simp only [mem_sInter, mem_ofPred_eq]
