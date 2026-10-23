@@ -1,3 +1,10 @@
+/-
+Copyright (c) 2026 Jean-Marie Mirebeau. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Jean-Marie Mirebeau
+-/
+import M1Analyse.TopologieGenerale.OuvertsFermes
+
 /-!
 # M1Analyse
 
