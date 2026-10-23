@@ -8,6 +8,7 @@ import M1Analyse.TopologieGenerale.ComparaisonTopologies
 import M1Analyse.TopologieGenerale.Voisinages
 import M1Analyse.TopologieGenerale.Separation
 import M1Analyse.TopologieGenerale.Continuite
+import M1Analyse.TopologieGenerale.EVN
 
 /-!
 # M1Analyse
