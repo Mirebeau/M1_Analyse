@@ -321,7 +321,7 @@ Soit $(A,d)$ un espace métrique. Alors il existe un espace métrique complet $X
 	On vérifie facilement qu'il s'agit d'un espace métrique, qui est complet.
 	On a l'injection isométrique $A \to X : x \to (x)_{n\in \bN}$ associant à un point la classe d'équivalence de la suite constante.
 	
-	\emph{Unicité :} Etendre via la \cref{prop:prolongement_complet} l'isométrie définie sur la partie dense $A$. 
+	\emph{Unicité :} Étendre via la \cref{prop:prolongement_complet} l'isométrie définie sur la partie dense $A$. 
 \end{proof}
 
 \hiddenproof{
@@ -490,7 +490,7 @@ En particulier, si le temps d'existence $T_{\max}$ est borné, alors $u(t) \noti
 \end{proof}
 
 Le schéma de preuve du \nref{th:Cauchy_Lipschitz} est robuste et permet de traiter de nombreuses variantes, comme des EDO avec retard.
-\begin{exemple}[Equation différentielle avec retard]
+\begin{exemple}[Équation différentielle avec retard]
 \label{ex:EDretard}
 	Il existe une unique $f\in C^1([0,1],\bR)$ telle que $f(0)=1$ et $f'(t)=f(t-t^2)$ pour tout $t \in [0,1]$. 
 \end{exemple}
@@ -507,7 +507,7 @@ Finalement, on étend $f$ sur $]1/2,1]$ via la formule explicite (\ref{eq:EDO_re
 
 
 De même, on montre l'existence et l'unicité de solutions à certaines équations fonctionnelles. 
-\begin{exemple}[Equation fonctionnelle intégrale]
+\begin{exemple}[Équation fonctionnelle intégrale]
 \label{ex:eqFunctIntegr}
 	Soient $k \in C^0([0,1]\times [0,1],]-1,1[)$ et $\vp \in C^0([0,1])$. Alors il existe une unique solution $f\in C^0([0,1])$ à l'équation fonctionnelle
 	\begin{equation*}
@@ -669,14 +669,13 @@ Choisir $F := \bK$ dans le \nref{th:BanachSteinhaus}.
 	\begin{equation*}
 		D_N(t) := \sum_{|n| \leq N} \exp(\bi n t) = \frac{\sin((2N+1) t/2)}{\sin (t/2)}.
 	\end{equation*}
-	Rappelons que l'espace des fonctions continues périodiques $C^0(\bT,\bC)$ est un Banach, muni de la norme $\|\cdot\|_\infty$. Ainsi, pour tout $n \in \bN$
+	Rappelons que l'espace des fonctions continues périodiques $C^0(\bT,\bC)$ est un Banach, muni de la norme $\|\cdot\|_\infty$. Ainsi, pour tout $N \in \bN$
 	\begin{equation*}
-		\vertiii{L_n} = \|D_n\|_{L^1(\bT)} = \int_{-\pi}^{\pi} \frac{|\sin((2n+1)t/2)|}{|\sin(t/2)|} \diff t
-		\geq \int_{-\pi}^{\pi} |\sin((2n+1)t/2)| \frac{\diff t} {|t|}
-		= \int_{-(2n+1)\pi/2}^{(2n+1)\pi/2} |\sin(s)| \frac{\diff s} {|s|},
+		\vertiii{L_N} = \|D_N\|_{L^1(\bT)} = \int_{-\pi}^{\pi} \frac{|\sin((2N+1)t/2)|}{|\sin(t/2)|} \diff t
+		\geq \int_{-\pi}^{\pi} |\sin((2N+1)t/2)| \frac{\diff t} {|t|}
+		= \int_{-(2N+1)\pi/2}^{(2N+1)\pi/2} |\sin(s)| \frac{\diff s} {|s|},
 	\end{equation*}
 	et la dernière intégrale diverge clairement lorsque $n \to \infty$. 
-\claudereport{Notation : dans l'affichage précédent et cette phrase, remplacer $n$ par $N$ : ``pour tout $N \in \bN$'', $\vertiii{L_N} = \|D_N\|_{L^1(\bT)}$, $(2N+1)$, ``lorsque $N \to \infty$'' ($n$ est l'indice de sommation dans $L_N$).}
 	Le résultat découle de la contraposée du \cref{corol:BanachSteinhausK}. 
 \end{proof}
 
@@ -734,7 +733,7 @@ Alors $\exists \delta>0$, $B_F(0,\delta) \subset L(B_E(0,1))$, et donc l'image p
 Par le \cref{th:appliOuverte}, l'image directe par $L$ d'un ouvert est un ouvert, donc l'image réciproque par $L^{-1}$ d'un ouvert est un ouvert. On conclut par la \nref{prop:caract_cont}.
 \end{proof}
 
-\begin{corollary}[Equivalence des normes]
+\begin{corollary}[Équivalence des normes]
 \label{corol:equivNormes}
 	Soit $E$ un espace vectoriel, qui est complet pour deux normes $\|\cdot\|$ et $\|\cdot\|'$ données. 
 	S'il existe $C$ tel que $\forall x \in E$, $\|x\|' \leq C \|x\|$, alors il existe $c>0$ tel que $\forall x \in E$, $\|x\|' \geq c \|x\|$.

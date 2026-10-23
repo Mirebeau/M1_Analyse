@@ -119,14 +119,13 @@ Soit $\vp \in \cD_K(\Omega)$ et $\alpha \in \bN^d$. Soit $(P_n)_{n \in \bN}$ une
 	\partial_\beta (\vp - \rho_K I_\alpha P_n) 
 	= \partial_\beta(\rho_K (\vp-I_\alpha P_n)) 
 	= \partial_\beta (\rho_K I_\alpha (\partial_\alpha \vp - P_n)) 
-	= \sum_{\gamma \preceq \beta} \binom \beta \gamma \partial_\gamma \rho_K I_{\alpha-\beta+\gamma} (\partial_\alpha \vp-P_n).
+	= \sum_{\gamma \preceq \beta} \binom \beta \gamma \partial_\gamma \rho_K I_{\alpha-\beta+\gamma} (\partial_\alpha \vp-P_n),
 \end{equation*}
 où l'on a utilisé successivement (i) $\vp = \rho_K \vp$, (ii) $I_\alpha \partial_\alpha \vp = \vp$ par le \cref{lem:intDerivIter}, et (iii) la règle de Leibniz de dérivation d'un produit, et $\partial_{\beta-\gamma} I_\alpha = I_{\alpha-\beta+\gamma}$ d'après le \cref{lem:intDerivIter} encore.
-Ainsi, pour tout $\beta \leq \alpha$
-\claudereport{Notation : ``pour tout $\beta \leq \alpha$'' et ``$\sum_{\gamma \leq \beta}$'' (ci-dessous) $\to$ $\preceq$. Ponctuation : le point final de l'équation précédente $\to$ virgule, puisque la phrase continue par ``où l'on a utilisé''.}
+Ainsi, pour tout $\beta \preceq \alpha$
 \begin{align*}
 	\|\partial_\beta (\vp - \rho_K I_\alpha P_n)\|_\infty &\leq C(K,\beta) \|\partial_\alpha \vp-P_n\|_\infty, &
-	C(K,\beta) := \sum_{\gamma \leq \beta} \binom \beta \gamma \|\partial_\gamma \rho_K\|_\infty.
+	C(K,\beta) := \sum_{\gamma \preceq \beta} \binom \beta \gamma \|\partial_\gamma \rho_K\|_\infty.
 \end{align*}
 Comme $\|\partial_\alpha \vp -  P_n\|_\infty \to 0$  lorsque $n \to \infty$, on obtient $\rho_K I_\alpha P_n \to \vp$ dans la norme $|f|_\alpha := \max_{\beta\preceq \alpha} \|\partial_\beta f\|_\infty$. 
 En notant que $I_\alpha P$ est un polynôme, et en introduisant une suite exhaustive $(K_r)_{r \in \bN}$ de compacts de $\Omega$, voir la \cref{prop:exhaustComp}, on conclut que $\{\rho_{K_r} Q \mid r \in \bN, Q \in \bQ[X_1,\cdots,X_d]\}$ est une partie dénombrable dense de $\cD(\Omega)$.
@@ -477,8 +476,7 @@ Soit $T \in \cD(\Omega)^*$, $p\in ]1,\infty]$ et $q$ t.q.\ $\frac 1 p + \frac 1 
 \end{corollary}
 
 \begin{proof} 
-Si (a) est satisfaite, alors $T$ définit une forme linéaire continue sur $L^q(\Omega)$, car $\cD(\Omega)$ est dense dans cet espace par la \cref{corol:testDenseLp}, d'où l'existence de $f\in L^p$ par le \cref{th:lpDualLq}.
-\claudereport{Typo : ``par la \texttt{corol:testDenseLp}'' $\to$ ``par le'' (corollaire).}
+Si (a) est satisfaite, alors $T$ définit une forme linéaire continue sur $L^q(\Omega)$, car $\cD(\Omega)$ est dense dans cet espace par le \cref{corol:testDenseLp}, d'où l'existence de $f\in L^p$ par le \cref{th:lpDualLq}.
 
 Réciproquement, supposons (b). On a $L^p(\Omega) \subset L^1_\loc(\Omega)$ par le \cref{corol:lpInclusLq}, donc $U_f$ est bien définie par \cref{prop:distribL1Loc}, et on conclut par le \nref{th:HolderIneq}.
 \end{proof}
@@ -1133,8 +1131,7 @@ En combinant les résultats de compacité du \nref{th:Rellich} et du \nref{th:Ba
 \end{corollary}
 
 \begin{proof} 
-	L'espace $W^{1,p}(\Omega)$ est un Banach, séparable au vu de l'isométrie $u\in W^{1,p} \to (u,\nabla u) \in (L^p)^{d+1}$ à valeurs dans un espace séparable, et réflexif par les inégalités de Clarkson (voir la \cref{prop:ClarksonIneq} et la note afférente). Par \cref{th:BanachAlaoglu}, on peut donc extraire une suite faiblement convergente $u_{\vp(n)} \weakto u_* \in W^{1,p}(\Omega)$. La convergence faible de $u_{\vp(n)}$ dans $W^{1,p}$ implique la convergence faible de $\nabla u_{\vp(n)}$ dans $L^p$. 
-\claudereport{Typo : ``$u\in W^{1,p} \to (u,\nabla u)$'' $\to$ ``$u\in W^{1,p} \mapsto (u,\nabla u)$''.}
+	L'espace $W^{1,p}(\Omega)$ est un Banach, séparable au vu de l'isométrie $u\in W^{1,p} \mapsto (u,\nabla u) \in (L^p)^{d+1}$ à valeurs dans un espace séparable, et réflexif par les inégalités de Clarkson (voir la \cref{prop:ClarksonIneq} et la note afférente). Par \cref{th:BanachAlaoglu}, on peut donc extraire une suite faiblement convergente $u_{\vp(n)} \weakto u_* \in W^{1,p}(\Omega)$. La convergence faible de $u_{\vp(n)}$ dans $W^{1,p}$ implique la convergence faible de $\nabla u_{\vp(n)}$ dans $L^p$. 
 	Par le \nref{th:Rellich}, l'injection de $W^{1,p}$ dans $L^q$ ou $C(\overline \Omega)$ est un opérateur compact, et donc d'après \nref{prop:opCompactComplCont} on a la convergence forte $u_{\vp(n)} \to u_*$ dans la topologie associée.	
 \end{proof}
 

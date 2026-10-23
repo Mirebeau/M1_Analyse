@@ -107,7 +107,7 @@ Dans le \cref{th:ssGrad} suivant, on montre l'existence d'une fonction affine ta
 \end{lemma}
 
 \begin{proof}
-	Supposons d'abord $f(0)=0$ et $f \leq 1$ sur $B'(0,1)$. Alors pour tout $x \in B'(0,1)$ et $t \geq 1$, on a par convexité $f(t x)-f(0) \geq t(f(x)-f(0))$, donc $f(x) \leq \|x\|$ en choisissant $t = 1/\|x\|$. Egalement $f(x)+f(-x) \geq 0$ par convexité, donc $f(x) \geq -f(-x) \geq -\|x\|$. L'estimation annoncée s'en déduit en considérant $(f( (\cdot+x)/r) - f(x))/M$.
+	Supposons d'abord $f(0)=0$ et $f \leq 1$ sur $B'(0,1)$. Alors pour tout $x \in B'(0,1)$ et $t \geq 1$, on a par convexité $f(t x)-f(0) \geq t(f(x)-f(0))$, donc $f(x) \leq \|x\|$ en choisissant $t = 1/\|x\|$. Également $f(x)+f(-x) \geq 0$ par convexité, donc $f(x) \geq -f(-x) \geq -\|x\|$. L'estimation annoncée s'en déduit en considérant $(f( (\cdot+x)/r) - f(x))/M$.
 	
 	Passons à la propriété de régularité Lipschitz. Par le résultat précédent, on a $|f(y)-f(x)|\leq M/3$ pour tout $y\in B'(x,r/3)$, et donc $f \leq f(y) + \frac 4 3 M$ sur $B_y := B(y,2 r/3) \subset B'(x,r)$. Par la première partie, $|f(y)-f(z)|/\|y-z\| \leq (\frac 4 3 M) / (\frac 2 3 r)  = (2 M/r)$ pour tout $z \in B_y\sm \{y\}$. On conclut en notant que $B'(x,r/3) \subset B_y$. 
 \end{proof}

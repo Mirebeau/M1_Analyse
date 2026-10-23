@@ -69,7 +69,7 @@ La compacité permet fondamentalement d'obtenir des résultats d'existence, via 
 \Nref{def:linSpectre} (Spectre d'un opérateur)\\
 \Nref{th:Fredholm}\\
 \Nref{lem:convK_compact}\\
-\Nref{corol:eqFuncNoyau} (Equation fonctionnelle à noyau)\\
+\Nref{corol:eqFuncNoyau} (Équation fonctionnelle à noyau)\\
 \Nref{corol:FredholmPrecise}\\ % -> th ?
 %\Nref{def:propriApprox}\\
 %\Nref{prop:limRangFini}
@@ -346,7 +346,7 @@ On déduit de la \cref{prop:compSsiFermeBorne} qu'un compact non-vide de $\bR$ c
 	L'image de l'application est un compact de $\bR$ par la \nref{prop:compactImage}, donc contient ses bornes par la \cref{prop:compSsiFermeBorne}.
 \end{proof}
 
-\begin{corollary}[Equivalence des normes en dimension finie]
+\begin{corollary}[Équivalence des normes en dimension finie]
 \label{corol:normesEquivRd}
 	Soit $E$ un espace vectoriel de dimension finie, muni de deux normes $\|\cdot\|$ et $\|\cdot\|'$.
 	Alors il existe $C,c>0$ tels que $c\|x\| \leq \|x\|' \leq C \|x\|$ pour tout $x \in E$. 
@@ -372,7 +372,7 @@ Le théorème de compacité de Riesz est une forme de réciproque à la \cref{pr
 
 \begin{proof}
 	Choisissons $u \in E \sm F$, et observons que $d(u,F) := \inf_{v \in F} \|u-v\|$ est strictement positif par fermeture de $F$. 
-	Si $F$ est de dimension finie, alors par compacité de $F \cap B'(u,d(u,F)+1)$ il existe $v \in F$ tel que $d(u,F) = \|u-v\|$, et on pose $\rho=1$. A l'inverse, si $F$ est de dimension infinie, on peut trouver $v \in F$ tel que $d(u,F) \geq \rho\|u-v\|$ par définition de l'infimum. 
+	Si $F$ est de dimension finie, alors par compacité de $F \cap B'(u,d(u,F)+1)$ il existe $v \in F$ tel que $d(u,F) = \|u-v\|$, et on pose $\rho=1$. À l'inverse, si $F$ est de dimension infinie, on peut trouver $v \in F$ tel que $d(u,F) \geq \rho\|u-v\|$ par définition de l'infimum. 
 	Alors $x := \frac{u-v}{\|u-v\|} \in B'_E(0,1)$ convient, puisque $d(x,F) =  d(u/\|u-v\|,F) = d(u,F)/\|u-v\| \geq \rho$. 
 \end{proof}
 
@@ -412,8 +412,7 @@ Le produit d'une famille dénombrable de compacts métriques est un compact mét
 	\begin{equation*}
 		d( (x_i)_{i \in \bN}, (y_i)_{i \in \bN}) := \max_{i \in \bN} \min\{2^{-i}, d_i(x_i,y_i)\}.
 	\end{equation*}
-	Considérons une suite à valeurs dans $X_*$, dont on écrit le $k$-ième terme $(x_i^k)_{i \in \bN}$. Par la propriété de Bolzano-Weierstrass, on peut trouver $\sigma_0 : \bN \to \bN$ strictement croissante telle $(x_0^{\sigma_0(k)})_{k \in \bN}$ telle que converge dans $X_0$. 
-\claudereport{Typo : ``telle $(x_0^{\sigma_0(k)})_{k \in \bN}$ telle que converge'' $\to$ ``telle que $(x_0^{\sigma_0(k)})_{k \in \bN}$ converge''.}
+	Considérons une suite à valeurs dans $X_*$, dont on écrit le $k$-ième terme $(x_i^k)_{i \in \bN}$. Par la propriété de Bolzano-Weierstrass, on peut trouver $\sigma_0 : \bN \to \bN$ strictement croissante telle que $(x_0^{\sigma_0(k)})_{k \in \bN}$ converge dans $X_0$. 
 	De même, on construit pour tout $i \in \bN$ une extractrice $\sigma_i : \bN \to \bN$ telle que 
 	$(x_i^{\sigma_0\circ \cdots \circ \sigma_i(k)})_{k \in \bN}$ converge dans $X_i$.
 	On utilise alors le procédé d'extraction diagonal, en définissant 
@@ -595,8 +594,7 @@ En dimension infinie, on a le résultat de \emph{précompacité} suivant pour la
 \end{proposition}
 
 \begin{proof}
-	Étant donné $\ve>0$, soit $K \subset \cup_{0=1}^I B(z_i,\ve)$ une couverture finie de $K$ par des boules de rayon $\ve$. Posons $H_\ve := \Hull\{z_i \mid 0 \leq i \leq I\}$, qui est un ensemble compact, en tant qu'image continue de $\Delta^I$. Par construction, il existe pour tout $x \in H$ un point $x_\ve \in H_\ve$ tel que $\|x-x_\ve\| \leq \ve$. 
-\claudereport{Typo : ``$\cup_{0=1}^I B(z_i,\ve)$'' $\to$ ``$\cup_{i=0}^I B(z_i,\ve)$''.}
+	Étant donné $\ve>0$, soit $K \subset \cup_{i=1}^I B(z_i,\ve)$ une couverture finie de $K$ par des boules de rayon $\ve$. Posons $H_\ve := \Hull\{z_i \mid 0 \leq i \leq I\}$, qui est un ensemble compact, en tant qu'image continue de $\Delta^I$. Par construction, il existe pour tout $x \in H$ un point $x_\ve \in H_\ve$ tel que $\|x-x_\ve\| \leq \ve$. 
 	
 	Soit $(x_n)_{n \in \bN}$ une suite à valeurs dans $H$, et soit $x_n^k \in H_{1/k}$ tel que $\|x_n - x_n^k\| \leq 1/k$, pour tout $k \in \bN^*$. 
 	Par un argument d'extraction diagonal, ou en utilisant la compacité de $\prod_{k \in \bN^*} H_{\frac 1 k}$ ce qui revient au même, il existe une extractrice $\vp$ telle que $x_{\vp(n)}^k$ converge pour tout $k \in \bN^*$, vers une limite notée $x_*^k$ lorsque $n \to \infty$.
@@ -937,8 +935,7 @@ En effet on a $f(y) \vp_{y} \leq f+2\ve$ sur $V_{x_y}$, et $f(y) \vp_y\leq \ve$ 
 Par ailleurs étant donné $x\in X$, soit $y \in \bY$ tel que $x \in W_y$, et soit $x':= x_y \in \bX$ de sorte que $W_y \subset V_{x'}$. Alors $|f(x)-f(y)| \leq |f(x)-f(x')| + |f(x')-f(y)| \leq 2 \ve$ et $\vp_y(x) \geq 1-\ve$, donc $f(y) \vp_{y}(x) \geq (f(x)-2 \ve)_+(1-\ve) \geq f(x)-3 \ve$, ce qui conclut. 
 \end{proof}
 
-La généralisation du \nref{th:StoneWeierstrass} aux fonctions complexes requiert une hypothèse supplémentaire de stabilité par conjugaison, dont nous illustrons la nécessité par un contr-exemple, voir les \cref{corol:StoneComplexe,prop:StoneCtrEx}.
-\claudereport{Typo : ``contr-exemple'' $\to$ ``contre-exemple''.}
+La généralisation du \nref{th:StoneWeierstrass} aux fonctions complexes requiert une hypothèse supplémentaire de stabilité par conjugaison, dont nous illustrons la nécessité par un contre-exemple, voir les \cref{corol:StoneComplexe,prop:StoneCtrEx}.
 
 \begin{corollary}[Stone-Weierstrass complexe]
 \label{corol:StoneComplexe}
