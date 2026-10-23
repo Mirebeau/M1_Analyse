@@ -31,6 +31,8 @@ import M1Analyse.Dualite.HahnBanach
 import M1Analyse.Dualite.Reflexivite
 import M1Analyse.Dualite.HahnBanachGeometrique
 import M1Analyse.Dualite.CompaciteFaible
+import M1Analyse.Sobolev.ConvolutionLp
+import M1Analyse.Sobolev.ConvolutionSobolev
 import M1Analyse.Bosse.Bosse
 import M1Analyse.Hilbert.Hilbert
 import M1Analyse.LegendreFenchel.LegendreFenchel
