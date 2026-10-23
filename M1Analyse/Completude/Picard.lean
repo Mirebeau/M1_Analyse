@@ -169,7 +169,7 @@ theorem th_Cauchy_Lipschitz {d : ℕ} (Ω : Set (EuclideanSpace ℝ (Fin d))) (h
       rw [ODE.FunSpace.compProj_of_mem ht',
         ODE.FunSpace.next_apply]
     refine ⟨t₀, ht₀, α.compProj, ?_, fun t _ => hBΩ (hmem t), hder, ?_⟩
-    · show α.compProj (s₀ : ℝ) = x₀
+    · change α.compProj (s₀ : ℝ) = x₀
       rw [ODE.FunSpace.compProj_val]
       exact α.apply_of_zero
     · have : ContinuousOn (uncurry f ∘ fun t => (t, α.compProj t)) (Icc 0 t₀) := hf.comp
