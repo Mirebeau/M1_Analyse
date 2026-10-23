@@ -127,8 +127,7 @@ theorem corol_projectionContinue_iff [CompleteSpace E] (V W : Submodule 𝕜 E)
     · have hV : (V : Set E) = {x | ((P x : V) : E) = x} := by
         ext x
         refine ⟨fun hx => ?_, fun hx => hx ▸ (P x).2⟩
-        simp [P]
-        exact hx
+        simpa [P] using hx
       rw [hV]
       exact isClosed_eq (continuous_subtype_val.comp P.continuous) continuous_id
     · have hW : (W : Set E) = P ⁻¹' {0} := by
