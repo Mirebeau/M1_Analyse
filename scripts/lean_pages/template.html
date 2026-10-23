@@ -82,6 +82,9 @@ code { font-family: var(--f-code); font-size: 0.92em; background: var(--code-bg)
 .tac { color: var(--ok); }
 .nm { color: var(--name); }
 .cm { color: var(--muted); font-style: italic; }
+.proof summary { cursor: pointer; font: 500 12px var(--f-ui); color: var(--muted); }
+.proof summary:hover { color: var(--accent); }
+.proof pre { margin-top: 6px; }
 .uses { display: flex; flex-wrap: wrap; gap: 6px; align-items: baseline; font-size: 12px; }
 .uses b { font-weight: 600; color: var(--muted); margin-right: 2px; }
 .uses a { font: 12px var(--f-code); border: 1px solid var(--line); background: var(--bg); color: var(--fg); border-radius: 6px; padding: 1px 6px; text-decoration: none; overflow-wrap: anywhere; }
@@ -236,11 +239,20 @@ function uses(title, xs) {
   return `<div class="uses"><b>${title}</b>` + xs.map(x =>
     `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.name)}</a>`).join("") + "</div>";
 }
+function codeHtml(code) {  // the statement, then the proof folded (hidden by default)
+  const k = code.indexOf(":=");
+  if (k < 0) return `<pre><code>${leanHtml(code)}</code></pre>`;
+  const stmt = code.slice(0, k + 2), proof = code.slice(k + 2).replace(/^[ \t]*\n/, "");
+  const n = proof.split("\n").length;
+  return `<pre><code>${leanHtml(stmt)}</code></pre>
+    <details class="proof"><summary>Démonstration (${n} ligne${n > 1 ? "s" : ""})</summary>
+    <pre><code>${leanHtml(proof.startsWith(" ") ? proof : "  " + proof)}</code></pre></details>`;
+}
 function declHtml(d) {
   return `<section class="decl" id="decl-${esc(d.name)}">
     <h3><span><span class="k">${esc(d.kind)}</span> ${esc(d.name)}</span><span class="file">${esc(d.file)}:${d.line}</span></h3>
     <p class="ddoc">${docHtml(d.doc)}</p>
-    <pre><code>${leanHtml(d.code)}</code></pre>
+    ${codeHtml(d.code)}
     ${uses("Notions Mathlib", d.notions)}
     ${uses("Lemmes Mathlib utilisés", d.lemmas)}
   </section>`;
@@ -282,7 +294,7 @@ function intro() {
   current = null;
   panel.innerHTML = `<div class="intro">
     <p class="eyebrow">Mode d'emploi</p>
-    <p>À gauche, le plan du cours. Les énoncés marqués <span class="lean">Lean ✓</span> sont formalisés : un clic affiche l'énoncé du cours, puis sa version Lean avec sa démonstration complète, vérifiée par l'ordinateur.</p>
+    <p>À gauche, le plan du cours. Les énoncés marqués <span class="lean">Lean ✓</span> sont formalisés : un clic affiche l'énoncé du cours, puis sa version Lean ; la démonstration, vérifiée par l'ordinateur, s'affiche d'un clic.</p>
     <p>Les objets du cours (topologie, adhérence, densité, …) sont ceux de la bibliothèque Mathlib. Chaque énoncé Lean indique les notions de Mathlib qu'il utilise, et les lemmes de Mathlib invoqués dans sa preuve, avec un lien vers leur documentation.</p>
     <p>Dans le PDF du cours, la marque « Lean✓ » placée à côté d'un énoncé mène directement à sa page ici.</p>
   </div>`;
