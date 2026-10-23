@@ -99,7 +99,7 @@ Enfin, $P_K$ est $1$-Lipschitz, et plus précisément pour tous $x,y \in H$
 \begin{proof}
 Notons $\delta:=d_K(x)$ l'infimum de \eqref{eqdef:proj_cvx_ferme}, et 
 soit $(x_n)_{n \in \bN}$ une suite minimisante, i.e.\ $x_n\in K$ et $\ve_n := \|x_n - x\|-d_K(x) \to 0$ lorsque $n \to \infty$.
-Etant donnés $p,q \geq N$ on a 
+Étant donnés $p,q \geq N$ on a 
 \begin{equation*}
 	\delta^2 \leq \big\| x - \frac{x_p+x_q} 2\big\|^2 
 	= \frac 1 2 \big(\|x-x_p\|^2 + \|x-x_q\|^2\big) - \frac 1 4\|x_p-x_q\|^2
@@ -184,7 +184,7 @@ Une variante du résultat classique précédent traite des cônes convexes ferm�
 	\begin{align*}
 		x &= x^+ - x^-, &\text{où } x^+_i &:= \max\{0,x_i\},\ x^-_i := \max\{0,-x_i\}
 	\end{align*}
-	De même, la décomposition de la \cref{prop:decompCone} associée au cône $\cS_+^d$ correspond aux parties positive et négative du spectre : pour $D \in \cS_d$, diagonalisée sous la forme $U^\top \Diag(\lambda_1,\cdots,\lambda_d) U$ avec $U$ une matrice orthogonale, on a 
+	De même, la décomposition de la \cref{prop:decompCone} associée au cône $\cS_d^+$ correspond aux parties positive et négative du spectre : pour $D \in \cS_d$, diagonalisée sous la forme $U^\top \Diag(\lambda_1,\cdots,\lambda_d) U$ avec $U$ une matrice orthogonale, on a 
 	\begin{equation*}
 		D  
 		= U^\top \Diag(\max \{\lambda_1,0\},\cdots,\max \{\lambda_d,0\}) U - U^\top \Diag(\max \{-\lambda_1,0\},\cdots,\max \{-\lambda_d,0\}) U.

@@ -16,7 +16,7 @@ La complétude est un outil fondamental en analyse, assurant l'existence d'une l
 \Nref{ex:LpBanach} ($L^p$ est un Banach)\\
 \Nref{ex:testDistribFrechet} (Les fonctions test des distributions forment un Fréchet)\\
 \Nref{ex:DKOmegaComplet} ($\cD_K(\Omega)$ est un Fréchet)\\
-\Nref{ex:classeSchwarzFrechet} (La classe de Schwarz est un Fréchet)\\
+\Nref{ex:classeSchwartzFrechet} (La classe de Schwartz est un Fréchet)\\
 
 \Nref{subsec:prolongements}\\
 \Nref{prop:prolongement_complet}\\
@@ -140,12 +140,12 @@ Attention : il n'y a pas de semi-norme naturelle sur le dual d'un Fréchet, qui 
 \subsection{Espaces fonctionnels complets}
 \label{subsec:fctsComplets}
 
-Les plupart des espaces fonctionnels classiques, qui sont métrisables, sont complets.
+La plupart des espaces fonctionnels classiques, qui sont métrisables, sont complets.
 
 \begin{retenir}
 Les espaces de fonctions bornées qui sont continues, Hölder, Lipschitz, ou continument dérivables jusqu'à un certain ordre, sont des Banach, de même que les espaces de Lebesgue $L^p$. Les espaces de fonction test $\cD_K(\Omega)$ et $\cS(\bR^d)$ sont des Fréchet. 
 
-(Exemples \ref{ex:cont_bornee_Banach}, \ref{ex:Holder_Banach}, \ref{ex:Ck_bornee_Banach}, \ref{ex:LpBanach}, \ref{ex:testDistribFrechet}, \ref{ex:classeSchwarzFrechet})
+(Exemples \ref{ex:cont_bornee_Banach}, \ref{ex:Holder_Banach}, \ref{ex:Ck_bornee_Banach}, \ref{ex:LpBanach}, \ref{ex:testDistribFrechet}, \ref{ex:classeSchwartzFrechet})
 \end{retenir}
 
 \paragraph{Espaces de Banach.}
@@ -176,7 +176,7 @@ Les espaces de fonctions bornées qui sont continues, Hölder, Lipschitz, ou con
 \begin{proof}
 	On note que $|\cdot|_\omega$ est positivement homogène et sous-additive, donc $C_b^\omega$ est bien un espace vectoriel. De plus $\|\cdot\|_\omega$ est une norme sur $C^\omega_b$ car $\|\cdot\|_\infty$ satisfait l'axiome de séparation. 
 	
-	Soit $(f_n)_{n \in \bN}$ une suite de Cauchy. Par complétude de $(C_b(X,E),\|\cdot\|_\infty)$, $f_n$ converge en norme $\|\cdot\|_\infty$ vers une limite $f_\infty \in C_b(X,E)$.
+	Soit $(f_n)_{n \in \bN}$ une suite de Cauchy. Par complétude de $(C^0_b(X,E),\|\cdot\|_\infty)$, $f_n$ converge en norme $\|\cdot\|_\infty$ vers une limite $f_\infty \in C^0_b(X,E)$.
 	Comme $f_n$ est de Cauchy, $|f_n|_\omega$ est bornée par une constante notée $C$, donc pour tous $x \neq y$ on a $\|f_\infty(x)-f_\infty(y)\| = \lim_{n\to \infty} \|f_n(x)-f_n(y)\| \leq C \omega(d(x,y))$, ce qui montre que $|f_\infty|_\omega \leq C$. 
 	De même $\| (f_\infty(x)-f_N(x)) - (f_\infty(y)-f_N(y))\| = \lim_{n \to \infty} \| (f_n(x)-f_N(x)) - (f_n(y)-f_N(y))\| \leq \ve_N \omega(d(x,y))$, où $\ve_N\to 0$ est donnée par le critère de Cauchy, d'où $|f_\infty-f_N|_\omega \leq \ve_N$, ce qui conclut.
 \end{proof}
@@ -242,7 +242,7 @@ Les espaces de fonctions bornées qui sont continues, Hölder, Lipschitz, ou con
 
 \begin{exemple}
 \label{ex:testDistribFrechet}
-	Soit $\Omega \subset \bR^d$ un ouvert, et $k \in \bN \cup \{\infty\}$. Alors $C^k(\Omega)$ est un Fréchet muni des semi-normes \cref{def:cont_nonbornee}. 
+	Soit $\Omega \subset \bR^d$ un ouvert, et $k \in \bN \cup \{\infty\}$. Alors $C^k(\Omega)$ est un Fréchet muni des semi-normes de la \cref{def:cont_nonbornee}. 
 \end{exemple}
 
 \begin{proof}
@@ -262,8 +262,8 @@ Les preuves des exemples suivants sont similaires et laissées en exercice.
 \end{exemple}
 
 \begin{exemple}
-\label{ex:classeSchwarzFrechet}
-	La classe de Schwarz $\cS(\bR^d)$ est un Fréchet. 
+\label{ex:classeSchwartzFrechet}
+	La classe de Schwartz $\cS(\bR^d)$ est un Fréchet. 
 \end{exemple}
 
 %\begin{proof}
@@ -292,7 +292,7 @@ Le principe de prolongement d'une application uniformément continue, et de comp
 
 \begin{proposition}[Prolongement des fonctions uniformément continues]
 \label{prop:prolongement_complet}
-	Soit $(X,d)$ un espace métrique et $(Y,d_Y)$ un complet. Soit $A \subset X$ une partie dense, et $f:A \to Y$ uniformément continue, pour un module de continuité $\omega$. (On supposera ici que $\omega$ est continu et croissant sans nuire à la généralité via la \cref{lem:regModuleCont}.) Alors $f$ admet une unique extension continue $F : X \to Y$, qui de plus admet le même module d'uniforme continuité. 
+	Soit $(X,d)$ un espace métrique et $(Y,d_Y)$ un complet. Soit $A \subset X$ une partie dense, et $f:A \to Y$ uniformément continue, pour un module de continuité $\omega$. (On supposera ici que $\omega$ est continu et croissant sans nuire à la généralité via le \cref{lem:regModuleCont}.) Alors $f$ admet une unique extension continue $F : X \to Y$, qui de plus admet le même module d'uniforme continuité. 
 \end{proposition}
 
 \begin{proof}
@@ -312,7 +312,7 @@ Soit $(A,d)$ un espace métrique. Alors il existe un espace métrique complet $X
 \end{proposition}
 
 \begin{proof}
-%	Etant données deux suites de Cauchy, on pose $(x_n)_n \sim (y_n)_n \eqdef d(x_n,y_n) = 0$
+%	Étant données deux suites de Cauchy, on pose $(x_n)_n \sim (y_n)_n \eqdef d(x_n,y_n) = 0$
 	\emph{Existence :} On définit l'espace quotient de suites de Cauchy % , sur l'ensemble des suites de Cauchy, la relation
 	\begin{align*}
 		X &:= \{(x_n)_{n\in \bN} \in A^\bN \mid (x_n)_n \text{ est de Cauchy}\} / \sim,
@@ -337,7 +337,7 @@ Montrons maintenant la complétude de $X$. Considérons une suite de Cauchy $(x^
 \end{equation*}
 pour tous $p,q,r,s \in \bN$,
 où $\ve(n) \to 0$ et $\ve_k(n) \to 0$ lorsque $n \to \infty$, quel que soit $k \in \bN$. 
-Etant donné $n \in \bN^*$, choisissons $N(n)$ tel que $\ve(n) \leq 1/n$, et $M(n)$ tel que $\ve_{N(n)}(M(n)) \leq 1/n$, puis posons $x^\infty_n := x^{N(n)}_{M(n)}$. Cette suite est de Cauchy car 
+Étant donné $n \in \bN^*$, choisissons $N(n)$ tel que $\ve(n) \leq 1/n$, et $M(n)$ tel que $\ve_{N(n)}(M(n)) \leq 1/n$, puis posons $x^\infty_n := x^{N(n)}_{M(n)}$. Cette suite est de Cauchy car 
 \begin{equation*}
 	d(x^\infty_p,x^\infty_q) = d(x^{N(p)}_{M(p)}, q^{N(q)}_{M(q)}) \leq \ve_{N(p)}(M(p)) + \ve_{N(q)}(M(q)) + \ve(N(p) \wedge N(q)) \leq \frac 1 p + \frac 1 q + \frac 1 {p\wedge q}.
 \end{equation*}
@@ -353,7 +353,7 @@ On peut également étendre des fonctions uniformément continues définies sur 
 
 \begin{exemple}[Extension de fonctions uniformément continues]
 \label{ex:extUnifCont}
-	Soit $(X,d)$ un espace métrique, soit $A \subset X$ non-vide, et soit $f : A \to \bR$ uniformément continue, dont le le module de continuité $\omega$ est supposé croissant et sous-additif.
+	Soit $(X,d)$ un espace métrique, soit $A \subset X$ non-vide, et soit $f : A \to \bR$ uniformément continue, dont le module de continuité $\omega$ est supposé croissant et sous-additif.
 	Alors la fonction $F : X \to \bR$ définie par 
 	\begin{equation}
 		F(x) := \inf_{y \in A} f(y) + \omega(d(x,y))
@@ -502,7 +502,7 @@ On pose pour tout $f \in E := C^0([0,1/2],\bR)$ et tout $t\leq 1/2$
 A(f)(t) := 1+\int_0^t f(s-s^2) \diff s
 \end{equation}
 On vérifie facilement que $A$ est $1/2$-Lipschitz sur le Banach $E$, muni de la norme $\|\cdot\|_\infty$. Ainsi elle admet un unique point fixe par le \nref{th:fixe_Picard}, que dans la suite on note $f\in E$. Observons que $f\in C^1$ en tant que primitive d'une fonction continue.
-Finalement, on étend $f$ sur $]1/2,1]$ via la formule explicite (\ref{eq:EDO_retard_fixe}, r.h.s.), qui ne dépend que de $f_{|[0,1/2]}$.
+Finalement, on étend $f$ sur $]1/2,1]$ via la formule explicite (\ref{eq:EDO_retard_fixe}, membre de droite), qui ne dépend que de $f_{|[0,1/2]}$.
 \end{proof}
 
 
@@ -645,14 +645,12 @@ Le corollaire suivant applique Banach-Steinhaus aux formes linéaires. Il admet 
 \begin{corollary}[Banach-Steinhaus, pour les formes linéaires]
 \label{corol:BanachSteinhausK}
 	Soient $E$ un Banach, et $\cA \subset E^*$ un ensemble de formes linéaires continues. Alors $\cA$
-	 %est linéairement borné pour la topologie *faible 
 	est *faiblement borné
-	(i.e.\ $\forall x \in E, \{l(x)\mid x \in \cA\}$ est borné) ssi $\cA$ est borné. 
+	(i.e.\ $\forall x \in E, \{l(x)\mid l \in \cA\}$ est borné) ssi $\cA$ est borné. 
 \end{corollary}
 
 \begin{proof}
 Choisir $F := \bK$ dans le \nref{th:BanachSteinhaus}.
-%	La \cref{def:lineairBorne} de bornitude dans un evtlc, et celle \cref{def:topoFaible} des semi-normes définissant la topologie faible, nous placent précisément dans le cadre du \cref{th:BanachSteinhaus}.
 \end{proof}
 
 \begin{exemple}
@@ -661,18 +659,17 @@ Choisir $F := \bK$ dans le \nref{th:BanachSteinhaus}.
 \end{exemple}
 
 \begin{proof}
-	La somme partielle de la série de Fourier de $f$ en $0$ est $L_n(f)/2\pi$ où l'on a posé
+	La $N$-ième somme partielle de la série de Fourier de $f$ en $0$ est $L_N(f)/(2\pi)$ où %l'on a posé
 	\begin{equation*}
 		L_N(f) 
 		:= \sum_{|n| \leq N} \int_\bT f(t) \exp(\bi n t) \diff t
-		= \int_\bT f(t) D_n(t) \diff t, 
+		= \int_\bT f(t) D_N(t) \diff t, 
 	\end{equation*}
-	où $\bi \in \bC$ est le nombre imaginaire unité, et 
-	où on a noté
+	en notant $\bi \in \bC$ le nombre imaginaire unité, et 
 	\begin{equation*}
 		D_N(t) := \sum_{|n| \leq N} \exp(\bi n t) = \frac{\sin((2N+1) t/2)}{\sin (t/2)}.
 	\end{equation*}
-	Rappelons que l'espace des fonctions continues périodiques $C^0(\bT,\bC)$ est un Banach, muni de la norme $\|\cdot\|_\infty$. Ainsi
+	Rappelons que l'espace des fonctions continues périodiques $C^0(\bT,\bC)$ est un Banach, muni de la norme $\|\cdot\|_\infty$. Ainsi, pour tout $n \in \bN$
 	\begin{equation*}
 		\vertiii{L_n} = \|D_n\|_{L^1(\bT)} = \int_{-\pi}^{\pi} \frac{|\sin((2n+1)t/2)|}{|\sin(t/2)|} \diff t
 		\geq \int_{-\pi}^{\pi} |\sin((2n+1)t/2)| \frac{\diff t} {|t|}
@@ -719,7 +716,7 @@ Alors $\exists \delta>0$, $B_F(0,\delta) \subset L(B_E(0,1))$, et donc l'image p
 	Il existe donc $n \in \bN$ et $r>0$ tels que $B_F(0,r) \subset \overline{L(B_E(0,n))}$; notons $C_0 := n/r$.
 	Par homogénéité, il existe pour tout $y\in F$ et tout $\ve>0$, un point $x \in E$ tel que $\|x\| \leq C_0 \|y\|$ et $\|y-Lx\| \leq \ve$; la seconde partie de la preuve permet de remplacer cette dernière approximation par une égalité.
 	
-	Etant donné $y_0 \in F\sm \{0\}$, pour tout $n \geq 0$ par récurrence, (i) on choisit $x_n\in E$ tel que $\|y_n-Lx_n\| \leq \|y_n\|/2$ et $\|x_n\| \leq C_0 \|y_n\|$, puis (ii) on pose $y_{n+1} := y_n-L x_n$. Par une récurrence immédiate, $\|y_n\| \leq 2^{-n} \|y_0\|$, donc $\|x_n\| \leq C_0 2^{-n} \|y_0\|$. Par complétude de $E$, la série $x_* := \sum_{n \in \bN} x_n$ converge, et par sommation des normes $\|x_*\| \leq 2 C_0 \|y_0\|$.
+	Étant donné $y_0 \in F\sm \{0\}$, pour tout $n \geq 0$ par récurrence, (i) on choisit $x_n\in E$ tel que $\|y_n-Lx_n\| \leq \|y_n\|/2$ et $\|x_n\| \leq C_0 \|y_n\|$, puis (ii) on pose $y_{n+1} := y_n-L x_n$. Par une récurrence immédiate, $\|y_n\| \leq 2^{-n} \|y_0\|$, donc $\|x_n\| \leq C_0 2^{-n} \|y_0\|$. Par complétude de $E$, la série $x_* := \sum_{n \in \bN} x_n$ converge, et par sommation des normes $\|x_*\| \leq 2 C_0 \|y_0\|$.
 	Finalement, on note que $\|y_0 - L\sum_{n<N} x_n\| = \|y_N\| \to 0$ lorsque $N \to \infty$, donc $\|y_0-Lx_*\|=0$ par continuité de $L$.
 	
 	Nous avons obtenu : $\forall y\in F$, $\exists x \in E$, $Lx = y$ et $\|x\| \leq C \|y\|$, où $C := 2 C_0$. 

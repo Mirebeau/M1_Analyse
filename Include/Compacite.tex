@@ -148,7 +148,7 @@ Il en découlera une observation élémentaire mais fondamentale en optimisation
 \end{corollary}
 
 \begin{proof}
-Etant donné $F\subset X$ fermé, on note que $F$ est compact par le \cref{corol:compSsiFerme}, donc $f(F)$ est compact par la \cref{prop:compactImage}, donc $f(F)$ est fermé par le sens réciproque du \cref{corol:compSsiFerme}. 
+Étant donné $F\subset X$ fermé, on note que $F$ est compact par le \cref{corol:compSsiFerme}, donc $f(F)$ est compact par la \cref{prop:compactImage}, donc $f(F)$ est fermé par le sens réciproque du \cref{corol:compSsiFerme}. 
 Le résultat s'ensuit par la \nref{prop:caract_cont}. 
 %Au vu de la caractérisation des
 \end{proof}
@@ -242,20 +242,13 @@ La triple caractérisation des compacts métriques, le théorème de Heine.
 \label{rem:precompact_separable}
 	Tout espace précompact est séparable. %, i.e.\ il admet une partie dénombrable et dense.
 	
-	Un espace est précompact ssi pour tout $\ve>0$ il peut être couvert par un nombre fini de parties, chacune de diamètre au plus $\ve$. En particulier, lorsque l'on étudie la séparabilité d'une partie $X \subset \bX$ d'un espace métrique englobant, il n'est pas nécessaire que les boules formant la couverture soient centrées en des points de $X$.
+	Un espace est précompact ssi pour tout $\ve>0$ il peut être couvert par un nombre fini de parties, chacune de diamètre au plus $\ve$. En particulier, lorsque l'on étudie la précompacité d'une partie $X \subset \bX$ d'un espace métrique englobant, il n'est pas nécessaire que les boules formant la couverture soient centrées en des points de $X$.
 \end{remark}
 \begin{proof}
 	\emph{Preuve du premier point.} Considérer pour tout $n\geq 0$ une couverture par un nombre fini de boules de rayon $2^{-n}$, puis collecter les centres de ces boules, ce qui forme une partie dénombrable et dense.
 	
-	\emph{Preuve du second point.} Une boule de rayon $\ve$ constitue par l'inégalité triangulaire une partie de diamètre au plus $2 \ve$. Réciproquement, une partie de diamètre $\ve$ est contenue dans une boule fermée de rayon $\ve$, centrée en un point quelconque, donc dans une boule ouverte de rayon $2 \ve$ centrée au même point. Le résultat s'ensuit.
+	\emph{Preuve du second point.} Une boule de rayon $\ve$ constitue par l'inégalité triangulaire une partie de diamètre au plus $2 \ve$. Réciproquement, une partie de diamètre $\ve$ est contenue dans une boule fermée de rayon $\ve$, centrée en un point quelconque de cette partie, donc dans une boule ouverte de rayon $2 \ve$ centrée au même point. Le résultat s'ensuit.
 \end{proof}
-
-%Il n'est pas nécessaire en général que les boules soient centrées en des points de $X$. En effet, 
-%supposons qu'une partie $X \subset \bX$ d'un espace métrique est couverte par des boules : $X\subset \cup_{i \in I} B(x_i,\ve)$, où $\ve>0$ et $x_i \in \bX$ pour tout indice $i \in I$. Retenons seulement les indices $J \subset I$ tels que $B(x_j,\ve) \cap X\neq \emptyset$, et notons $y_j\in X$ un élément de cet ensemble. Alors $X \subset \cup_{j \in J} B(y_j,2 \ve)$.
-
-
-Notons qu'un ensemble précompact est séparable : considérer pour tout $n\geq 0$ une couverture par un nombre fini de boules de rayon $2^{-n}$, puis coll
-
  
 \begin{theorem}[Compacité via Bolzano-Weierstrass]
 \label{th:BolzanoWeierstrass}
@@ -299,7 +292,7 @@ Soit $(X,d_X)$ métrique compact, et $(Y,d_Y)$ métrique. Alors toute fonction c
 
 \begin{proof}
 	Par contraposée, supposons $f$ non-uniformément continue. Alors il existe $\ve>0$ et une suite $(x_n,y_n)$ telle que $d_X(x_n,y_n) \to 0$ et $d_Y(f(x_n),f(y_n)) \geq \ve$ pour tout $n \in \bN$. Par compacité, on a une sous-suite convergente $x_{\sigma(n)} \to x_*$ lorsque $n \to \infty$; on en déduit que $y_{\sigma(n)} \to x_*$ également.
-	Comme $\max \{d(f(x_n),f(x_*)),\ d(f(y_n),f(x_*))\} \geq d(f(x_n),\ f(y_n))/2 \geq \ve/2$, pour tout $n \in \bN$, on obtient que $f$ n'est pas continue en $x_*$, comme annoncé.
+	Comme $\max \{d_Y(f(x_n),f(x_*)),\ d_Y(f(y_n),f(x_*))\} \geq d_Y(f(x_n),\ f(y_n))/2 \geq \ve/2$, pour tout $n \in \bN$, on obtient que $f$ n'est pas continue en $x_*$, comme annoncé.
 %	Enfin, l'équicontinuité (resp. uniforme) de $(f_i)_{i \in I}$ est équivalente à celle de $F : X \to \prod_{i \in I} Y : x \mapsto (f_i(x))_{i \in I}$ pour la distance de la convergence uniforme, voir 
 \end{proof}
 
@@ -419,7 +412,7 @@ Le produit d'une famille dénombrable de compacts métriques est un compact mét
 	\begin{equation*}
 		d( (x_i)_{i \in \bN}, (y_i)_{i \in \bN}) := \max_{i \in \bN} \min\{2^{-i}, d_i(x_i,y_i)\}.
 	\end{equation*}
-	Considérons une suite à valeurs dans $X_*$, dont on écrit le $k$-ième terme $(x_i^k)_{i \in \bN}$. Par la propriété de Bolzano-Weierstrass, on peut trouver $\sigma_0 : \bN \to \bN$ strictement croissante telle $(x_0^{\sigma_0(k)})_{k \in \bN}$ converge dans $X_0$. 
+	Considérons une suite à valeurs dans $X_*$, dont on écrit le $k$-ième terme $(x_i^k)_{i \in \bN}$. Par la propriété de Bolzano-Weierstrass, on peut trouver $\sigma_0 : \bN \to \bN$ strictement croissante telle $(x_0^{\sigma_0(k)})_{k \in \bN}$ telle que converge dans $X_0$. 
 	De même, on construit pour tout $i \in \bN$ une extractrice $\sigma_i : \bN \to \bN$ telle que 
 	$(x_i^{\sigma_0\circ \cdots \circ \sigma_i(k)})_{k \in \bN}$ converge dans $X_i$.
 	On utilise alors le procédé d'extraction diagonal, en définissant 
@@ -505,7 +498,7 @@ Une preuve d'un esprit similaire permet d'établir le théorème d'Ascoli. Nous 
 
 \begin{proof}
 Le maximum définissant la distance est atteint, voir le \nref{corol:bornesAtteintes}.
-Soit $(f_n)_{n \in \bN}$ une suite de $\Lip_1(X,Y)$. Soit également $D \subset X$ une partie dénombrable dense; celle-ci existe par séparabilité de $X$ voir la \cref{rem:precompact_separable}. 
+Soit $(f_n)_{n \in \bN}$ une suite de $\Lip_1(X,Y)$. Soit également $D \subset X$ une partie dénombrable dense; celle-ci existe par séparabilité de $X$, voir la \cref{rem:precompact_separable}. 
 Par le procédé d'extraction diagonal, ou par compacité de $Y^D$, il existe une sous-suite $f_{\vp(n)}$ qui converge simplement sur $D$. Notons $f_* : D \to Y$ sa limite, et observons qu'elle est $1$-Lipschitzienne par passage à la limite, donc s'étend en une fonction $1$-Lipschitz sur $\overline D = X$ par la \nref{prop:prolongement_complet}.
 
 Justifions la convergence uniforme : par compacité de $X$, il existe pour tout $\ve>0$ un ensemble fini $D_\ve \subset D$ tel que $\cup_{x \in D_\ve} B'(x,\ve) = X$. 
@@ -582,7 +575,7 @@ On rappelle la définition de l'enveloppe convexe d'une partie $K$ d'un $\bR$-ev
 	I \geq 1,\ \lambda \in \Delta^I,\ \forall 0 \leq i \leq I,\ x_i \in K\}, \\
 	\text{où }\Delta^I &:= \{\lambda = (\lambda_i)_{0 \leq i \leq I} \in \bR_+^{I+1} \mid \sum_{0 \leq i \leq I} \lambda_i = 1\}.
 \end{align*}
-En dimension finie, si $K\subset \bR^d$, alors le \nref{th:Caratheodory} affirme que l'on peut se limiter à $I=d$ dans l'expression ci-dessus - soit des combinaisons convexes de $d+1$ points. On en déduit que $\Hull(K)$ est compact si $K$ une partie compacte d'un espace de dimension finie.
+En dimension finie, si $K\subset \bR^d$, alors le \nref{th:Caratheodory} affirme que l'on peut se limiter à $I=d$ dans l'expression ci-dessus, c.-à-d. à des combinaisons convexes de $d+1$ points. On en déduit que $\Hull(K)$ est compact si $K$ est une partie compacte d'un espace de dimension finie.
 
 En dimension infinie, on a le résultat de \emph{précompacité} suivant pour la topologie forte. Il admet une généralisation due à Krein-Smulian pour la topologie faible.
 
@@ -601,7 +594,7 @@ En dimension infinie, on a le résultat de \emph{précompacité} suivant pour la
 \end{proposition}
 
 \begin{proof}
-	Etant donné $\ve>0$, soit $K \subset \cup_{i=1}^I B(x_i,\ve)$ une couverture finie de $K$ par des boules de rayon $\ve$. Posons $H_\ve := \Hull\{x_i \mid 1 \leq i \leq I\}$, qui est un ensemble compact, en tant qu'image continue de $\Delta^I$. Par construction, il existe pour tout $x \in H$ un point $x_\ve \in H_\ve$ tel que $\|x-x_\ve\| \leq \ve$. 
+	Étant donné $\ve>0$, soit $K \subset \cup_{0=1}^I B(z_i,\ve)$ une couverture finie de $K$ par des boules de rayon $\ve$. Posons $H_\ve := \Hull\{z_i \mid 0 \leq i \leq I\}$, qui est un ensemble compact, en tant qu'image continue de $\Delta^I$. Par construction, il existe pour tout $x \in H$ un point $x_\ve \in H_\ve$ tel que $\|x-x_\ve\| \leq \ve$. 
 	
 	Soit $(x_n)_{n \in \bN}$ une suite à valeurs dans $H$, et soit $x_n^k \in H_{1/k}$ tel que $\|x_n - x_n^k\| \leq 1/k$, pour tout $k \in \bN^*$. 
 	Par un argument d'extraction diagonal, ou en utilisant la compacité de $\prod_{k \in \bN^*} H_{\frac 1 k}$ ce qui revient au même, il existe une extractrice $\vp$ telle que $x_{\vp(n)}^k$ converge pour tout $k \in \bN^*$, vers une limite notée $x_*^k$ lorsque $n \to \infty$.
@@ -798,7 +791,7 @@ Soit $K$ un convexe fermé non-vide d'un Banach, et soit $f\in C^0(K,K)$. Si $\o
 
 \begin{proof}
 Quitte à remplacer $K$ par le sous-ensemble $\overline {\Hull(f(K))}$, on peut supposer que $K$ est convexe et compact, voir la \cref{prop:hullCompact}.
-Etant donné $\ve>0$, considérons une couverture de la forme $K \subset \cup_{i=0}^I B(x_i, \ve)$, où $I$ est un entier et $x_0,\cdots,x_I \in K$, et posons 
+Étant donné $\ve>0$, considérons une couverture de la forme $K \subset \cup_{i=0}^I B(x_i, \ve)$, où $I$ est un entier et $x_0,\cdots,x_I \in K$, et posons 
 \begin{align*}
 	g_\ve : K &\to K_\ve := \Hull\{x_i \mid 0 \leq i \leq I\}, &
 	x &\mapsto \frac{\sum_{0 \leq i \leq I} \vp_i(x) x_i}{\sum_{0 \leq i \leq I} \vp_i(x)}, 
@@ -812,7 +805,7 @@ D'après le théorème de Brouwer, appliqué à $K_\ve \subset K$ qui est compac
 \begin{remark}
 \label{rem:SchauderEvt}
 %La preuve ci-dessus s'adapte sans difficulté au cas où la topologie induite sur $K$ est métrisable (et l'addition et la multiplication scalaire continues), ce qui permet de traiter le cas des evtlcs ayant une famille dénombrable, ou de la topologie *faible sur le dual d'un evn séparable.
-Le théorème de Schauder peut se démontrer sous l'hypothèse plus faible que l'espace ambient est un espace vectoriel topologique (plutôt qu'un Banach); en particulier, il s'applique aux evtlcs, donc aux topologies faibles. 
+Le théorème de Schauder peut se démontrer sous l'hypothèse plus faible que l'espace ambiant est un espace vectoriel topologique (plutôt qu'un Banach); en particulier, il s'applique aux evtlcs, donc aux topologies faibles. 
 Attention, il faut vérifier que $f$ est continue par rapport à la topologie utilisée. 
 \end{remark}
 
@@ -925,7 +918,7 @@ Sous les hypothèses du \cref{th:StoneWeierstrass}, $\overline A$ est une algèb
 \end{lemma}
 
 \begin{proof}
-	Etant donné $y \in X$, on dispose par hypothèse (i) de $f_y\in \overline A$ telle que $f_y(x) \neq f_y(y)$. Quitte à considérer $\alpha f_y + \beta\bbone$, où $\alpha,\beta \in \bR$, on peut supposer que $f_y(x)=1$ et $f_y(y) = 0$, et poser $V_y := \{f_y < \ve\}$. 
+	Étant donné $y \in X$, on dispose par hypothèse (i) de $f_y\in \overline A$ telle que $f_y(x) \neq f_y(y)$. Quitte à considérer $\alpha f_y + \beta\bbone$, où $\alpha,\beta \in \bR$, on peut supposer que $f_y(x)=1$ et $f_y(y) = 0$, et poser $V_y := \{f_y < \ve\}$. 
 	Soit $X = V \cup (\cup_{i=1}^I V_{y_i})$ une couverture finie de $X$, par compacité, et soit $f_* := \min_{1 \leq i \leq I} f_{y_i}$. Alors $f_*(x)=1$ et $f_* < \ve$ sur $\cup_{i=1}^I V_{y_i}$, donc $f_* < \ve$ dans le compact $X \sm V$. 
 	On conclut en choisissant $f \in A$ assez proche uniformément de $\max\{\ve/2, \min\{1-\ve/2, f_*\}\} \in \overline A$. 
 \end{proof}
@@ -942,7 +935,7 @@ En effet on a $f(y) \vp_{y} \leq f+2\ve$ sur $V_{x_y}$, et $f(y) \vp_y\leq \ve$ 
 Par ailleurs étant donné $x\in X$, soit $y \in \bY$ tel que $x \in W_y$, et soit $x':= x_y \in \bX$ de sorte que $W_y \subset V_{x'}$. Alors $|f(x)-f(y)| \leq |f(x)-f(x')| + |f(x')-f(y)| \leq 2 \ve$ et $\vp_y(x) \geq 1-\ve$, donc $f(y) \vp_{y}(x) \geq (f(x)-2 \ve)_+(1-\ve) \geq f(x)-3 \ve$, ce qui conclut. 
 \end{proof}
 
-La généralisation du \nref{th:StoneWeierstrass} aux fonctions complexes requiert une hypothèse supplémentaire de stabilité par conjugaison, que nous illustrons par un contre exemple si omise, voir les \cref{corol:StoneComplexe,prop:StoneCtrEx}.
+La généralisation du \nref{th:StoneWeierstrass} aux fonctions complexes requiert une hypothèse supplémentaire de stabilité par conjugaison, dont nous illustrons la nécessité par un contr-exemple, voir les \cref{corol:StoneComplexe,prop:StoneCtrEx}.
 
 \begin{corollary}[Stone-Weierstrass complexe]
 \label{corol:StoneComplexe}
@@ -1075,7 +1068,7 @@ Soit $T \in L_c(E,F)$, où $F$ est un Hilbert. Soient $x_1,\cdots,x_I \in F$ tel
 	Comme la suite $x_n$ est faiblement convergente, elle est faiblement bornée, et donc bornée par le \cref{corol:faibleFortBorne}. % (qui découle lui-même du \nref{corol:BanachSteinhausK}).
 	Soit $R := \sup_{n \in \bN} \|x_n\|$ et $K := \overline {T(B_E(0,1))}$ qui est compact par hypothèse. Considérons une valeur d'adhérence $T x_{\sigma(n)} \to y_*$ de la suite image, car celle-ci est à valeurs dans le compact $R K$. 
 	Alors pour tout $\vp \in F^*$, on a $\<\vp, T x_{\sigma(n)}\> = \<T^* \vp, x_{\sigma(n)}\> \to \<T^* \vp, x_*\> = \<\vp, T x_*\>$ et par ailleurs $\<\vp, T x_{\sigma(n)}\> \to \< \vp, y_*\>$, ainsi $y_* = T x_*$ par le \cref{corol:faibleSepare}.
-	Finalement, $y_*$ est l'unique valeur d'adhérence de la suite $(T x_n)_{n \in \bN}$ à valeurs dans le compact $K$, donc $T x_n \to y_*$ par la \cref{prop:noAdhCv} comme annoncé.	
+	Finalement, $y_*$ est l'unique valeur d'adhérence de la suite $(T x_n)_{n \in \bN}$ à valeurs dans le compact $R K$, donc $T x_n \to y_*$ par la \cref{prop:noAdhCv} comme annoncé.	
 	
 	Si $E^*$ est séparable, alors la topologie faible sur $B'_E(0,1)$ est métrisable par une adaptation immédiate de la \cref{prop:bouleMetrisable}, de même que la topologie forte sur l'evn $F$, ce qui permet d'utiliser la caractérisation séquentielle de la continuité \nref{lem:contDistance}.
 \end{proof}

@@ -112,7 +112,7 @@ Noter qu'une semi-norme est une application sous-linéaire qui de plus est \emph
 \begin{proof}
 Introduisons l'ensemble des extensions partielles satisfaisant aux hypothèses : 
 \begin{equation*}
-	\cE := \{\vp : G \to \bR \mid G \text{ s.e.v.\ de } E  \text{ t.q. }  F \subset G,\,  \vp \leq \rho \text{ sur } G,\, \vp \text{ linéaire et } \vp_{|F} = \vp_F,\}
+	\cE := \{\vp : G \to \bR \mid G \text{ s.e.v.\ de } E  \text{ t.q. }  F \subset G,\,  \vp \leq \rho \text{ sur } G,\, \vp \text{ linéaire et } \vp_{|F} = \vp_F\}
 \end{equation*}
 L'ensemble $\cE$ est ordonné par la restriction : $(\vp : G\to \bR) \leq (\psi : H \to \bR)$ ssi $G \subset H$ et $\psi_{|G} = \vp$. 
 Cet ensemble est inductif : si $(\vp_i : F_i \to \bR)_{i \in I}$ est totalement ordonnée, alors on peut définir $F_* := \cup_{i \in I} F_i$ et $\vp_* : F_* \to \bR$ par ses restrictions $\vp_{*|F_i} = \vp_i$ qui sont consistantes, ce qui donne un majorant. Il contient $\vp_F : F \to \bR$, donc est non-vide.
@@ -201,7 +201,7 @@ La définition d'un espace réflexif, l'inégalité de Hölder et la dualité da
 
 Pour étudier les propriétés de la fonction d'évaluation $\Phi$ nous introduisons la notion de \emph{conjugué dual}, dont l'existence est assurée par le \nref{th:HahnBanach}. Comme illustré dans le \cref{th:HolderIneq} consacré aux espaces de Lebesgue $L^p$, il peut exister plusieurs conjugués duaux, et plusieurs éléments peuvent avoir le même conjugué dual.
 
-\begin{proposition}[Elément conjugué dual]
+\begin{proposition}[Élément conjugué dual]
 \label{prop:conjugueDual}
 	Pour tout élément  $x \in E$ d'un evn, il existe $\vp\in E^*$ telle que 
 	\begin{align*}
@@ -217,7 +217,7 @@ Pour étudier les propriétés de la fonction d'évaluation $\Phi$ nous introdui
 	On a $\|\Phi(x)\|_{E^{**}} = \sup \{|\vp(x)| \mid \vp \in E^*,\, \|\vp\|_{E^*} = 1\} \leq \|x\|_E$. De plus, en choisissant pour $\vp$ un conjugué dual de $x$, on obtient $\|\Phi(x)\|_{E^{**}} \geq |\vp(x)|/\|\vp\|_{E^*} = \|x\|_E$, ce qui prouve l'isométrie et donc l'injectivité. 
 \end{proof}
 
-A titre illustratif, mentionnons quelques conséquences immédiates des propriétés de $\Phi$.
+À titre illustratif, mentionnons quelques conséquences immédiates des propriétés de $\Phi$.
 %L'application $\Phi$ permet d'importer sur un evn $E$ des résultats montr \nref{corol:BanachSteinhausK} 
 
 
@@ -375,7 +375,7 @@ Soient $2 \leq p < \infty$ et $f,g\in L^p(X,\mu)$. Alors
 \end{proposition}
 
 \begin{proof}%[Preuve de la première inégalité (la plus facile)]
-Etant donné $a,b\geq 0$ et $s\geq 1$, on a $a^s+b^s\leq (a+b)^s$; en effet, on peut supposer $a+b=1$ par homogénéité, et remarquer alors que $a^s \leq a$ et $b^s\leq b$. On en déduit que, ponctuellement
+Étant donné $a,b\geq 0$ et $s\geq 1$, on a $a^s+b^s\leq (a+b)^s$; en effet, on peut supposer $a+b=1$ par homogénéité, et remarquer alors que $a^s \leq a$ et $b^s\leq b$. On en déduit que, ponctuellement
 \begin{equation*}
 	\big|\frac{f+g} 2\big|^p + \big|\frac{f-g} 2\big|^p \leq \Big(\big|\frac{f+g} 2\big|^2 + \big|\frac{f-g} 2\big|^2\Big)^\frac p 2 = \big(\frac{f^2+g^2} 2\big)^\frac p 2 \leq \frac 1 2 |f|^p + \frac 1 2 |g|^p.
 \end{equation*}
@@ -604,7 +604,7 @@ Si de plus $C$ est borné et $E$ est réflexif, alors $C$ est faiblement compact
 On déduit du \cref{corol:cvxFermeBdComp} qu'une fonction $f$ convexe et s.c.i.\ (semi continue inférieurement, voir la \cref{def:semiContinuite}) est également s.c.i.\ pour la topologie faible, puisque les ensembles de sous-niveau $\{f \leq \lambda\}$ sont convexes et fermés, donc faiblement fermés. 
 Cette observation, et la propriété de compacité faible établie dans le \cref{corol:cvxFermeBdComp}, permettent dans le résultat suivant de montrer l'existence de minimiseurs à des problèmes d'optimisation convexes, et à certaines de leurs perturbations. 
 
-L'\nref{ex:nonLinMinH1} en est une application représentative. Dans celui-ci, la fonction $g$ est la composition d'une application linéaire compacte et d'une fonction non-linéaire continue, comme souhaité. 
+L'\nref{ex:nonLinMinH1} en est une application représentative. Dans celui-ci, la fonction $g$ est la composition d'une application linéaire compacte et d'une fonction non-linéaire continue. 
 Par la \nref{prop:opCompactComplCont}, et comme l'espace de départ $H^1$ est un Hilbert séparable, $g$ est faiblement continue sur les bornés comme nécessaire ici.
 
 \begin{corollary}[Minimisation par convexité et compacité \facultatif]
