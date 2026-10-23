@@ -23,11 +23,16 @@ import M1Analyse.Compacite.BorelLebesgue
 import M1Analyse.Compacite.CompactsMetriques
 import M1Analyse.Compacite.DimensionFinie
 import M1Analyse.Compacite.Produits
+import M1Analyse.Compacite.Brouwer
+import M1Analyse.Compacite.Schauder
+import M1Analyse.Compacite.StoneWeierstrass
+import M1Analyse.Compacite.OperateursCompacts
 import M1Analyse.Dualite.HahnBanach
 import M1Analyse.Dualite.Reflexivite
 import M1Analyse.Dualite.HahnBanachGeometrique
 import M1Analyse.Dualite.CompaciteFaible
 import M1Analyse.Bosse.Bosse
+import M1Analyse.Hilbert.Hilbert
 
 /-!
 # M1Analyse
