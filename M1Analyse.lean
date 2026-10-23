@@ -16,6 +16,9 @@ import M1Analyse.TopologieGenerale.TopologieFaible
 import M1Analyse.Completude.Cauchy
 import M1Analyse.Completude.FonctionnelsComplets
 import M1Analyse.Completude.Prolongements
+import M1Analyse.Completude.Picard
+import M1Analyse.Completude.Baire
+import M1Analyse.Completude.BaireLineaire
 
 /-!
 # M1Analyse
