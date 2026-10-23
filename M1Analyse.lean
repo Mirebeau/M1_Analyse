@@ -19,6 +19,10 @@ import M1Analyse.Completude.Prolongements
 import M1Analyse.Completude.Picard
 import M1Analyse.Completude.Baire
 import M1Analyse.Completude.BaireLineaire
+import M1Analyse.Compacite.BorelLebesgue
+import M1Analyse.Compacite.CompactsMetriques
+import M1Analyse.Compacite.DimensionFinie
+import M1Analyse.Compacite.Produits
 
 /-!
 # M1Analyse
