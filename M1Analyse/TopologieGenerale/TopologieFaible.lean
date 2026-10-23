@@ -179,7 +179,7 @@ theorem prop_bouleMetrisable_nhds (x : ℕ → E)
       exact hc.continuousAt.eventually_lt continuous_const.continuousAt
         (by simpa using half_pos hη)
     filter_upwards [Filter.eventually_all.2 hev] with v hv
-    show distFaible x (u : WeakDual 𝕜 E) v < η
+    change distFaible x (u : WeakDual 𝕜 E) v < η
     refine lt_of_le_of_lt (distFaible_le (c := max (η / 2) ((2 : ℝ)⁻¹ ^ K)) fun n => ?_)
       (max_lt (half_lt_self hη) hK)
     rcases le_or_gt n K with hn | hn
@@ -226,7 +226,7 @@ theorem prop_bouleMetrisable_nhds (x : ℕ → E)
         ((u : WeakDual 𝕜 E) (x n)) ((u : WeakDual 𝕜 E) z)
       have : ε / (3 * R) + ε / (3 * R) + ε / (3 * R) = ε / R := by field_simp; ring
       linarith
-    show ‖(v : WeakDual 𝕜 E) y - (u : WeakDual 𝕜 E) y‖ < ε
+    change ‖(v : WeakDual 𝕜 E) y - (u : WeakDual 𝕜 E) y‖ < ε
     rw [hyz, map_smul, map_smul, ← smul_sub, norm_smul,
       RCLike.norm_ofReal, abs_of_pos hRpos]
     calc R * ‖(v : WeakDual 𝕜 E) z - (u : WeakDual 𝕜 E) z‖ < R * (ε / R) := by gcongr
