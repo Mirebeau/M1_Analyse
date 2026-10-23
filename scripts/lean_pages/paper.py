@@ -219,7 +219,7 @@ class Converter:
         return f"[{ks}{', ' + self.text(opt) if opt else ''}]"
 
     def math(self, m):
-        m = remove_commands(m, ("label",))
+        m = remove_commands(m, ("label", "leancheck", "claudereport"))
         m = re.sub(r"\\(nonumber|notag)\b", "", m)
         m = re.sub(r"\\eqref\{([^}]+)\}", lambda x: r"\text{(" + ", ".join(
             self.labels.get(k.strip(), {}).get("num", "?") for k in x.group(1).split(",")) + ")}", m)
