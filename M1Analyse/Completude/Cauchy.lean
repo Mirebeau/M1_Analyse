@@ -106,7 +106,8 @@ lemma uniformity_hasBasis_evtlcDist (hp : WithSeminorms p) :
   refine ((prop_distanceEvtlcs_nhds hp 0).comap (fun q : E × E => q.2 - q.1)).congr
     (fun _ => Iff.rfl) fun η _ => ?_
   ext q
-  simp only [Set.mem_preimage, mem_ofPred_eq, evtlcDist, zero_sub, map_neg_eq_map, map_sub_rev (p _) q.2]
+  simp only [Set.mem_preimage, mem_ofPred_eq, evtlcDist, zero_sub, map_neg_eq_map,
+    map_sub_rev (p _) q.2]
 
 omit [IsUniformAddGroup E] in
 /-- La convergence dans un evtlc à famille dénombrable de semi-normes équivaut à la convergence
