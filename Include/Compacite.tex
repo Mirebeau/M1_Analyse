@@ -413,6 +413,7 @@ Le produit d'une famille dénombrable de compacts métriques est un compact mét
 		d( (x_i)_{i \in \bN}, (y_i)_{i \in \bN}) := \max_{i \in \bN} \min\{2^{-i}, d_i(x_i,y_i)\}.
 	\end{equation*}
 	Considérons une suite à valeurs dans $X_*$, dont on écrit le $k$-ième terme $(x_i^k)_{i \in \bN}$. Par la propriété de Bolzano-Weierstrass, on peut trouver $\sigma_0 : \bN \to \bN$ strictement croissante telle $(x_0^{\sigma_0(k)})_{k \in \bN}$ telle que converge dans $X_0$. 
+\claudereport{Typo : ``telle $(x_0^{\sigma_0(k)})_{k \in \bN}$ telle que converge'' $\to$ ``telle que $(x_0^{\sigma_0(k)})_{k \in \bN}$ converge''.}
 	De même, on construit pour tout $i \in \bN$ une extractrice $\sigma_i : \bN \to \bN$ telle que 
 	$(x_i^{\sigma_0\circ \cdots \circ \sigma_i(k)})_{k \in \bN}$ converge dans $X_i$.
 	On utilise alors le procédé d'extraction diagonal, en définissant 
@@ -595,6 +596,7 @@ En dimension infinie, on a le résultat de \emph{précompacité} suivant pour la
 
 \begin{proof}
 	Étant donné $\ve>0$, soit $K \subset \cup_{0=1}^I B(z_i,\ve)$ une couverture finie de $K$ par des boules de rayon $\ve$. Posons $H_\ve := \Hull\{z_i \mid 0 \leq i \leq I\}$, qui est un ensemble compact, en tant qu'image continue de $\Delta^I$. Par construction, il existe pour tout $x \in H$ un point $x_\ve \in H_\ve$ tel que $\|x-x_\ve\| \leq \ve$. 
+\claudereport{Typo : ``$\cup_{0=1}^I B(z_i,\ve)$'' $\to$ ``$\cup_{i=0}^I B(z_i,\ve)$''.}
 	
 	Soit $(x_n)_{n \in \bN}$ une suite à valeurs dans $H$, et soit $x_n^k \in H_{1/k}$ tel que $\|x_n - x_n^k\| \leq 1/k$, pour tout $k \in \bN^*$. 
 	Par un argument d'extraction diagonal, ou en utilisant la compacité de $\prod_{k \in \bN^*} H_{\frac 1 k}$ ce qui revient au même, il existe une extractrice $\vp$ telle que $x_{\vp(n)}^k$ converge pour tout $k \in \bN^*$, vers une limite notée $x_*^k$ lorsque $n \to \infty$.
@@ -936,6 +938,7 @@ Par ailleurs étant donné $x\in X$, soit $y \in \bY$ tel que $x \in W_y$, et so
 \end{proof}
 
 La généralisation du \nref{th:StoneWeierstrass} aux fonctions complexes requiert une hypothèse supplémentaire de stabilité par conjugaison, dont nous illustrons la nécessité par un contr-exemple, voir les \cref{corol:StoneComplexe,prop:StoneCtrEx}.
+\claudereport{Typo : ``contr-exemple'' $\to$ ``contre-exemple''.}
 
 \begin{corollary}[Stone-Weierstrass complexe]
 \label{corol:StoneComplexe}

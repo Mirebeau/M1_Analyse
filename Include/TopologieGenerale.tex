@@ -672,6 +672,7 @@ Un module de continuité est une application $\omega : \bR_+ \to [0,\infty]$, te
 On dit qu'il est sous-additif si $\omega(s+t) \leq \omega(s) + \omega(t)$ pour tous $s,t \geq 0$. 
 \end{definition}
 Nous avons fait dans la \cref{def:moduleCont} des hypothèses minimales concernant la régularité de $\omega$. Sans nuire à la généralité, on pourrait toutefois les renforcer, comme le \cref{lem:regModuleCont} ci-dessous. 
+\claudereport{Typo : ``comme le \texttt{lem:regModuleCont} ci-dessous'' $\to$ ``comme le montre le \texttt{lem:regModuleCont} ci-dessous'' (verbe manquant).}
 
 \begin{remark}
 \label{rem:dist_of_mod_cont}
@@ -1063,6 +1064,7 @@ Pour tout compact $K \csubset \Omega$ on note $\cD_K(\Omega) := \{f \in C^\infty
 
 La classe de Schwartz est un espace de fonctions indéfiniment dérivables à décroissance rapide, intervenant dans l'étude de la transformée de Fourier. 
 (Note orthographique : cette classe de fonctions est nommée d'après Laurent Schwartz, alors que l'inégalité est associée à Augustin-Louis Cauchy et Hermann Schwarz)
+\claudereport{Style : ``alors que l'inégalité est associée'' $\to$ ``alors que l'inégalité de Cauchy-Schwarz est associée'', et ajouter un point final.}
 
 \begin{definition}[Classe de Schwartz]
 \label{def:classeSchwartz}
@@ -1204,6 +1206,7 @@ Notons $\omega_n := C_{K_n}$ et $\eta_n := n_{K_n}$ pour la lisibilité. 	Soit $
 		& \leq |f|_{\omega,\eta}.
 	\end{align*}
 	On a utilisé successivement à chaque ligne (a) la linéarité de $\vp$, sachant que la somme a un nombre fini de termes non-nuls, (b) l'hypothèse \eqref{eq:distrib_cont_loc}, (c) la formule du binôme pour la dérivation \eqref{eq:deriv_binom}, avec une constante $\tilde \omega_n$ appropriée, (d) les nouvelles variables $\hat \omega_n = \tilde \omega_n /\mu_n$, où la suite $(\mu_n)_{n \in \bN}$ satisfait les conditions du \cref{lem:omegaNmuN}, par exemple $\mu_n := c_\alpha (1+n)^{-\alpha}$ avec $\alpha>1$ et une constante $c_\alpha>0$ appropriée, (e) des fonctions $\omega,\eta \in C^0(\Omega,\bR_+)$ telles que $\omega \geq \hat \omega_n$ et $\eta \geq \eta_n$ sur $\supp(\rho_n)\subset \mathring K_n \sm K_{n-2}$; par exemple $\omega := \max_{n\in \bN} \hat \omega_n (1-\chi_{n-2})$ et de même pour $\eta$. 
+\claudereport{Imprécision : ``$\supp(\rho_n)\subset \mathring K_n \sm K_{n-2}$'' $\to$ ``$\supp(\rho_n)\subset \mathring K_n \sm \mathring K_{n-2}$'' (le support, fermé, peut rencontrer $\partial K_{n-2}$ car $\chi_{n-1}=1$ seulement sur $K_{n-2}$) ; ajouter la convention $K_{-2}=\emptyset$.}
 \end{proof}
 
 
