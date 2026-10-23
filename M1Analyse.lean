@@ -10,6 +10,9 @@ import M1Analyse.TopologieGenerale.Separation
 import M1Analyse.TopologieGenerale.Continuite
 import M1Analyse.TopologieGenerale.EVN
 import M1Analyse.TopologieGenerale.EVTLC
+import M1Analyse.Completude.Cauchy
+import M1Analyse.Completude.FonctionnelsComplets
+import M1Analyse.Completude.Prolongements
 
 /-!
 # M1Analyse
