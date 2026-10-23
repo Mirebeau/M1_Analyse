@@ -23,6 +23,7 @@ import M1Analyse.Compacite.BorelLebesgue
 import M1Analyse.Compacite.CompactsMetriques
 import M1Analyse.Compacite.DimensionFinie
 import M1Analyse.Compacite.Produits
+import M1Analyse.Bosse.Bosse
 
 /-!
 # M1Analyse
