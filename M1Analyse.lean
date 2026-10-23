@@ -6,6 +6,8 @@ Authors: Jean-Marie Mirebeau
 import M1Analyse.TopologieGenerale.OuvertsFermes
 import M1Analyse.TopologieGenerale.ComparaisonTopologies
 import M1Analyse.TopologieGenerale.Voisinages
+import M1Analyse.TopologieGenerale.Separation
+import M1Analyse.TopologieGenerale.Continuite
 
 /-!
 # M1Analyse
