@@ -33,6 +33,7 @@ import M1Analyse.Dualite.HahnBanachGeometrique
 import M1Analyse.Dualite.CompaciteFaible
 import M1Analyse.Bosse.Bosse
 import M1Analyse.Hilbert.Hilbert
+import M1Analyse.LegendreFenchel.LegendreFenchel
 
 /-!
 # M1Analyse
