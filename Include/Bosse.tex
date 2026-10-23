@@ -18,6 +18,7 @@ L'existence et les propriétés recherchées d'un noyau de convolution. (\Cref{p
 
 \begin{lemma}[Prolongement lisse de la fonction nulle]
 \label{lem:cinfExpInv}
+\leancheck{lem:cinfExpInv}%
 	La fonction $\vp : \bR\to \bR$ suivante est $C^\infty$: 
 	\begin{equation}
 		\vp(x) := \begin{cases}
@@ -36,6 +37,7 @@ L'existence et les propriétés recherchées d'un noyau de convolution. (\Cref{p
 
 \begin{proposition}[Approximation de Heaviside]
 \label{prop:cinfHeaviside}
+\leancheck{prop:cinfHeaviside}%
 	Il existe $\vp \in C^\infty(\bR)$, croissante, positive, telle que $\vp=0$ sur $]-\infty,0]$ et $\vp=1$ sur $[1,\infty[$. 
 \end{proposition}
 
@@ -51,6 +53,8 @@ L'existence et les propriétés recherchées d'un noyau de convolution. (\Cref{p
 
 \begin{proposition}[Noyau de convolution]	
 \label{prop:cinfBosse}
+\leancheck{prop:cinfBosse}%
+\claudereport{Imprécision (relevée lors de la formalisation Lean) : ``constante sur $B(0,1/3)$'' $\to$ ``constante strictement positive sur $B(0,1/3)$'' ; la preuve de la \cref{prop:cinfSupport} utilise $\vp > 0$ sur $B(0,1/3)$ (une bosse radiale portée par la couronne $1/3 \leq |x| \leq 2/3$ satisfait l'énoncé actuel).}
 	Il existe $\vp \in C^\infty(\bR^d)$, radiale, positive, d'intégrale unité, constante sur $B(0,1/3)$ et telle que $\supp(\vp) \subset B'(0,2/3)$. 
 	Noter que $\supp(\vp) \csubset B(0,1)$.
 \end{proposition}
@@ -66,6 +70,7 @@ Les résultats suivants visent à approcher des fonctions indicatrices de maniè
 
 \begin{proposition}[Approximation d'un support]	
 \label{prop:cinfSupport}
+\leancheck{prop:cinfSupport}%
 	Soit $\Omega\subset \bR^d$ ouvert et $K \csubset \Omega$ compact. 
 	Alors il existe $\vp\in C^\infty_c(\Omega,[0,1])$ telle que $\vp=1$ sur $K$. 
 \end{proposition}
@@ -85,6 +90,7 @@ On définit finalement $\vp(x) := \vp_\mathrm{heav}(\vp_1(x)/c)$ qui convient.
 
 \begin{proposition}[Partition de l'unité]
 \label{prop:cinfPartition}
+\leancheck{prop:cinfPartition}%
 	Soit $K \csubset \bR^d$ compact, dont on considère une couverture $K \subset \cup_{i=1}^I \Omega_i$ par des ouverts. Alors il existe $(\vp_i)_{i=1}^I$ telles que $\vp_i \in C^\infty(\bR^d)$, $\supp \vp_i \csubset \Omega_i$, et $\sum_{i=1}^I \vp_i = 1$ sur $K$.
 \end{proposition}
 
@@ -97,6 +103,7 @@ On définit finalement $\vp(x) := \vp_\mathrm{heav}(\vp_1(x)/c)$ qui convient.
 
 \begin{proposition}[Exhaustion lisse] 
 \label{prop:cinfExhaust}
+\leancheck{prop:cinfExhaust}%
 Soit $\Omega \subset \bR^d$ un ouvert, et soit $(K_n)_{n \in \bN}$ une suite exhaustive de compacts, voir la \cref{prop:exhaustComp}; posons $K_{-1} := \emptyset$.
 Alors il existe une suite de fonctions $\vp_n \in C^\infty_c(\bR^d,[0,1])$ telles que $\supp(\vp_n) \subset \mathring K_{n+1}\sm K_{n-1}$ et $\sum_{n \in \bN} \vp_n = 1$ sur $\Omega$. 
 \end{proposition}

@@ -23,6 +23,7 @@ Cet appendice doit être considéré comme une ouverture, dont le contenu n'est 
 
 \begin{definition}[Conjuguée de Legendre-Fenchel]
 \label{def:legendre_fenchel}
+\leancheck{def:legendre_fenchel}%
 Soit $E$ un evn et $f : E \to \overline \bR$ une fonction. Sa conjuguée de Legendre-Fenchel est définie pour toute $\vp \in E^*$ par 
 	\begin{equation}
 	\label{eqdef:lengedre_fenchel}
@@ -34,6 +35,7 @@ Par exemple, si $f(x) = \frac 1 2 \|x\|^2_E$, alors on vérifie que $f^*(\vp) = 
 
 \begin{definition}
 \label{def:domaineFct}
+\leancheck{def:domaineFct}%
 	Étant donnée une fonction $f : X \to ]-\infty,\infty]$ définie sur un ensemble $X$, on note $\Dom(f) := \{x \in X \mid f(x) < \infty\}$ son domaine, et on dit qu'elle est propre si $\Dom(f) \neq \emptyset$. 
 \end{definition}
 
@@ -43,6 +45,7 @@ On montre dans le lemme suivant que $f^*$ est propre ssi $f$ admet un minorant a
 
 \begin{lemma}
 \label{lem:FenchelPropre}
+\leancheck{lem:FenchelPropre}%
 	Soit $f : E \to ]-\infty,\infty]$ une fonction propre sur un evn. Alors  $f^* : E^* \to ]-\infty,\infty]$ est convexe et sci. De plus, $f^*$ est propre ssi $f$ admet un minorant affine continu; plus précisément $f \geq \vp + \alpha$ ssi $f^*(\vp) \leq -\alpha$, pour tous $\alpha \in \bR$, $\vp \in E^*$.
 \end{lemma}
 
@@ -52,6 +55,7 @@ On montre dans le lemme suivant que $f^*$ est propre ssi $f$ admet un minorant a
 
 \begin{lemma}
 \label{lem:minorantCvxSci}
+\leancheck{lem:minorantCvxSci}%
 	Soit $f : E \to ]-\infty,\infty]$ convexe et sci, et soient $x_0 \in E$ et $t_0 < f(x_0)$. Alors il existe $\alpha \in \bR$, $\vp \in E^*$ tels que $f > \alpha + \vp$ sur $E$, et $\alpha + \vp(x_0) > t_0$. 
 \end{lemma}
 
@@ -72,6 +76,7 @@ Le théorème de dualité de Legendre-Fenchel assure que $f = f^{**}$ (moyennant
 
 \begin{theorem}[Dualité de Legendre-Fenchel]
 \label{th:LegendreFenchel}
+\leancheck{th:LegendreFenchel}%
 	Soit $f : E \to ]-\infty,\infty]$ une fonction propre et admettant un minorant affine sur un evn (c'est toujours le cas si $f$ est convexe et sci). 
 	Alors $f^{**}$ est convexe, sci, propre, et $f^{**} \leq f$ sur $E$ avec égalité ssi $f$ est convexe et sci. 
 \end{theorem}
@@ -91,6 +96,8 @@ Dans le \cref{th:ssGrad} suivant, on montre l'existence d'une fonction affine ta
 
 \begin{lemma}
 \label{lem:cvxImplBorne}
+\leancheck{lem:cvxImplBorne}%
+\claudereport{Problème (preuve, relevé lors de la formalisation Lean) : l'union des $\{f \leq n\}$ est $\Dom(f)$ et non $E$, donc le \cref{corol:BaireFerme} ne s'applique pas tel quel. Appliquer Baire dans la boule fermée (complète) $B'(0,\ve) \subset \Dom(f)$, recouverte par les $\{f\leq n\} \cap B'(0,\ve)$ ; on obtient alors $x_0 \in B'(0,\ve)$, ce qui assure aussi $-\ve x_0 \in \Dom(f)$ (sinon $f(-\ve x_0)$ peut valoir $+\infty$).}
 	Soit $f$ une fonction convexe s.c.i.\ sur un Banach. Alors $f$ est localement bornée sur $\mathring \Dom(f)$. 
 \end{lemma}
 
@@ -102,6 +109,8 @@ Dans le \cref{th:ssGrad} suivant, on montre l'existence d'une fonction affine ta
 
 \begin{lemma}
 \label{lem:cvxImplLip}
+\leancheck{lem:cvxImplLip}%
+\claudereport{Détail (formalisation Lean) : supposer $f(x) < \infty$ (sinon l'hypothèse $f \leq f(x) + M$ est vide).}
 	Soit $f : E \to ]-\infty,\infty]$ une fonction convexe sur un evn. Supposons $f \leq f(x) + M$ sur $B'(x,r)$, où $x \in E$, $r>0$, $M > 0$. 
 	Alors $|f(x)-f(y)|\leq (M/r) \|x-y\|$ pour tout $y \in B'(x,r)$. On en déduit que $f$ est $2 M/r$-Lipschitz sur $B'(x,r/3)$. 
 \end{lemma}
@@ -117,6 +126,7 @@ Dans le \cref{th:ssGrad} suivant, on montre l'existence d'une fonction affine ta
 
 \begin{theorem}[Sous-différentiel et sous-gradient d'une fonction convexe \facultatif]
 \label{th:ssGrad}
+\leancheck{th:ssGrad}%
 	Soient $E$ un Banach et $f : E \to ]-\infty,\infty]$ convexe et sci. Alors $f$ est localement Lipschitz sur $\mathring\Dom(f)$. De plus %Si $x \in \Relint(\Dom(f))$ 
 	\begin{equation*}
 		\partial f(x) := \{\vp \in E^* \mid \forall y \in E, f(y) \geq f(x) + \vp(y-x)\},
@@ -139,6 +149,7 @@ Rappelons aussi que si $A\in L(E,F)$, alors $A^\top \in L(F^*,E^*) : \vp \mapsto
 
 \begin{lemma}
 \label{lem:cvxSciAlt}
+\leancheck{lem:cvxSciAlt}%
 	Soit $E$ evn et $f : E \to ]-\infty,\infty]$ convexe. Posons $g(x) := \liminf_{y \to x} f(y)$, pour tout $x \in E$, son enveloppe sci (on note parfois $g = f_*$). Alors on a l'alternative : 
 	\begin{enumerate}[(a)]
 		\item $g: E \to ]-\infty,\infty]$ est convexe, sci, et satisfait $g^* = f^*$.
@@ -156,6 +167,7 @@ Rappelons aussi que si $A\in L(E,F)$, alors $A^\top \in L(F^*,E^*) : \vp \mapsto
 
 \begin{theorem}[Fenchel-Rockafellar \facultatif]
 \label{th:FenchelRockafellar}
+\leancheck{th:FenchelRockafellar}%
 Soient $E$ et $F$ des Banach, et $A \in L(E,F)$ un opérateur linéaire continu. Soient $f: E \to ]-\infty,\infty]$ et $g : F \to ]-\infty,\infty]$, convexes, s.c.i., et telles que $(A \Dom f) \cap \mathring\Dom\, g \neq \emptyset$. 
 Alors 
 \begin{equation*}

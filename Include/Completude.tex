@@ -64,6 +64,7 @@ La complétude est un outil fondamental en analyse, assurant l'existence d'une l
 
 \begin{definition}[Suite de Cauchy]
 \label{def:suiteCauchy}
+\leancheck{def:suiteCauchy}%
 	Soit $(X,d)$ un espace métrique. Une suite $(x_n)_{n\in \bN}$ est dite de \emph{Cauchy} si elle satisfait au critère suivant:
 	\begin{equation*}
 		\forall \ve>0,\ \exists N \in \bN,\ \forall p,q \geq N,\ d(x_p,x_q) \leq \ve. 
@@ -75,9 +76,11 @@ Noter que la propriété de Cauchy, et donc la notion de complétude, n'ont de s
 \begin{equation}
 \label{eqdef:suiteCauchyMin}
 	d(x_p,x_q) \leq \ve(\min(p,q))
+\leancheck{eqdef:suiteCauchyMin}%
 \end{equation}
 \begin{definition}[Complétude]
 \label{def:complet}
+\leancheck{def:complet}%
 Un espace métrique $(X,d)$ est dit \emph{complet} si toutes ses suites de Cauchy y sont convergentes. 
 Un espace de Banach est un evn complet. 
 Un espace de Fréchet est un evtlcs muni d'une famille dénombrable de semi-normes, et complet pour la distance associée.
@@ -89,6 +92,7 @@ Rappelons qu'une série à valeurs dans un evn, écrite formellement ``$\sum_{n 
 
 \begin{lemma}[Séries dans un Banach]
 \label{lem:serie_Banach}
+\leancheck{lem:serie_Banach}%
 Un evn $E$ est complet ssi toute série absolument convergente y est convergente.   	
 \end{lemma}
 
@@ -109,6 +113,7 @@ Plusieurs constructions mathématiques héritent de la propriété de complétud
 
 \begin{proposition}
 \label{prop:fermeComplet}
+\leancheck{prop:fermeComplet}%
 	Une partie $A$ d'un espace métrique complet $(X,d)$, est complète ssi elle est fermée.	
 \end{proposition}
 
@@ -124,6 +129,7 @@ Plusieurs constructions mathématiques héritent de la propriété de complétud
 
 \begin{proposition}
 \label{prop:LEFcomplet}
+\leancheck{prop:LEFcomplet}%
 Soient $E$ un evn et $F$ un Banach. Alors $L(E,F)$ est un Banach, et en particulier $E^*$ est un Banach. 	
 \end{proposition}
 
@@ -152,6 +158,7 @@ Les espaces de fonctions bornées qui sont continues, Hölder, Lipschitz, ou con
 
 \begin{exemple}
 \label{ex:cont_bornee_Banach}
+\leancheck{ex:cont_bornee_Banach}%
 	Soit $(X,\bU)$ un espace topologique, $E$ un Banach. Alors $C^0_b(X,E)$ est un Banach.
 \end{exemple}
 
@@ -163,6 +170,7 @@ Les espaces de fonctions bornées qui sont continues, Hölder, Lipschitz, ou con
 
 \begin{exemple}[Complétude des espaces de Lipschitz et Hölder]
 \label{ex:Holder_Banach}
+\leancheck{ex:Holder_Banach}%
 	Soit $(X,d)$ un espace métrique, $E$ un Banach, et $\omega : \bR_+ \to \bR_+$ un module de continuité strictement positif hors de $0$. 
 	On pose 
 	\begin{align}
@@ -206,6 +214,7 @@ Les espaces de fonctions bornées qui sont continues, Hölder, Lipschitz, ou con
 
 \begin{exemple}
 \label{ex:LpBanach}
+\leancheck{ex:LpBanach}%
 	Soit $(X,\mu)$ un espace mesuré. Alors $L^p(X,\mu)$ est un Banach, $\forall p \in [1,\infty]$. 
 \end{exemple}
 
@@ -292,6 +301,7 @@ Le principe de prolongement d'une application uniformément continue, et de comp
 
 \begin{proposition}[Prolongement des fonctions uniformément continues]
 \label{prop:prolongement_complet}
+\leancheck{prop:prolongement_complet}%
 	Soit $(X,d)$ un espace métrique et $(Y,d_Y)$ un complet. Soit $A \subset X$ une partie dense, et $f:A \to Y$ uniformément continue, pour un module de continuité $\omega$. (On supposera ici que $\omega$ est continu et croissant sans nuire à la généralité via le \cref{lem:regModuleCont}.) Alors $f$ admet une unique extension continue $F : X \to Y$, qui de plus admet le même module d'uniforme continuité. 
 \end{proposition}
 
@@ -308,6 +318,7 @@ La notion de complétude permet également d'étendre l'espace lui même.
 
 \begin{proposition}[Complété d'un espace métrique]
 \label{prop:espaceComplete}
+\leancheck{prop:espaceComplete}%
 Soit $(A,d)$ un espace métrique. Alors il existe un espace métrique complet $X$ dont une partie dense est en bijection isométrique avec $A$. De plus $X$ est unique à isométrie près. 
 \end{proposition}
 
@@ -353,6 +364,8 @@ On peut également étendre des fonctions uniformément continues définies sur 
 
 \begin{exemple}[Extension de fonctions uniformément continues]
 \label{ex:extUnifCont}
+\leancheck{ex:extUnifCont}%
+\claudereport{Imprécision (preuve) : les inégalités $\omega(d(x,z)) \leq \omega(d(x,y)) + \omega(d(y,z))$ (et celle de la première ligne) utilisent l'inégalité triangulaire, la croissance \emph{et} la sous-additivité de $\omega$, pas seulement la sous-additivité.}
 	Soit $(X,d)$ un espace métrique, soit $A \subset X$ non-vide, et soit $f : A \to \bR$ uniformément continue, dont le module de continuité $\omega$ est supposé croissant et sous-additif.
 	Alors la fonction $F : X \to \bR$ définie par 
 	\begin{equation}
@@ -387,6 +400,8 @@ L'énoncé et la preuve du théorème de point fixe de Picard et du lemme de Gr�
 
 \begin{theorem}[Point fixe de Picard]
 \label{th:fixe_Picard}
+\leancheck{th:fixe_Picard}%
+\claudereport{Détail (formalisation Lean) : supposer $X$ non vide, sinon il n'y a pas de point fixe.}
 	Soit $(X,d)$ un espace métrique complet, et soit $f : X \to X$ une fonction $K$-Lipschitzienne avec $K<1$ (on dit aussi contractante). 
 	
 	Alors $f$ admet un unique point fixe $x_* \in X$, et pour tout $x_0 \in X$ et tout $n \in \bN$ on a 
@@ -409,6 +424,7 @@ avec donnée initiale $u(0)$ fixée, et $f$ assez régulière. On en rappelle la
 
 \begin{lemma}[Grönwall]
 \label{lem:Gronwall}
+\leancheck{lem:Gronwall}%
 	Soit $f \in C^0([0,T], \bR_+)$, et $A,B \geq 0$ tels que pour tout $t \in [0,T]$
 	\begin{equation}
 		f(t) \leq A \int_0^t f(s) \diff s + B.	
@@ -424,6 +440,7 @@ La notation ``$K \csubset \Omega$'' signifie que $K$ est une partie compacte d'u
 
 \begin{theorem}[Cauchy-Lipschitz, Picard-Lindelöf]
 \label{th:Cauchy_Lipschitz}
+\leancheck{th:Cauchy_Lipschitz}%
 Soit $\Omega\subset \bR^d$ ouvert, et soit $f : \bR_+ \times \Omega \to \bR^d$, continue et localement Lipschitzienne en sa seconde variable, i.e.\
 	\begin{equation}
 	\label{eq:loc_lip2}
@@ -492,6 +509,7 @@ En particulier, si le temps d'existence $T_{\max}$ est borné, alors $u(t) \noti
 Le schéma de preuve du \nref{th:Cauchy_Lipschitz} est robuste et permet de traiter de nombreuses variantes, comme des EDO avec retard.
 \begin{exemple}[Équation différentielle avec retard]
 \label{ex:EDretard}
+\leancheck{ex:EDretard}%
 	Il existe une unique $f\in C^1([0,1],\bR)$ telle que $f(0)=1$ et $f'(t)=f(t-t^2)$ pour tout $t \in [0,1]$. 
 \end{exemple}
 
@@ -509,6 +527,7 @@ Finalement, on étend $f$ sur $]1/2,1]$ via la formule explicite (\ref{eq:EDO_re
 De même, on montre l'existence et l'unicité de solutions à certaines équations fonctionnelles. 
 \begin{exemple}[Équation fonctionnelle intégrale]
 \label{ex:eqFunctIntegr}
+\leancheck{ex:eqFunctIntegr}%
 	Soient $k \in C^0([0,1]\times [0,1],]-1,1[)$ et $\vp \in C^0([0,1])$. Alors il existe une unique solution $f\in C^0([0,1])$ à l'équation fonctionnelle
 	\begin{equation*}
 		 \forall x \in [0,1],\ f (x) = \int_0^1 \frac{k(x,y) f(y)}{1+f(y)^2} \diff y + \vp(x)
@@ -544,6 +563,7 @@ Le lemme des fermés emboités, le théorème de Baire, et son corollaire s'appl
 
 \begin{lemma}[Fermés emboités]
 \label{lem:fermeEmboite}
+\leancheck{lem:fermeEmboite}%
 Soit $(X,d)$ un espace métrique complet, et soit $(F_n)_{n \in \bN}$ une suite de fermés non-vides, décroissants pour l'inclusion, et dont le diamètre $\delta_n := \sup \{d(x,y) \mid x,y \in F_n\}$ tend vers $0$. Alors $\bigcap_{n \in \bN} F_n$ est un singleton. 
 \end{lemma}
 
@@ -556,6 +576,7 @@ Un résultat analogue pour les fermés d'un espace compact permet en revanche de
 
 \begin{theorem}[Baire]
 \label{th:BaireOuvert}
+\leancheck{th:BaireOuvert}%
 Soit $(X,d)$ un espace métrique complet, et soit $(U_n)_{n \in \bN}$ une suite d'ouverts denses. 
 Alors leur intersection $\bigcap_{n \in \bN} U_n$ est dense. 	
 \end{theorem}
@@ -571,17 +592,20 @@ Par passage au complémentaire, on obtient:
 
 \begin{corollary}[Baire, complémentaire]
 \label{corol:BaireFerme}
+\leancheck{corol:BaireFerme}%
 	Soit $(X,d)$ un espace métrique complet, et soit $(F_n)_{n \in \bN}$ une suite de fermés d'intérieur vide. Alors $\bigcup_{n \in \bN} F_n$ est d'intérieur vide. 
 \end{corollary}
 
 \begin{remark}[Terminologie de Baire]
 \label{rem:terminologieBaire}
+\leancheck{rem:terminologieBaire}%
 Une intersection dénombrable d'ouverts est appelée un $G_\delta$, et une réunion dénombrable de fermés un $F_\sigma$. Un ensemble est dit maigre s'il est contenu dans un $F_\sigma$ d'intérieur vide, et son complémentaire est dit co-maigre (ou gras) : il contient un $G_\delta$ dense. 	
 \end{remark}
  
 Attention : le fait d'être maigre ou gras, pour une partie de $\bR$, n'a pas d'implication sur la mesure de celle-ci, comme le montre l'exemple suivant. 
 \begin{exemple}
 \label{ex:GrasQ}
+\leancheck{ex:GrasQ}%
 	Soit $(q_k)_{k >0}$ une énumération de $\bQ$, et pour tout $n >0$ soit 
 	\begin{equation}
 	U_n := \bigcup_{k >0} \Big]q_k-\frac 1 {nk^2}, q_k + \frac 1 {n k^2}\Big[.	
@@ -591,6 +615,7 @@ Attention : le fait d'être maigre ou gras, pour une partie de $\bR$, n'a pas d'
 
 \begin{exemple}	
 \label{ex:grasNonDen}
+\leancheck{ex:grasNonDen}%
 	Soit $(X,d)$ un espace métrique complet non-vide et sans points isolés, et soit $A \subset X$ un ensemble gras. Alors $A$ est indénombrable. 
 \end{exemple}
 
@@ -612,6 +637,7 @@ Le théorème de Baire a plusieurs conséquences importantes pour les applicatio
 
 \begin{theorem}[Banach-Steinhaus]
 \label{th:BanachSteinhaus}
+\leancheck{th:BanachSteinhaus}%
 Soit $E$ un Banach, $F$ un evn, et $\cA \subset L(E,F)$ une famille d'applications linéaires continues, que l'on suppose simplement bornée : 
 \begin{equation}
 	\forall x \in E,\ \sup_{L\in \cA} \|Lx\| < \infty.
@@ -632,6 +658,7 @@ $	\sup_{L \in \cA} \vertiii{L} < \infty.$
 
 \begin{corollary}
 \label{corol:limSimpleLin}
+\leancheck{corol:limSimpleLin}%
 	Soient $E$ un Banach, $F$ un evn, et soit $L_n \in L(E,F)$, $n\in \bN$, une suite d'applications linéaires continues telles que $Lx := \lim_{n \to \infty} L_n x$ existe pour tout $x \in E$. Alors $L\in L(E,F)$ est linéaire continue.
 \end{corollary}
 
@@ -644,6 +671,7 @@ Le corollaire suivant applique Banach-Steinhaus aux formes linéaires. Il admet 
 
 \begin{corollary}[Banach-Steinhaus, pour les formes linéaires]
 \label{corol:BanachSteinhausK}
+\leancheck{corol:BanachSteinhausK}%
 	Soient $E$ un Banach, et $\cA \subset E^*$ un ensemble de formes linéaires continues. Alors $\cA$
 	est *faiblement borné
 	(i.e.\ $\forall x \in E, \{l(x)\mid l \in \cA\}$ est borné) ssi $\cA$ est borné. 
@@ -705,6 +733,7 @@ Le théorème de l'application ouverte est une seconde application du \nref{th:B
 
 \begin{theorem}[Application ouverte]
 \label{th:appliOuverte}
+\leancheck{th:appliOuverte}%
 Soient $E$ et $F$ des Banach et soit $L \in L(E,F)$ linéaire continue et surjective. 
 Alors $\exists \delta>0$, $B_F(0,\delta) \subset L(B_E(0,1))$, et donc l'image par $L$ de tout ouvert est un ouvert. %; de manière équivalente, $\exists C$, $\forall y\in E$, $\exists x \in E$, $Lx = y$ et $\|x\| \leq C \|y\|$.
 
@@ -726,6 +755,7 @@ Alors $\exists \delta>0$, $B_F(0,\delta) \subset L(B_E(0,1))$, et donc l'image p
 
 \begin{corollary}[Isomorphisme de Banach]
 \label{corol:isomBanach}
+\leancheck{corol:isomBanach}%
 	Soient $E,F$ des Banachs et soit $L \in L(E,F)$ linéaire continue et bijective. Alors $L^{-1} \in L(F,E)$ est continue.
 \end{corollary}
 
@@ -735,6 +765,7 @@ Par le \cref{th:appliOuverte}, l'image directe par $L$ d'un ouvert est un ouvert
 
 \begin{corollary}[Équivalence des normes]
 \label{corol:equivNormes}
+\leancheck{corol:equivNormes}%
 	Soit $E$ un espace vectoriel, qui est complet pour deux normes $\|\cdot\|$ et $\|\cdot\|'$ données. 
 	S'il existe $C$ tel que $\forall x \in E$, $\|x\|' \leq C \|x\|$, alors il existe $c>0$ tel que $\forall x \in E$, $\|x\|' \geq c \|x\|$.
 \end{corollary}
@@ -746,6 +777,7 @@ Par le \cref{th:appliOuverte}, l'image directe par $L$ d'un ouvert est un ouvert
 
 \begin{theorem}[Graphe fermé]
 \label{th:grapheFerme}
+\leancheck{th:grapheFerme}%
 	Soient $(E,\|\cdot\|_E)$ et $(F,\|\cdot\|_F)$ des Banach, et soit $L : E \to F$ linéaire. Alors $L$ est continue ssi son graphe $G := \{ (x,Lx) \mid x \in E\}$ est une partie fermée de $E \times F$. 
 \end{theorem}
 

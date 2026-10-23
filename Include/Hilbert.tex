@@ -23,6 +23,7 @@ Dans cette section, $\bK$ désigne le corps $\bR$ ou $\bC$.
 
 \begin{definition}[Espace préhilbertien]
 \label{def:prehilbert}
+\leancheck{def:prehilbert}%
 	Une forme sesquilinéaire sur un $\bK$-espace vectoriel $E$ est une application $\vp : E \times E \to \bK$ qui satisfait pour tous $x,x',y,y' \in E$, $\lambda \in \bK$ : 
 	\begin{itemize}
 		\item (Linéarité à droite) $\vp(x,\lambda y) = \lambda \vp(x,y)$, $\vp(x,y+y')=\vp(x,y)+\vp(x,y')$. %, $\forall x,y,y' \in E$, $\lambda \in \bK$
@@ -46,6 +47,7 @@ la seconde étant appelée identité du parallélogramme.
 
 \begin{proposition}[Inégalité de Cauchy-Schwarz]
 \label{prop:CauchySchwarz}
+\leancheck{prop:CauchySchwarz}%
 Soit $(E,\<\cdot ,\cdot\>)$ un espace préhilbertien. Alors pour tous $x,y \in E$, 
 \begin{equation}
 \label{eq:CauchySchwarz}
@@ -72,12 +74,14 @@ et $\|\cdot\|$ définit une norme sur $E$. L'égalité a lieu ssi $x$ et $y$ son
 
 \begin{definition}[Hilbert]
 \label{def:Hilbert}
+\leancheck{def:Hilbert}%
 %Un espace vectoriel normé dont la norme découle d'un produit scalaire préhilbertien. 
 Un espace préhilbertien complet est un Hilbert. 
 \end{definition}
 
 \begin{theorem}[Projection sur un convexe fermé]
 \label{th:projConvexe}
+\leancheck{th:projConvexe}%
 Soit $H$ Hilbert et $K\subset H$ un convexe fermé non-vide. 
 Pour tout $x \in H$, le problème suivant admet une unique solution
 \begin{equation}
@@ -88,11 +92,13 @@ définissant la projection $P_K : H \to K$. Elle est caractérisée par la condi
 \begin{equation}
 \label{eq:proj_obtus}
 	\Re\<x-P_K(x), y-P_K(x)\> \leq 0.
+\leancheck{eq:proj_obtus}%
 \end{equation}
 Enfin, $P_K$ est $1$-Lipschitz, et plus précisément pour tous $x,y \in H$
 \begin{equation}
 \label{eq:proj_moyennee}
 	\|P_K(x)-P_K(y)\|^2 \leq \Re\<x-y,\ P_K(x)-P_K(y)\>.
+\leancheck{eq:proj_moyennee}%
 \end{equation} 
 \end{theorem}
 
@@ -127,6 +133,7 @@ Le résultat suivant montre que l'on peut identifier un Hilbert à son dual. Les
 
 \begin{theorem}[Représentation de Riesz]
 \label{th:reprRiesz}
+\leancheck{th:reprRiesz}%
 Soit $H$ un espace de Hilbert. Alors $H \to H^* : x \mapsto \vp_x := \<x,\cdot\>$, est une bijection isométrique anti-linéaire.  
 \end{theorem}
 
@@ -139,6 +146,7 @@ Soit $H$ un espace de Hilbert. Alors $H \to H^* : x \mapsto \vp_x := \<x,\cdot\>
 
 \begin{exemple}
 \label{ex:l2Hilbert}
+\leancheck{ex:l2Hilbert}%
 	Soit $(X,\mu)$ un espace mesuré. Alors $L^2(X,\mu)$ est un Hilbert, muni du produit scalaire $\<f,g\> := \int_X \overline f(x) g(x) \diff\mu(x)$, voir l'\cref{ex:LpBanach}. En particulier, toute forme linéaire continue s'y écrit $g \mapsto \int_X \overline f(x) g(x) \diff\mu(x)$, pour un certain $f \in L^2(X, \mu)$.
 \end{exemple}
 
@@ -147,6 +155,7 @@ La projection orthogonale permet de décomposer les éléments d'un Hilbert.
 
 \begin{proposition}[Décomposition orthogonale]
 \label{prop:decompOrth}
+\leancheck{prop:decompOrth}%
 	Soit $H$ Hilbert. 
 	La projection sur un sous-espace vectoriel fermé $F \subset H$ est caractérisée par la condition $\<x-P_F(x),y\> = 0$, $\forall y \in F$.
 	De plus $F \oplus F^\perp = H$, $P_F+P_{F^\perp} = \Id$, et $P_F$ et $P_{F^\perp}$ sont linéaires continues, où $F^\perp := \{y \in H \mid \forall x \in F,\, \<x,y\>=0\}$ désigne le sous-espace orthogonal.
@@ -162,6 +171,8 @@ Une variante du résultat classique précédent traite des cônes convexes ferm�
 
 \begin{proposition}[Décomposition orthogonale associée à un cône \facultatif]
 \label{prop:decompCone}
+\leancheck{prop:decompCone}%
+\claudereport{Détail (formalisation Lean) : supposer $K$ non vide (la définition d'un cône convexe autorise $K = \emptyset$, pour lequel $P_K$ n'est pas défini).}
 	Soit $H$ un $\bR$-Hilbert, soit $K \subset H$ un cône convexe fermé, et soit $K^\circ := \{y\in H\mid \forall x \in K,\ \<x,y\> \leq 0\}$ le cône polaire. %; noter que $K \cap K^\circ = \{0\}$.
 	On a la caractérisation suivante des projections sur $K$ et $K^\circ$ : %sont caractérisées par %$P_K+P_K^\perp = \Id$ et $\<P_K,P_{K^\circ}\> = 0$, 
 	\begin{equation}
@@ -179,6 +190,7 @@ Une variante du résultat classique précédent traite des cônes convexes ferm�
 
 \begin{exemple}[Cône dual de $\bR_+^d$ et $\cS^+_d$ \facultatif]
 \label{ex:coneSdp}
+\leancheck{ex:coneSdp}%
 	On note parfois $K^* := - K^\circ  = \{y \in H\mid \forall x \in K, \<x,y\> \geq 0\}$ le cône dual, d'un cône $K$ donné. 
 	Un cône est dit auto-dual si $K = K^*$. Par exemple $\bR_+^d \subset \bR^d$ et $\cS_d^+ \subset \cS_d$ sont des cônes auto-duaux. La décomposition de la \cref{prop:decompCone} associée au cône $\bR_+^d$ correspond aux parties positive et négative de $x=(x_i)_{1 \leq i \leq d} \in \bR^d$~: 
 	\begin{align*}
@@ -207,6 +219,7 @@ La structure Hilbertienne est si forte que $\ell^2 := L^2(\bN,\bK)$ est, à isom
 
 \begin{theorem}[Base Hilbertienne]
 \label{th:baseHilbert}
+\leancheck{th:baseHilbert}%
 Soit $H$ un espace de Hilbert. Sont équivalents : 
 \begin{enumerate}[(i)]
 	\item $H$ est séparable et de dimension infinie.

@@ -97,7 +97,6 @@ L'axiome de séparation de Hausdorff, la définition et la caractérisation de l
 
 \subsubsection{Ouverts et fermés}
 \label{subsubsec:ouvertsFermes}
-\leancheck{subsubsec:ouvertsFermes}%
 
 \notei{Conventions : 
 Élément $x$, ensemble $X$, ensemble d'ensembles $\bX$
@@ -135,8 +134,8 @@ On déduit immédiatement du point (iii) de la \cref{def:topo} que l'intersectio
 \begin{equation}
 	\label{eq:finter_open}
 	\forall I \geq 1,\ \forall U_1,\cdots,U_I \in \bU,\ \bigcap_{1 \leq i \leq I} U_i \in \bU.
-\end{equation}
 \leancheck{eq:finter_open}%
+\end{equation}
 Pour le point (ii), plutôt qu'un ensemble $\cU$ d'ouverts, on pourrait de manière équivalente considérer l'union $\cup_{i \in I} U_i$ d'une famille d'ouverts $(U_i)_{i \in I}$ indexée par un ensemble $I$ quelconque. 
 
 \begin{remark}[Union et intersection vides]
@@ -175,15 +174,15 @@ On note, par passage au complémentaire, que
 \label{eq:int_adh_compl}
 	X \sm \mathring A &= \overline {X \sm A}, &
 	\mathring {\overpar{X \sm A}} &= X \sm \overline A. 
-\end{align}
 \leancheck{eq:int_adh_compl}%
+\end{align}
 Également, pour tous $A,B \subset X$,
 \begin{align}
 \label{eq:int_inter_adh_cup}
 	\mathring{\overpar{A \cap B}} &= \mathring A \cap \mathring B,&
 	\overline {A \cup B} = \overline A \cup \overline B.
-\end{align}
 \leancheck{eq:int_inter_adh_cup}%
+\end{align}
 
 \hiddenproof{
 On note que l'intersection \eqref{eqdef:int_adh} n'est pas vide car $A\subset X \in \bF$.
@@ -209,6 +208,7 @@ tandis que l'intérêt d'une topologie grossière est que beaucoup d'ensembles s
 
 \begin{definition}[Finesse d'une topologie]
 \label{def:finesseTopo}
+\leancheck{def:finesseTopo}%
 Une topologie $\bU_1$ sur un ensemble $X$ est dite \emph{plus fine} qu'une autre $\bU_2$ si elle possède plus d'ouverts, i.e. 
 $
 	\bU_1 \supset \bU_2. 
@@ -225,6 +225,7 @@ On vérifie facilement que l'intersection d'une famille quelconque de topologies
 
 \begin{definition}[Topologie engendrée]
 \label{def:topoEngendree}
+\leancheck{def:topoEngendree}%
 	Soit $X$ un ensemble. La topologie engendrée par $\bU_0 \subset \cP(X)$ est la plus petite topologie $\bU$ sur $X$ contenant $\bU_0$. 
 \end{definition}
 
@@ -237,6 +238,7 @@ La notion de base d'ouverts permet de caractériser plus simplement la topologie
 
 \begin{proposition}[Base d'ouverts]
 \label{prop:baseOuverts}
+\leancheck{prop:baseOuverts}%
 Une base d'ouverts d'un ensemble $X$, est une partie $\bU_0 \subset \cP(X)$ satisfaisant aux hypothèses suivantes : 
 	\begin{enumerate}[(i)]
 		\item Couverture de $X$:
@@ -273,6 +275,7 @@ Une base d'ouverts d'un ensemble $X$, est une partie $\bU_0 \subset \cP(X)$ sati
 
 \begin{corollary}
 \label{corol:baseOuverts}
+\leancheck{corol:baseOuverts}%
 Soit $(X,\bU)$ un espace topologique, et soit $\bU_0 \subset \bU$ un sous-ensemble d'ouverts tel que pour tous $U \in \bU$ et $x \in U$, il existe $U_x \in \bU_0$ tel que $x \in U_x \subset U$. 
 Alors $\bU_0$ est une base d'ouverts pour la topologie $\bU$. 
 %	Soit $(X,\bU)$ un espace topologique, et soit $\bU_0 \subset \bU$ une partie satisfaisant aux axiomes (i) et (ii) de la \cref{prop:baseOuverts}, ainsi que : 
@@ -291,6 +294,7 @@ Alors $\bU_0$ est une base d'ouverts pour la topologie $\bU$.
 
 \begin{exemple}[topologie de l'ordre \facultatif]
 \label{ex:topoOrdre}
+\leancheck{ex:topoOrdre}%
 	Soit $(X,\leq)$ un ensemble totalement ordonné ayant au moins deux points. On appelle topologie de l'ordre la topologie engendrée par la base d'ouverts suivante : pour tous $a,b \in X$
 	\begin{align}
 		&\{x\in X\mid x<b\},&
@@ -309,6 +313,7 @@ Alors $\bU_0$ est une base d'ouverts pour la topologie $\bU$.
 
 \begin{exemple}[topologie produit]
 \label{ex:topoProduit}
+\leancheck{ex:topoProduit}%
 	Soit $(X_i, \bU_i)_{i \in I}$ une famille d'espaces topologiques. Alors le produit $\Pi_{i \in I} X_i$ est muni de la topologie dont une base d'ouverts sont les produits 
 	$\Pi_{i \in I} U_i$ d'ouverts $U_i \in \bU_i$, $i \in I$, avec \emph{$U_i = X_i$ sauf pour un nombre fini d'indices}. 
 \end{exemple}
@@ -325,16 +330,19 @@ Un cas particulier est celui où $X_i = X$ pour tout $i \in I$, et où le produi
 
 \begin{definition}[Filtre des voisinages]
 \label{def:filtre_vois}
+\leancheck{def:filtre_vois}%
 	Soit $(X,\bU)$ un espace topologique. Un voisinage de $x \in X$ est une partie $V\subset X$ contenant un ouvert contenant $x$, en d'autres termes telle que $x \in \mathring V$. On note $\cV_x$ l'ensemble des voisinages de $x$:
 	\begin{equation}
 	\label{eqdef:Vx}
 		\cV_x := \{V \subset X \mid x \in \mathring V\}.
+\leancheck{eqdef:Vx}%
 	\end{equation}
 \end{definition}
 On note qu'une intersection finie de voisinages d'un point donné reste un voisinage, par \eqref{eq:int_inter_adh_cup}.
 
 \begin{proposition}[Caractérisation de l'adhérence]
 \label{prop:adh_vois}
+\leancheck{prop:adh_vois}%
 \begin{align*}
 	\overline A &= \{x \in X \mid \forall V \in \cV_x,\ A\cap V \neq \emptyset\},&
 	\mathring A &= \{x \in X \mid \exists V \in \cV_x,\ V \subset A\}.
@@ -349,6 +357,7 @@ La caractérisation de $\mathring A$ est évidente. Celle de $\overline A = X \s
 
 \begin{definition}[Base de voisinages]
 \label{def:base_vois}
+\leancheck{def:base_vois}%
 	Une base de voisinages de $x\in X$ est une partie $\cW_x \subset \cV_x$ contenant des voisinages arbitrairement petits, dans le sens où : 
 	\begin{equation}
 		\forall V \in \cV_x,\, \exists W \in \cW_x,\, W \subset V.
@@ -357,6 +366,7 @@ La caractérisation de $\mathring A$ est évidente. Celle de $\overline A = X \s
 
 \begin{remark}[Définition d'une topologie à partir d'une base de voisinages]
 \label{rem:topoVois}
+\leancheck{rem:topoVois}%
 Soit $X$ un ensemble, et pour tout $x \in X$ soit $\cW_x$ un ensemble non-vide de parties de $X$, chacune contenant $x$.
 Si $\forall x \in X$, $\forall U,V \in \cW_x$, $\exists W \in \cW_x$, $W \subset U \cap V$, alors 
 $$\bU := \{U \subset X \mid \forall x \in U,\, \exists V \in \cW_x,\, V \subset U\}$$ 
@@ -377,6 +387,7 @@ Si de plus $\forall x\in X$, $\forall U \in \cW_x$, $\forall y\in U$, $\exists V
 
 \begin{definition}[Topologie à base dénombrable]
 \label{def:denVois}
+\leancheck{def:denVois}%
 	Une topologie sur un ensemble $X$ est dite : 
 	\begin{itemize}
 		\item A \emph{base de voisinages dénombrable (first countable)} si tout point $x\in X$ admet une base de voisinages dénombrable.
@@ -393,6 +404,7 @@ Ces notions autorisent la caractérisation séquentielle de propriétés topolog
 
 \begin{definition}[Convergence d'une suite]
 \label{def:cvSuite}
+\leancheck{def:cvSuite}%
 Une suite $(x_n)_{n \in \bN}$ a valeurs dans un espace topologique $(X,\bU)$ converge vers un point $x \in X$ si et seulement si tout voisinage de ce point contient tous les termes de la suite à partir d'un certain rang:
 \begin{equation}
 	\lim_{n \to \infty} x_n = x \quad \eqdef \quad \forall V \in \cV_x,\ \exists N \in \bN,\ \forall n \geq N,\ x_n \in V.
@@ -402,6 +414,7 @@ Une suite $(x_n)_{n \in \bN}$ a valeurs dans un espace topologique $(X,\bU)$ con
 
 \begin{proposition}[Caractérisation séquentielle de l'adhérence]
 \label{prop:adhSuite}
+\leancheck{prop:adhSuite}%
 	Soit $A$ une partie d'un espace topologique à \emph{base dénombrable de voisinages}, alors 
 	$$
 		\overline A = \{ \lim_{n \to \infty} x_n \mid (x_n)_n \in A^\bN \text{ est une suite convergente} \}.
@@ -415,11 +428,13 @@ Une suite $(x_n)_{n \in \bN}$ a valeurs dans un espace topologique $(X,\bU)$ con
 
 \begin{proposition}[Convergence d'une sous suite vers toute valeur d'adhérence d'une suite]
 \label{prop:adhSousSuite}
+\leancheck{prop:adhSousSuite}%
 	L'ensemble des valeurs d'adhérence d'une suite $(x_n)_{n \in \bN}$ est défini par 
 %	Soit $(x_n)_{n \in \bN}$ une suite à valeurs dans un espace topologique à \emph{base dénombrable de voisinages}. L'ensemble de ses valeurs d'adhérence est 
 	\begin{equation}
 	\label{eqdef:adherence_suite}		
 		\Adh((x_n)_{n \in \bN}) := \bigcap_{N \geq 0} \overline {\{x_n \mid n \geq N\}}.
+\leancheck{eqdef:adherence_suite}%
 	\end{equation}
 	Si l'espace topologique est à base dénombrable de voisinages, alors l'adhérence d'une suite est constituée des limites de suites extraites
 	\begin{equation}
@@ -438,6 +453,7 @@ Finalement, expliquons le terme ``filtre'' en entête de la \cref{def:filtre_voi
 
 \begin{remark}[Axiomes de Filtre \facultatif]
 \label{rem:axiomFiltre}
+\leancheck{rem:axiomFiltre}%
 Un filtre d'un ensemble ordonné $(\cP, \preceq)$ est une partie $\cV \subset \cP$, non-vide, et satisfaisant aux axiomes: 
 \begin{itemize}
 	\item (Upper closure) Si $V \in \cV$ et $W \in \cP$ satisfont $V \preceq W$, alors $W \in \cV$.
@@ -456,6 +472,7 @@ L'ensemble des voisinages $\cV_x$ d'un point $x\in X$ d'un espace topologique $(
 
 \begin{definition}[Axiome de séparation de Hausdorff, T2, espace séparé]
 \label{def:separe}
+\leancheck{def:separe}%
 Un espace topologique $(X, \bU)$ est dit séparé si deux points distincts admettent toujours des voisinages disjoints : 
 \begin{equation}
 	\forall x\in X,\ \forall y \in X \sm \{x\},\ \exists U \in \cV_x,\ \exists V \in \cV_y,\ U \cap V = \emptyset. 
@@ -464,6 +481,7 @@ Un espace topologique $(X, \bU)$ est dit séparé si deux points distincts admet
 
 \begin{remark}[Unicité de la limite]
 \label{rem:uniqueLim}
+\leancheck{rem:uniqueLim}%
 Dans un espace séparé, toute suite admet au plus une limite.	
 \end{remark}
 
@@ -471,12 +489,15 @@ La plupart des espaces rencontrés en analyse et analyse fonctionnelle, et donc 
 
 \begin{remark}[Axiome T1 de Fréchet \facultatif] % Dit d'accessibilité
 \label{rem:T1}
+\leancheck{rem:T1}%
 Un espace topologique $(X, \bU)$ satisfait l'axiome T1 si étant donné deux points distincts, chacun admet un voisinage ne contenant pas l'autre. 
 Cet axiome ne \emph{garantit pas l'unicité} de la limite. 
 \end{remark}
 
 \begin{exemple}[Espaces T1 mais pas T2 \facultatif]
 \label{ex:T1nonT2}
+\leancheck{ex:T1nonT2}%
+\claudereport{Imprécision (relevée lors de la formalisation Lean) : topologie cofinie, les fermés sont les parties finies \emph{et $\bN$ lui-même} ; topologie de Zariski, elle n'est pas séparée seulement si $d \geq 1$ ($\bC^0$ est un point).}
 \begin{itemize}
 	\item (Topologie cofinie) Les entiers naturels, muni de la topologie dont les fermés sont les parties finies. 
 	\item (Topologie de Zariski) L'ensemble $\bC^d$, muni de la topologie dont les fermés sont les ensembles algébriques (i.e.\ les zéros communs d'une famille de polynômes). Formellement, un fermé de Zariski $F \subset \bC^d$ est un ensemble de la forme
@@ -498,6 +519,7 @@ Si le fermé de Zariski $F$ est associé aux polynômes $(P_i)_{1 \leq i \leq I}
 
 \begin{definition}[Continuité en un point]
 \label{def:continuite}
+\leancheck{def:continuite}%
 	Soient $(X,\bU)$, $(Y,\bV)$, des espaces topologiques. Une application $f:X \to Y$ est continue en $x \in X$ si l'image réciproque de tout voisinage de $f(x)$ est un voisinage de $x$. 
 	\begin{equation}
 	\label{eq:cont_at_x}
@@ -510,6 +532,7 @@ On peut reformuler \eqref{eq:cont_at_x} en termes d'image directe:
 \begin{equation}
 \label{eq:cont_at_x_direct}
 	\forall V \in \cV_{f(x)},\ \exists U \in \cV_x,\ f(U) \subset V,
+\leancheck{eq:cont_at_x_direct}%
 \end{equation}
 c'est-à-dire que tout voisinage de $f(x)$ contient l'image par $f$ d'un voisinage de $x$.
 Si $f$ est continue en $x$, et $g$ est continue en $f(x)$, alors $g \circ f$ est continue en $x$. 
@@ -532,6 +555,7 @@ Si $f$ est continue en $x$, et $g$ est continue en $f(x)$, alors $g \circ f$ est
 
 \begin{proposition}[Caractérisations de la continuité]
 \label{prop:caract_cont}
+\leancheck{prop:caract_cont}%
 Soient $(X,\bU)$, $(Y,\bV)$, des espaces topologiques, et $f : X \to Y$. Les propriétés suivantes sont équivalentes:
 \begin{enumerate}[(i)]
 	\item $f$ est continue (en tout point)
@@ -551,6 +575,8 @@ Soient $(X,\bU)$, $(Y,\bV)$, des espaces topologiques, et $f : X \to Y$. Les pro
 
 \begin{remark}[Topologie rendant continue une famille de fonctions]
 \label{rem:topoFunc}
+\leancheck{rem:topoFunc}%
+\claudereport{Erreur (relevée lors de la formalisation Lean) : ``$(x_n)$ converge ssi $(f_i(x_n))$ converge pour tout $i$'' est faux tel quel (contre-exemple : $X = ]0,1]$, $f$ l'inclusion dans $\bR$, $x_n = 1/n$). Correct : $x_n \to x$ ssi $f_i(x_n) \to f_i(x)$ pour tout $i \in I$.}
 Soit $X$ un ensemble, et pour tout $i \in I$ appartenant à un ensemble quelconque d'indices soit $f_i : X \to Y_i$ une fonction vers un espace topologique $(Y_i,\bU_i)$.
 On peut considérer la topologie $\bU$ sur $X$ engendrée par les ensembles $\{f_i^{-1}(U_i) \mid i \in I,\ U_i \in \bU_i\}$.
 
@@ -561,6 +587,7 @@ Nous terminons cette sous-section avec la notion de semi-continuité, qui interv
 
 \begin{definition}[Semi-continuité]
 \label{def:semiContinuite}
+\leancheck{def:semiContinuite}%
 	Soit $(X,\bU)$ un espace topologique, et $f : X \to \overline \bR$. 
 	\begin{itemize}
 		\item $f$ est semi-continue inférieurement (s.c.i.) si $\{f \leq M\}$ est fermé pour tout $M \in \overline \bR$.
@@ -580,6 +607,8 @@ De même, une somme de fonctions s.c.s.\ est s.c.s.
 
 \begin{proposition}
 \label{prop:surGrapheSCI}
+\leancheck{prop:surGrapheSCI}%
+\claudereport{Remarque (formalisation Lean) : l'hypothèse $f > -\infty$ n'est pas nécessaire.}
 	Soit $(X,\bU)$ un espace topologique, et $f : X \to ]-\infty,\infty]$. Alors $f$ est s.c.i.\ ssi son sur-graphe $\cG := \{(x,t) \in X \times \bR \mid f(x) \leq t\}$ est fermé. 
 \end{proposition}
 
@@ -613,6 +642,7 @@ Les axiomes de distance, la caractérisation de la continuité via un module de 
 
 \begin{definition}[Espace métrique]
 \label{def:distance}
+\leancheck{def:distance}%
 	Un espace métrique est une paire $(X,d)$ où la fonction $d : X \times X \to \bR$ appelée \emph{distance} satisfait aux axiomes suivants:
 	\begin{itemize}
 		\item (Séparation) Pour tous $x,y \in X$, on a $d(x,y) \geq 0$, avec égalité ssi $x=y$. 
@@ -625,6 +655,7 @@ Si $x\in X$ et $A\subset X$ sont un élément et une partie non-vide d'un espace
 
 \begin{definition}[Boules, topologie métrique]
 \label{def:boule}
+\leancheck{def:boule}%
 	Soit $(X,d)$ un espace métrique. On définit pour tout $x \in X$ et $r > 0$ les boules ouverte et fermée:
 	\begin{align}
 		B(x,r) &:= \{y \in X\mid d(x,y) < r\}, &
@@ -641,6 +672,7 @@ Si $x\in X$ et $A\subset X$ sont un élément et une partie non-vide d'un espace
 
 \begin{remark}[$\infty$-distance]
 \label{rem:distInfinie}
+\leancheck{rem:distInfinie}%
 Une $\infty$-distance $d_\infty$ satisfait les mêmes axiomes qu'une distance, mais peut prendre la valeur $+\infty$. Cette généralisation est parfois naturelle ou pratique. Noter que $d := \min\{1,d_\infty\}$ est alors une distance définissant la même topologie que $d_\infty$. 
 \end{remark}
 
@@ -651,6 +683,7 @@ La proposition suivante assure que l'on peut utiliser les caractérisations séq
 
 \begin{proposition}
 \label{prop:baseVoisMetric}
+\leancheck{prop:baseVoisMetric}%
 	Soit $(X,d)$ un espace métrique. 
 	Alors tout point $x \in X$ admet la base dénombrable de voisinages 
 	\begin{equation}
@@ -677,6 +710,7 @@ La notion de module de continuité permet, comme annoncé, de reformuler plus si
 
 \begin{definition}[Module de continuité]
 \label{def:moduleCont}
+\leancheck{def:moduleCont}%
 Un module de continuité est une application $\omega : \bR_+ \to [0,\infty]$, telle que $\omega(s) \to 0$ lorsque $s \to 0$.
 On dit qu'il est sous-additif si $\omega(s+t) \leq \omega(s) + \omega(t)$ pour tous $s,t \geq 0$. 
 \end{definition}
@@ -684,6 +718,7 @@ Nous avons fait dans la \cref{def:moduleCont} des hypothèses minimales concerna
 
 \begin{remark}
 \label{rem:dist_of_mod_cont}
+\leancheck{rem:dist_of_mod_cont}%
 	Un module de continuité sous-additif est toujours à valeurs finies. S'il est de plus croissant et non-identiquement nul, et si $d$ est une distance sur un espace métrique, alors $\omega \circ d$ est une distance définissant la même topologie.
 \end{remark}
 
@@ -731,6 +766,7 @@ Propriétés de distance: l'inégalité triangulaire découle de la sous-additiv
 
 \begin{lemma}[Continuité entre espaces métriques]
 \label{lem:contDistance}
+\leancheck{lem:contDistance}%
 Soit $f:X \to Y$ une application entre espaces métriques $(X,d_X)$ et $(Y,d_Y)$, et soit $x \in X$. 
 Les conditions suivantes sont équivalentes
 \begin{enumerate}[(i)]
@@ -757,6 +793,7 @@ Dans les espaces métriques (à la différence des   espaces topologiques), il e
 
 \begin{definition}[Uniforme continuité]
 \label{def:unifContinu}
+\leancheck{def:unifContinu}%
 	Une application $f : X \to Y$ entre espaces métriques $(X,d_X)$ et $(Y,d_Y)$ est dite:
 	\begin{itemize}
 		\item \emph{Uniformément continue} s'il existe un module de continuité $\omega$ tel que 
@@ -785,6 +822,7 @@ Distinguons d'abord deux distances sur un produit d'ensembles, qui sont a-priori
 
 \begin{proposition}[Distance associée à la convergence simple]
 \label{prop:distCvSimple}
+\leancheck{prop:distCvSimple}%
 %\label{prop:distProduit}
 	Soit $(X_n,d_n)_{n \in \bN}$ une famille dénombrable d'espaces métriques. La topologie produit sur $\Pi_{n \in \bN} X_n$ est métrisable, pour la distance
 	\begin{equation*}
@@ -794,6 +832,7 @@ Distinguons d'abord deux distances sur un produit d'ensembles, qui sont a-priori
 
 \begin{definition}[Distance associée à la convergence uniforme]
 \label{def:dist_unif}
+\leancheck{def:dist_unif}%
 	Soit $(X_i,d_i)_{i \in I}$ une famille d'espaces métriques. La topologie de la convergence uniforme sur le produit $\prod_{i \in I} X_i$ est donnée par la distance $\min\{1,d_\infty\}$ (voir la \cref{rem:distInfinie}) où:
 	\begin{equation*}
 		d_\infty( (x_i)_{i \in I}, (y_i)_{i \in I} ) := \sup_{i \in I} d_i(x_i,y_i).
@@ -804,6 +843,7 @@ On dispose de la notion d'équi-continuité, pour une famille de fonctions, qui 
 
 \begin{remark}[Équicontinuité]
 \label{rem:equicont}
+\leancheck{rem:equicont}%
 Une famille $(f_i)_{i \in I}$ de fonctions entre espaces métriques $(X,d_X)$ et $(Y,d_Y)$ est dite:
 \begin{enumerate}[(i)]
 	\item équicontinue en $x \in X$ s'il existe un module de continuité $\omega_x$ tel que : 
@@ -834,6 +874,7 @@ Les axiomes de norme et de semi-norme, la norme d'opérateur, les normes usuelle
 
 \begin{definition}[Norme]
 \label{def:norme}
+\leancheck{def:norme}%
 	Une norme sur un $\bK$-espace vectoriel $E$ est une application $\|\cdot\| : E \to \bR_+$ satisfaisant aux axiomes suivants : 
 	\begin{itemize}
 		\item (Séparation) $\forall x \in E\sm \{0\}, \|x\|>0$.
@@ -847,6 +888,7 @@ Un $\bK$-espace vectoriel normé (evn) est muni de la distance $d(x,y) := \|x-y\
 
 \begin{definition}[Evn des applications linéaires continues]
 \label{def:normeOperateur}
+\leancheck{def:normeOperateur}%
 	Soient $E,F$ des $\bK$-evn. On note $L(E,F)$ l'ensemble des applications $\bK$-linéaires \emph{continues} $u : E \to F$. On rappelle que $L(E,F)$ est un $\bK$-evn, muni de la norme 
 	\begin{equation}
 		\vertiii{u} := \sup\{ \|u (x)\|_F \mid \|x\|_E\leq 1\},
@@ -859,6 +901,7 @@ Un $\bK$-espace vectoriel normé (evn) est muni de la distance $d(x,y) := \|x-y\
 
 \begin{definition}[Fonctions Lipschitziennes, Hölderiennes]
 \label{def:normeHolder}
+\leancheck{def:normeHolder}%
 	L'ensemble $C^0_b(X,\bK)$ des fonctions continues bornées sur un espace topologique $X$ est un $\bK$-evn muni de la norme 
 		\begin{equation}
 			\|f\|_\infty := \sup_{x\in X} |f(x)|. 
@@ -878,6 +921,7 @@ De même les fonctions Lipschitziennes bornées, avec la norme $\|f\|_\infty + \
 
 \begin{definition}[Espace $C^n_b(\Omega)$ des fonctions ayant $n$ dérivées continues bornées.]
 \label{def:normeCnb}
+\leancheck{def:normeCnb}%
 	Soit $\Omega \subset \bR^d$ un ouvert, et soit $n \in \bN$.
 	On note $C^n_b(\Omega)$ l'ensemble des fonctions $n$ fois continument différentiables, dont les dérivées jusqu'à l'ordre $n$ sont bornées, muni de la norme
 	\begin{equation}
@@ -899,6 +943,7 @@ En pratique, on manipule les éléments de $L^*(X,\mu)$ comme des fonctions usue
 
 \begin{definition}[Espaces de Lebesgue $L^p(X,\mu)$]
 \label{def:normeLp}
+\leancheck{def:normeLp}%
 	Soit $(X,\mu)$ un espace mesuré, et soit $f \in L^*(X,\mu)$. On note pour $p\in [1,\infty[$
 	\begin{align}
 		\|f\|_p &:= \Big(\int_X |f|^p \diff \mu\Big)^\frac 1 p, &
@@ -938,11 +983,13 @@ La définition d'un evtlc, le critère de séparation, de continuité des formes
 
 \begin{definition}[evtlc]
 \label{def:evtlc}
+\leancheck{def:evtlc}%
 %	Une semi-norme sur un espace vectoriel $E$ est une application $|\cdot| : E \to \bR_+$ satisfaisant aux axiomes d'homogénéité et d'inégalité triangulaire d'une norme (mais pas forcément l'axiome de séparation).	
 	Un \emph{espace vectoriel topologique localement convexe} est un espace vectoriel $E$ muni d'une famille de semi-normes $(|\cdot|_i)_{i \in I}$, où $I$ est un ensemble quelconque d'indices. On lui associe la topologie la plus grossière qui rend continues les applications $y \in E \mapsto |y-x|_i$, pour tout $x \in E$ et tout $i \in I$; une base de voisinages d'un point $x \in E$ est formée par les ensembles 
 \begin{equation}	
 \label{eq:evtlc_vois}
 	B_{I_0}(x,\ve) := \{y \in E \mid \forall i \in I_0,\ |x-y|_i < \ve\},
+\leancheck{eq:evtlc_vois}%
 \end{equation}
 pour tout $\ve>0$ et toute partie finie $I_0 \subset I$.
 \end{definition}
@@ -953,6 +1000,7 @@ Noter que la topologie sur un evtlc n'est pas automatiquement séparée; cela do
 
 \begin{lemma}[Séparation dans les evtlc]
 \label{lem:evtlc_separe}
+\leancheck{lem:evtlc_separe}%
 	Un evtlc $E$ muni d'une famille de semi-normes $(|\cdot|_i)_{i \in I}$, est séparé ssi pour tout $x \in E$, $(\forall i \in I, |x|_i = 0 ) \Rightarrow x=0$.
 \end{lemma}
 
@@ -965,10 +1013,12 @@ Noter que la topologie sur un evtlc n'est pas automatiquement séparée; cela do
 
 \begin{lemma}[Continuité linéaire entre evtlc]
 \label{lem:evtlcLinCont}
+\leancheck{lem:evtlcLinCont}%
 Une application linéaire $u : E \to F$ entre evtlc $(E,(|\cdot|_i)_{i \in I})$ et $(F,(|\cdot|_j)_{j \in J})$ est continue si et seulement si pour tout $j \in J$ il existe $I_j \subset I$ fini et une constante $C_j$ tels que 
 \begin{equation}
 \label{eq:cont_lin_evtlc}
 	|u(x)|_j \leq C_j \max_{i \in I_j} |x|_i.
+\leancheck{eq:cont_lin_evtlc}%
 \end{equation}	
 \end{lemma}
 
@@ -983,16 +1033,19 @@ On en déduit qu'une application linéaire d'un evtlc $(E,(|\cdot|_i)_{i \in I})
 \begin{equation}
 \label{eq:cont_lin_evtlc_evn}
 	\|u(x)\|_F \leq C \max_{i \in I_0} |x|_i. 
+\leancheck{eq:cont_lin_evtlc_evn}%
 \end{equation}
 
 \begin{remark}[Somme ou maximum de semi-normes]
 \label{rem:sommeMaxEvtlc}
+\leancheck{rem:sommeMaxEvtlc}%
 	Certains auteurs remplacent le maximum par une somme dans \eqref{eq:cont_lin_evtlc}, \eqref{eq:cont_lin_evtlc_evn} ainsi que \eqref{eqdef:evtlc_dist} et \eqref{eqdef:met_faible_boule}. Les notions obtenues sont équivalentes, quitte à modifier certaines constantes. L'utilisation d'un maximum, préférée ici, donne souvent des preuves un peu plus simples. 
 \end{remark}
 
 
 \begin{remark}[Suite graduée de semi-normes]
 \label{rem:evtlcGradue}
+\leancheck{rem:evtlcGradue}%
 Soit $(E,(|\cdot|_n)_{n \in \bN})$ un evtlc muni d'une famille dénombrable de semi-normes. On dit qu'elle est graduée si pour tout $x \in E$ la suite $(|x|_n)_{n \in \bN}$ est croissante. 
 On peut faire cette hypothèse sans nuire à la généralité, quitte à considérer la suite graduée de semi-normes suivante $(|\cdot|'_N)_{N \in \bN}$ qui définit la même topologie : pour tout $N \in \bN$,
 \begin{equation*}
@@ -1003,6 +1056,7 @@ Une base de voisinages de $x\in E$ est donnée par les ensembles suivants : pour
 \begin{equation}
 \label{eqdef:boule_graduee}
 	B_N(x,\ve) :=  \{y \in E\mid \forall n \leq N, |y-x|_n < \ve\} = \{y \in E\mid |y-x|'_N < \ve\}.
+\leancheck{eqdef:boule_graduee}%
 \end{equation}
 
 \notei{Famille filtrante, similaire dans le cas non dénombrable. Abstrait et pas vraiment nécessaire.}
@@ -1011,16 +1065,20 @@ Une base de voisinages de $x\in E$ est donnée par les ensembles suivants : pour
 Les evtlcs munis d'une famille dénombrable de semi-normes sont métrisables, ce qui permet le cas échéant d'utiliser la notion de complétude, voir la \cref{def:complet}.
 \begin{proposition}[Distance sur un evtlcs]
 \label{prop:distanceEvtlcs}
+\leancheck{prop:distanceEvtlcs}%
 Soit $(E,(|\cdot|_n)_{n \in \bN})$ un evtlcs muni d'une famille dénombrable de semi-normes. Alors la topologie de $E$ est métrisable, pour la distance définie par : $\forall x,y \in E$ 
 \begin{equation}
 \label{eqdef:evtlc_dist}
 	d(x,y) := \max_{n \in \bN} \min\{2^{-n}, |x-y|_n\}.
+\leancheck{eqdef:evtlc_dist}%
 \end{equation}
 En notant $\log_2 \eta := \ln \eta/ \ln 2$ le logarithme en base $2$ d'un réel $\eta>0$, on a de plus
 \begin{equation*}
 \label{eq:boule_evtlc}
 	B_d(x,\eta) = \{y \in E \mid \forall n< -\log_2 \eta,\ |y-x|_n < \eta\}.
+\leancheck{eq:boule_evtlc}%
 \end{equation*}
+\claudereport{Erreur (relevée lors de la formalisation Lean) : ``$n< -\log_2 \eta$'' $\to$ ``$n \leq -\log_2 \eta$'' (si $n = -\log_2\eta$, alors $\min\{2^{-n},|x-y|_n\}<\eta$ ssi $|x-y|_n < \eta$) ; de même dans la preuve, ``toujours satisfait si $n\geq -\log_2 \eta$'' $\to$ ``si $n > -\log_2 \eta$''. Contre-exemple : $\eta = 1/2$, $|y-x|_0 = 0$, $|y-x|_1 = 1$.}
 \end{proposition}
 
 \begin{proof}
@@ -1046,6 +1104,7 @@ On en déduit les inclusions suivantes, pour tout $N \in \bN$ et tous $\epsilon,
 
 \begin{definition}[Partie linéairement bornée]
 \label{def:lineairBorne}
+\leancheck{def:lineairBorne}%
 	Une partie $A$ d'un evtlcs $(E,(|\cdot|_i)_{i \in I})$ est dite linéairement bornée ssi chaque semi-norme est bornée sur $A$ : $\forall i \in I$, $\sup\{|x|_i\mid x\in A\}$ est borné. 	
 	Si la famille de semi-normes est dénombrable, et si $d$ désigne la distance \eqref{eqdef:evtlc_dist}, alors on a la caractérisation équivalente : $\forall \ve>0$, $\exists \delta>0$, $\delta A \subset B_d(0,\ve)$. 
 \end{definition}
@@ -1063,6 +1122,7 @@ La notation $K \csubset \Omega$ signifie que $K$ est un compact inclus dans $\Om
 
 \begin{definition}[Fonctions $C^\infty$ bornées sur un domaine]	
 \label{def:cinf_bornee}
+\leancheck{def:cinf_bornee}%
 On note $C^\infty_b(\Omega)$, où $\Omega\subset \bR^d$ est un ouvert, l'ensemble des fonctions $f$ indéfiniment dérivables sur $\Omega$ et bornées ainsi que toutes leurs dérivées. Cet espace est muni de la famille graduée de (semi-)normes suivante : pour tout $k \in \bN$
 \begin{equation*}
 	|f|_k := \max_{|\alpha|_1 \leq k} \|\partial_\alpha f\|_\infty.
@@ -1075,6 +1135,7 @@ La classe de Schwartz est un espace de fonctions indéfiniment dérivables à d�
 
 \begin{definition}[Classe de Schwartz]
 \label{def:classeSchwartz}
+\leancheck{def:classeSchwartz}%
 	Pour $f \in C^\infty(\bR^d)$, $\alpha \in \bN^d$, $n \in \bN$, on pose 
 	\begin{equation}
 		|f|_{n,\alpha} := \sup_{x \in \bR^d} (1+|x|^2)^\frac n 2 |\partial_\alpha f(x)|
@@ -1088,11 +1149,13 @@ On utilise dans les \cref{def:lploc,def:cont_nonbornee} une suite exhaustive de 
 
 \begin{proposition}[Suite exhaustive de compacts]
 \label{prop:exhaustComp}
+\leancheck{prop:exhaustComp}%
 Étant donné un ouvert $\Omega\subset \bR^d$, il existe une suite $(K_n)_{n \in \bN}$ de parties compactes telles que 
 \begin{align}
 \label{eqdef:exhaustive_compacts}
 \cup_{n \in \bN} K_n &= \Omega,&
 \forall n \in \bN,\, K_n &\csubset \mathring K_{n+1}. 
+\leancheck{eqdef:exhaustive_compacts}%
 \end{align}
 \end{proposition}
 
@@ -1104,6 +1167,7 @@ Par convention $\|f\|_{L^p(K)}$ désigne $\|f_{|K}\|_{L^p(K)}$ si $f$ est défin
 
 \begin{definition}[Evtlcs $L^p_\loc$]
 \label{def:lploc}
+\leancheck{def:lploc}%
 Soit un ouvert $\Omega\subset \bR^d$ et un exposant $p\in [1,\infty]$. 
 On note $L^p_\loc(\Omega)$ l'evtlcs des fonctions mesurables, modulo l'égalité presque partout, pour lesquelles la famille graduée de semi-normes suivantes prend des valeurs finies :
 \begin{equation*}
@@ -1114,6 +1178,7 @@ où $(K_n)_{n \in \bN}$ est une suite exhaustive de compacts de $\Omega$.
 
 \begin{definition}[Evtlcs $C^k(\Omega)$ et $C^\infty(\Omega)$, formés de fonctions non-bornées a-priori]	
 \label{def:cont_nonbornee}
+\leancheck{def:cont_nonbornee}%
 	Soit $\Omega \subset \bR^d$ un ouvert, muni d'une suite exhaustive de compacts $(K_n)_{n \in \bN}$. On pose pour tout $\alpha \in \bN^d$
 	\begin{equation*}
 		|f|_{n,\alpha} := \|\partial_\alpha f\|_{L^\infty(K_n)} %\sup_{x \in K_n} \max_{|\alpha|_1 \leq k} | \partial_\alpha f(x)|.
@@ -1128,6 +1193,7 @@ Une description plus abstraite, la topologie dite limite inductive, est présent
 
 \begin{definition}[Fonctions test $\cD(\Omega)$ et distributions]
 \label{def:distribution}
+\leancheck{def:distribution}%
 	On note $\cD(\Omega) = C^\infty_c(\Omega)$, où $\Omega \subset \bR^d$, l'ensemble des fonctions indéfiniment dérivables à support compact dans $\Omega$. 
 	On dit qu'une forme linéaire $\vp$ sur $\cD(\Omega)$ est une distribution si sa restriction à $\cD_K(\Omega)$ est continue pour tout $K \csubset \Omega$, i.e. 
 	\begin{equation}
@@ -1166,6 +1232,7 @@ La proposition suivante montre que l'ensemble des distributions est le dual topo
 
 \begin{lemma}
 \label{lem:omegaNmuN}
+\leancheck{lem:omegaNmuN}%
 	Soit $(\omega_n)_{n \in \bN} \in \bR_+^\bN$ une suite à valeurs positives, et $(\mu_n)_{n \in \bN}\in (\bR_+^*)^\bN$ strictement positive et telle que $\sum_{n\in \bN} \mu_n=1$.
 	Alors $\sum_{n \in \bN} \omega_n \leq \sup_{n \in \bN} \omega_n/\mu_n$. % \frac {\omega_n} {\mu_n}$. 
 \end{lemma}
@@ -1222,6 +1289,7 @@ La topologie faible, sur un evn ou un evtlcs, est comme son nom l'indique une to
 
 \begin{definition}[Topologie faible et *faible]
 \label{def:topoFaible}
+\leancheck{def:topoFaible}%
 Soit $E$ un evtlcs (ou un evn). 
 \begin{itemize}
 	\item La topologie faible sur $E$ est définie par la famille de semi-normes $x\in E\mapsto |l(x)|$, pour tout $l \in E^*$. 
@@ -1237,11 +1305,13 @@ Les topologies faible et *faible ne sont en général pas métrisables, voir \ci
 En revanche, sous certaines conditions, leur restriction à la boule unité, ou à n'importe quelle partie bornée, est métrisable. 
 \begin{proposition}[Métrisabilité de la topologie *faible restreinte à un borné]
 \label{prop:bouleMetrisable}
+\leancheck{prop:bouleMetrisable}%
 	Soit $E$ un evn séparable, soit $(x_n)_{n \in \bN}$ une suite dense dans la boule unité de $E$, et soit $B^* := B'_{E^*}(0,1)$ la boule unité de l'espace dual pour la norme d'opérateur. 
 	Alors la restriction à $B^*$ de la topologie *faible est métrisable, pour la distance
 	\begin{equation}
 	\label{eqdef:met_faible_boule}
 		d(u,v) := \max_{n \in \bN} \min \{2^{-n}, |u(x_n)-v(x_n)|\}.
+\leancheck{eqdef:met_faible_boule}%
 	\end{equation}
 \end{proposition}
 	
@@ -1250,6 +1320,7 @@ En revanche, sous certaines conditions, leur restriction à la boule unité, ou 
 	\begin{equation}
 	\label{eq:vois_faible_boule_evtlc}
 		V := \{v\in B^* \mid |u(y_k)-v(y_k)| < \ve \text{ pour tout } 1 \leq k \leq K\}.
+\leancheck{eq:vois_faible_boule_evtlc}%
 	\end{equation}
 	où $y_1,\cdots,y_K \in E$, et où $\ve>0$. Quitte à réduire $\ve$, on peut supposer que $y_1,\cdots,y_K\in B := B'_E(0,1)$.
 	Soient $n_1,\cdots,n_K\in \bN$ tels que $\|x_{n_k}-y_k\| \leq \ve/3$ pour tout $1 \leq k \leq K$. Soit $N := \max\{n_1,\cdots,n_K\}$ et soit $\eta := \min \{\ve/3, 2^{-N-1}\}$. Posons le voisinage

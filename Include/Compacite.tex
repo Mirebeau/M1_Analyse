@@ -87,6 +87,7 @@ La compacité permet fondamentalement d'obtenir des résultats d'existence, via 
 
 \begin{definition}[Compact]
 \label{def:compact}
+\leancheck{def:compact}%
 	Un espace topologique $(X, \bU)$ est dit compact s'il est \emph{séparé} et satisfait l'\emph{axiome de Borel-Lebesgue} : de toute couverture de $X$ par des ouverts on peut extraire une sous-couverture finie, i.e.\ pour tout $\cU \subset \bU$
 	\begin{equation*}
 	%\forall \cU \subset \bU, \Big(
@@ -101,6 +102,7 @@ Une partie d'un espace topologique est dite compacte si c'est un compact pour la
 Par passage au complémentaire de l'axiome de Borel-Lebesgue, on obtient une propriété des fermés. 
 \begin{remark}[Borel-Lebesgue pour les fermés]
 \label{rem:fermeBorelLeb}
+\leancheck{rem:fermeBorelLeb}%
 Si $(X,\bU)$ est compact, et si $(F_i)_{i \in I}$ est une famille de fermés dont l'intersection est vide, alors elle admet une sous famille finie dont l'intersection est vide. 	
 
 En particulier, une intersection décroissante de fermés non-vides d'un compact est non-vide (comparer avec \nref{lem:fermeEmboite} dans un complet). Notamment, l'ensemble des valeurs d'adhérence \eqref{eqdef:adherence_suite} d'une suite à valeurs dans un compact est toujours non-vide.
@@ -110,6 +112,7 @@ Le \cref{corol:compSsiFerme} suivant illustre l'importance de l'hypothèse de s�
 
 \begin{lemma}
 \label{lem:compImplFerme}
+\leancheck{lem:compImplFerme}%
 	Soit $(X,\bU)$ espace topologique séparé. Si $F\subset X$ est compact, alors $F$ est fermé.
 \end{lemma}
 
@@ -120,6 +123,7 @@ Comme $F \subset \cup_{y\in F} W_y$, il existe par compacité $y_1,\cdots,y_N \i
 
 \begin{corollary}	
 \label{corol:compSsiFerme}
+\leancheck{corol:compSsiFerme}%
 	Soit $(X, \bU)$ espace compact. Une partie $F \subset X$ est compacte ssi elle est fermée. 
 \end{corollary}
 
@@ -133,6 +137,7 @@ Il en découlera une observation élémentaire mais fondamentale en optimisation
 
 \begin{proposition}[Image continue directe d'un compact]
 \label{prop:compactImage}
+\leancheck{prop:compactImage}%
 	Soient $(X, \bU)$ et $(Y,\bV)$ des espaces séparés, et soit $f \in C^0(X,Y)$. 
 	Alors pour tout $K \csubset X$, l'image directe $f(K)$ est compacte. 
 \end{proposition}
@@ -144,6 +149,7 @@ Il en découlera une observation élémentaire mais fondamentale en optimisation
 
 \begin{corollary}
 \label{corol:homeoCompact}
+\leancheck{corol:homeoCompact}%
 	Soient $(X, \bU)$ et $(Y,\bV)$ des espaces compacts, et soit $f : X \to Y$ une bijection continue. Alors $f^{-1}$ est continue. 
 \end{corollary}
 
@@ -161,6 +167,7 @@ L'hypothèse de séparation est importante dans \cref{def:locCompact}, tout comm
 
 \begin{definition}[Espace localement compact séparé]
 \label{def:locCompact}
+\leancheck{def:locCompact}%
 Un espace topologique \emph{séparé} est dit localement compact s'il satisfait l'une des conditions suivantes, qui sont équivalentes:
 \begin{enumerate}[(i)]
 	\item Tout point admet un voisinage compact.
@@ -186,6 +193,7 @@ un espace localement compact peut être compactifié en lui rajoutant seulement 
 
 \begin{definition}[Compactifié d'Alexandrov]
 \label{def:compactAlex}
+\leancheck{def:compactAlex}%
 	Soit $(X, \bU)$ un espace topologique localement compact séparé. 
 	Son compactifié d'Alexandrov est l'espace $\tilde X := X \sqcup \{\omega\}$, où $\omega$ est un élément additionnel arbitraire, muni de la topologie $\tilde \bU := \bU \cup \{\tilde X \sm K \mid K \csubset X\}$. 
 \end{definition}
@@ -234,12 +242,14 @@ La triple caractérisation des compacts métriques, le théorème de Heine.
 
 \begin{definition}[Précompacité]
 \label{def:precompact}
+\leancheck{def:precompact}%
 	Un espace métrique $(X,d)$ est dit pré-compact ssi pour tout $\ve>0$ il admet une couverture finie par des boules ouvertes de rayon $\ve$. 
 \end{definition}
 
 
 \begin{remark}
 \label{rem:precompact_separable}
+\leancheck{rem:precompact_separable}%
 	Tout espace précompact est séparable. %, i.e.\ il admet une partie dénombrable et dense.
 	
 	Un espace est précompact ssi pour tout $\ve>0$ il peut être couvert par un nombre fini de parties, chacune de diamètre au plus $\ve$. En particulier, lorsque l'on étudie la précompacité d'une partie $X \subset \bX$ d'un espace métrique englobant, il n'est pas nécessaire que les boules formant la couverture soient centrées en des points de $X$.
@@ -252,6 +262,7 @@ La triple caractérisation des compacts métriques, le théorème de Heine.
  
 \begin{theorem}[Compacité via Bolzano-Weierstrass]
 \label{th:BolzanoWeierstrass}
+\leancheck{th:BolzanoWeierstrass}%
 Dans un espace métrique $(X,d)$, les propriétés suivantes sont équivalentes : 
 \begin{enumerate}[(i)]
 	\item $X$ est compact (i.e.\ vérifie l'axiome de Borel-Lebesgue, voir la \cref{def:compact}).
@@ -287,6 +298,7 @@ Dans un espace métrique $(X,d)$, les propriétés suivantes sont équivalentes 
 
 \begin{theorem}[Heine]
 \label{th:Heine}
+\leancheck{th:Heine}%
 Soit $(X,d_X)$ métrique compact, et $(Y,d_Y)$ métrique. Alors toute fonction continue $f : X \to Y$ est en fait uniformément continue. 
 \end{theorem}
 
@@ -302,6 +314,7 @@ Cela découle de la reformulation de l'équicontinuité en termes de continuité
 
 \begin{proposition}
 \label{prop:noAdhCv}
+\leancheck{prop:noAdhCv}%
 	Soit $(x_n)_{n \in \bN}$ une suite à valeurs dans un espace métrique compact $X$, n'admettant pas de valeur d'adhérence excepté peut-être $x_*\in X$. Alors $x_n \to x_*$ lorsque $n \to \infty$. 
 \end{proposition}
 
@@ -322,6 +335,7 @@ La caractérisation des parties compactes de $\bR^d$, les corollaires des bornes
 
 \begin{proposition}
 \label{prop:compSsiFermeBorne}
+\leancheck{prop:compSsiFermeBorne}%
 Une partie de $\bR^d$ est compacte ssi elle est fermée et bornée.	
 \end{proposition}
 
@@ -339,6 +353,7 @@ On déduit de la \cref{prop:compSsiFermeBorne} qu'un compact non-vide de $\bR$ c
 
 \begin{corollary}[Bornes atteintes]
 \label{corol:bornesAtteintes}
+\leancheck{corol:bornesAtteintes}%
 	Une application continue d'un compact non-vide dans $\bR$ est bornée et atteint ses bornes.
 \end{corollary}
 
@@ -348,6 +363,7 @@ On déduit de la \cref{prop:compSsiFermeBorne} qu'un compact non-vide de $\bR$ c
 
 \begin{corollary}[Équivalence des normes en dimension finie]
 \label{corol:normesEquivRd}
+\leancheck{corol:normesEquivRd}%
 	Soit $E$ un espace vectoriel de dimension finie, muni de deux normes $\|\cdot\|$ et $\|\cdot\|'$.
 	Alors il existe $C,c>0$ tels que $c\|x\| \leq \|x\|' \leq C \|x\|$ pour tout $x \in E$. 
 \end{corollary}
@@ -365,6 +381,7 @@ On déduit de la \cref{prop:compSsiFermeBorne} qu'un compact non-vide de $\bR$ c
 Le théorème de compacité de Riesz est une forme de réciproque à la \cref{prop:compSsiFermeBorne} : il établit que la boule unité fermée n'est compacte que dans un evn de dimension finie. % que seuls les evn de dimension finie ont une boule unité fermée compacte.
 \begin{lemma}[Riesz]
 \label{lem:normaleRiesz}
+\leancheck{lem:normaleRiesz}%
 	Soit $E$ un evn, soit $F\subsetneq E$ un sous espace vectoriel strict fermé. 
 	Pour tout $\rho<1$, il existe $x \in B'_E(0,1)$ tel que $d(x,F) \geq \rho$.
 	Si $F$ est de dimension finie, alors il existe $x \in B'_E(0,1)$ tel que $d(x,F)=1$.  
@@ -378,6 +395,7 @@ Le théorème de compacité de Riesz est une forme de réciproque à la \cref{pr
 
 \begin{theorem}[Compacité de Riesz]
 \label{th:bouleCompRiesz}
+\leancheck{th:bouleCompRiesz}%
 Pour tout evn $E$, les propositions suivantes sont équiva\-lentes : (i) $E$ est de dimension finie, (ii) $B'_E(0,1)$ est compacte, (iii) $B'_E(0,1) \subset \cup_{1 \leq i \leq I} B_E(x_i,1)$ pour une famille finie $x_1,\cdots,x_I \in E$. 
 \end{theorem}
 
@@ -401,6 +419,7 @@ Le théorème de Tychonov, le procédé d'extraction diagonal, le théorème de 
 
 \begin{theorem}[Tychonov]
 \label{th:compProdTycho}
+\leancheck{th:compProdTycho}%
 Soit $(X_i,\bU_i)_{i \in I}$ une famille d'espaces topologiques compacts, alors le produit $X_* := \prod_{i \in I} X_i$ est compact muni de la topologie produit.
 Le produit d'une famille dénombrable de compacts métriques est un compact métrique.
 \end{theorem}
@@ -423,6 +442,7 @@ En choisissant $X_i = X$ dans le théorème précédent, où $X$ est un espace c
 On illustre ce résultat par une application aux formules logiques, sans rapport avec le reste du cours mais qui est un point de départ en théorie des modèles
 \begin{exemple}[Satisfiabilité de formules logiques \facultatif]
 \label{ex:formuleLogique}
+\leancheck{ex:formuleLogique}%
 Une formule logique est une application $f : X := \{0,1\}^\bN \to \{0,1\}$ qui ne dépend que d'un nombre fini de variables : 
 $$
 \exists N(f) \in \bN,\ \forall x=(x_0,x_1,\cdots)\in X,\
@@ -440,6 +460,7 @@ Un ensemble de formules logiques est satisfiable ssi toutes ses parties finies s
 
 \begin{theorem}[Banach-Alaoglu]
 \label{th:BanachAlaoglu}
+\leancheck{th:BanachAlaoglu}%
 La boule unité fermée $B := B'_{E^*}(0,1)$ du dual $E^*$ d'un Banach est compacte pour la topologie $*$faible. 
 Si $E$ est séparable, alors $B$ est un compact métrique.
 \end{theorem}
@@ -488,6 +509,7 @@ La linéarité de $f_*$ se déduit de la convergence simple : $f_*(\lambda x+y) 
 Une preuve d'un esprit similaire permet d'établir le théorème d'Ascoli. Nous présentons d'abord sa forme la plus simple, puis deux corollaires l'étendant d'une part aux familles de fonctions $K$-Lipschitz, $\alpha$-Hölder, ou liées à d'autres modules de continuité, et d'autre part aux dérivées d'ordre supérieur.
 \begin{theorem}[Ascoli]
 \label{th:AscoliLip}
+\leancheck{th:AscoliLip}%
 	Soient $X$ et $Y$ des espaces métriques compacts. Alors l'ensemble des applications $1$-Lipschitz est compact pour la topologie de la convergence uniforme: 
 	\begin{align*}
 		\Lip_1(X,Y) &:= \{ f:X \to Y \mid f \text{ est $1$-Lipschitz}\},&
@@ -518,6 +540,7 @@ Rappelons qu'une famille $\cF \subset C^0(X,Y)$ de fonctions d'un espace métriq
 
 \begin{corollary}[Ascoli équicontinu]
 \label{corol:AscoliEquicont}
+\leancheck{corol:AscoliEquicont}%
 	Soient $X$ et $Y$ des espaces métriques compacts, et soit $\cF \subset C^0(X,Y)$ une famille de fonctions équicontinue. Alors $\cF$ est uniformément équicontinue, et $\overline \cF$ est compact pour la topologie de la convergence uniforme. 
 \end{corollary}
 
@@ -590,6 +613,7 @@ En dimension infinie, on a le résultat de \emph{précompacité} suivant pour la
 
 \begin{proposition}[Compacité de l'enveloppe convexe fermée]
 \label{prop:hullCompact}
+\leancheck{prop:hullCompact}%
 	Soit $K$ une partie d'un $\bR$-Banach. Si $\overline K$ est compact, alors $H := \overline {\Hull(K)}$ est compact. 
 \end{proposition}
 
@@ -613,6 +637,7 @@ En dimension infinie, on a le résultat de \emph{précompacité} suivant pour la
 Pour être complet, présentons le cas de la dimension finie.
 \begin{theorem}[Carathéodory]
 \label{th:Caratheodory}
+\leancheck{th:Caratheodory}%
 Pour tout $A \subset \bR^d$ on a 
 \begin{equation*}
 	\Hull(A) = \{\sum_{0 \leq i \leq d} \lambda_i x_i\mid \lambda \in \Delta^d,\ x \in A^{d+1}\}.
@@ -665,6 +690,7 @@ L'énoncé du théorème de Brouwer, la formule de changement de variable dans u
 %Le but de cette sous-section est d'établir le résultat suivant. 
 \begin{theorem}[Point fixe de Brouwer]
 \label{th:Brouwer}
+\leancheck{th:Brouwer}%
 	Toute fonction $f \in C^0(B, B)$ admet un point fixe. 
 \end{theorem}
 
@@ -684,6 +710,7 @@ On suit ici la preuve de Peter Lax, également présentée dans \cite{alazard201
 Rappelons d'abord la forme classique de cette formule, sans démonstration. La matrice (\ref{eq:chgmt_var}, droite) de taille $d \times d$ est appelée matrice jacobienne de $\vp$, et son déterminant est nommé jacobien. 
 \begin{theorem}[Changement de variable dans une intégrale]
 \label{th:chgVarIntegr}
+\leancheck{th:chgVarIntegr}%
 Soient $U,V \subset \bR^d$ ouverts, $\vp \in C^1(U, V)$ difféomorphisme, et $f : V \to \bR$ intégrable. 
 Alors %, en notant $J$ la matrice jacobienne de $\vp$,
 \begin{align}
@@ -786,6 +813,7 @@ Le théorème de point fixe de Schauder, et son application au théorème d'exis
 
 \begin{theorem}[Point fixe de Schauder]
 \label{th:Schauder}
+\leancheck{th:Schauder}%
 Soit $K$ un convexe fermé non-vide d'un Banach, et soit $f\in C^0(K,K)$. Si $\overline {f(K)}$ est compact alors $f$ admet un point fixe. 
 \end{theorem}
 
@@ -855,6 +883,7 @@ Le théorème de Stone-Weierstrass, sa variante complexe, et leur application au
 
 \begin{theorem}[Stone-Weierstrass]
 \label{th:StoneWeierstrass}
+\leancheck{th:StoneWeierstrass}%
 	Soit $X$ un espace topologique compact, et soit $A \subset C^0(X,\bR)$ une algèbre\footnote{I.e.\ $A$ est stable par addition, multiplication interne, et externe (par les scalaires).} (pas forcément unitaire a priori) qui : 
 	\begin{enumerate}[(i)]
 		\item sépare les points : $\forall x, y \in X$ distincts, $\exists f \in A$, $f(x) \neq f(y)$.
@@ -867,6 +896,7 @@ Les deux premiers lemmes construisent des éléments bien choisis de l'algèbre 
 
 \begin{lemma} 
 \label{lem:StoneUnite}
+\leancheck{lem:StoneUnite}%
 Sous les hypothèses du \cref{th:StoneWeierstrass}, $\overline A$ est une algèbre unitaire complète. 
 \end{lemma}
 
@@ -882,6 +912,7 @@ Sous les hypothèses du \cref{th:StoneWeierstrass}, $\overline A$ est une algèb
 
 \begin{lemma}
 \label{lem:StoneSqrt}
+\leancheck{lem:StoneSqrt}%
 	Sous les hypothèses du \cref{th:StoneWeierstrass}, soit $f \in \overline A$. Si $f\geq 0$ sur $X$, alors $\sqrt f \in \overline A$. On a toujours $|f|\in \overline A$. Si $f(x) \neq 0$ pour tout $x\in X$, alors $1/f \in \overline A$.
 \end{lemma}
 
@@ -904,6 +935,7 @@ Sous les hypothèses du \cref{th:StoneWeierstrass}, $\overline A$ est une algèb
 
 \begin{corollary}
 \label{corol:StoneMinMax}
+\leancheck{corol:StoneMinMax}%
 	Sous les hypothèses du \cref{th:StoneWeierstrass}, soient $f,g \in \overline A$. Alors $\min\{f,g\}$, $\max\{f,g\} \in \overline A$.
 \end{corollary}
 
@@ -913,6 +945,7 @@ Sous les hypothèses du \cref{th:StoneWeierstrass}, $\overline A$ est une algèb
 
 \begin{lemma}
 \label{lem:StoneDirac}
+\leancheck{lem:StoneDirac}%
 	Sous les hypothèses du \cref{th:StoneWeierstrass}, 
 	pour tout voisinage ouvert $V$ de tout $x \in X$, et tout $\ve>0$, il existe $f \in A$ telle que $0 \leq f \leq 1$, $f(x)>1-\ve$ et $f< \ve$ sur $X \sm V$. 	
 \end{lemma}
@@ -939,6 +972,7 @@ La généralisation du \nref{th:StoneWeierstrass} aux fonctions complexes requie
 
 \begin{corollary}[Stone-Weierstrass complexe]
 \label{corol:StoneComplexe}
+\leancheck{corol:StoneComplexe}%
 	Soit $X$ un espace topologique compact, et soit $A \subset C^0(X,\bC)$ une algèbre qui
 	\begin{enumerate}[(i)]
 		\item sépare les points : $\forall x,y \in X$ distincts, $\exists f \in A$, $f(x) \neq f(y)$.
@@ -954,6 +988,7 @@ La généralisation du \nref{th:StoneWeierstrass} aux fonctions complexes requie
 
 \begin{remark}[Application aux fonctions polynomiales]
 \label{rem:polDens}
+\leancheck{rem:polDens}%
 On déduit du \cref{th:StoneWeierstrass} la densité de $\bR[X_1,\cdots,X_d]$ dans $C^0([0,1]^d,\bR)$, pour la convergence uniforme, en toute dimension $d$. 
 De même, $\bC[X_1,\overline X_1,\cdots,X_d,\overline X_d]$ est dense dans $C^0(B^d,\bC)$ où $B := B'_\bC(0,1)$ désigne la boule unité fermée de $\bC$.
 \end{remark}
@@ -1020,6 +1055,7 @@ Nous présentons ici quelques propriétés élémentaires, ainsi que le théorè
 
 \begin{definition} %[Opérateur linéaire compact]
 \label{def:linCompact}
+\leancheck{def:linCompact}%
 	Un opérateur linéaire continu $T \in L(E,F)$ entre evn $E,F$ est dit compact si $T(B_E(0,1))$ est relativement compact (i.e.\ l'adhérence $\overline{T(B_E(0,1))}$ est compacte).
 	%(i.e.\ $\overline{T(B_E(0,1))}$ est compact). 
 	On note $L_c(E,F)$ leur ensemble.
@@ -1029,6 +1065,7 @@ Présentons deux propriétés élémentaires mais fondamentales des opérateurs 
 
 \begin{proposition}[Fermeture par composition et limite des opérateurs compacts]
 \label{prop:opCompactComposition}
+\leancheck{prop:opCompactComposition}%
 	La composition d'un opérateur compact avec un opérateur continu, à droite ou à gauche, est un opérateur compact.
 \end{proposition}
 
@@ -1040,6 +1077,7 @@ Présentons deux propriétés élémentaires mais fondamentales des opérateurs 
 
 \begin{proposition}
 \label{prop:opCompactLimite}
+\leancheck{prop:opCompactLimite}%
 	Soient $E,F$ des evn.
 	Si $F$ est un Banach, alors l'ensemble $L_c(E,F)$ est fermé dans $L(E,F)$. 
 	Si $F$ est un Hilbert, alors $L_c(E,F) = \overline{ \{u \in L(E,F)\mid u \text{ est de rang fini}\}}$.
@@ -1057,6 +1095,7 @@ Soit $T \in L_c(E,F)$, où $F$ est un Hilbert. Soient $x_1,\cdots,x_I \in F$ tel
 
 \begin{proposition}[Complète continuité des opérateurs compacts]
 \label{prop:opCompactComplCont}
+\leancheck{prop:opCompactComplCont}%
 	Soit $T \in L_c(E,F)$ un opé\-rateur linéaire compact entre des evn $E,F$, et soit $x_n \weakto x_*$ une suite à valeurs dans $E$ convergeant faiblement lorsque $n \to \infty$. 
 	Alors $T x_n \to T x_*$ lorsque $n \to \infty$. 
 	Si $E^*$ est séparable, alors la restriction $T : B'_E(0,1) \to F$ est continue de la topologie faible dans la topologie forte. 
@@ -1079,6 +1118,7 @@ La suite de cette section est une introduction à l'analyse du spectre des opér
 
 \begin{definition}
 \label{def:linSpectre}
+\leancheck{def:linSpectre}%
 Le spectre d'un endomorphisme $T \in L(E)$ d'un Banach $E$ est l'ensemble 	
 \begin{equation*}
 	\sigma(T) := \{\lambda \in \bK \mid \lambda\Id - T \text{ n'a pas d'inverse continu}\},
@@ -1092,6 +1132,7 @@ Si $T\in L_c(E,E)$ est compact, alors $E_1 := \Ker(\Id-T)$ est de dimension fini
 
 \begin{theorem}[Fredholm]
 \label{th:Fredholm}
+\leancheck{th:Fredholm}%
 	Soit $E$ un Banach, et soit $T \in L_c(E)$ un opérateur compact tel que $\Ker(\Id-T) = \{0\}$. Alors $\Image(\Id-T) = E$, et $\Id-T$ admet un inverse continu.
 \end{theorem}
 
@@ -1177,6 +1218,7 @@ Comme annoncé, nous précisons maintenant le \nref{th:Fredholm}. Pour inspirati
 
 \begin{corollary}[Fredholm précisé]
 \label{corol:FredholmPrecise}
+\leancheck{corol:FredholmPrecise}%
 	Soit $E$ un Banach, et $T \in L_c(E)$. Alors % un opérateur compact. Alors :
 	\begin{enumerate}[(i)]
 		\item Si $\dim(E)=\infty$ alors $0 \in \sigma(T)$. (Mais $0$ n'est pas forcément valeur propre.)

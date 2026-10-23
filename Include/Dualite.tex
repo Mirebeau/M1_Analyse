@@ -59,6 +59,7 @@ Le Lemme de Zorn et le théorème de Hahn-Banach, avec les définitions associé
 
 \begin{definition}[Ensemble inductif]
 \label{def:inductif}
+\leancheck{def:inductif}%
 	Un ensemble (partiellement) ordonné $(E, \leq)$ est dit inductif si toute partie \emph{totalement} ordonnée $F\subset E$ admet un majorant dans $E$ : 
 	\begin{equation}
 		\forall F \subset E,\ (\forall y,z \in F,\ y \leq z \text{ ou } z \leq y) \Rightarrow (\exists x \in E,\ \forall y \in F,\ x \geq y). 
@@ -68,6 +69,7 @@ Le Lemme de Zorn et le théorème de Hahn-Banach, avec les définitions associé
 ``Ce n'est pas un Lemme, et il n'est pas de moi'' aurait déclaré Max August Zorn au sujet du résultat suivant, désormais associé à son nom.
 \begin{lemma}[Zorn] 
 \label{lem:Zorn}
+\leancheck{lem:Zorn}%
 	Tout ensemble non-vide et inductif admet un élément maximal. 
 \end{lemma}
 
@@ -77,6 +79,7 @@ Le Lemme de Zorn est équivalent à l'axiome du choix, moyennant les autres axio
 
 \begin{definition}[Axiome du choix \facultatif]
 \label{def:axiomChoix}
+\leancheck{def:axiomChoix}%
 Soit $\cA$ un ensemble d'ensembles non vides. Alors il existe $f : \cA \to \cup\cA$, appelée \emph{fonction de choix}, telle que $f(a) \in a$ pour tout $a \in \cA$. 	
 \end{definition}
 
@@ -92,6 +95,7 @@ Soit $\cA$ un ensemble d'ensembles non vides. Alors il existe $f : \cA \to \cup\
 
 \begin{definition}[Fonction sous-linéaire]
 \label{def:sousLin}
+\leancheck{def:sousLin}%
 Une fonction $\rho : E \to \bR$, sur un $\bR$-espace vectoriel $E$, est dite sous-linéaire si elle est positivement $1$-homogène et convexe. De manière équivalente
 \begin{align*}
 	\rho(\lambda x) &= \lambda \rho(x),&
@@ -104,6 +108,7 @@ Noter qu'une semi-norme est une application sous-linéaire qui de plus est \emph
 
 \begin{theorem}[Hahn-Banach]
 \label{th:HahnBanach}
+\leancheck{th:HahnBanach}%
 	Soit $E$ un $\bR$-espace vectoriel, $F$ un sous espace vectoriel, et $\rho : E \to \bR$ sous-linéaire. 
 	Soit $\vp_F : F \to \bR$ une forme linéaire telle que $\vp_F \leq \rho$ sur $F$.
 	Alors il existe $\vp : E \to \bR$ linéaire et telle que $\vp \leq \rho$ sur $E$ et $\vp_{|F} = \vp_F$. 
@@ -131,6 +136,7 @@ Le \nref{th:HahnBanach} s'applique aux evn en choisissant typiquement $\rho$ pro
 %(On pourrait également prolonger une forme linéaire continue sur un sous-espace d'un evtlc.)
 \begin{corollary}[Prolongement de même norme d'une forme linéaire]
 \label{corol:prol_forme_evn}
+\leancheck{corol:prol_forme_evn}%
 	Soit $E$ un evn, et soit $\vp_F \in F^*$ où $F\subset E$ est un s.e.v.
 	Alors il existe $\vp\in E^*$ prolongeant $\vp_F$ et de même norme. 
 \end{corollary}
@@ -141,6 +147,7 @@ Le \nref{th:HahnBanach} s'applique aux evn en choisissant typiquement $\rho$ pro
 
 \begin{corollary}[Critère de densité]
 \label{corol:dens_banach}
+\leancheck{corol:dens_banach}%
 	Soit $E$ un $\bR$-evn, et $F \subset E$ un sev. Alors $F$ est dense ssi la seule forme linéaire continue s'annulant sur $F$ est $0$.
 \end{corollary}
 
@@ -152,6 +159,7 @@ Le \nref{th:HahnBanach} s'applique aux evn en choisissant typiquement $\rho$ pro
 
 \begin{exemple}
 \label{ex:dualSeparable}
+\leancheck{ex:dualSeparable}%
 	Soit $E$ un evn. Si $E^*$ est séparable, alors $E$ est séparable. 
 \end{exemple}
 
@@ -171,6 +179,7 @@ Le résultat suivant permet toutefois, via le \nref{th:HahnBanach}, de construir
 
 \begin{corollary}[Projection sur un sous espace de dimension finie]
 \label{corol:projDimFinie}
+\leancheck{corol:projDimFinie}%
 Pour tout sous-espace de dimension finie $F$ d'un evn $E$, il existe une projection linéaire continue $P_F : E \to F$. 
 \end{corollary}
 
@@ -191,6 +200,7 @@ La définition d'un espace réflexif, l'inégalité de Hölder et la dualité da
 
 \begin{definition}[Réflexivité]
 \label{def:reflexif}
+\leancheck{def:reflexif}%
 	La fonction d'évaluation $\Phi : E \to E^{**}$, d'un evn dans son bidual, est définie par
 	\begin{equation*}
 			\forall x \in E,\, \forall \vp \in E^*,\,  \Phi(x)(\vp) := \vp(x).
@@ -203,6 +213,7 @@ Pour étudier les propriétés de la fonction d'évaluation $\Phi$ nous introdui
 
 \begin{proposition}[Élément conjugué dual]
 \label{prop:conjugueDual}
+\leancheck{prop:conjugueDual}%
 	Pour tout élément  $x \in E$ d'un evn, il existe $\vp\in E^*$ telle que 
 	\begin{align*}
 		\vp(x) &= \|x\|_E \|\vp\|_{E^*}, &
@@ -223,6 +234,7 @@ Pour étudier les propriétés de la fonction d'évaluation $\Phi$ nous introdui
 
 \begin{corollary}
 \label{corol:faibleSepare}
+\leancheck{corol:faibleSepare}%
 	La topologie faible sur un evn $E$ est séparée.
 \end{corollary}
 
@@ -233,6 +245,7 @@ D'après le \nref{lem:evtlc_separe}, il faut montrer que $(\forall \vp \in E^*,\
 
 \begin{corollary}
 \label{corol:faibleFortBorne}
+\leancheck{corol:faibleFortBorne}%
 	Toute partie $A$ d'un evn $E$ qui est faiblement bornée (i.e.\ $\{\vp(x) \mid x \in A\}$ est bornée pour toute $\vp \in E^*$), est bornée.
 \end{corollary}
 
@@ -245,6 +258,7 @@ D'après le \nref{lem:evtlc_separe}, il faut montrer que $(\forall \vp \in E^*,\
 
 \begin{corollary}
 \label{corol:bidualComplete}
+\leancheck{corol:bidualComplete}%
 L'image fermée $\overline {\Phi(E)} \subset E^{**}$ d'un evn $E$ s'identifie à son complété. % s'identifie au complété de $E$, voir la \cref{prop:espaceComplete}.  	
 \end{corollary}
 
@@ -309,6 +323,7 @@ Sa preuve, élémentaire mais assez technique, est admise. Il existe également 
 
 \begin{remark}[Cas Hilbertien]
 \label{rem:unifCvxHilbert}
+\leancheck{rem:unifCvxHilbert}%
 Un espace de Hilbert $H$ satisfait l'identité du parallélogramme $\|x+y\|^2 + \|x-y\|^2 = 2(\|x\|^2+\|y\|^2)$, qui implique l'uniforme convexité. L'identification linéaire (ou antilinéaire dans le cas complexe) $H \to H^* : x \mapsto \<x,\cdot\>$ correspond au conjugué dual.
 \end{remark}
 
@@ -332,6 +347,7 @@ L'objectif de cette fin de section est d'établir l'identification $L^p(X,\mu)^*
 
 \begin{theorem}[Inégalité de Hölder]	
 \label{th:HolderIneq}
+\leancheck{th:HolderIneq}%
 Soient $p,q\in [1,\infty]$ satisfaisant $\frac 1 p + \frac 1 q = 1$. Pour tous $f\in L^p(X,\mu)$ et $g\in L^q(X,\mu)$ on a $fg \in L^1$ et 
 \begin{equation}
 \label{eq:Holder}
@@ -460,6 +476,7 @@ $\{f < 1\} := \{x \in E \mid f(x) < 1\} = f^{-1}(]-\infty,1[)$, et de même pour
 
 \begin{proposition}[Jauge d'un convexe]
 \label{prop:jaugeCvx}
+\leancheck{prop:jaugeCvx}%
 Soit $C$ un convexe contenant $0$ d'un $\bR$-ev $E$. Définissons 
 \begin{align*}
 	p_C &: E \to [0,\infty], & p_C(x) &:= \inf\{t > 0 \mid x/t \in C\},
@@ -486,6 +503,7 @@ On a
 
 \begin{lemma}
 \label{lem:jaugeOuvertCvx}
+\leancheck{lem:jaugeOuvertCvx}%
 	Soit $C$ un convexe contenant $0$ d'un $\bR$-evn. Si $C$ est ouvert, alors $p_C : E \to \bR$ est Lipschitz et $C = \{p_C < 1\}$. Si $C$ est fermé, alors $p_C : E \to [0,\infty]$ est semi-continue inférieurement, et $C = \{p_C \leq 1\}$.
 \end{lemma}
 
@@ -500,6 +518,7 @@ Nous déduisons du \nref{th:HahnBanach} deux résultats de séparation géométr
 
 \begin{theorem}[Séparation d'un ouvert convexe et d'un point]
 \label{th:separOuvertPt}
+\leancheck{th:separOuvertPt}%
 	Soit $E$ un evn, soit $C \subset E$ un ouvert convexe contenant $0$, et soit $x \in E\sm C$. Alors il existe $\vp \in E^*$ telle que $\vp(x)=1$ et $\vp<1$ sur $C$. 
 	\end{theorem}
 
@@ -517,6 +536,7 @@ La preuve des résultats suivants fait intervenir la \emph{somme de Minkowski} d
 
 \begin{corollary}
 \label{corol:separOuvertPt}
+\leancheck{corol:separOuvertPt}%
 	Soit $C$ un ouvert convexe d'un evn $E$ ne contenant pas $0$, alors il existe $\vp \in E^*$ telle que $\vp>0$ sur $C$.
 	Soient $A$ un convexe et $B$ un ouvert convexe d'un evn $E$, non-vides et disjoints, alors il existe $\vp \in E^*$ et $\alpha \in \bR$ tels que $\vp(a) \leq \alpha < \vp (b)$ pour tous $a \in A$ et $b \in B$. 
 \end{corollary}
@@ -532,6 +552,7 @@ La preuve des résultats suivants fait intervenir la \emph{somme de Minkowski} d
 
 \begin{theorem}[Séparation stricte d'un fermé et d'un compact convexes]
 \label{th:separFermeComp}
+\leancheck{th:separFermeComp}%
 	Soit $E$ un evn, et soient $A,B \subset E$ convexes, non-vides, disjoints, avec $A$ fermé et $B$ compact. Alors il existe $\vp \in E^*$ telle que $\sup_A \vp < \inf_B \vp$. 
 	On dit que l'hyperplan affine $\{x \in E \mid \vp(x) = \tfrac 1 2 (\sup_A \vp + \inf_B \vp)\}$ sépare $A$ et $B$ au sens strict. Si $0 \in A$ alors on peut choisir $\vp$ telle que $\sup_A \vp < 1 < \inf_B \vp$. 
 \end{theorem}
@@ -555,6 +576,7 @@ La dualité polaire consiste à exprimer un ensemble convexe fermé comme une in
 
 \begin{definition}[Ensemble polaire \facultatif]
 \label{def:convexePolaire}
+\leancheck{def:convexePolaire}%
 L'ensemble polaire d'une partie $C$ d'un evn $E$ est défini par 
 %	Soit $C \subset E$ une partie non-vide d'un evn. On définit l'ensemble polaire par 
 	\begin{equation*}
@@ -568,6 +590,7 @@ Par construction $B'_E(0,1)^\circ = B'_{E^*}(0,1)$.
 
 \begin{proposition}[Dualité polaire \facultatif]
 \label{prop:cvxFaibleFerme}
+\leancheck{prop:cvxFaibleFerme}%
 Pour tout evn $E$, et tout $C \in \kC(E)$, on a 
 \begin{equation}
 \label{eq:cvxFaibleFerme}
@@ -589,6 +612,7 @@ Ainsi la dualité polaire $C \in \kC(E) \mapsto C^\circ \in \kC(E^*)$ définit u
 
 \begin{corollary} %\facultatif
 \label{corol:cvxFermeBdComp}
+\leancheck{corol:cvxFermeBdComp}%
 Tout convexe fermé $C$ d'un evn $E$ est faiblement fermé.
 Si de plus $C$ est borné et $E$ est réflexif, alors $C$ est faiblement compact.
 %	Tout convexe fermé borné $C$ d'un espace réflexif $E$ est faiblement compact.
@@ -609,6 +633,7 @@ Par la \nref{prop:opCompactComplCont}, et comme l'espace de départ $H^1$ est un
 
 \begin{corollary}[Minimisation par convexité et compacité \facultatif]
 \label{corol:minFctCvxRefl}
+\leancheck{corol:minFctCvxRefl}%
 	Soit $f : E \to ]-\infty,\infty]$ convexe s.c.i. sur un evn $E$ réflexif, soit $g : E \to \bR$ faiblement continue sur les bornés, et soit $M \in \bR$. %soient $M,N,R \in \bR$.
 	\begin{itemize}
 		\item Si $\{x\in E\mid f(x) \leq M\}$ est non-vide et borné, alors $f$ admet un minimiseur. 

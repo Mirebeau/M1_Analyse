@@ -61,6 +61,7 @@ En préliminaire de cette section, nous énonçons deux résultats de densité, 
 
 \begin{proposition}[Densité dans $L^p$ des fonctions continues à support compact]	
 \label{prop:densC0Lp}
+\leancheck{prop:densC0Lp}%
 Soit $(X,d)$ un espace métrique localement compact muni d'une mesure borélienne régulière, c'est-à-dire que pour toute partie mesurable $A \subset X$
 \begin{align}
 \label{eqdef:mes_reguliere}
@@ -150,6 +151,7 @@ Rappelons d'abord l'inégalité de Jensen, ensuite illustrée par les espaces de
 
 \begin{proposition}[Inégalité de Jensen]
 \label{prop:Jensen}
+\leancheck{prop:Jensen}%
 Soit $(X,\mu)$ un espace probabilisé, soit $f : X \to \bR^d$ intégrable, et soit $g : \bR^d \to ]-\infty,\infty]$ convexe et s.c.i. Alors
 \begin{equation*}
 	g\Big(\int_X f(x) \diff \mu(x)\Big) \leq \int_X g(f(x)) \diff \mu(x).
@@ -169,6 +171,7 @@ Soit $(X,\mu)$ un espace probabilisé, soit $f : X \to \bR^d$ intégrable, et so
 
 \begin{corollary}
 \label{corol:lpInclusLq}
+\leancheck{corol:lpInclusLq}%
 	Soit $(X,\mu)$ un espace mesuré de mesure finie (non-nulle), et soient $1 \leq p \leq q \leq \infty$. Alors $L^p(X,\mu) \supset L^q(X,\mu)$, et pour toute $f \in L^q(X,\mu)$ 
 \begin{equation*}
 	\mu(X)^{-\frac 1 p} \|f\|_p \leq \mu(X)^{-\frac 1 q} \|f\|_q.
@@ -192,6 +195,7 @@ L'inégalité de Jensen est également au coeur de la définition de la convolut
 
 \begin{proposition}[Convolution dans $L^p$]
 \label{prop:convolLp}
+\leancheck{prop:convolLp}%
 	Soient $f\in L^1(\bR^d)$ et $g\in L^p(\bR^d)$, où $p \in [1,\infty]$. Posons
 	\begin{equation*}
 		(f\star g) (x) := \int_{\bR^d} f(h) g(x-h) \diff h,
@@ -240,6 +244,7 @@ On note $\tau_h g(x) := g(x-h)$ l'opérateur de translation, et $C^0_0(\bR^d)$ l
 %Une variante du calcul de la \cref{prop:convolLp}
 \begin{lemma}
 \label{lem:convolTranslat}
+\leancheck{lem:convolTranslat}%
 Soit $f \in L^1(\bR^d,\bR_+)$ d'intégrale unité, $g \in L^p(\bR^d)$, et $A \subset \bR^d$ mesurable. On a
 %Pour toutes $f \in L^1(\bR^d,\bR_+)$ satisfaisant $\int f = 1$, et $g \in L^p(\bR^d)$, on a pour tout $A \subset \bR^d$ mesurable
 \begin{equation*}
@@ -266,6 +271,7 @@ pour tous $\ve>0$ et $x\in \bR^d$. En particulier, $(f\star \rho_\ve) (x)$ ne d�
 
 \begin{proposition}[Approximation par convolution]
 \label{prop:convolApprox}
+\leancheck{prop:convolApprox}%
 Soit $\rho \in L^1(\bR^d,\bR_+)$ supportée dans $B'(0,1)$ et d'intégrale unité. 
 Soit $p\in [1,\infty[$ et $f \in L^p(\bR^d)$ (resp.\ $p=\infty$ et $f\in C^0_0(\bR^d)$). Alors 
 \begin{align*}
@@ -283,6 +289,7 @@ Dans le cas $p<\infty$, cela découle de la densité des fonctions continues à 
 
 \begin{proposition}[Dérivation d'une convolution]
 \label{prop:convolDeriv}
+\leancheck{prop:convolDeriv}%
 Soit $f \in L^1(\bR^d)$, et $g \in C^k_c(\bR^d)$. Alors $f\star g \in C^k(\bR^d)$ et $\partial_\alpha (f\star g) = f \star (\partial_\alpha g)$ pour tout $\alpha \in \bN^d$ tel que $|\alpha|_1 \leq k$. 
 \end{proposition}
 
@@ -297,6 +304,7 @@ et le terme en $g$ converge uniformément vers $0$ lorsque $\delta\to 0$.
 
 \begin{corollary}
 \label{corol:testDenseLp}
+\leancheck{corol:testDenseLp}%
 $\cD(\Omega)$ est dense dans $L^p(\Omega)$ pour tout $1 \leq p < \infty$. 
 %En particulier, ces espaces sont séparables.
 %	$\cD(\Omega)$ est dense dans $L^p(\Omega)$, et dans $L^p_\loc(\Omega)$, pour tout $1 \leq p < \infty$. En particulier, ces espaces sont séparables.
@@ -439,6 +447,7 @@ L'identité de convolution suivante sera utile : pour tous $\rho, f \in L^1(\bR^
 
 \begin{proposition}[Distribution associée à une fonction]
 \label{prop:distribL1Loc}
+\leancheck{prop:distribL1Loc}%
 Soit $f \in L^1_\loc(\Omega)$. On définit 
 \begin{equation*}
 	\<U_f,\phi\> := \int_\Omega f \phi
