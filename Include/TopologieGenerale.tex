@@ -97,6 +97,7 @@ L'axiome de séparation de Hausdorff, la définition et la caractérisation de l
 
 \subsubsection{Ouverts et fermés}
 \label{subsubsec:ouvertsFermes}
+\leancheck{subsubsec:ouvertsFermes}%
 
 \notei{Conventions : 
 Élément $x$, ensemble $X$, ensemble d'ensembles $\bX$
@@ -108,6 +109,7 @@ On note $\cP(X)$ l'ensemble des parties d'un ensemble $X$.
 
 \begin{definition}[Espace topologique]
 \label{def:topo}
+\leancheck{def:topo}%
 	Un espace topologique est une paire $(X, \bU)$ où $X$ est un ensemble, et où $\bU\subset \cP(X)$ appelé \emph{ensemble des ouverts} satisfait les axiomes suivants : 
 	\begin{enumerate}[(i)]
 		\item $\emptyset$ et $X$ sont ouverts.
@@ -134,10 +136,12 @@ On déduit immédiatement du point (iii) de la \cref{def:topo} que l'intersectio
 	\label{eq:finter_open}
 	\forall I \geq 1,\ \forall U_1,\cdots,U_I \in \bU,\ \bigcap_{1 \leq i \leq I} U_i \in \bU.
 \end{equation}
+\leancheck{eq:finter_open}%
 Pour le point (ii), plutôt qu'un ensemble $\cU$ d'ouverts, on pourrait de manière équivalente considérer l'union $\cup_{i \in I} U_i$ d'une famille d'ouverts $(U_i)_{i \in I}$ indexée par un ensemble $I$ quelconque. 
 
 \begin{remark}[Union et intersection vides]
 \label{rem:unionVide}
+\leancheck{rem:unionVide}%
 L'union vide, correspondant à $\cU = \emptyset$ dans \eqref{eq:union_open}, est définie comme l'ensemble vide. Ainsi, l'axiome $\emptyset \in \bU$ est redondant. 
 
 L'intersection vide, cas hypothétique $I=0$ dans \eqref{eq:finter_open}, n'est pas définie en théorie des ensembles en général.
@@ -147,6 +151,7 @@ Cependant, si l'on considère l'intersection d'une famille de parties d'un ensem
 
 \begin{remark}[Fermés]
 \label{rem:fermes}
+\leancheck{rem:fermes}%
 On appelle fermé, de l'espace topologique $(X,\bU)$, le complémentaire d'un ouvert. Il s'ensuit (i) que $\emptyset$ et $X$ sont des fermés, et que l'ensemble des fermés $\bF := \{X \sm U\mid U \in \bU\}$ est (ii) stable par intersection quelconque, et (iii) stable par union finie. 
 \end{remark}
 
@@ -156,6 +161,7 @@ La stabilité des ouverts par union, et des fermés par intersection, permet de 
 
 \begin{definition}[Intérieur, adhérence]
 \label{def:interieur}
+\leancheck{def:interieur}%
 Soit $A$ une partie d'un espace topologique $(X,\bU)$. Son intérieur, noté $\mathring A$, est le plus grand ouvert qu'il contient. Son adhérence, notée $\overline A$, est le plus petit fermé le contenant. Ces ensembles peuvent être caractérisés par 
 \begin{align}
 \label{eqdef:int_adh}
@@ -170,12 +176,14 @@ On note, par passage au complémentaire, que
 	X \sm \mathring A &= \overline {X \sm A}, &
 	\mathring {\overpar{X \sm A}} &= X \sm \overline A. 
 \end{align}
+\leancheck{eq:int_adh_compl}%
 Également, pour tous $A,B \subset X$,
 \begin{align}
 \label{eq:int_inter_adh_cup}
 	\mathring{\overpar{A \cap B}} &= \mathring A \cap \mathring B,&
 	\overline {A \cup B} = \overline A \cup \overline B.
 \end{align}
+\leancheck{eq:int_inter_adh_cup}%
 
 \hiddenproof{
 On note que l'intersection \eqref{eqdef:int_adh} n'est pas vide car $A\subset X \in \bF$.
@@ -184,6 +192,7 @@ On note que l'intersection \eqref{eqdef:int_adh} n'est pas vide car $A\subset X 
 
 \begin{definition}[Partie dense, séparabilité]
 \label{def:dense}
+\leancheck{def:dense}%
 	Une partie $A \subset X$ est dite dense si $\overline A = X$.
 	Un espace topologique est dit séparable si il admet une partie dénombrable dense.
 	(\emph{Attention}: ne pas confondre séparable et séparé, voir la \cref{def:separe})

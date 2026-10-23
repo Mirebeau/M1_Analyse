@@ -22,6 +22,12 @@ la définition du cours ou la propriété annoncée. Tous les énoncés sont dé
 Non formalisé : la définition d'une topologie par ses fermés (`TopologicalSpace.ofClosed`),
 prévue avec `ex:T1nonT2`.
 
+## Pages web et marques `\leancheck`
+
+Chaque énoncé formalisé porte dans le cours une marque `\leancheck{<label>}` (« Lean✓ ») qui pointe
+vers sa page : énoncé du cours, version Lean avec démonstration complète, notions et lemmes Mathlib
+utilisés. Voir `scripts/lean_pages/README.md` pour régénérer `leananchors.tex` et la page.
+
 ## À venir
 
 §1.1.2 `subsubsec:compTopo`, §1.1.3 `subsubsec:Vois`, §1.1.4 `subsubsec:separation`,
