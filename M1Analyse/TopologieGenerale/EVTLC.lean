@@ -340,12 +340,7 @@ lemma evtlcDist_lt_iff (x y : E) {η : ℝ} (hη : 0 < η) :
     rw [hn]; exact hterm n
 
 /-- **Éq. `eq:boule_evtlc` (Boule pour la distance `d`).** Pour `η > 0`,
-`B_d(x, η) = {y ∈ E | ∀ n ≤ -log₂ η, |y - x|_n < η}`.
-
-Remarque : le cours écrit l'inégalité stricte `n < -log₂ η`, ce qui est inexact lorsque
-`-log₂ η` est un entier `N` : pour `η = 2^{-N}`, le terme `min {2^{-N}, |x - y|_N}` vaut `η`
-dès que `|x - y|_N ≥ η`, et alors `d(x, y) ≥ η`. L'inégalité large `n ≤ -log₂ η` est correcte
-(et c'est elle qu'utilise la preuve du cours, via `B_{⌊-log₂ η⌋}(x, η) ⊆ B_d(x, η)`). -/
+`B_d(x, η) = {y ∈ E | ∀ n ≤ -log₂ η, |y - x|_n < η}`. -/
 theorem eq_boule_evtlc (x : E) {η : ℝ} (hη : 0 < η) :
     {y | evtlcDist p x y < η} = {y | ∀ n : ℕ, (n : ℝ) ≤ -Real.logb 2 η → p n (y - x) < η} := by
   ext y

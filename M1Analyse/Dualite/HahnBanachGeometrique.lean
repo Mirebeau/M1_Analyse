@@ -297,12 +297,13 @@ theorem corol_separOuvertPt {A B : Set E} (hA : Convex ℝ A) (hB : Convex ℝ B
 
 /-- **Th. `th:separFermeComp` (Séparation stricte d'un fermé et d'un compact convexes).** Soient
 `A, B ⊆ E` convexes, non vides, disjoints, avec `A` fermé et `B` compact. Il existe `φ ∈ E^*`
-telle que `sup_A φ < inf_B φ`. -/
+telle que `sup_A φ < inf_B φ`. La clause `BddAbove (φ '' A)` explicite que `sup_A φ` est fini
+(en Lean, le `sSup` d'une partie non majorée de `ℝ` vaut `0` par convention). -/
 theorem th_separFermeComp {A B : Set E} (hA : Convex ℝ A) (hAf : IsClosed A) (hB : Convex ℝ B)
     (hBc : IsCompact B) (hAne : A.Nonempty) (hBne : B.Nonempty) (hAB : Disjoint A B) :
-    ∃ φ : StrongDual ℝ E, sSup (φ '' A) < sInf (φ '' B) := by
+    ∃ φ : StrongDual ℝ E, BddAbove (φ '' A) ∧ sSup (φ '' A) < sInf (φ '' B) := by
   obtain ⟨f, u, v, hfA, huv, hfB⟩ := geometric_hahn_banach_closed_compact hA hAf hB hBc hAB
-  refine ⟨f, ?_⟩
+  refine ⟨f, ⟨u, by rintro _ ⟨a, ha, rfl⟩; exact (hfA a ha).le⟩, ?_⟩
   have h1 : sSup (f '' A) ≤ u :=
     csSup_le (hAne.image f) (by rintro _ ⟨a, ha, rfl⟩; exact (hfA a ha).le)
   have h2 : v ≤ sInf (f '' B) :=
@@ -310,16 +311,20 @@ theorem th_separFermeComp {A B : Set E} (hA : Convex ℝ A) (hAf : IsClosed A) (
   linarith
 
 /-- **Th. `th:separFermeComp`, dernier point.** Sous les mêmes hypothèses, si `0 ∈ A`, on peut
-choisir `φ ∈ E^*` telle que `sup_A φ < 1 < inf_B φ`. -/
+choisir `φ ∈ E^*` telle que `sup_A φ < 1 < inf_B φ`. La clause `BddAbove (φ '' A)` explicite
+que `sup_A φ` est fini (en Lean, le `sSup` d'une partie non majorée de `ℝ` vaut `0`). -/
 theorem th_separFermeComp_zero {A B : Set E} (hA : Convex ℝ A) (hAf : IsClosed A)
     (hB : Convex ℝ B) (hBc : IsCompact B) (h0 : (0 : E) ∈ A) (hBne : B.Nonempty)
     (hAB : Disjoint A B) :
-    ∃ φ : StrongDual ℝ E, sSup (φ '' A) < 1 ∧ 1 < sInf (φ '' B) := by
+    ∃ φ : StrongDual ℝ E, BddAbove (φ '' A) ∧ sSup (φ '' A) < 1 ∧ 1 < sInf (φ '' B) := by
   obtain ⟨f, u, v, hfA, huv, hfB⟩ := geometric_hahn_banach_closed_compact hA hAf hB hBc hAB
   have hu : 0 < u := by simpa using hfA 0 h0
   set m := (u + v) / 2 with hm
   have hmpos : 0 < m := by rw [hm]; linarith
-  refine ⟨m⁻¹ • f, ?_, ?_⟩
+  refine ⟨m⁻¹ • f, ⟨m⁻¹ * u, ?_⟩, ?_, ?_⟩
+  · rintro _ ⟨a, ha, rfl⟩
+    simp only [smul_apply, smul_eq_mul]
+    exact mul_le_mul_of_nonneg_left (hfA a ha).le (inv_nonneg.2 hmpos.le)
   · have : sSup ((m⁻¹ • f) '' A) ≤ m⁻¹ * u :=
       csSup_le (Set.Nonempty.image _ (⟨0, h0⟩ : A.Nonempty)) (by
         rintro _ ⟨a, ha, rfl⟩

@@ -106,11 +106,7 @@ theorem generateFrom_preimage_eq_iInf (f : ∀ i, E → Yi i) :
 
 /-- **Rem. `rem:topoFunc` (Convergence des suites).** Pour la topologie engendrée par les
 `fᵢ⁻¹(Uᵢ)`, une suite `(xₙ)` converge vers `a` ssi `(fᵢ(xₙ))` converge vers `fᵢ(a)` pour tout
-`i`.
-Remarque : le cours dit « `(xₙ)` converge ssi `(fᵢ(xₙ))` converge pour tout `i` » ; il faut
-préciser les limites (`fᵢ(a)` pour un même `a`), sinon l'énoncé est faux en général (ex. :
-`X = ]0, 1]`, une seule fonction `f₁ : X → ℝ` l'injection ; `xₙ = 1/n` ne converge pas dans
-`X` alors que `f₁(xₙ) → 0` dans `ℝ`). -/
+`i` (la limite `a` joue le rôle de `x_*` du cours). -/
 theorem rem_topoFunc_suites (f : ∀ i, E → Yi i) (u : ℕ → E) (a : E) :
     Tendsto u atTop
         (@nhds E (generateFrom {s | ∃ i, ∃ U : Set (Yi i), IsOpen U ∧ s = f i ⁻¹' U}) a) ↔
@@ -169,8 +165,8 @@ theorem def_semiContinuite_add_scs (f g : X → EReal) (hf' : ∀ x, f x ≠ ⊤
     UpperSemicontinuous (fun x => f x + g x) :=
   hf.add' hg fun x => EReal.continuousAt_add (Or.inl (hf' x)) (Or.inr (hg' x))
 
-/-- Version générale de `prop:surGrapheSCI`, pour `f : X → ℝ̄` quelconque (l'hypothèse
-`f > -∞` du cours n'est pas nécessaire). -/
+/-- Lemme principal de `prop:surGrapheSCI` : `f : X → ℝ̄` est s.c.i. ssi son sur-graphe
+`{(x, t) ∈ X × ℝ | f(x) ≤ t}` est fermé. -/
 theorem lowerSemicontinuous_iff_isClosed_surGraphe (f : X → EReal) :
     LowerSemicontinuous f ↔ IsClosed {p : X × ℝ | f p.1 ≤ p.2} := by
   rw [def_semiContinuite_sci]
@@ -202,11 +198,9 @@ theorem lowerSemicontinuous_iff_isClosed_surGraphe (f : X → EReal) :
     | coe r => exact hreal r
     | top => simp only [le_top, ofPred_true, isClosed_univ]
 
-/-- **Prop. `prop:surGrapheSCI`.** Soit `f : X → ]-∞, ∞]`. Alors `f` est s.c.i. ssi son
-sur-graphe `𝒢 = {(x, t) ∈ X × ℝ | f(x) ≤ t}` est fermé.
-Remarque : l'hypothèse `f > -∞` n'est pas utilisée
-(cf. `lowerSemicontinuous_iff_isClosed_surGraphe`). -/
-theorem prop_surGrapheSCI (f : X → EReal) (_hf : ∀ x, f x ≠ ⊥) :
+/-- **Prop. `prop:surGrapheSCI`.** Soit `(X, 𝒰)` un espace topologique et `f : X → ℝ̄`. Alors
+`f` est s.c.i. ssi son sur-graphe `𝒢 = {(x, t) ∈ X × ℝ | f(x) ≤ t}` est fermé. -/
+theorem prop_surGrapheSCI (f : X → EReal) :
     LowerSemicontinuous f ↔ IsClosed {p : X × ℝ | f p.1 ≤ p.2} :=
   lowerSemicontinuous_iff_isClosed_surGraphe f
 

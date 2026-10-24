@@ -97,39 +97,29 @@ private lemma bosseProfil_integral_pos : 0 < ∫ x, bosseProfil (d := d) x :=
     bosseProfil_hasCompactSupport (fun _ => Real.smoothTransition.nonneg _)
     (x := 0) (by rw [bosseProfil_eq_one (by simp)]; norm_num)
 
-/-- Version renforcée de `prop:cinfBosse` : la constante prise sur `B(0,1/3)` est
-**strictement** positive. Remarque : cette propriété (vraie pour la construction du cours) est
-utilisée dans la preuve de `prop:cinfSupport` (`φ₁ > 0` sur `K`) mais ne figure pas dans
-l'énoncé de `prop:cinfBosse`. -/
-theorem exists_bosse_const_pos :
+/-- **Prop. `prop:cinfBosse` (Noyau de convolution).** Il existe `φ ∈ C^∞(ℝ^d)`, radiale,
+positive, d'intégrale unité, constante et strictement positive sur `B(0,1/3)` et telle que
+`supp φ ⊆ B'(0,2/3)`. On a de plus `supp φ ⊂⊂ B(0,1)`. -/
+theorem prop_cinfBosse :
     ∃ φ : EuclideanSpace ℝ (Fin d) → ℝ, ContDiff ℝ ∞ φ ∧
       (∀ x y, ‖x‖ = ‖y‖ → φ x = φ y) ∧ (∀ x, 0 ≤ φ x) ∧ ∫ x, φ x = 1 ∧
-      (∃ c, 0 < c ∧ ∀ x ∈ ball 0 (1 / 3), φ x = c) ∧ tsupport φ ⊆ closedBall 0 (2 / 3) := by
+      (∃ c, 0 < c ∧ ∀ x ∈ ball 0 (1 / 3), φ x = c) ∧ tsupport φ ⊆ closedBall 0 (2 / 3) ∧
+      (HasCompactSupport φ ∧ tsupport φ ⊆ ball 0 1) := by
   set I := ∫ x, bosseProfil (d := d) x
   have hI : 0 < I := bosseProfil_integral_pos
+  have hsupp :
+      tsupport (fun x : EuclideanSpace ℝ (Fin d) => bosseProfil x / I) ⊆ closedBall 0 (2 / 3) :=
+    (closure_mono fun x hx => (div_ne_zero_iff.mp hx).1).trans bosseProfil_tsupport
   refine ⟨fun x => bosseProfil x / I, bosseProfil_contDiff.div_const _, fun x y h => ?_,
     fun x => div_nonneg (Real.smoothTransition.nonneg _) hI.le, ?_,
-    ⟨1 / I, by positivity, fun x hx => ?_⟩, ?_⟩
+    ⟨1 / I, by positivity, fun x hx => ?_⟩, hsupp,
+    (isCompact_closedBall _ _).of_isClosed_subset (isClosed_tsupport _) hsupp,
+    hsupp.trans (closedBall_subset_ball (by norm_num))⟩
   · simp only [bosseProfil, h]
   · rw [integral_div]
     exact div_self hI.ne'
   · change bosseProfil x / I = 1 / I
     rw [bosseProfil_eq_one (mem_ball_zero_iff.mp hx).le]
-  · refine (closure_mono fun x hx => ?_).trans bosseProfil_tsupport
-    exact (div_ne_zero_iff.mp hx).1
-
-/-- **Prop. `prop:cinfBosse` (Noyau de convolution).** Il existe `φ ∈ C^∞(ℝ^d)`, radiale,
-positive, d'intégrale unité, constante sur `B(0,1/3)` et telle que `supp φ ⊆ B'(0,2/3)`.
-On a de plus `supp φ ⊂⊂ B(0,1)`. -/
-theorem prop_cinfBosse :
-    ∃ φ : EuclideanSpace ℝ (Fin d) → ℝ, ContDiff ℝ ∞ φ ∧
-      (∀ x y, ‖x‖ = ‖y‖ → φ x = φ y) ∧ (∀ x, 0 ≤ φ x) ∧ ∫ x, φ x = 1 ∧
-      (∃ c, ∀ x ∈ ball 0 (1 / 3), φ x = c) ∧ tsupport φ ⊆ closedBall 0 (2 / 3) ∧
-      (HasCompactSupport φ ∧ tsupport φ ⊆ ball 0 1) := by
-  obtain ⟨φ, h1, h2, h3, h4, ⟨c, -, hc⟩, h6⟩ := exists_bosse_const_pos (d := d)
-  refine ⟨φ, h1, h2, h3, h4, ⟨c, hc⟩, h6,
-    (isCompact_closedBall _ _).of_isClosed_subset (isClosed_tsupport _) h6,
-    h6.trans (closedBall_subset_ball (by norm_num))⟩
 
 /-! ### Approximation de fonctions indicatrices -/
 

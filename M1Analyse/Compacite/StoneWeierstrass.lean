@@ -111,7 +111,14 @@ private def closureSubalgebra (A : NonUnitalSubalgebra ℝ C(X, ℝ))
 /-- **Thm. `th:StoneWeierstrass` (Stone-Weierstrass).** Soit `X` un espace topologique
 compact et `A ⊆ C⁰(X, ℝ)` une algèbre (pas forcément unitaire) qui (i) sépare les points et
 (ii) ne s'annule pas simultanément en un point. Alors `Ā = C⁰(X, ℝ)` pour la convergence
-uniforme. -/
+uniforme.
+Preuve : on ne refait pas la preuve du cours ; on se ramène (via `lem:StoneUnite`, `1 ∈ Ā`) au
+théorème de Stone-Weierstrass de Mathlib pour une sous-algèbre unitaire
+(`ContinuousMap.subalgebra_topologicalClosure_eq_top_of_separatesPoints`). La preuve de Mathlib
+suit les mêmes étapes que le cours : `|f| ∈ Ā` pour `f ∈ Ā` (`abs_mem_subalgebra_closure`, par
+approximation polynomiale de `|·|` sur un segment, là où le cours approche `√·`), puis
+`min, max` (`inf_mem_closed_subalgebra`, `sup_mem_closed_subalgebra`), puis un argument de
+recouvrement par compacité (`sublattice_closure_eq_top`). -/
 theorem th_StoneWeierstrass (A : NonUnitalSubalgebra ℝ C(X, ℝ))
     (hsep : ∀ x y : X, x ≠ y → ∃ f ∈ A, f x ≠ f y)
     (hnv : ∀ x : X, ∃ f ∈ A, f x ≠ 0) :
@@ -139,8 +146,11 @@ theorem lem_StoneUnite (A : NonUnitalSubalgebra ℝ C(X, ℝ))
 
 /-- **Lemme `lem:StoneSqrt`.** Sous les hypothèses du `th:StoneWeierstrass`, soit `f ∈ Ā`.
 Si `f ≥ 0` alors `√f ∈ Ā` ; on a toujours `|f| ∈ Ā` ; si `f` ne s'annule pas, `1/f ∈ Ā`.
-Remarque : ici déduit directement du `th:StoneWeierstrass` (`Ā = C⁰(X, ℝ)`), alors que le cours
-établit ce lemme comme étape de la preuve. -/
+Remarque : ici déduit directement du `th:StoneWeierstrass` (`Ā = C⁰(X, ℝ)`, toute fonction
+continue est dans `Ā`), alors que le cours établit ce lemme comme étape de la preuve ; l'étape
+correspondante de la preuve de Mathlib est `abs_mem_subalgebra_closure` (voir
+`th_StoneWeierstrass`). L'énoncé est fidèle, mais sa preuve ici ne contient pas l'argument du
+cours. -/
 theorem lem_StoneSqrt (A : NonUnitalSubalgebra ℝ C(X, ℝ))
     (hsep : ∀ x y : X, x ≠ y → ∃ f ∈ A, f x ≠ f y)
     (hnv : ∀ x : X, ∃ f ∈ A, f x ≠ 0) (f : C(X, ℝ)) (_hf : f ∈ closure (A : Set C(X, ℝ))) :
@@ -152,7 +162,10 @@ theorem lem_StoneSqrt (A : NonUnitalSubalgebra ℝ C(X, ℝ))
   simp [th_StoneWeierstrass A hsep hnv]
 
 /-- **Cor. `corol:StoneMinMax`.** Sous les hypothèses du `th:StoneWeierstrass`, si
-`f, g ∈ Ā` alors `min {f, g}` et `max {f, g}` appartiennent à `Ā`. -/
+`f, g ∈ Ā` alors `min {f, g}` et `max {f, g}` appartiennent à `Ā`.
+Remarque : comme `lem_StoneSqrt`, déduit directement du `th:StoneWeierstrass` (`Ā = C⁰(X, ℝ)`) ;
+l'étape correspondante de la preuve de Mathlib est `inf_mem_closed_subalgebra`,
+`sup_mem_closed_subalgebra` (voir `th_StoneWeierstrass`). -/
 theorem corol_StoneMinMax (A : NonUnitalSubalgebra ℝ C(X, ℝ))
     (hsep : ∀ x y : X, x ≠ y → ∃ f ∈ A, f x ≠ f y)
     (hnv : ∀ x : X, ∃ f ∈ A, f x ≠ 0) (f g : C(X, ℝ))

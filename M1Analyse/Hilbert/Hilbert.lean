@@ -466,7 +466,11 @@ theorem prop_decompCone (K : ConvexeFerme E)
   exact ⟨hp, this.2 ▸ hw, this.2 ▸ hpw, (this.2 ▸ (add_sub_cancel p x).symm)⟩
 
 /-- **Ex. `ex:coneSdp` (Cône dual de `ℝ₊^d`), auto-dualité.** Le cône `ℝ₊^d ⊆ ℝ^d` est
-auto-dual : `K* = K`, où `K* = {y | ∀ x ∈ K, ⟪x, y⟫ ≥ 0}` est `ProperCone.innerDual K`. -/
+auto-dual : `K* = K`, où `K* = {y | ∀ x ∈ K, ⟪x, y⟫ ≥ 0}` est `ProperCone.innerDual K`.
+Seul le cas de `ℝ₊^d` de `ex:coneSdp` est formalisé (ici et dans `ex_coneSdp_partiesPosNeg`) :
+le cône `𝒮_d^+ ⊆ 𝒮_d` des matrices symétriques positives (son auto-dualité, et la
+décomposition de `prop:decompCone` associée, donnée par les parties positive et négative du
+spectre) n'est pas formalisé. -/
 theorem ex_coneSdp_autoDual (d : ℕ) :
     (ProperCone.innerDual {x : EuclideanSpace ℝ (Fin d) | ∀ i, 0 ≤ x i} :
       Set (EuclideanSpace ℝ (Fin d))) = {x | ∀ i, 0 ≤ x i} := by
