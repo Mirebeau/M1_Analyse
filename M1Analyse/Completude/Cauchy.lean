@@ -163,8 +163,9 @@ end Frechet
 /-- **Lemme `lem:serie_Banach` (Séries dans un Banach).** Un evn `E` est complet ssi toute
 série absolument convergente (`∑ ‖x_n‖ < ∞`) y est convergente (la suite des sommes partielles
 `∑_{n < N} x_n` admet une limite).
-Preuve (différente du cours) : résultat de Mathlib
-(`NormedAddCommGroup.summable_imp_tendsto_iff_completeSpace`), non redémontré. -/
+Preuve (via Mathlib, même stratégie que le cours) :
+`NormedAddCommGroup.summable_imp_tendsto_iff_completeSpace` (sommes partielles de Cauchy ;
+réciproquement, sous-suite à incréments sommables d'une suite de Cauchy). -/
 theorem lem_serie_Banach {E : Type*} [NormedAddCommGroup E] :
     CompleteSpace E ↔ ∀ x : ℕ → E, Summable (fun n => ‖x n‖) →
       ∃ l, Tendsto (fun N => ∑ n ∈ range N, x n) atTop (𝓝 l) :=
@@ -182,7 +183,9 @@ theorem prop_fermeComplet {X : Type*} [MetricSpace X] [CompleteSpace X] (A : Set
 
 /-- **Prop. `prop:LEFcomplet`.** Soient `E` un evn et `F` un Banach. Alors `L(E,F)` est un Banach,
 et en particulier le dual `E*` est un Banach.
-Preuve (différente du cours) : instances de complétude de Mathlib, non redémontrées. -/
+Preuve (différente du cours) : instances de complétude de Mathlib : `L(E,F)` est fermé (linéarité
+et continuité passent à la limite) dans l'espace complet des applications `E → F` muni de la
+convergence uniforme sur les bornés. -/
 theorem prop_LEFcomplet {𝕜 E F : Type*} [RCLike 𝕜] [NormedAddCommGroup E] [NormedSpace 𝕜 E]
     [NormedAddCommGroup F] [NormedSpace 𝕜 F] [CompleteSpace F] :
     CompleteSpace (E →L[𝕜] F) ∧ CompleteSpace (StrongDual 𝕜 E) :=

@@ -38,8 +38,9 @@ variable {X : Type*}
 tout `x_0 ∈ X` et `n ∈ ℕ`, `d(x_n, x_*) ≤ K^n d(x_0, x_1)/(1 - K)` où `x_n := f^{∘n}(x_0)`.
 Remarque : on suppose `X` non vide (hypothèse implicite dans le cours, nécessaire à
 l'existence du point fixe).
-Preuve (différente du cours) : appel à `ContractingWith.fixedPoint` et à l'estimation
-`apriori_dist_iterate_fixedPoint_le` de Mathlib, non redémontrés. -/
+Preuve (via Mathlib, même stratégie que le cours) : `ContractingWith.fixedPoint` et
+`apriori_dist_iterate_fixedPoint_le` de Mathlib (itérées de Cauchy par l'estimation géométrique
+`d(x_n, x_{n+1}) ≤ K^n d(x_0, x_1)`, limite fixe par continuité). -/
 theorem th_fixe_Picard [MetricSpace X] [CompleteSpace X] [Nonempty X] (K : ℝ≥0) (hK : K < 1)
     (f : X → X) (hf : LipschitzWith K f) :
     ∃ xs : X, (f xs = xs ∧ ∀ y, f y = y → y = xs) ∧

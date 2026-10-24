@@ -44,8 +44,9 @@ theorem th_compProdTycho {ι : Type*} {X : ι → Type*} [∀ i, TopologicalSpac
 
 /-- **Th. `th:compProdTycho`, cas dénombrable.** Le produit d'une famille dénombrable de
 compacts métriques est un compact métrique (compact et métrisable).
-Preuve (différente du cours) : instances de Mathlib (Tychonov général, métrisabilité d'un
-produit dénombrable), sans l'extraction diagonale du cours. -/
+Preuve (différente du cours) : instances de Mathlib : Tychonov général (ultrafiltres), et
+métrisabilité car la structure uniforme d'un produit dénombrable est à base dénombrable ; sans
+l'extraction diagonale du cours. -/
 theorem th_compProdTycho_metrique {ι : Type*} [Countable ι] {X : ι → Type*}
     [∀ i, MetricSpace (X i)] [∀ i, CompactSpace (X i)] :
     CompactSpace ((i : ι) → X i) ∧ TopologicalSpace.MetrizableSpace ((i : ι) → X i) :=
@@ -104,8 +105,9 @@ theorem th_BanachAlaoglu [CompleteSpace E] :
 
 /-- **Th. `th:BanachAlaoglu`, cas séparable.** Si `E` est séparable, alors `B`, munie de la
 topologie *faible, est un compact métrique (compact et métrisable).
-Preuve (différente du cours) : compacité par le cas général, puis métrisabilité d'un compact
-du dual faible d'un séparable (Mathlib), sans l'extraction diagonale du cours. -/
+Preuve (différente du cours) : compacité par le cas général ; métrisabilité (Mathlib) car les
+évaluations en une suite dense séparent les points, d'où un plongement du compact dans un produit
+dénombrable métrisable. Sans l'extraction diagonale du cours. -/
 theorem th_BanachAlaoglu_separable [CompleteSpace E] [TopologicalSpace.SeparableSpace E] :
     CompactSpace (WeakDual.toStrongDual ⁻¹' closedBall (0 : StrongDual 𝕜 E) 1) ∧
       TopologicalSpace.MetrizableSpace
@@ -124,8 +126,9 @@ variable {X Y : Type*} [MetricSpace X] [MetricSpace Y] [CompactSpace X] [Compact
 /-- **Th. `th:AscoliLip` (Ascoli).** Soient `X`, `Y` des espaces métriques compacts. L'ensemble
 `Lip_1(X, Y)` des applications `1`-Lipschitz est compact pour la topologie de la convergence
 uniforme (distance `d(f, g) = max_x d_Y(f x, g x)` de `X →ᵇ Y`).
-Preuve (différente du cours) : Arzelà-Ascoli de Mathlib (`arzela_ascoli₂`) : ensemble fermé,
-équicontinu, à valeurs dans un compact ; pas d'extraction diagonale sur une partie dense. -/
+Preuve (différente du cours) : `arzela_ascoli₂` de Mathlib (fermé, équicontinu, à valeurs dans un
+compact) : précompacité par discrétisation finie (valeurs sur un recouvrement fini de `X`, arrondies
+dans un `ε`-réseau fini de `Y`) ; pas d'extraction diagonale sur une partie dense. -/
 theorem th_AscoliLip : IsCompact {f : X →ᵇ Y | LipschitzWith 1 f} := by
   have hset : {f : X →ᵇ Y | LipschitzWith 1 f} =
       ⋂ (x : X) (y : X), {f : X →ᵇ Y | dist (f x) (f y) ≤ dist x y} := by
@@ -160,7 +163,8 @@ end Ascoli
 /-- **Prop. `prop:hullCompact` (Compacité de l'enveloppe convexe fermée).** Soit `K` une partie
 d'un `ℝ`-Banach. Si `K̄` est compact, alors `H = closure (Hull K)` est compact.
 Preuve (différente du cours) : l'enveloppe convexe d'une partie précompacte est précompacte
-(Mathlib), et `H` est fermé dans un complet ; pas d'extraction diagonale. -/
+(Mathlib : `Hull K ⊆ Hull t + V`, `t` réseau fini et `Hull t` compact), et `H` est fermé dans un
+complet ; pas d'extraction diagonale. -/
 theorem prop_hullCompact {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
     {K : Set E} (hK : IsCompact (closure K)) : IsCompact (closure (convexHull ℝ K)) := by
   rw [isCompact_iff_totallyBounded_isComplete]
@@ -197,8 +201,9 @@ private theorem isCompact_simplexe (n : ℕ) :
 /-- **Th. `th:Caratheodory` (Carathéodory).** Pour tout `A ⊆ ℝ^d`, l'enveloppe convexe de `A`
 est l'ensemble des combinaisons convexes `∑_{0 ≤ i ≤ d} λ_i x_i` de `d + 1` points de `A`,
 avec `λ ∈ Δ^d`.
-Preuve (différente du cours) : Carathéodory de Mathlib (`eq_pos_convex_span_of_mem_convexHull`,
-famille affinement indépendante, donc au plus `d + 1` points), complétée par des poids nuls. -/
+Preuve (via Mathlib, même stratégie que le cours) : `eq_pos_convex_span_of_mem_convexHull` (une
+représentation de cardinal minimal est affinement indépendante, donc a au plus `d + 1` points),
+complétée par des poids nuls. -/
 theorem th_Caratheodory (A : Set (EuclideanSpace ℝ (Fin d))) :
     convexHull ℝ A = {y | ∃ (l : Fin (d + 1) → ℝ) (x : Fin (d + 1) → EuclideanSpace ℝ (Fin d)),
       (∀ i, 0 ≤ l i) ∧ ∑ i, l i = 1 ∧ (∀ i, x i ∈ A) ∧ y = ∑ i, l i • x i} := by

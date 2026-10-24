@@ -29,8 +29,9 @@ namespace M1Analyse
 
 /-- **Prop. `prop:compSsiFermeBorne`.** Une partie de `ℝ^d` est compacte ssi elle est fermée et
 bornée.
-Preuve (différente du cours) : théorème de Heine-Borel de Mathlib dans un espace propre
-(`Metric.isCompact_iff_isClosed_bounded`), sans le recouvrement par une grille du cours. -/
+Preuve (différente du cours) : Heine-Borel de Mathlib dans un espace propre
+(`Metric.isCompact_iff_isClosed_bounded`) ; `ℝ^d ≅ Fin d → ℝ` est propre car les boules fermées
+de ce dernier sont des produits de segments compacts. Pas de recouvrement par une grille. -/
 theorem prop_compSsiFermeBorne {d : ℕ} (s : Set (EuclideanSpace ℝ (Fin d))) :
     IsCompact s ↔ IsClosed s ∧ Bornology.IsBounded s :=
   Metric.isCompact_iff_isClosed_bounded

@@ -40,7 +40,8 @@ Remarque : l'énoncé Mathlib ne requiert que l'injectivité et la différentiab
 `U` ; les hypothèses de difféomorphisme (inverse `C¹`) et d'intégrabilité du cours sont gardées
 pour la fidélité mais ne servent pas.
 Preuve (absente du cours) : formule de Mathlib
-`MeasureTheory.integral_image_eq_integral_abs_det_fderiv_smul`. -/
+`MeasureTheory.integral_image_eq_integral_abs_det_fderiv_smul` (d'après Fremlin : sur des morceaux
+où `φ ≈ A` linéaire, `|φ(B)| ≈ |det A| |B|`, par recouvrement de Besicovitch). -/
 theorem th_chgVarIntegr {d : ℕ} (U V : Set (EuclideanSpace ℝ (Fin d))) (hU : IsOpen U)
     (_hV : IsOpen V) (φ : EuclideanSpace ℝ (Fin d) → EuclideanSpace ℝ (Fin d))
     (hφ : ContDiffOn ℝ 1 φ U) (hinj : InjOn φ U) (himg : φ '' U = V)

@@ -483,8 +483,8 @@ theorem iteratedFDeriv_convolution {k : ℕ} {f g : ℝᵈ → ℝ} (hf : Integr
 (`deriveePartielle`, cf. `def:normeCnb`) ; voir aussi `iteratedFDeriv_convolution` pour la
 version intrinsèque `D^j (f ⋆ g) = f ⋆ D^j g`.
 Preuve (différente du cours) : régularité et différentielle de `f ⋆ g` fournies par Mathlib
-(`HasCompactSupport.contDiff_convolution_right`, `hasFDerivAt_convolution_right`), sans le
-calcul des taux d'accroissement. -/
+(`HasCompactSupport.contDiff_convolution_right`, `hasFDerivAt_convolution_right`), par
+dérivation sous l'intégrale (convergence dominée, `Dg` bornée), sans taux d'accroissement. -/
 theorem prop_convolDeriv {k : ℕ} {f g : ℝᵈ → ℝ} (hf : Integrable f) (hg : ContDiff ℝ k g)
     (hgc : HasCompactSupport g) :
     ContDiff ℝ k (f ⋆ g) ∧

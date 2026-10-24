@@ -34,8 +34,9 @@ namespace M1Analyse
 /-- **Lemme `lem:cinfExpInv` (Prolongement lisse de la fonction nulle).** La fonction
 `φ(x) = exp(-1/x)` si `x > 0`, `φ(x) = 0` sinon, est `C^∞` sur `ℝ`. (C'est la fonction
 `expNegInvGlue` de Mathlib.)
-Preuve (différente du cours) : identification avec `expNegInvGlue`, dont la régularité
-`C^∞` est fournie par Mathlib (`expNegInvGlue.contDiff`), sans récurrence explicite. -/
+Preuve (via Mathlib, même stratégie que le cours) : identification avec `expNegInvGlue` ;
+Mathlib (`expNegInvGlue.contDiff`) montre par récurrence que `x ↦ P(1/x) φ(x)` est `C^∞` pour
+tout polynôme `P`. -/
 theorem lem_cinfExpInv :
     ContDiff ℝ ∞ (fun x : ℝ => if 0 < x then Real.exp (-1 / x) else 0) := by
   have h : (fun x : ℝ => if 0 < x then Real.exp (-1 / x) else 0) = expNegInvGlue := by

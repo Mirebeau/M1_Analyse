@@ -59,8 +59,9 @@ theorem prop_distribL1Loc_ordre (Ω : TopologicalSpace.Opens ℝᵈ) {f : ℝᵈ
 /-- **Prop. `prop:distribL1Loc`, injectivité.** Si `f, g ∈ L^1_loc(Ω)` vérifient `U_f = U_g`,
 alors `f = g` presque partout sur `Ω`.
 Remarque : la continuité de `f ↦ U_f` (de `L^1_loc(Ω)` dans `𝓓'(Ω)`) n'est pas formalisée.
-Preuve (différente du cours) : résultat de Mathlib `Distribution.ofFun_injective`, au lieu de
-l'argument de régularisation par convolution `ρ_ε ⋆ f → f` du cours. -/
+Preuve (différente du cours) : `Distribution.ofFun_injective` de Mathlib : des `φ_n ∈ C^∞_c`,
+`= 1` sur un compact `K`, tendant vers `1_K`, donnent `∫_K f = 0` (convergence dominée), donc
+`f = 0` p.p. ; au lieu de la régularisation `ρ_ε ⋆ f → f` du cours. -/
 theorem prop_distribL1Loc_injective (Ω : TopologicalSpace.Opens ℝᵈ) {f g : ℝᵈ → ℝ}
     (hf : LocallyIntegrableOn f Ω) (hg : LocallyIntegrableOn g Ω)
     (h : Distribution.ofFun Ω f volume ⊤ = Distribution.ofFun Ω g volume ⊤) :

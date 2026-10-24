@@ -108,9 +108,9 @@ theorem def_linSpectre_valeurPropre [CompleteSpace E] (T : E →L[𝕜] E) (μ :
 
 /-- **Thm. `th:Fredholm` (Fredholm).** Soit `E` un Banach et `T ∈ L_c(E)` un opérateur compact
 tel que `Ker(Id - T) = {0}`. Alors `Im(Id - T) = E`, et `Id - T` admet un inverse continu.
-Preuve (différente du cours) : alternative de Fredholm de Mathlib
-(`IsCompactOperator.hasEigenvalue_or_mem_resolventSet`) ; ni fermeture de `Im(Id - T)`, ni
-suite décroissante `(Id - T)^n E` avec le lemme de Riesz, ni isomorphisme de Banach. -/
+Preuve (via Mathlib, proche du cours) : `IsCompactOperator.hasEigenvalue_or_mem_resolventSet` :
+`Id - T` est minorée, la suite `(Id - T)^n E` ne peut décroître strictement (argument de Riesz et
+compacité), d'où la surjectivité, puis l'inverse continu par l'isomorphisme de Banach. -/
 theorem th_Fredholm [CompleteSpace E] (T : E →L[𝕜] E) (hT : IsCompactOperator T)
     (hker : LinearMap.ker ((ContinuousLinearMap.id 𝕜 E - T : E →L[𝕜] E) : E →ₗ[𝕜] E) = ⊥) :
     LinearMap.range ((ContinuousLinearMap.id 𝕜 E - T : E →L[𝕜] E) : E →ₗ[𝕜] E) = ⊤ ∧

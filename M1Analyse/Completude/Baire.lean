@@ -49,8 +49,9 @@ theorem lem_fermeEmboite [MetricSpace X] [CompleteSpace X] (F : ℕ → Set X)
 
 /-- **Th. `th:BaireOuvert` (Baire).** Dans un espace métrique complet, une intersection
 dénombrable d'ouverts denses est dense.
-Preuve (différente du cours) : théorème de Baire de Mathlib (`dense_iInter_of_isOpen_nat`,
-instance `BaireSpace` des complets), sans la construction de boules emboîtées du cours. -/
+Preuve (via Mathlib, même stratégie que le cours) : `dense_iInter_of_isOpen_nat` et instance
+`BaireSpace` des complets, que Mathlib établit aussi par boules fermées emboîtées de rayons
+`≤ 2^{-n}`, dont les centres forment une suite de Cauchy. -/
 theorem th_BaireOuvert [MetricSpace X] [CompleteSpace X] (U : ℕ → Set X)
     (hU : ∀ n, IsOpen (U n)) (hd : ∀ n, Dense (U n)) : Dense (⋂ n, U n) :=
   dense_iInter_of_isOpen_nat hU hd

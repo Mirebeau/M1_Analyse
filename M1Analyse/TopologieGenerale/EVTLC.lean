@@ -122,9 +122,9 @@ variable [AddCommGroup F] [Module 𝕜 F] [TopologicalSpace F] {q : SeminormFami
 /-- **Lemme `lem:evtlcLinCont` (Continuité linéaire entre evtlc), éq. `eq:cont_lin_evtlc`.**
 Une application linéaire `u : E → F` entre evtlc est continue ssi pour tout `j ∈ J` il existe
 `I_j ⊆ I` fini et une constante `C_j` tels que `|u(x)|_j ≤ C_j max_{i ∈ I_j} |x|_i`.
-Preuve (différente du cours) : résultats de Mathlib `Seminorm.bound_of_continuous` et
-`WithSeminorms.continuous_of_isBounded`, au lieu de l'argument direct par les voisinages
-`eq:evtlc_vois` et l'homogénéité. -/
+Preuve (via Mathlib, même stratégie que le cours) : `Seminorm.bound_of_continuous` (un
+voisinage de base `{max_{i ∈ I_j} |x|_i < ε}` dans `{|u(x)|_j < 1}`, puis homogénéité) et
+`WithSeminorms.continuous_of_isBounded`. -/
 theorem lem_evtlcLinCont (hp : WithSeminorms p) (hq : WithSeminorms q) (u : E →ₗ[𝕜] F) :
     Continuous u ↔ ∀ j, ∃ I : Finset ι, ∃ C : ℝ, ∀ x, q j (u x) ≤ C * (I.sup p) x := by
   constructor

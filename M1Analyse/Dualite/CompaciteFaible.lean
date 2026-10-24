@@ -77,7 +77,8 @@ theorem prop_cvxFaibleFerme (C : Set E) (hC : Convex ℝ C) (hCf : IsClosed C) (
 /-- **Cor. `corol:cvxFermeBdComp`, premier point.** Tout convexe fermé `C` d'un evn `E` est
 faiblement fermé.
 Preuve (différente du cours) : `Convex.toWeakSpace_closure` de Mathlib (adhérences forte et
-faible d'un convexe coïncident), au lieu de la dualité polaire `prop:cvxFaibleFerme`. -/
+faible d'un convexe coïncident : un point hors de l'adhérence forte en est séparé par Hahn-Banach
+géométrique), au lieu de la dualité polaire `prop:cvxFaibleFerme`. -/
 theorem corol_cvxFermeBdComp_ferme (C : Set E) (hC : Convex ℝ C) (hCf : IsClosed C) :
     IsClosed (toWeakSpace ℝ E '' C) := by
   have := hC.toWeakSpace_closure (𝕜 := ℝ)

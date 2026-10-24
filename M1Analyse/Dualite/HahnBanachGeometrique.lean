@@ -263,8 +263,9 @@ theorem lem_jaugeOuvertCvx_ferme (hC : Convex ℝ C) (h0 : (0 : E) ∈ C) (hF : 
 /-- **Th. `th:separOuvertPt` (Séparation d'un ouvert convexe et d'un point).** Soient `E` un evn,
 `C ⊆ E` un ouvert convexe contenant `0` et `x ∈ E \ C`. Il existe `φ ∈ E^*` telle que
 `φ(x) = 1` et `φ < 1` sur `C`.
-Preuve (différente du cours) : séparation de Mathlib `geometric_hahn_banach_open` (ouvert `C`,
-point `x`) puis normalisation, au lieu de Hahn-Banach analytique avec la jauge `p_C`. -/
+Preuve (différente du cours) : `geometric_hahn_banach_open` de Mathlib (ouvert `C`, point `x`)
+puis normalisation ; Mathlib le déduit de Hahn-Banach analytique avec la jauge d'un translaté de
+`C - {x}` (`separate_convex_open_set`). -/
 theorem th_separOuvertPt (hC : Convex ℝ C) (hO : IsOpen C) (h0 : (0 : E) ∈ C) {x : E}
     (hx : x ∉ C) : ∃ φ : StrongDual ℝ E, φ x = 1 ∧ ∀ y ∈ C, φ y < 1 := by
   obtain ⟨f, u, hfC, hfx⟩ := geometric_hahn_banach_open hC hO (convex_singleton x)
@@ -291,8 +292,9 @@ theorem corol_separOuvertPt_zero (hC : Convex ℝ C) (hO : IsOpen C) (h0 : (0 : 
 /-- **Cor. `corol:separOuvertPt`, second point.** Soient `A` un convexe et `B` un ouvert convexe
 d'un evn `E`, non vides et disjoints. Il existe `φ ∈ E^*` et `α ∈ ℝ` tels que
 `φ(a) ≤ α < φ(b)` pour tous `a ∈ A`, `b ∈ B`.
-Preuve (différente du cours) : `geometric_hahn_banach_open` appliqué directement à `B` et `A`,
-sans passer par l'ouvert `B - A` et le premier point. -/
+Preuve (différente du cours) : `geometric_hahn_banach_open` de Mathlib appliqué à `B` et `A`
+(Mathlib sépare `0` du translaté ouvert de `B - A` par la jauge), sans passer par le premier
+point. -/
 theorem corol_separOuvertPt {A B : Set E} (hA : Convex ℝ A) (hB : Convex ℝ B) (hBo : IsOpen B)
     (_hAne : A.Nonempty) (_hBne : B.Nonempty) (hAB : Disjoint A B) :
     ∃ (φ : StrongDual ℝ E) (α : ℝ), ∀ a ∈ A, ∀ b ∈ B, φ a ≤ α ∧ α < φ b := by
@@ -305,8 +307,9 @@ theorem corol_separOuvertPt {A B : Set E} (hA : Convex ℝ A) (hB : Convex ℝ B
 `A, B ⊆ E` convexes, non vides, disjoints, avec `A` fermé et `B` compact. Il existe `φ ∈ E^*`
 telle que `sup_A φ < inf_B φ`. La clause `BddAbove (φ '' A)` explicite que `sup_A φ` est fini
 (en Lean, le `sSup` d'une partie non majorée de `ℝ` vaut `0` par convention).
-Preuve (différente du cours) : `geometric_hahn_banach_closed_compact` de Mathlib, au lieu de
-la fermeture de `B - A` et de `corol:separOuvertPt`. -/
+Preuve (différente du cours) : `geometric_hahn_banach_closed_compact` de Mathlib : `A + V`,
+`B + V` (`V` voisinage convexe de `0`) sont des ouverts convexes disjoints, séparés, puis `φ`
+atteint son max sur `B` ; au lieu de la fermeture de `B - A`. -/
 theorem th_separFermeComp {A B : Set E} (hA : Convex ℝ A) (hAf : IsClosed A) (hB : Convex ℝ B)
     (hBc : IsCompact B) (hAne : A.Nonempty) (hBne : B.Nonempty) (hAB : Disjoint A B) :
     ∃ φ : StrongDual ℝ E, BddAbove (φ '' A) ∧ sSup (φ '' A) < sInf (φ '' B) := by

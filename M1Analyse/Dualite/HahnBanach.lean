@@ -56,8 +56,9 @@ theorem def_inductif_iff :
 `m` (i.e. `m ≤ y → y = m`).
 Remarque : l'hypothèse de non-vacuité est en fait conséquence du caractère inductif (la partie
 vide admet un majorant).
-Preuve (différente du cours) : le cours admet ce lemme ; il est déduit ici de `zorn_le`
-de Mathlib. -/
+Preuve (différente du cours) : le cours admet ce lemme ; il est déduit ici de `zorn_le` de
+Mathlib : majorant d'une chaîne maximale (principe de Hausdorff, chaîne construite par l'axiome du
+choix comme union de chaînes successives). -/
 theorem lem_Zorn [Nonempty α] (h : Inductif α) : ∃ m : α, ∀ y, m ≤ y → y = m := by
   obtain ⟨m, hm⟩ := zorn_le ((def_inductif_iff α).1 h)
   exact ⟨m, fun y hy => le_antisymm (hm hy) hy⟩
@@ -113,8 +114,8 @@ theorem def_sousLin (ρ : E → ℝ) :
 /-- **Th. `th:HahnBanach` (Hahn-Banach).** Soient `E` un `ℝ`-espace vectoriel, `F` un
 sous-espace, `ρ : E → ℝ` sous-linéaire et `φ_F : F → ℝ` linéaire avec `φ_F ≤ ρ` sur `F`. Alors il
 existe `φ : E → ℝ` linéaire avec `φ ≤ ρ` sur `E` et `φ|_F = φ_F`.
-Preuve (différente du cours) : pas de construction par Zorn ; application directe de
-`exists_extension_of_le_sublinear` de Mathlib. -/
+Preuve (via Mathlib) : `exists_extension_of_le_sublinear` de Mathlib, déduit du prolongement de
+M. Riesz (Zorn sur les prolongements partiels positifs sur le cône `{(x, t) | ρ(x) ≤ t}`). -/
 theorem th_HahnBanach (F : Submodule ℝ E) (ρ : E → ℝ) (hρ : SousLineaire ρ)
     (φF : F →ₗ[ℝ] ℝ) (hφF : ∀ x : F, φF x ≤ ρ x) :
     ∃ φ : E →ₗ[ℝ] ℝ, (∀ x, φ x ≤ ρ x) ∧ ∀ x : F, φ x = φF x := by
@@ -131,8 +132,8 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
 /-- **Cor. `corol:prol_forme_evn` (Prolongement de même norme d'une forme linéaire).** Soient `E`
 un evn, `F ⊆ E` un sous-espace et `φ_F ∈ F^*`. Il existe `φ ∈ E^*` prolongeant `φ_F` et de même
 norme.
-Preuve (différente du cours) : `exists_extension_norm_eq` de Mathlib, au lieu de Hahn-Banach
-avec `ρ(x) := ‖φ_F‖ ‖x‖`. -/
+Preuve (via Mathlib, même stratégie que le cours) : `exists_extension_norm_eq` de Mathlib, qui
+applique Hahn-Banach avec la semi-norme `ρ(x) := ‖φ_F‖ ‖x‖`. -/
 theorem corol_prol_forme_evn (F : Submodule ℝ E) (φF : StrongDual ℝ F) :
     ∃ φ : StrongDual ℝ E, (∀ x : F, φ x = φF x) ∧ ‖φ‖ = ‖φF‖ :=
   exists_extension_norm_eq F φF
@@ -226,8 +227,9 @@ theorem ex_dualSeparable [TopologicalSpace.SeparableSpace (StrongDual ℝ E)] :
 /-- **Cor. `corol:projDimFinie` (Projection sur un sous-espace de dimension finie).** Pour tout
 sous-espace de dimension finie `F` d'un evn `E`, il existe une projection linéaire continue
 `P_F : E → F` (i.e. `P_F x = x` pour `x ∈ F`).
-Preuve (différente du cours) : `Submodule.ClosedComplemented.of_finiteDimensional` de Mathlib,
-au lieu du prolongement explicite de la base duale. -/
+Preuve (via Mathlib, même stratégie que le cours) :
+`Submodule.ClosedComplemented.of_finiteDimensional` de Mathlib, qui prolonge par Hahn-Banach
+les formes coordonnées d'une base de `F`. -/
 theorem corol_projDimFinie (F : Submodule ℝ E) [FiniteDimensional ℝ F] :
     ∃ P : E →L[ℝ] F, ∀ x : F, P x = x :=
   Submodule.ClosedComplemented.of_finiteDimensional F
