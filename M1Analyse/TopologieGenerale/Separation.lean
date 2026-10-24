@@ -176,9 +176,7 @@ theorem ex_T1nonT2_zariski_isClosed (d : ℕ) (F : Set (Zariski d)) :
   rw [compl_compl]
 
 /-- **Ex. `ex:T1nonT2` (Topologie de Zariski), T1 et non T2.** `ℂ^d` muni de la topologie de
-Zariski est T1, et n'est pas T2 dès que `d ≥ 1`.
-Remarque : l'hypothèse `d ≥ 1` est nécessaire (non explicite dans le cours) : `ℂ^0` est un
-point, donc séparé. -/
+Zariski est T1, et n'est pas T2 (`d ≥ 1`). -/
 theorem ex_T1nonT2_zariski (d : ℕ) (hd : 1 ≤ d) :
     T1Space (Zariski d) ∧ ¬ T2Space (Zariski d) := by
   refine ⟨⟨fun a => ?_⟩, fun h => ?_⟩
