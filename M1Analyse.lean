@@ -30,6 +30,7 @@ import M1Analyse.Compacite.StoneWeierstrass
 import M1Analyse.Compacite.OperateursCompacts
 import M1Analyse.Dualite.HahnBanach
 import M1Analyse.Dualite.Reflexivite
+import M1Analyse.Dualite.DualiteLebesgue
 import M1Analyse.Dualite.HahnBanachGeometrique
 import M1Analyse.Dualite.CompaciteFaible
 import M1Analyse.Sobolev.ConvolutionLp

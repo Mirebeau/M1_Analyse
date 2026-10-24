@@ -33,7 +33,7 @@ SITE_DIR = "M1Analyse"
 NAMESPACE = "M1Analyse"
 
 DECL = re.compile(r"^(?:@\[[^\]]*\]\s*)?(?:noncomputable\s+)?(?:protected\s+)?"
-                  r"(theorem|lemma|def|abbrev|structure|class|instance|inductive)\s+([^\s(\[{:]+)")
+                  r"(theorem|lemma|def|abbrev|structure|class|instance|inductive|axiom)\s+([^\s(\[{:]+)")
 
 
 def course_labels(paper):

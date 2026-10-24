@@ -16,6 +16,7 @@ import M1Analyse.Completude.Prolongements
 import Mathlib.Analysis.MeanInequalities
 import Mathlib.MeasureTheory.Function.LpSeminorm.LpNorm
 import Mathlib.Basic.Real.Sign
+import Mathlib.Analysis.Convex.Uniform
 
 /-!
 # §3.2 Réflexivité (`subsec:reflexivite`)
@@ -117,6 +118,52 @@ theorem corol_bidualComplete :
   exact ⟨e, fun x => by rw [he x]⟩
 
 end Bidual
+
+section MilmanPettis
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+
+/-- Pont entre la définition du cours de l'uniforme convexité (`eq:unif_cvx_ball`) :
+« $\forall \varepsilon>0$, $\exists \delta>0$, $\forall x,y \in E$,
+$(\|x\|=\|y\|=1$ et $\|x-y\| \geq \varepsilon) \Rightarrow \|\frac{x+y}2\| \leq 1-\delta$ »,
+et la classe `UniformConvexSpace` de Mathlib (qui borne $\|x+y\|$ par $2-\delta$). -/
+theorem unifCvx_iff_uniformConvexSpace :
+    (∀ ε : ℝ, 0 < ε → ∃ δ : ℝ, 0 < δ ∧ ∀ x y : E, ‖x‖ = 1 → ‖y‖ = 1 → ε ≤ ‖x - y‖ →
+      ‖(1 / 2 : ℝ) • (x + y)‖ ≤ 1 - δ) ↔ UniformConvexSpace E := by
+  have key : ∀ x y : E, ‖(1 / 2 : ℝ) • (x + y)‖ = ‖x + y‖ / 2 := fun x y => by
+    rw [norm_smul, Real.norm_eq_abs, abs_of_pos (by norm_num : (0 : ℝ) < 1 / 2)]; ring
+  constructor
+  · intro h
+    refine ⟨fun ε hε => ?_⟩
+    obtain ⟨δ, hδ, H⟩ := h ε hε
+    refine ⟨2 * δ, by positivity, fun x hx y hy hxy => ?_⟩
+    have := H x y hx hy hxy
+    rw [key] at this
+    linarith
+  · intro h ε hε
+    obtain ⟨δ, hδ, H⟩ := h.uniform_convex hε
+    refine ⟨δ / 2, by positivity, fun x y hx hy hxy => ?_⟩
+    have := H hx hy hxy
+    rw [key]
+    linarith
+
+/-- **Th. `th:unifCvxReflex` (Milman–Pettis), AXIOME.** Un evn `E` est uniformément convexe si
+`∀ ε > 0, ∃ δ > 0, ∀ x y, ‖x‖ = ‖y‖ = 1, ‖x - y‖ ≥ ε ⇒ ‖(x+y)/2‖ ≤ 1 - δ` (`eq:unif_cvx_ball`).
+Tout espace de Banach uniformément convexe est réflexif.
+Remarque : la preuve est admise dans le cours, et le théorème est absent de Mathlib (où il
+figure en TODO) ; à la demande de l'auteur, l'énoncé est posé comme **axiome** Lean. Les
+résultats qui en dépendent le mentionnent dans `#print axioms` (`M1Analyse.th_unifCvxReflex`).
+L'hypothèse équivaut à `UniformConvexSpace E` de Mathlib (`unifCvx_iff_uniformConvexSpace`). -/
+axiom th_unifCvxReflex {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    (hE : ∀ ε : ℝ, 0 < ε → ∃ δ : ℝ, 0 < δ ∧ ∀ x y : E, ‖x‖ = 1 → ‖y‖ = 1 → ε ≤ ‖x - y‖ →
+      ‖(1 / 2 : ℝ) • (x + y)‖ ≤ 1 - δ) :
+    Reflexif E
+
+/-- Milman–Pettis (`th:unifCvxReflex`), formulé avec la classe `UniformConvexSpace` de Mathlib :
+tout espace de Banach uniformément convexe est réflexif. -/
+theorem th_unifCvxReflex_uniformConvexSpace [CompleteSpace E] [UniformConvexSpace E] :
+    Reflexif E :=
+  th_unifCvxReflex (unifCvx_iff_uniformConvexSpace.2 inferInstance)
+end MilmanPettis
 
 section Hilbert
 
