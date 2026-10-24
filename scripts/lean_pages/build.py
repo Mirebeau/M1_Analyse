@@ -102,16 +102,47 @@ def read_decls(labels):
 
 def mathlib_uses(decls):
     """For each declaration, the Mathlib declarations used directly by its statement and proof,
-    with their modules (for the links to the Mathlib documentation)."""
+    with their modules (for the links to the Mathlib documentation), and the course statements of
+    the project that it uses (through helper declarations of the project, which are not shown)."""
     BUILD.mkdir(exist_ok=True)
     out = BUILD / "mathlib.json"
     names = ",\n".join(f"  `{d['name']}" for d in decls)
+    labelled = ",\n".join(f"  `{d['name']}" for d in decls if d["labels"])
     (BUILD / "Mathlib.lean").write_text(f'''import M1Analyse
 open Lean Elab Command
 
 def names : List Name := [
 {names}
 ]
+
+/-- The declarations shown on the pages (those formalizing a course label). -/
+def labelled : NameSet := NameSet.ofList [
+{labelled}
+]
+
+/-- The course statements used by `n`: the labelled declarations of the project reached from its
+statement and proof, looking through the other declarations of the project (helpers). -/
+def projectUses (env : Environment) (n : Name) : Array Name := Id.run do
+  let some ci := env.find? n | return #[]
+  let mut todo := ci.getUsedConstantsAsSet.toList
+  let mut seen : NameSet := NameSet.empty.insert n
+  let mut found : Array Name := #[]
+  while true do
+    match todo with
+    | [] => break
+    | c :: rest =>
+      todo := rest
+      if seen.contains c then continue
+      seen := seen.insert c
+      if labelled.contains c then
+        found := found.push c
+      else
+        let inProject := (env.getModuleIdxFor? c).any fun i =>
+          (`M1Analyse).isPrefixOf env.header.moduleNames[i.toNat]!
+        if inProject then
+          if let some cc := env.find? c then
+            todo := todo ++ cc.getUsedConstantsAsSet.toList
+  return found
 
 /-- Too basic to be worth a link. -/
 def tooBasic : List Name := [`Set, `Set.ofPred, `Set.Elem]
@@ -133,8 +164,10 @@ run_cmd do
     let notions := ci.type.getUsedConstants.filterMap (shown env)
     let lemmas := ci.getUsedConstantsAsSet.toArray.filter
       (fun m => (env.find? m).any (·.isThm)) |>.filterMap (shown env)
+    let project := (projectUses env n).map fun m => "\\"" ++ m.toString ++ "\\""
     out := out.push ("\\"" ++ n.toString ++ "\\": {{\\"notions\\": [" ++ ", ".intercalate
-      notions.toList.eraseDups ++ "], \\"lemmas\\": [" ++ ", ".intercalate lemmas.toList.eraseDups ++ "]}}")
+      notions.toList.eraseDups ++ "], \\"lemmas\\": [" ++ ", ".intercalate lemmas.toList.eraseDups ++
+      "], \\"project\\": [" ++ ", ".intercalate project.toList ++ "]}}")
   IO.FS.writeFile "{out}" ("{{" ++ ",\\n".intercalate out.toList ++ "}}")
 ''')
     out.unlink(missing_ok=True)
@@ -151,6 +184,7 @@ run_cmd do
             d[key] = sorted(({"name": n, "url": url.format(m.replace(".", "/"), n)}
                              for n, m in data.get(d["name"], {}).get(key, [])),
                             key=lambda x: x["name"])
+        d["project"] = data.get(d["name"], {}).get("project", [])
     return decls
 
 

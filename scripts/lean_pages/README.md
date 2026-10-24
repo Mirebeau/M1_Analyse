@@ -1,7 +1,8 @@
 # Lean pages
 
 `build.py` builds `index.html`: the statements of the course notes `M1_Analyse.tex`, each with its
-Lean formalization (docstring, statement and complete proof), the Mathlib notions of the statement
+Lean formalization (docstring, statement and complete proof), the course statements it relies on
+(found through the helper lemmas of the project), the Mathlib notions of the statement
 and the Mathlib lemmas used by the proof (with links to the Mathlib documentation). Adapted from
 `LeanHJB_Autoformalisation/scripts/proof_map/`.
 

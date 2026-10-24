@@ -239,6 +239,21 @@ function uses(title, xs) {
   return `<div class="uses"><b>${title}</b>` + xs.map(x =>
     `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.name)}</a>`).join("") + "</div>";
 }
+const byName = {};
+for (const d of D.decls) byName[d.name] = d;
+const rank = {};
+P.order.forEach((l, k) => rank[l] = k);
+function projectUses(d) {  // the course statements used by d (other than its own), in course order
+  const xs = (d.project || []).map(n => byName[n])
+    .filter(x => x && x.labels.length && !x.labels.some(l => d.labels.includes(l)))
+    .sort((a, b) => (rank[a.labels[0]] ?? 1e9) - (rank[b.labels[0]] ?? 1e9));
+  if (!xs.length) return "";
+  return `<div class="uses"><b>Énoncés du cours utilisés</b>` + xs.map(x => {
+    const l = x.labels[0], i = L[l];
+    const ref = i ? (i.kind === "equation" ? "Éq. " + i.ref : i.ref) : l;
+    return `<a href="#label=${encodeURIComponent(l)}" title="${esc(x.name)}">${esc(ref)} · ${esc(x.name.replace(/^M1Analyse\./, ""))}</a>`;
+  }).join("") + "</div>";
+}
 function codeHtml(code) {  // the statement, then the proof folded (hidden by default)
   const k = code.indexOf(":=");
   if (k < 0) return `<pre><code>${leanHtml(code)}</code></pre>`;
@@ -253,6 +268,7 @@ function declHtml(d) {
     <h3><span><span class="k">${esc(d.kind)}</span> ${esc(d.name)}</span><span class="file">${esc(d.file)}:${d.line}</span></h3>
     <p class="ddoc">${docHtml(d.doc)}</p>
     ${codeHtml(d.code)}
+    ${projectUses(d)}
     ${uses("Notions Mathlib", d.notions)}
     ${uses("Lemmes Mathlib utilisés", d.lemmas)}
   </section>`;
@@ -295,7 +311,7 @@ function intro() {
   panel.innerHTML = `<div class="intro">
     <p class="eyebrow">Mode d'emploi</p>
     <p>À gauche, le plan du cours. Les énoncés marqués <span class="lean">Lean ✓</span> sont formalisés : un clic affiche l'énoncé du cours, puis sa version Lean ; la démonstration, vérifiée par l'ordinateur, s'affiche d'un clic.</p>
-    <p>Les objets du cours (topologie, adhérence, densité, …) sont ceux de la bibliothèque Mathlib. Chaque énoncé Lean indique les notions de Mathlib qu'il utilise, et les lemmes de Mathlib invoqués dans sa preuve, avec un lien vers leur documentation.</p>
+    <p>Les objets du cours (topologie, adhérence, densité, …) sont ceux de la bibliothèque Mathlib. Chaque énoncé Lean indique les énoncés du cours sur lesquels il s'appuie (avec un lien vers leur page), les notions de Mathlib qu'il utilise, et les lemmes de Mathlib invoqués dans sa preuve, avec un lien vers leur documentation.</p>
     <p>Dans le PDF du cours, la marque « Lean✓ » placée à côté d'un énoncé mène directement à sa page ici.</p>
   </div>`;
   renderList();
