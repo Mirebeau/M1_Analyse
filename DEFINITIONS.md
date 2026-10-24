@@ -282,7 +282,7 @@ Mathlib utilisés). Voir `scripts/lean_pages/README.md`.
 
 Chacune fait l'objet d'un \claudereport dans le texte.
 
-- TopologieGenerale ex:T1nonT2 (cofinite): "les fermés sont les parties finies" -> "les parties finies et N lui-même".
+- TopologieGenerale ex:T1nonT2 (cofinite): "les fermés sont les parties finies" -> "les parties finies et N lui-même". (Corrigé dans le cours ; remarque retirée du Lean.)
 - TopologieGenerale ex:T1nonT2 (Zariski): non séparé seulement pour d >= 1 (C^0 est un point).
 - TopologieGenerale rem:topoFunc: "(x_n) converge ssi (f_i(x_n)) converge pour tout i" faux tel quel (X=]0,1], inclusion dans R, x_n=1/n) ; correct : x_n -> a ssi f_i(x_n) -> f_i(a) pour tout i.
 - TopologieGenerale prop:surGrapheSCI: hypothèse f > -inf inutile (info, pas une erreur).
