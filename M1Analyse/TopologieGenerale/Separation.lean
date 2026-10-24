@@ -65,19 +65,16 @@ theorem tendsto_cofiniteTopology_nat (a : CofiniteTopology ℕ) :
   exact le_sup_of_le_right CofiniteTopology.of.injective.tendsto_cofinite
 
 /-- **Rem. `rem:T1`, suite.** L'axiome T1 ne garantit pas l'unicité de la limite : dans
-l'espace T1 `ℕ` muni de la topologie cofinie (cf. `ex:T1nonT2`), la suite `n ↦ n` admet deux
-limites distinctes (en fait, tout point en est limite). -/
+l'espace T1 `ℕ` muni de la topologie cofinie (cf. `ex:T1nonT2`), la suite `u(n) = n` admet tout
+point pour limite (et `ℕ` a plusieurs points, par exemple `0 ≠ 1`). -/
 theorem rem_T1_nonUnique :
-    T1Space (CofiniteTopology ℕ) ∧ ∃ (u : ℕ → CofiniteTopology ℕ) (a b : CofiniteTopology ℕ),
-      a ≠ b ∧ Tendsto u atTop (𝓝 a) ∧ Tendsto u atTop (𝓝 b) :=
-  ⟨inferInstance, _, CofiniteTopology.of 0, CofiniteTopology.of 1, by decide,
-    tendsto_cofiniteTopology_nat _, tendsto_cofiniteTopology_nat _⟩
+    T1Space (CofiniteTopology ℕ) ∧
+      ∀ a : CofiniteTopology ℕ, Tendsto (fun n : ℕ => CofiniteTopology.of n) atTop (𝓝 a) :=
+  ⟨inferInstance, tendsto_cofiniteTopology_nat⟩
 
 /-- **Ex. `ex:T1nonT2` (Topologie cofinie).** Sur `ℕ` muni de la topologie cofinie
 (`CofiniteTopology ℕ`), les fermés sont les parties finies (et `ℕ` lui-même) ; cet espace est
-T1 mais pas T2.
-Remarque : le cours dit « la topologie dont les fermés sont les parties finies » ; il faut
-ajouter `ℕ` tout entier, qui est fermé dans toute topologie. -/
+T1 mais pas T2. -/
 theorem ex_T1nonT2_cofinie :
     (∀ F : Set (CofiniteTopology ℕ), IsClosed F ↔ F.Finite ∨ F = univ) ∧
     T1Space (CofiniteTopology ℕ) ∧ ¬ T2Space (CofiniteTopology ℕ) := by
