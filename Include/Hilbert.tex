@@ -172,8 +172,7 @@ Une variante du résultat classique précédent traite des cônes convexes ferm�
 \begin{proposition}[Décomposition orthogonale associée à un cône \facultatif]
 \label{prop:decompCone}
 \leancheck{prop:decompCone}%
-\claudereport{Détail (formalisation Lean) : supposer $K$ non vide (la définition d'un cône convexe autorise $K = \emptyset$, pour lequel $P_K$ n'est pas défini).}
-	Soit $H$ un $\bR$-Hilbert, soit $K \subset H$ un cône convexe fermé, et soit $K^\circ := \{y\in H\mid \forall x \in K,\ \<x,y\> \leq 0\}$ le cône polaire. %; noter que $K \cap K^\circ = \{0\}$.
+	Soit $H$ un $\bR$-Hilbert, soit $K \subset H$ un cône convexe fermé non-vide, et soit $K^\circ := \{y\in H\mid \forall x \in K,\ \<x,y\> \leq 0\}$ le cône polaire. %; noter que $K \cap K^\circ = \{0\}$.
 	On a la caractérisation suivante des projections sur $K$ et $K^\circ$ : %sont caractérisées par %$P_K+P_K^\perp = \Id$ et $\<P_K,P_{K^\circ}\> = 0$, 
 	\begin{equation}
 	\label{eq:proj_cone}

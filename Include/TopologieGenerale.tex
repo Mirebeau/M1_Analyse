@@ -496,11 +496,10 @@ Cet axiome ne \emph{garantit pas l'unicité} de la limite.
 
 \begin{exemple}[Espaces T1 mais pas T2 \facultatif]
 \label{ex:T1nonT2}
-\leancheck{ex:T1nonT2}%
-\claudereport{Imprécision (relevée lors de la formalisation Lean) : topologie cofinie, les fermés sont les parties finies \emph{et $\bN$ lui-même} ; topologie de Zariski, elle n'est pas séparée seulement si $d \geq 1$ ($\bC^0$ est un point).}
+\leancheck{ex:T1nonT2}
 \begin{itemize}
-	\item (Topologie cofinie) Les entiers naturels, muni de la topologie dont les fermés sont les parties finies. 
-	\item (Topologie de Zariski) L'ensemble $\bC^d$, muni de la topologie dont les fermés sont les ensembles algébriques (i.e.\ les zéros communs d'une famille de polynômes). Formellement, un fermé de Zariski $F \subset \bC^d$ est un ensemble de la forme
+	\item (Topologie cofinie) Les entiers naturels, muni de la topologie dont les fermés sont les parties finies de $\bN$, ainsi que $\bN$ lui-même. 
+	\item (Topologie de Zariski) L'ensemble $\bC^d$, où $d \geq 1$, muni de la topologie dont les fermés sont les ensembles algébriques (i.e.\ les zéros communs d'une famille de polynômes). Formellement, un fermé de Zariski $F \subset \bC^d$ est un ensemble de la forme
 	\begin{equation}
 		F = \{x \in \bC^d \mid P_1(x) = \cdots = P_I(x) = 0\},
 	\end{equation}
@@ -575,12 +574,11 @@ Soient $(X,\bU)$, $(Y,\bV)$, des espaces topologiques, et $f : X \to Y$. Les pro
 
 \begin{remark}[Topologie rendant continue une famille de fonctions]
 \label{rem:topoFunc}
-\leancheck{rem:topoFunc}%
-\claudereport{Erreur (relevée lors de la formalisation Lean) : ``$(x_n)$ converge ssi $(f_i(x_n))$ converge pour tout $i$'' est faux tel quel (contre-exemple : $X = ]0,1]$, $f$ l'inclusion dans $\bR$, $x_n = 1/n$). Correct : $x_n \to x$ ssi $f_i(x_n) \to f_i(x)$ pour tout $i \in I$.}
+\leancheck{rem:topoFunc}
 Soit $X$ un ensemble, et pour tout $i \in I$ appartenant à un ensemble quelconque d'indices soit $f_i : X \to Y_i$ une fonction vers un espace topologique $(Y_i,\bU_i)$.
 On peut considérer la topologie $\bU$ sur $X$ engendrée par les ensembles $\{f_i^{-1}(U_i) \mid i \in I,\ U_i \in \bU_i\}$.
 
-C'est la topologie la moins fine rendant continue ces fonctions. Une suite $(x_n)_{n \in \bN}$ converge pour $\bU$ si et seulement si $(f_i(x_n))_{n \in \bN}$ converge pour tout $i \in I$.
+C'est la topologie la moins fine rendant continue ces fonctions. Une suite $(x_n)_{n \in \bN}$ converge vers $x_*\in X$ pour $\bU$ si et seulement si $f_i(x_n) \to f_i(x_*)$ lorsque $n \to \infty$, pour tout $i \in I$.
 \end{remark}
 
 Nous terminons cette sous-section avec la notion de semi-continuité, qui intervient dans les problèmes d'optimisation, voir  l'\nref{sec:LegendreFenchel}.
@@ -607,13 +605,12 @@ De même, une somme de fonctions s.c.s.\ est s.c.s.
 
 \begin{proposition}
 \label{prop:surGrapheSCI}
-\leancheck{prop:surGrapheSCI}%
-\claudereport{Remarque (formalisation Lean) : l'hypothèse $f > -\infty$ n'est pas nécessaire.}
-	Soit $(X,\bU)$ un espace topologique, et $f : X \to ]-\infty,\infty]$. Alors $f$ est s.c.i.\ ssi son sur-graphe $\cG := \{(x,t) \in X \times \bR \mid f(x) \leq t\}$ est fermé. 
+\leancheck{prop:surGrapheSCI}
+	Soit $(X,\bU)$ un espace topologique, et $f : X \to \overline \bR$. Alors $f$ est s.c.i.\ ssi son sur-graphe $\cG := \{(x,t) \in X \times \bR \mid f(x) \leq t\}$ est fermé. 
 \end{proposition}
 
 \begin{proof}
-Si $\cG$ est fermé, alors $\{f \leq \lambda\} = \{x\in X \mid (x,\lambda) \in \cG\}$ aussi, et donc $f$ est s.c.i. La réciproque découle de l'égalité suivante, facilement vérifiée 
+Si $\cG$ est fermé, alors $\{f \leq \lambda\} = \{x\in X \mid (x,\lambda) \in \cG\}$ aussi, pour tout $\lambda \in \bR$. Comme de plus $\{f \leq \infty\} = X$ et $\{f \leq -\infty\} = \cap_{\lambda \in \bR} \{f\leq \lambda\}$ sont fermés, on obtient que $f$ est s.c.i. La réciproque découle de l'égalité suivante, facilement vérifiée 
 \begin{equation*}
 	\{(x,t) \in X \times \bR \mid f(x) \leq t\} 
 	= \bigcap_{\alpha \in \bR} \big(\{f \leq \alpha\} \times ]-\infty,\alpha]\big) \cup \big(X \times [\alpha, \infty[\big).
@@ -1075,14 +1072,13 @@ Soit $(E,(|\cdot|_n)_{n \in \bN})$ un evtlcs muni d'une famille dénombrable de 
 En notant $\log_2 \eta := \ln \eta/ \ln 2$ le logarithme en base $2$ d'un réel $\eta>0$, on a de plus
 \begin{equation*}
 \label{eq:boule_evtlc}
-	B_d(x,\eta) = \{y \in E \mid \forall n< -\log_2 \eta,\ |y-x|_n < \eta\}.
+	B_d(x,\eta) = \{y \in E \mid \forall n \leq -\log_2 \eta,\ |y-x|_n < \eta\}.
 \leancheck{eq:boule_evtlc}%
 \end{equation*}
-\claudereport{Erreur (relevée lors de la formalisation Lean) : ``$n< -\log_2 \eta$'' $\to$ ``$n \leq -\log_2 \eta$'' (si $n = -\log_2\eta$, alors $\min\{2^{-n},|x-y|_n\}<\eta$ ssi $|x-y|_n < \eta$) ; de même dans la preuve, ``toujours satisfait si $n\geq -\log_2 \eta$'' $\to$ ``si $n > -\log_2 \eta$''. Contre-exemple : $\eta = 1/2$, $|y-x|_0 = 0$, $|y-x|_1 = 1$.}
 \end{proposition}
 
 \begin{proof}
-L'expression de la boule est claire, en remarquant que $\min\{2^{-n},|x-y|_n\}<\eta$ est toujours satisfait si $n\geq -\log_2 \eta$, et est équivalent à $|x-y|_n < \eta$ sinon. 
+L'expression de la boule est claire, en remarquant que $\min\{2^{-n},|x-y|_n\}<\eta$ est toujours satisfait si $n > -\log_2 \eta$, et est équivalent à $|x-y|_n < \eta$ sinon. 
 On en déduit les inclusions suivantes, pour tout $N \in \bN$ et tous $\epsilon,\eta>0$, montrant que $d$ définit une base de voisinages équivalente à \eqref{eqdef:boule_graduee}, donc la même topologie
 \belowdisplayskip=-12pt
 \begin{align*}

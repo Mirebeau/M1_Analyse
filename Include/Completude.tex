@@ -365,7 +365,6 @@ On peut également étendre des fonctions uniformément continues définies sur 
 \begin{exemple}[Extension de fonctions uniformément continues]
 \label{ex:extUnifCont}
 \leancheck{ex:extUnifCont}%
-\claudereport{Imprécision (preuve) : les inégalités $\omega(d(x,z)) \leq \omega(d(x,y)) + \omega(d(y,z))$ (et celle de la première ligne) utilisent l'inégalité triangulaire, la croissance \emph{et} la sous-additivité de $\omega$, pas seulement la sous-additivité.}
 	Soit $(X,d)$ un espace métrique, soit $A \subset X$ non-vide, et soit $f : A \to \bR$ uniformément continue, dont le module de continuité $\omega$ est supposé croissant et sous-additif.
 	Alors la fonction $F : X \to \bR$ définie par 
 	\begin{equation}
@@ -383,7 +382,7 @@ On peut également étendre des fonctions uniformément continues définies sur 
 	
 	On a $F(x) \leq f(x)$ pour tout $x\in A$ en choisissant $y=x$, mais par ailleurs $f(x)-f(y) \leq \omega(d(x,y))$ pour tout $y\in A$ donc $F(x) \geq f(x)$ sur $A$, d'où $F_{|A} = f$. 
 	
-	Comme $\omega(d(x,z)) \leq \omega(d(x,y)) + \omega(d(y,z))$ par sous-additivité, 
+	Comme $\omega(d(x,z)) \leq \omega(d(x,y) + d(y,z)) \leq \omega(d(x,y)) + \omega(d(y,z))$ par croissance et sous-additivité, 
 	on obtient $F(z) = \inf_{y \in A} f(y) + \omega(d(y,z)) \leq F(x) + \omega(d(x,z))$, donc $|F(x)-F(z)| \leq \omega(d(x,z))$ par symétrie, ce qui conclut. 
 \end{proof}
 
@@ -401,8 +400,7 @@ L'énoncé et la preuve du théorème de point fixe de Picard et du lemme de Gr�
 \begin{theorem}[Point fixe de Picard]
 \label{th:fixe_Picard}
 \leancheck{th:fixe_Picard}%
-\claudereport{Détail (formalisation Lean) : supposer $X$ non vide, sinon il n'y a pas de point fixe.}
-	Soit $(X,d)$ un espace métrique complet, et soit $f : X \to X$ une fonction $K$-Lipschitzienne avec $K<1$ (on dit aussi contractante). 
+	Soit $(X,d)$ un espace métrique complet non-vide, et soit $f : X \to X$ une fonction $K$-Lipschitzienne avec $K<1$ (on dit aussi contractante). 
 	
 	Alors $f$ admet un unique point fixe $x_* \in X$, et pour tout $x_0 \in X$ et tout $n \in \bN$ on a 
 	\begin{align}

@@ -96,22 +96,21 @@ Dans le \cref{th:ssGrad} suivant, on montre l'existence d'une fonction affine ta
 
 \begin{lemma}
 \label{lem:cvxImplBorne}
-\leancheck{lem:cvxImplBorne}%
-\claudereport{Problème (preuve, relevé lors de la formalisation Lean) : l'union des $\{f \leq n\}$ est $\Dom(f)$ et non $E$, donc le \cref{corol:BaireFerme} ne s'applique pas tel quel. Appliquer Baire dans la boule fermée (complète) $B'(0,\ve) \subset \Dom(f)$, recouverte par les $\{f\leq n\} \cap B'(0,\ve)$ ; on obtient alors $x_0 \in B'(0,\ve)$, ce qui assure aussi $-\ve x_0 \in \Dom(f)$ (sinon $f(-\ve x_0)$ peut valoir $+\infty$).}
+\leancheck{lem:cvxImplBorne}
 	Soit $f$ une fonction convexe s.c.i.\ sur un Banach. Alors $f$ est localement bornée sur $\mathring \Dom(f)$. 
 \end{lemma}
 
 \begin{proof}
-	Supposons $B'(0,\ve) \subset \Dom(f)$, quitte à considérer une translation $x \mapsto f(x+x_*)$ où $x_* \in \mathring \Dom(f)$, et montrons que $f$ est bornée au voisinage de $0$.
-	Comme $f$ est sci, les ensembles $(\{f \leq n\})_{n \in \bN}$ sont fermés. Comme leur union est $\Dom(f)$, l'un d'entre eux est d'intérieur non-vide. Par le \cref{corol:BaireFerme}, il existe donc $x_0 \in E$, $r>0$ et $n \in \bN$ tels que $f\leq n$ sur $B'(x_0,r)$. 
+	Supposons $B'(0,\ve) \subset \Dom(f)$, où $0<\ve \leq 1$, quitte à considérer une translation $x \mapsto f(x+x_*)$ où $x_* \in \mathring \Dom(f)$, et montrons que $f$ est bornée au voisinage de $0$.
+	Comme $f$ est sci, les ensembles $(\{f \leq n\})_{n \in \bN}$ sont fermés. Comme leur union est $\Dom(f)$, elle contient $B'(0,\ve)$ qui est une partie fermée (donc complète) et d'intérieur non-vide, donc l'un d'entre eux est d'intérieur non-vide. Par le \cref{corol:BaireFerme}, il existe donc $x_0 \in B'(0,\ve)$, $r>0$ et $n \in \bN$ tels que $f\leq n$ sur $B'(x_0,r)$. 
+	Noter aussi que $-\ve x_0 \in B'(0,\ve)\subset \Dom(f)$, car $0< \ve \leq 1$, et donc $f(-\ve x_0) < \infty$.
 	Par convexité, $f(\ve h/(1+\ve)) \leq \ve f(x_0+h)/(1+\ve) + f(-\ve x_0)/(1+\ve)$, donc $f \leq M_0 := \ve n /(1+\ve) + f(-\ve x_0)/(1+\ve)$ sur $B'(0,r_0)$ avec $r_0 := \ve r/(1+\ve)$.
 \end{proof}
 
 \begin{lemma}
 \label{lem:cvxImplLip}
-\leancheck{lem:cvxImplLip}%
-\claudereport{Détail (formalisation Lean) : supposer $f(x) < \infty$ (sinon l'hypothèse $f \leq f(x) + M$ est vide).}
-	Soit $f : E \to ]-\infty,\infty]$ une fonction convexe sur un evn. Supposons $f \leq f(x) + M$ sur $B'(x,r)$, où $x \in E$, $r>0$, $M > 0$. 
+\leancheck{lem:cvxImplLip}
+	Soit $f : E \to ]-\infty,\infty]$ une fonction convexe sur un evn. Supposons $f \leq f(x) + M$ sur $B'(x,r)$, où $x \in E$ satisfait $f(x)<\infty$, $r>0$, $M > 0$. 
 	Alors $|f(x)-f(y)|\leq (M/r) \|x-y\|$ pour tout $y \in B'(x,r)$. On en déduit que $f$ est $2 M/r$-Lipschitz sur $B'(x,r/3)$. 
 \end{lemma}
 
