@@ -35,7 +35,10 @@ section Jauge
 variable {E : Type*} [AddCommGroup E] [Module ℝ E]
 
 /-- La jauge `p_C(x) := inf {t > 0 | x/t ∈ C} ∈ [0, ∞]` d'une partie `C` (`prop:jaugeCvx`), avec
-la convention `inf ∅ = ∞`. -/
+la convention `inf ∅ = ∞`.
+Lien avec Mathlib : pour `C` convexe, absorbant et contenant `0`, coïncide avec la jauge `gauge`
+de Mathlib (`prop_jaugeCvx_eq_gauge`) ; `gauge` est à valeurs réelles, avec la convention
+`inf ∅ = 0`, d'où cette définition à valeurs dans `[0, ∞]` pour les parties non absorbantes. -/
 noncomputable def jauge (C : Set E) (x : E) : ℝ≥0∞ :=
   ⨅ t : {t : ℝ // 0 < t ∧ t⁻¹ • x ∈ C}, ENNReal.ofReal t
 

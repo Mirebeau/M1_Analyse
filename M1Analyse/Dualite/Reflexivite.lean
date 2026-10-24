@@ -35,7 +35,9 @@ section Bidual
 variable (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E]
 
 /-- **Déf. `def:reflexif` (Réflexivité).** L'evn `E` est réflexif si la fonction d'évaluation
-`Φ = inclusionInDoubleDual ℝ E : E → E^{**}` est bijective. -/
+`Φ = inclusionInDoubleDual ℝ E : E → E^{**}` est bijective.
+Lien avec Mathlib : l'injection canonique est `NormedSpace.inclusionInDoubleDual`, qui vérifie
+`Φ(x)(φ) = φ(x)` (`def_reflexif_eval`) ; Mathlib n'a pas (encore) de notion d'evn réflexif. -/
 def Reflexif : Prop :=
   Function.Bijective (inclusionInDoubleDual ℝ E)
 

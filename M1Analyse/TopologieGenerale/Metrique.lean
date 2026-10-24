@@ -48,7 +48,10 @@ variable {X Y : Type*}
 
 /-- Les axiomes de distance du cours (`def:distance`) pour une fonction `d : X → X → ℝ` :
 séparation (`d ≥ 0`, avec égalité ssi `x = y`), symétrie, inégalité triangulaire.
-Prédicat auxiliaire, utilisé pour énoncer « `d` est une distance » sans instance. -/
+Prédicat auxiliaire, utilisé pour énoncer « `d` est une distance » sans instance.
+Lien avec Mathlib : la distance d'un `MetricSpace X` vérifie ces axiomes (`def_distance`) ;
+réciproquement, `metricSpaceOfIsDistance` construit la structure `MetricSpace X` associée à
+une telle fonction (`def_distance_of_axioms`). -/
 def EstDistance (d : X → X → ℝ) : Prop :=
   (∀ x y, 0 ≤ d x y ∧ (d x y = 0 ↔ x = y)) ∧ (∀ x y, d x y = d y x) ∧
     ∀ x y z, d x z ≤ d x y + d y z
@@ -180,7 +183,9 @@ theorem prop_baseVoisMetric_sep [MetricSpace X] (u : ℕ → X) (hu : DenseRange
 application `ω : ℝ₊ → [0, ∞]` telle que `ω(s) → 0` lorsque `s → 0`.
 Convention (validée par l'auteur) : la limite est prise au sens de `𝓝 0` dans `ℝ≥0`,
 *point `0` inclus* (convention française de limite en un point du domaine) ; ceci
-impose `ω(0) = 0`, et équivaut à `ω 0 = 0 ∧ ω(s) → 0` quand `s → 0⁺` (cf. `estModuleCont_iff`). -/
+impose `ω(0) = 0`, et équivaut à `ω 0 = 0 ∧ ω(s) → 0` quand `s → 0⁺` (cf. `estModuleCont_iff`).
+Lien avec Mathlib : pas de notion de module de continuité dans Mathlib ; la condition est la
+limite `Tendsto ω (𝓝 0) (𝓝 0)` de Mathlib. -/
 def EstModuleCont (ω : ℝ≥0 → ℝ≥0∞) : Prop :=
   Tendsto ω (𝓝 0) (𝓝 0)
 

@@ -33,7 +33,10 @@ namespace M1Analyse
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
 /-- L'ensemble polaire `C° := {φ ∈ E^* | ∀ x ∈ C, φ(x) ≤ 1}` d'une partie `C` d'un evn
-(`def:convexePolaire`). -/
+(`def:convexePolaire`).
+Lien avec Mathlib : le polaire `StrongDual.polar ℝ C` de Mathlib est le polaire *absolu*
+`{φ | ∀ x ∈ C, ‖φ(x)‖ ≤ 1}` ; il coïncide avec celui-ci pour `C` symétrique
+(`def_convexePolaire_eq_polar`). -/
 def polaire (C : Set E) : Set (StrongDual ℝ E) :=
   {φ | ∀ x ∈ C, φ x ≤ 1}
 

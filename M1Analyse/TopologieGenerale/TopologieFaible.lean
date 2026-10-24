@@ -93,7 +93,10 @@ def bouleDuale (𝕜 E : Type*) [RCLike 𝕜] [NormedAddCommGroup E] [NormedSpac
   WeakDual.toStrongDual ⁻¹' closedBall (0 : StrongDual 𝕜 E) 1
 
 /-- La distance `eqdef:met_faible_boule` : `d(u,v) = max_n min {2^{-n}, |u(x_n) - v(x_n)|}`
-(le maximum est écrit comme un supremum, qui est atteint). -/
+(le maximum est écrit comme un supremum, qui est atteint).
+Lien avec Mathlib : elle munit la boule `bouleDuale` d'une structure `MetricSpace` définissant
+la topologie *faible (`prop_bouleMetrisable`) ; Mathlib en donne la métrisabilité sans distance
+explicite (`WeakDual.metrizable_of_isCompact`, cf. `prop_bouleMetrisable_mathlib`). -/
 noncomputable def distFaible (x : ℕ → E) (u v : WeakDual 𝕜 E) : ℝ :=
   ⨆ n, min ((2 : ℝ)⁻¹ ^ n) ‖u (x n) - v (x n)‖
 

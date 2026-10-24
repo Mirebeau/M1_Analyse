@@ -360,7 +360,9 @@ section Cone
 
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 
-/-- **Cône polaire de `prop:decompCone`.** `K° := {y ∈ H | ∀ x ∈ K, ⟪x, y⟫ ≤ 0}`. -/
+/-- **Cône polaire de `prop:decompCone`.** `K° := {y ∈ H | ∀ x ∈ K, ⟪x, y⟫ ≤ 0}`.
+Lien avec Mathlib : le cône dual `ProperCone.innerDual K = {y | ∀ x ∈ K, 0 ≤ ⟪x, y⟫}` de
+Mathlib a la convention de signe opposée : `K° = -K*` (`conePolaire_eq_neg_innerDual`). -/
 def conePolaire (K : Set E) : Set E := {y | ∀ x ∈ K, ⟪x, y⟫_ℝ ≤ 0}
 
 private lemma conePolaire_props (K : Set E) :

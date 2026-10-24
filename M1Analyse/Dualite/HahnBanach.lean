@@ -34,7 +34,9 @@ section Zorn
 variable (α : Type*) [PartialOrder α]
 
 /-- **Déf. `def:inductif` (Ensemble inductif).** Un ensemble partiellement ordonné est inductif
-si toute partie totalement ordonnée `F` admet un majorant. -/
+si toute partie totalement ordonnée `F` admet un majorant.
+Lien avec Mathlib : équivaut à « toute chaîne (`IsChain`) est majorée (`BddAbove`) »
+(`def_inductif_iff`), hypothèse du lemme de Zorn `zorn_le` de Mathlib. -/
 def Inductif : Prop :=
   ∀ F : Set α, (∀ y ∈ F, ∀ z ∈ F, y ≤ z ∨ z ≤ y) → ∃ x, ∀ y ∈ F, y ≤ x
 
@@ -72,7 +74,9 @@ section SousLineaire
 variable {E : Type*} [AddCommGroup E] [Module ℝ E]
 
 /-- La propriété de sous-linéarité du cours (`def:sousLin`) : positive homogénéité (pour
-`λ ≥ 0`) et sous-additivité. -/
+`λ ≥ 0`) et sous-additivité.
+Lien avec Mathlib : équivaut à positive homogénéité et convexité `ConvexOn ℝ univ ρ`
+(`def_sousLin`). -/
 def SousLineaire (ρ : E → ℝ) : Prop :=
   (∀ (c : ℝ), 0 ≤ c → ∀ x, ρ (c • x) = c * ρ x) ∧ ∀ x y, ρ (x + y) ≤ ρ x + ρ y
 

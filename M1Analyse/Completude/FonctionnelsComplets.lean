@@ -7,6 +7,7 @@ import Mathlib.Topology.ContinuousMap.Bounded.Normed
 import Mathlib.Analysis.RCLike.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
 import Mathlib.MeasureTheory.Function.LpSpace.Complete
+import M1Analyse.TopologieGenerale.EVN
 
 /-!
 # §2.2 Espaces fonctionnels complets (`subsec:fctsComplets`)
@@ -18,10 +19,11 @@ Les objets du cours sont ceux de Mathlib : `C⁰_b(X,E)` = `X →ᵇ E`, `L^p(X,
 
 L'espace `C^ω_b(X,E)` des fonctions continues bornées admettant le module de continuité `ω`
 (à une constante multiplicative près) n'existe pas dans Mathlib pour un module `ω` général :
-on introduit la semi-norme `|f|_ω` (`seminormeModule`, à valeurs dans `[0, ∞]`), l'espace
-`C^ω_b(X,E)` (`espaceModule`, sous-module de `X →ᵇ E`) et la norme `‖f‖_ω`
-(`normeModule`), et l'on démontre que `‖·‖_ω` est une norme sur `C^ω_b(X,E)`, pour laquelle cet
-espace est complet (critère de Cauchy, `def:suiteCauchy`/`def:complet`).
+avec la semi-norme `|f|_ω` (`seminormeModule`, à valeurs dans `[0, ∞]`, introduite dans
+`M1Analyse.TopologieGenerale.EVN`), on introduit l'espace `C^ω_b(X,E)` (`espaceModule`,
+sous-module de `X →ᵇ E`) et la norme `‖f‖_ω ∈ [0, ∞]` (`normeModule`), et l'on démontre que
+`‖·‖_ω` est une norme sur `C^ω_b(X,E)`, pour laquelle cet espace est complet (critère de Cauchy,
+`def:suiteCauchy`/`def:complet`).
 -/
 
 open Set Filter Topology MeasureTheory
@@ -42,70 +44,47 @@ section Module
 
 variable {X E : Type*} [MetricSpace X] [NormedAddCommGroup E]
 
-/-- Semi-norme `|f|_ω := sup_{x ≠ y} ‖f(x) - f(y)‖ / ω(d(x,y)) ∈ [0, ∞]` de l'exemple
-`ex:Holder_Banach`, associée à un module de continuité `ω : ℝ₊ → ℝ₊`. -/
-noncomputable def seminormeModule (ω : ℝ≥0 → ℝ≥0) (f : X → E) : ℝ≥0∞ :=
-  ⨆ (x : X) (y : X) (_ : x ≠ y), ‖f x - f y‖ₑ / (ω (nndist x y) : ℝ≥0∞)
-
-/-- Norme `‖f‖_ω := ‖f‖_∞ + |f|_ω` de l'exemple `ex:Holder_Banach` (la semi-norme `|f|_ω` est
-convertie en réel, ce qui n'a de sens que si `|f|_ω < ∞`). -/
-noncomputable def normeModule (ω : ℝ≥0 → ℝ≥0) (f : X →ᵇ E) : ℝ :=
-  ‖f‖ + (seminormeModule ω f).toReal
+/-- Norme `‖f‖_ω := ‖f‖_∞ + |f|_ω ∈ [0, ∞]` de l'exemple `ex:Holder_Banach`, définie pour toute
+fonction `f : X → E` (`normeSup`, `seminormeModule`). Pour `ω(s) = s^α`, c'est la norme de
+Hölder `normeHolder α` (`normeHolder_eq_normeModule`).
+Pont Mathlib : pour `f : X →ᵇ E`, `‖f‖_ω = ‖f‖ₑ + |f|_ω`, où `‖f‖` est la norme de
+`BoundedContinuousFunction` (`normeModule_coe`). -/
+noncomputable def normeModule (ω : ℝ≥0 → ℝ≥0) (f : X → E) : ℝ≥0∞ :=
+  normeSup f + seminormeModule ω f
 
 variable {ω : ℝ≥0 → ℝ≥0}
 
-lemma seminormeModule_le_iff {f : X → E} {C : ℝ≥0∞} :
-    seminormeModule ω f ≤ C ↔ ∀ x y, x ≠ y → ‖f x - f y‖ₑ / (ω (nndist x y) : ℝ≥0∞) ≤ C := by
-  simp only [seminormeModule, iSup_le_iff]
+theorem normeModule_coe (f : X →ᵇ E) : normeModule ω f = ‖f‖ₑ + seminormeModule ω f := by
+  rw [normeModule, normeSup_eq_enorm]
 
-lemma le_seminormeModule (f : X → E) {x y : X} (h : x ≠ y) :
-    ‖f x - f y‖ₑ / (ω (nndist x y) : ℝ≥0∞) ≤ seminormeModule ω f :=
-  seminormeModule_le_iff.1 le_rfl x y h
+theorem normeHolder_eq_normeModule (α : ℝ≥0) (f : X → E) :
+    normeHolder α f = normeModule (fun s => s ^ (α : ℝ)) f :=
+  rfl
 
-/-- Si `ω > 0` hors de `0`, la condition `|f|_ω ≤ C` s'écrit
-`‖f(x) - f(y)‖ ≤ C ω(d(x,y))` pour tous `x ≠ y`. -/
-lemma seminormeModule_le_iff' (hω : ∀ s, 0 < s → 0 < ω s) {f : X → E} {C : ℝ≥0∞} :
-    seminormeModule ω f ≤ C ↔ ∀ x y, x ≠ y → ‖f x - f y‖ₑ ≤ C * ω (nndist x y) := by
-  rw [seminormeModule_le_iff]
-  refine forall₂_congr fun x y => imp_congr_right fun h => ?_
-  have h0 : (ω (nndist x y) : ℝ≥0∞) ≠ 0 :=
-    ENNReal.coe_ne_zero.2 (hω _ (NNReal.coe_pos.1 (by rw [coe_nndist]; exact dist_pos.2 h))).ne'
-  exact ENNReal.div_le_iff h0 ENNReal.coe_ne_top
+lemma normeModule_eq_zero_iff {f : X → E} : normeModule ω f = 0 ↔ f = 0 := by
+  refine ⟨fun h => normeSup_eq_zero_iff.1 (add_eq_zero.1 h).1, ?_⟩
+  rintro rfl
+  rw [normeModule, normeSup_eq_zero_iff.2 rfl, seminormeModule_zero, add_zero]
 
-lemma seminormeModule_add_le (f g : X → E) :
-    seminormeModule ω (f + g) ≤ seminormeModule ω f + seminormeModule ω g := by
-  refine seminormeModule_le_iff.2 fun x y h => ?_
-  calc ‖(f + g) x - (f + g) y‖ₑ / (ω (nndist x y) : ℝ≥0∞)
-      ≤ (‖f x - f y‖ₑ + ‖g x - g y‖ₑ) / (ω (nndist x y) : ℝ≥0∞) := by
-        gcongr
-        simp only [Pi.add_apply, add_sub_add_comm]
-        exact enorm_add_le _ _
-    _ = _ := ENNReal.add_div
-    _ ≤ _ := add_le_add (le_seminormeModule f h) (le_seminormeModule g h)
+lemma normeModule_smul {𝕜 : Type*} [RCLike 𝕜] [NormedSpace 𝕜 E] (c : 𝕜) (f : X → E) :
+    normeModule ω (c • f) = ‖c‖ₑ * normeModule ω f := by
+  rw [normeModule, normeModule, normeSup_smul, seminormeModule_smul, mul_add]
 
-lemma seminormeModule_neg (f : X → E) : seminormeModule ω (-f) = seminormeModule ω f := by
-  refine iSup_congr fun x => iSup_congr fun y => iSup_congr fun _ => ?_
-  rw [Pi.neg_apply, Pi.neg_apply, neg_sub_neg, enorm_sub_rev]
-
-lemma seminormeModule_sub_le (f g : X → E) :
-    seminormeModule ω (f - g) ≤ seminormeModule ω f + seminormeModule ω g := by
-  rw [sub_eq_add_neg, ← seminormeModule_neg (ω := ω) g]
-  exact seminormeModule_add_le f (-g)
-
-lemma seminormeModule_smul {𝕜 : Type*} [RCLike 𝕜] [NormedSpace 𝕜 E] (c : 𝕜) (f : X → E) :
-    seminormeModule ω (c • f) = ‖c‖ₑ * seminormeModule ω f := by
-  simp only [seminormeModule, Pi.smul_apply, ← smul_sub, enorm_smul, ENNReal.mul_iSup,
-    mul_div_assoc]
+lemma normeModule_add_le (f g : X → E) :
+    normeModule ω (f + g) ≤ normeModule ω f + normeModule ω g := by
+  rw [normeModule, normeModule, normeModule, add_add_add_comm]
+  exact add_le_add (normeSup_add_le f g) (seminormeModule_add_le f g)
 
 /-- L'espace `C^ω_b(X,E) := {f ∈ C⁰_b(X,E) | |f|_ω < ∞}` de l'exemple `ex:Holder_Banach`,
-sous-espace vectoriel de `C⁰_b(X,E)`. -/
+sous-espace vectoriel de `C⁰_b(X,E)` (`X →ᵇ E`). Ses éléments sont exactement les `f ∈ C⁰_b`
+telles que `‖f‖_ω < ∞` (`mem_espaceModule_iff`). -/
 def espaceModule (𝕜 : Type*) [RCLike 𝕜] [NormedSpace 𝕜 E] (ω : ℝ≥0 → ℝ≥0) :
     Submodule 𝕜 (X →ᵇ E) where
   carrier := {f | seminormeModule ω f < ∞}
   zero_mem' := by
     change seminormeModule ω (0 : X → E) < ∞
-    refine lt_of_le_of_lt (seminormeModule_le_iff.2 fun x y _ => ?_) ENNReal.zero_lt_top
-    simp
+    rw [seminormeModule_zero]
+    exact ENNReal.zero_lt_top
   add_mem' := by
     intro f g hf hg
     change seminormeModule ω (⇑f + ⇑g) < ∞
@@ -116,78 +95,75 @@ def espaceModule (𝕜 : Type*) [RCLike 𝕜] [NormedSpace 𝕜 E] (ω : ℝ≥0
     rw [seminormeModule_smul]
     exact ENNReal.mul_lt_top enorm_lt_top hf
 
+theorem mem_espaceModule_iff {𝕜 : Type*} [RCLike 𝕜] [NormedSpace 𝕜 E] {f : X →ᵇ E} :
+    f ∈ espaceModule 𝕜 ω ↔ normeModule ω f < ∞ := by
+  rw [normeModule_coe, ENNReal.add_lt_top, and_iff_right enorm_lt_top]
+  rfl
+
 /-- **Ex. `ex:Holder_Banach` (Complétude des espaces de Lipschitz et Hölder), norme.**
 Soient `(X,d)` un espace métrique, `E` un evn et `ω : ℝ₊ → ℝ₊` un module de continuité
-strictement positif hors de `0`. Alors `‖·‖_ω = ‖·‖_∞ + |·|_ω` est une norme sur `C^ω_b(X,E)`
-(axiomes de `def:norme`). -/
+strictement positif hors de `0`. Alors `‖·‖_ω = ‖·‖_∞ + |·|_ω ∈ [0, ∞]` satisfait les axiomes
+de norme (`def:norme`) : séparation, homogénéité, inégalité triangulaire, pour toutes fonctions
+`f, g : X → E` ; c'est donc une norme sur `C^ω_b(X,E)`, où elle est finie (cf.
+`ex_Holder_Banach_norme_toReal` pour la norme réelle). -/
 theorem ex_Holder_Banach_norme {𝕜 : Type*} [RCLike 𝕜] [NormedSpace 𝕜 E]
     (_hω0 : Tendsto ω (𝓝 0) (𝓝 0)) (_hω : ∀ s, 0 < s → 0 < ω s) :
-    (∀ f ∈ espaceModule 𝕜 ω (X := X) (E := E), 0 ≤ normeModule ω f) ∧
-    (∀ f ∈ espaceModule 𝕜 ω (X := X) (E := E), f ≠ 0 → 0 < normeModule ω f) ∧
+    (∀ f : X → E, normeModule ω f = 0 ↔ f = 0) ∧
+    (∀ (c : 𝕜) (f : X → E), normeModule ω (c • f) = ‖c‖ₑ * normeModule ω f) ∧
+    (∀ f g : X → E, normeModule ω (f + g) ≤ normeModule ω f + normeModule ω g) :=
+  ⟨fun _ => normeModule_eq_zero_iff, normeModule_smul, normeModule_add_le⟩
+
+/-- **Ex. `ex:Holder_Banach`, norme réelle.** Sur `C^ω_b(X,E)`, la norme réelle (finie)
+`‖f‖_ω = ‖f‖_∞ + |f|_ω` satisfait les axiomes de norme du cours (`def:norme`). -/
+theorem ex_Holder_Banach_norme_toReal {𝕜 : Type*} [RCLike 𝕜] [NormedSpace 𝕜 E]
+    (_hω0 : Tendsto ω (𝓝 0) (𝓝 0)) (_hω : ∀ s, 0 < s → 0 < ω s) :
+    (∀ f ∈ espaceModule 𝕜 ω (X := X) (E := E), 0 ≤ (normeModule ω f).toReal) ∧
+    (∀ f ∈ espaceModule 𝕜 ω (X := X) (E := E), f ≠ 0 → 0 < (normeModule ω f).toReal) ∧
     (∀ f ∈ espaceModule 𝕜 ω (X := X) (E := E), ∀ c : 𝕜,
-      normeModule ω (c • f) = ‖c‖ * normeModule ω f) ∧
+      (normeModule ω ⇑(c • f)).toReal = ‖c‖ * (normeModule ω f).toReal) ∧
     (∀ f ∈ espaceModule 𝕜 ω (X := X) (E := E), ∀ g ∈ espaceModule 𝕜 ω (X := X) (E := E),
-      normeModule ω (f + g) ≤ normeModule ω f + normeModule ω g) := by
-  refine ⟨fun f _ => add_nonneg (norm_nonneg _) ENNReal.toReal_nonneg,
-    fun f _ hf => add_pos_of_pos_of_nonneg (norm_pos_iff.2 hf) ENNReal.toReal_nonneg,
-    fun f _ c => ?_, fun f hf g hg => ?_⟩
-  · have hc : ⇑(c • f) = c • ⇑f := rfl
-    rw [normeModule, normeModule, hc, seminormeModule_smul,
-      norm_smul, ENNReal.toReal_mul, toReal_enorm, mul_add]
-  · rw [normeModule, normeModule, normeModule, BoundedContinuousFunction.coe_add]
-    have h := ENNReal.toReal_mono (ENNReal.add_ne_top.2 ⟨hf.ne, hg.ne⟩)
-      (seminormeModule_add_le (ω := ω) ⇑f ⇑g)
-    rw [ENNReal.toReal_add hf.ne hg.ne] at h
-    linarith [norm_add_le f g]
+      (normeModule ω ⇑(f + g)).toReal ≤
+        (normeModule ω f).toReal + (normeModule ω g).toReal) :=
+  axiomesNorme_toReal (fun f : X →ᵇ E => normeModule ω f) _
+    (fun _ hf => mem_espaceModule_iff.1 hf)
+    (fun _ => normeModule_eq_zero_iff.trans
+      ⟨fun h => DFunLike.coe_injective h, fun h => by rw [h]; rfl⟩)
+    (fun c f => normeModule_smul c f) (fun f g => normeModule_add_le f g)
 
 /-- **Ex. `ex:Holder_Banach` (Complétude des espaces de Lipschitz et Hölder), complétude.**
 Soient `(X,d)` un espace métrique, `E` un Banach et `ω : ℝ₊ → ℝ₊` un module de continuité
 strictement positif hors de `0`. Alors `C^ω_b(X,E)` est complet pour la norme
 `‖·‖_ω = ‖·‖_∞ + |·|_ω` : toute suite de `C^ω_b(X,E)` de Cauchy pour `‖·‖_ω` converge pour
-`‖·‖_ω` vers un élément de `C^ω_b(X,E)`. -/
+`‖·‖_ω` vers un élément de `C^ω_b(X,E)` (critère énoncé dans `[0, ∞]`). -/
 theorem ex_Holder_Banach {𝕜 : Type*} [RCLike 𝕜] [NormedSpace 𝕜 E] [CompleteSpace E]
     (_hω0 : Tendsto ω (𝓝 0) (𝓝 0)) (hω : ∀ s, 0 < s → 0 < ω s)
     (f : ℕ → X →ᵇ E) (hf : ∀ n, f n ∈ espaceModule 𝕜 ω)
-    (hC : ∀ ε > 0, ∃ N : ℕ, ∀ p ≥ N, ∀ q ≥ N, normeModule ω (f p - f q) ≤ ε) :
-    ∃ g ∈ espaceModule 𝕜 ω, Tendsto (fun n => normeModule ω (f n - g)) atTop (𝓝 0) := by
-  have hfin : ∀ p q, seminormeModule ω ⇑(f p - f q) ≠ ∞ := fun p q => by
-    rw [BoundedContinuousFunction.coe_sub]
-    exact ((seminormeModule_sub_le _ _).trans_lt (ENNReal.add_lt_top.2 ⟨hf p, hf q⟩)).ne
+    (hC : ∀ ε > 0, ∃ N : ℕ, ∀ p ≥ N, ∀ q ≥ N, normeModule ω ⇑(f p - f q) ≤ ε) :
+    ∃ g ∈ espaceModule 𝕜 ω, Tendsto (fun n => normeModule ω ⇑(f n - g : X →ᵇ E)) atTop (𝓝 0) := by
   -- La suite est de Cauchy pour la norme uniforme, donc converge vers `g ∈ C⁰_b(X,E)`.
   have hcauchy : CauchySeq f := by
     refine Metric.cauchySeq_iff.2 fun ε hε => ?_
-    obtain ⟨N, hN⟩ := hC (ε / 2) (half_pos hε)
+    obtain ⟨N, hN⟩ := hC (ENNReal.ofReal (ε / 2)) (by simpa using half_pos hε)
     refine ⟨N, fun p hp q hq => ?_⟩
-    rw [dist_eq_norm]
-    have := hN p hp q hq
-    rw [normeModule] at this
-    linarith [ENNReal.toReal_nonneg (a := seminormeModule ω ⇑(f p - f q))]
+    have h1 : edist (f p) (f q) ≤ ENNReal.ofReal (ε / 2) := by
+      rw [edist_eq_enorm_sub, ← normeSup_eq_enorm]
+      exact le_self_add.trans (hN p hp q hq)
+    exact ((edist_le_ofReal (half_pos hε).le).1 h1).trans_lt (half_lt_self hε)
   obtain ⟨g, hg⟩ := cauchySeq_tendsto_of_complete hcauchy
   have hgx : ∀ x, Tendsto (fun m => f m x) atTop (𝓝 (g x)) := fun x =>
     ((continuous_eval_const x).tendsto g).comp hg
   -- Contrôle de `|f_n - g|_ω` par passage à la limite.
-  have hkey : ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, seminormeModule ω ⇑(f n - g) ≤ ENNReal.ofReal ε := by
+  have hkey : ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, seminormeModule ω ⇑(f n - g) ≤ ε := by
     intro ε hε
     obtain ⟨N, hN⟩ := hC ε hε
     refine ⟨N, fun n hn => (seminormeModule_le_iff' hω).2 fun x y hxy => ?_⟩
-    have hlim : Tendsto (fun m => ‖(f n - f m) x - (f n - f m) y‖) atTop
-        (𝓝 ‖(f n - g) x - (f n - g) y‖) := by
+    have hlim : Tendsto (fun m => ‖(f n - f m) x - (f n - f m) y‖ₑ) atTop
+        (𝓝 ‖(f n - g) x - (f n - g) y‖ₑ) := by
       simp only [BoundedContinuousFunction.coe_sub, Pi.sub_apply]
-      exact (((tendsto_const_nhds.sub (hgx x)).sub (tendsto_const_nhds.sub (hgx y)))).norm
-    have hbound : ∀ m ≥ N, ‖(f n - f m) x - (f n - f m) y‖ ≤ ε * ω (nndist x y) := by
-      intro m hm
-      have h1 : (seminormeModule ω ⇑(f n - f m)).toReal ≤ ε := by
-        have := hN n hn m hm
-        rw [normeModule] at this
-        linarith [norm_nonneg (f n - f m)]
-      have h2 := (seminormeModule_le_iff' hω).1
-        (le_of_eq (ENNReal.ofReal_toReal (hfin n m)).symm) x y hxy
-      rw [← ofReal_norm, ← ENNReal.ofReal_coe_nnreal, ← ENNReal.ofReal_mul
-        ENNReal.toReal_nonneg, ENNReal.ofReal_le_ofReal_iff (by positivity)] at h2
-      exact h2.trans (mul_le_mul_of_nonneg_right h1 (NNReal.coe_nonneg _))
-    have := le_of_tendsto hlim (eventually_atTop.2 ⟨N, hbound⟩)
-    rw [← ofReal_norm, ← ENNReal.ofReal_coe_nnreal, ← ENNReal.ofReal_mul hε.le]
-    exact ENNReal.ofReal_le_ofReal this
+      exact (((tendsto_const_nhds.sub (hgx x)).sub (tendsto_const_nhds.sub (hgx y)))).enorm
+    have hbound : ∀ m ≥ N, ‖(f n - f m) x - (f n - f m) y‖ₑ ≤ ε * ω (nndist x y) :=
+      fun m hm => (seminormeModule_le_iff' hω).1 (le_add_self.trans (hN n hn m hm)) x y hxy
+    exact le_of_tendsto hlim (eventually_atTop.2 ⟨N, hbound⟩)
   obtain ⟨N₁, hN₁⟩ := hkey 1 one_pos
   have hgmem : g ∈ espaceModule 𝕜 ω := by
     change seminormeModule ω ⇑g < ∞
@@ -195,17 +171,15 @@ theorem ex_Holder_Banach {𝕜 : Type*} [RCLike 𝕜] [NormedSpace 𝕜 E] [Comp
       rw [BoundedContinuousFunction.coe_sub, sub_sub_cancel]
     rw [hg']
     exact (seminormeModule_sub_le _ _).trans_lt (ENNReal.add_lt_top.2
-      ⟨hf N₁, (hN₁ N₁ le_rfl).trans_lt ENNReal.ofReal_lt_top⟩)
+      ⟨hf N₁, (hN₁ N₁ le_rfl).trans_lt ENNReal.one_lt_top⟩)
   refine ⟨g, hgmem, ?_⟩
-  have h1 : Tendsto (fun n => ‖f n - g‖) atTop (𝓝 0) := tendsto_iff_norm_sub_tendsto_zero.1 hg
-  have h2 : Tendsto (fun n => (seminormeModule ω ⇑(f n - g)).toReal) atTop (𝓝 0) := by
-    refine Metric.tendsto_atTop.2 fun ε hε => ?_
-    obtain ⟨N, hN⟩ := hkey (ε / 2) (half_pos hε)
-    refine ⟨N, fun n hn => ?_⟩
-    rw [Real.dist_eq, sub_zero, abs_of_nonneg ENNReal.toReal_nonneg]
-    exact (ENNReal.toReal_le_of_le_ofReal (half_pos hε).le (hN n hn)).trans_lt
-      (half_lt_self hε)
-  simpa [normeModule] using h1.add h2
+  have h1 : Tendsto (fun n => ‖f n - g‖ₑ) atTop (𝓝 0) := by
+    simpa using (hg.sub_const g).enorm
+  have h2 : Tendsto (fun n => seminormeModule ω ⇑(f n - g : X →ᵇ E)) atTop (𝓝 0) :=
+    ENNReal.tendsto_atTop_zero.2 hkey
+  have h3 := h1.add h2
+  rw [add_zero] at h3
+  exact h3.congr fun n => (normeModule_coe _).symm
 
 /-- **Ex. `ex:Holder_Banach`, espaces de Hölder et de Lipschitz.** Cas particulier
 `ω(s) := s^α` : pour `0 < α ≤ 1`, l'espace de Hölder `C^α_b(X,E)` (`α < 1`), resp. l'espace
@@ -214,9 +188,9 @@ theorem ex_Holder_Banach_holder {𝕜 : Type*} [RCLike 𝕜] [NormedSpace 𝕜 E
     {α : ℝ} (hα : 0 < α) (_hα1 : α ≤ 1) (f : ℕ → X →ᵇ E)
     (hf : ∀ n, f n ∈ espaceModule 𝕜 (fun s => s ^ α))
     (hC : ∀ ε > 0, ∃ N : ℕ, ∀ p ≥ N, ∀ q ≥ N,
-      normeModule (fun s => s ^ α) (f p - f q) ≤ ε) :
+      normeModule (fun s => s ^ α) ⇑(f p - f q) ≤ ε) :
     ∃ g ∈ espaceModule 𝕜 (fun s => s ^ α),
-      Tendsto (fun n => normeModule (fun s => s ^ α) (f n - g)) atTop (𝓝 0) := by
+      Tendsto (fun n => normeModule (fun s => s ^ α) ⇑(f n - g : X →ᵇ E)) atTop (𝓝 0) := by
   refine ex_Holder_Banach ?_ (fun s hs => NNReal.rpow_pos hs) f hf hC
   have := (NNReal.continuous_rpow_const hα.le).tendsto 0
   rwa [NNReal.zero_rpow hα.ne'] at this

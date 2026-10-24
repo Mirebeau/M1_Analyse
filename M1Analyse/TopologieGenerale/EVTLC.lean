@@ -245,7 +245,10 @@ variable [NontriviallyNormedField 𝕜] [AddCommGroup E] [Module 𝕜 E]
 
 /-- La distance `eqdef:evtlc_dist` associée à une famille dénombrable de semi-normes :
 `d(x, y) := max_{n ∈ ℕ} min {2^{-n}, |x - y|_n}` (borne supérieure, atteinte d'après
-`eqdef_evtlc_dist`). -/
+`eqdef_evtlc_dist`).
+Lien avec Mathlib : les familles de semi-normes sont les `SeminormFamily` de Mathlib (topologie
+`WithSeminorms`) ; `evtlcMetric` munit `E` de la structure `MetricSpace` correspondante, qui
+définit la topologie de l'evtlc (`prop_distanceEvtlcs`). -/
 noncomputable def evtlcDist (p : SeminormFamily 𝕜 E ℕ) (x y : E) : ℝ :=
   ⨆ n : ℕ, min ((2 : ℝ)⁻¹ ^ n) (p n (x - y))
 

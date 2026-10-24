@@ -33,7 +33,9 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
 /-! ### Définitions -/
 
 /-- **Déf. `def:legendre_fenchel` (Conjuguée de Legendre-Fenchel).** Pour `f : E → ℝ̄`, on pose
-`f*(φ) := sup_{x ∈ E} ⟨φ, x⟩ - f(x)` pour `φ ∈ E*`. (Soustraction de `EReal` : `a - ⊤ = ⊥`.) -/
+`f*(φ) := sup_{x ∈ E} ⟨φ, x⟩ - f(x)` pour `φ ∈ E*`. (Soustraction de `EReal` : `a - ⊤ = ⊥`.)
+Lien avec Mathlib : Mathlib n'a pas (encore) de conjuguée de Legendre-Fenchel ; `EReal` est la
+droite achevée `ℝ̄` de Mathlib. -/
 noncomputable def conjuguee (f : E → EReal) (φ : StrongDual ℝ E) : EReal :=
   ⨆ x, ((φ x : ℝ) : EReal) - f x
 

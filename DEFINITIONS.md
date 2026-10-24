@@ -172,8 +172,10 @@ Mathlib utilisés). Voir `scripts/lean_pages/README.md`.
 ## Points à relire (choix d'interprétation, définitions ajoutées, écarts au texte)
 
 ### EVN (§1.3)
-- Nouvelles définitions (Mathlib n'a pas ces normes) : seminormeHolder, constLip, normeHolder, espaceHolder, normeCnb, espaceCnb, espaceCnbAdherence, deriveePartielle.
-- Les sup sont des `Real.iSup` (valent 0 si non borné) : n'ont de sens que sur l'espace ; à relire.
+- Nouvelles définitions (Mathlib n'a pas ces normes) : normeSup, seminormeModule, seminormeHolder (= seminormeModule (s ↦ s^α)), constLip, normeHolder, espaceHolder, normeCnb, espaceCnb, espaceCnbAdherence, deriveePartielle. Chaque docstring indique le pont avec Mathlib (eHolderNorm, MemHolder, HolderWith, LipschitzWith, iteratedFDeriv…).
+- (24 octobre, décision de l'auteur) Normes de Hölder et |·|_ω à valeurs dans [0, ∞] ; C^α_b = {f | ‖f‖_{C^α} < ∞} ; axiomes de norme valables pour toute fonction, version réelle (toReal) sur le sous-espace. α ∈ ℝ≥0 quelconque (cours : ]0,1[) ; pour α = 0, l'espace contient des fonctions discontinues.
+- (24 octobre, décision de l'auteur) Une seule dérivée partielle `deriveePartielle α f` (multi-indice, sur EuclideanSpace, fonctions définies sur ℝ^d, iteratedFDeriv) ; lemme de Schwarz itéré démontré ici (Mathlib : seulement ordre 2 ou analytique).
+- normeCnb reste réelle (sup réels : n'ont de sens que sur l'espace).
 - C^n_b(Ω) : fonctions définies sur ℝ^d dont seules les valeurs sur Ω comptent (sous-module de (ℝ^d → 𝕜), pas un quotient) ; séparation énoncée « f non nulle sur Ω ⇒ ‖f‖ > 0 ».
 - Hölder énoncé pour tout α ≥ 0 (le cours : α ∈ ]0,1[).
 - Norme C^n_b : somme sur les multi-indices comme dans le cours (Mathlib utiliserait ‖iteratedFDeriv‖, équivalente).

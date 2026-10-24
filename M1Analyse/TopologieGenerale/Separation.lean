@@ -90,12 +90,18 @@ theorem ex_T1nonT2_cofinie :
 
 open MvPolynomial
 
-/-- L'ensemble `ℂ^d`, destiné à être muni de la topologie de Zariski (`ex:T1nonT2`). -/
+/-- L'ensemble `ℂ^d`, destiné à être muni de la topologie de Zariski (`ex:T1nonT2`).
+Lien avec Mathlib : Mathlib définit la topologie de Zariski sur le spectre premier
+(`PrimeSpectrum`), et non sur les points de `ℂ^d` ; d'où ce synonyme de type, muni ici de la
+topologie dont les fermés sont les `EstFermeZariski`. -/
 def Zariski (d : ℕ) : Type := Fin d → ℂ
 
 /-- Fermé de Zariski de `ℂ^d` (`ex:T1nonT2`) : ensemble de la forme
 `{x ∈ ℂ^d | P₁(x) = ⋯ = P_I(x) = 0}`, où `I ≥ 0` est un entier et
-`P₁, …, P_I ∈ ℂ[X₁, …, X_d]`. -/
+`P₁, …, P_I ∈ ℂ[X₁, …, X_d]`.
+Lien avec Mathlib : l'ensemble des zéros communs d'une famille quelconque de polynômes
+(`MvPolynomial`) est un tel fermé (`estFermeZariski_zeroLocus`, par le théorème de la base de
+Hilbert de Mathlib). -/
 def EstFermeZariski (d : ℕ) (F : Set (Zariski d)) : Prop :=
   ∃ (I : ℕ) (P : Fin I → MvPolynomial (Fin d) ℂ), F = {x | ∀ i, eval x (P i) = 0}
 

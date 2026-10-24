@@ -9,6 +9,7 @@ import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.MeasureTheory.Function.LocallyIntegrable
 import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
 import Mathlib.Topology.Compactness.SigmaCompact
+import M1Analyse.TopologieGenerale.EVN
 
 /-!
 # §1.4 Exemples d'espaces fonctionnels (`subsec:evtlc`)
@@ -21,9 +22,10 @@ On travaille sur `ℝ^d = EuclideanSpace ℝ (Fin d)`. Les objets du cours sont 
 lorsqu'ils existent : classe de Schwartz `𝓢(ℝ^d, F)` (`SchwartzMap`), fonctions test
 `𝓓(Ω, F)` (`TestFunction`, munies de la topologie limite inductive), espaces `𝓓_K`
 (`ContDiffMapSupportedIn`), `L^p` local via `MemLp` sur les compacts. Mathlib utilise les normes
-`‖D^j f(x)‖` des différentielles itérées plutôt que les dérivées partielles `∂_α f(x)` ; on
-introduit les dérivées partielles itérées `derivPartielle` et on montre que les deux familles de
-contrôles sont équivalentes (`norm_derivPartielle_le`, `norm_iteratedFDeriv_le_sum`).
+`‖D^j f(x)‖` des différentielles itérées plutôt que les dérivées partielles `∂_α f(x)` du cours
+(`deriveePartielle`, multi-indices `α ∈ ℕ^d`, cf. `M1Analyse.TopologieGenerale.EVN`) ; on montre
+que les deux familles de contrôles sont équivalentes (`norm_deriveePartielle_le`,
+`norm_iteratedFDeriv_le_sum`, ce dernier reposant sur le lemme de Schwarz).
 -/
 
 open Set Filter Topology MeasureTheory
@@ -114,28 +116,11 @@ theorem def_lploc_un {Ω : Set (EuclideanSpace ℝ (Fin d))} (hΩ : IsOpen Ω)
 
 end Lploc
 
-/-! ### Dérivées partielles itérées -/
+/-! ### Dérivées partielles et différentielles itérées -/
 
 section DerivPartielle
 
 variable {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
-
-/-- Dérivée partielle itérée `∂_{w_1} ⋯ ∂_{w_j} f(x)` dans les directions `e_{w_1}, …, e_{w_j}`
-de la base canonique de `ℝ^d`, définie comme `D^j f(x)(e_{w_1}, …, e_{w_j})`.
-Remarque : le cours indexe les dérivées partielles par des multi-indices `α ∈ ℕ^d` ; pour `f` de
-classe `C^j`, le lemme de Schwarz donne `∂_w f = ∂_α f` où `α_i = #{k | w_k = i}`, de sorte que
-les maxima sur `|α|_1 ≤ k` du cours coïncident avec les maxima sur les mots `w` de longueur
-`≤ k` utilisés ici. -/
-noncomputable def derivPartielle (j : ℕ) (w : Fin j → Fin d)
-    (f : EuclideanSpace ℝ (Fin d) → F) (x : EuclideanSpace ℝ (Fin d)) : F :=
-  iteratedFDeriv ℝ j f x (fun i => EuclideanSpace.single (w i) (1 : ℝ))
-
-/-- Une dérivée partielle est contrôlée par la norme de la différentielle itérée. -/
-theorem norm_derivPartielle_le (j : ℕ) (w : Fin j → Fin d)
-    (f : EuclideanSpace ℝ (Fin d) → F) (x : EuclideanSpace ℝ (Fin d)) :
-    ‖derivPartielle j w f x‖ ≤ ‖iteratedFDeriv ℝ j f x‖ := by
-  refine ((iteratedFDeriv ℝ j f x).le_opNorm _).trans ?_
-  simp
 
 /-- La norme d'une application multilinéaire sur `ℝ^d` est contrôlée par ses valeurs sur la
 base canonique. -/
@@ -159,11 +144,13 @@ theorem norm_multilinear_le_sum {j : ℕ}
   gcongr with i
   exact PiLp.norm_apply_le (v i) (w i)
 
-/-- La norme de la différentielle itérée est contrôlée par la somme des dérivées partielles. -/
-theorem norm_iteratedFDeriv_le_sum (j : ℕ) (f : EuclideanSpace ℝ (Fin d) → F)
-    (x : EuclideanSpace ℝ (Fin d)) :
-    ‖iteratedFDeriv ℝ j f x‖ ≤ ∑ w : Fin j → Fin d, ‖derivPartielle j w f x‖ :=
-  norm_multilinear_le_sum _
+/-- Pour `f` de classe `C^j`, la norme de la différentielle itérée `D^j f(x)` est contrôlée par
+la somme des dérivées partielles `|∂_{α(w)} f(x)|`, `|α(w)|₁ = j` (lemme de Schwarz). -/
+theorem norm_iteratedFDeriv_le_sum {j : ℕ} {f : EuclideanSpace ℝ (Fin d) → F}
+    (hf : ContDiff ℝ j f) (x : EuclideanSpace ℝ (Fin d)) :
+    ‖iteratedFDeriv ℝ j f x‖ ≤ ∑ w : Fin j → Fin d, ‖deriveePartielle (multiIndice w) f x‖ := by
+  refine (norm_multilinear_le_sum _).trans_eq (Finset.sum_congr rfl fun w _ => ?_)
+  rw [iteratedFDeriv_eq_deriveePartielle_multiIndice hf x w]
 
 end DerivPartielle
 
@@ -189,39 +176,43 @@ lemma le_sqrt_one_add_sq {t : ℝ} (ht : 0 ≤ t) : t ≤ √(1 + t ^ 2) := by
 
 /-- **Déf. `def:classeSchwartz` (Classe de Schwartz).** Une fonction `f : ℝ^d → F` appartient à
 la classe de Schwartz `𝓢(ℝ^d, F)` de Mathlib si et seulement si elle est `C^∞` et toutes les
-semi-normes du cours `|f|_{n,α} = sup_x (1 + |x|²)^{n/2} |∂_α f(x)|` sont finies.
-Remarques : (1) les dérivées partielles `∂_α` sont indexées par des mots `w`
-(cf. `derivPartielle`) ; (2) Mathlib définit `𝓢` via les bornes `‖x‖^k ‖D^n f(x)‖ ≤ C`, et
-munit `𝓢` de la topologie des semi-normes associées (`SchwartzMap.seminorm`) ; l'équivalence
-des deux familles de semi-normes (donc des topologies) n'est pas formalisée ici ; (3) on
-autorise des valeurs dans un evn réel `F` quelconque (le cours : `F = ℝ` ou `ℂ`). -/
+semi-normes du cours `|f|_{n,α} = sup_x (1 + |x|²)^{n/2} |∂_α f(x)|`, `n ∈ ℕ`, `α ∈ ℕ^d`, sont
+finies.
+Remarques : (1) Mathlib définit `𝓢` via les bornes `‖x‖^k ‖D^n f(x)‖ ≤ C`, et munit `𝓢` de la
+topologie des semi-normes associées (`SchwartzMap.seminorm`) ; l'équivalence des deux familles de
+semi-normes (donc des topologies) n'est pas formalisée ici ; (2) on autorise des valeurs dans un
+evn réel `F` quelconque (le cours : `F = ℝ` ou `ℂ`). -/
 theorem def_classeSchwartz (f : EuclideanSpace ℝ (Fin d) → F) :
     (∃ g : 𝓢(EuclideanSpace ℝ (Fin d), F), ⇑g = f) ↔
-      ContDiff ℝ ∞ f ∧ ∀ (n j : ℕ) (w : Fin j → Fin d), ∃ C : ℝ, ∀ x,
-        (1 + ‖x‖ ^ 2) ^ ((n : ℝ) / 2) * ‖derivPartielle j w f x‖ ≤ C := by
+      ContDiff ℝ ∞ f ∧ ∀ (n : ℕ) (α : Fin d → ℕ), ∃ C : ℝ, ∀ x,
+        (1 + ‖x‖ ^ 2) ^ ((n : ℝ) / 2) * ‖deriveePartielle α f x‖ ≤ C := by
   constructor
   · rintro ⟨g, rfl⟩
-    refine ⟨g.smooth ⊤, fun n j w => ⟨2 ^ n * (Finset.Iic (n, j)).sup
+    refine ⟨g.smooth ⊤, fun n α => ⟨2 ^ n * (Finset.Iic (n, (directions α).length)).sup
       (fun m => SchwartzMap.seminorm ℝ m.1 m.2) g, fun x => ?_⟩⟩
-    calc (1 + ‖x‖ ^ 2) ^ ((n : ℝ) / 2) * ‖derivPartielle j w g x‖
-        ≤ (1 + ‖x‖) ^ n * ‖iteratedFDeriv ℝ j g x‖ := by
+    calc (1 + ‖x‖ ^ 2) ^ ((n : ℝ) / 2) * ‖deriveePartielle α g x‖
+        ≤ (1 + ‖x‖) ^ n * ‖iteratedFDeriv ℝ (directions α).length g x‖ := by
           rw [poids_eq_sqrt_pow]
           gcongr
           · exact sqrt_one_add_sq_le (norm_nonneg x)
-          · exact norm_derivPartielle_le j w g x
-      _ ≤ _ := SchwartzMap.one_add_le_sup_seminorm_apply (m := (n, j)) le_rfl le_rfl g x
+          · exact norm_deriveePartielle_le α g x
+      _ ≤ _ := SchwartzMap.one_add_le_sup_seminorm_apply
+          (m := (n, (directions α).length)) le_rfl le_rfl g x
   · rintro ⟨hf, hb⟩
     choose C hC using hb
-    refine ⟨⟨f, hf, fun k n => ⟨∑ w : Fin n → Fin d, C k n w, fun x => ?_⟩⟩, rfl⟩
+    refine ⟨⟨f, hf, fun k n => ⟨∑ w : Fin n → Fin d, C k (multiIndice w), fun x => ?_⟩⟩, rfl⟩
     calc ‖x‖ ^ k * ‖iteratedFDeriv ℝ n f x‖
-        ≤ (1 + ‖x‖ ^ 2) ^ ((k : ℝ) / 2) * ∑ w : Fin n → Fin d, ‖derivPartielle n w f x‖ := by
+        ≤ (1 + ‖x‖ ^ 2) ^ ((k : ℝ) / 2) *
+            ∑ w : Fin n → Fin d, ‖deriveePartielle (multiIndice w) f x‖ := by
           rw [poids_eq_sqrt_pow]
           gcongr
           · exact le_sqrt_one_add_sq (norm_nonneg x)
-          · exact norm_iteratedFDeriv_le_sum n f x
-      _ = ∑ w : Fin n → Fin d, (1 + ‖x‖ ^ 2) ^ ((k : ℝ) / 2) * ‖derivPartielle n w f x‖ :=
+          · exact norm_iteratedFDeriv_le_sum (hf.of_le (by exact_mod_cast le_top)) x
+      _ = ∑ w : Fin n → Fin d,
+            (1 + ‖x‖ ^ 2) ^ ((k : ℝ) / 2) * ‖deriveePartielle (multiIndice w) f x‖ :=
           Finset.mul_sum _ _ _
-      _ ≤ ∑ w : Fin n → Fin d, C k n w := Finset.sum_le_sum fun w _ => hC k n w x
+      _ ≤ ∑ w : Fin n → Fin d, C k (multiIndice w) :=
+          Finset.sum_le_sum fun w _ => hC k (multiIndice w) x
 
 end Schwartz
 
@@ -235,18 +226,18 @@ variable {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
 d'une suite exhaustive de compacts `(K_n)`, et `k ∈ ℕ ∪ {∞}`. Pour `f ∈ C^k(Ω)`, les
 semi-normes `|f|_{n,α} = ‖∂_α f‖_{L^∞(K_n)}`, `|α|_1 ≤ k`, sont finies.
 Remarque : seule la finitude des semi-normes est formalisée ; Mathlib ne possède pas l'espace
-`C^k(Ω)` muni de cette topologie (dérivées partielles indexées par des mots, cf.
-`derivPartielle`). -/
+`C^k(Ω)` muni de cette topologie. -/
 theorem def_cont_nonbornee {Ω : Set (EuclideanSpace ℝ (Fin d))} (hΩ : IsOpen Ω)
     {K : ℕ → Set (EuclideanSpace ℝ (Fin d))} (hK : EstSuiteExhaustive Ω K) {k : ℕ∞}
-    {f : EuclideanSpace ℝ (Fin d) → F} (hf : ContDiffOn ℝ k f Ω) (n j : ℕ) (hj : (j : ℕ∞) ≤ k)
-    (w : Fin j → Fin d) : ∃ C, ∀ x ∈ K n, ‖derivPartielle j w f x‖ ≤ C := by
-  have hcont : ContinuousOn (iteratedFDeriv ℝ j f) Ω :=
+    {f : EuclideanSpace ℝ (Fin d) → F} (hf : ContDiffOn ℝ k f Ω) (n : ℕ) (α : Fin d → ℕ)
+    (hα : ((∑ i, α i : ℕ) : ℕ∞) ≤ k) : ∃ C, ∀ x ∈ K n, ‖deriveePartielle α f x‖ ≤ C := by
+  have hj : (((directions α).length : ℕ) : ℕ∞) ≤ k := by rwa [length_directions]
+  have hcont : ContinuousOn (iteratedFDeriv ℝ (directions α).length f) Ω :=
     (hf.continuousOn_iteratedFDerivWithin (by exact_mod_cast hj) hΩ.uniqueDiffOn).congr
-      (iteratedFDerivWithin_of_isOpen j hΩ).symm
+      (iteratedFDerivWithin_of_isOpen _ hΩ).symm
   obtain ⟨C, hC⟩ := (hK.1 n).exists_bound_of_continuousOn
     (hcont.mono (hK.2.1 ▸ subset_iUnion K n))
-  exact ⟨C, fun x hx => (norm_derivPartielle_le j w f x).trans (hC x hx)⟩
+  exact ⟨C, fun x hx => (norm_deriveePartielle_le α f x).trans (hC x hx)⟩
 
 end ContNonBornee
 
@@ -255,78 +246,78 @@ end ContNonBornee
 section Distribution
 
 /-- La semi-norme du cours `max_{|α|_1 ≤ n} ‖∂_α f‖_{L^∞(K)}`, écrite comme un supremum sur
-`x ∈ K` et sur les mots `w` de longueur `j ≤ n` (cf. `derivPartielle`). -/
+`x ∈ K` et sur les multi-indices `α ∈ ℕ^d` tels que `|α|_1 ≤ n`. -/
 noncomputable def normeK (K : Set (EuclideanSpace ℝ (Fin d))) (n : ℕ)
     (f : EuclideanSpace ℝ (Fin d) → ℝ) : ℝ :=
-  ⨆ x : K, ⨆ j : Fin (n + 1), ⨆ w : Fin j → Fin d, ‖derivPartielle j w f x‖
+  ⨆ x : K, ⨆ α : {α : Fin d → ℕ // ∑ i, α i ≤ n}, ‖deriveePartielle α.1 f x‖
 
 lemma normeK_nonneg (K : Set (EuclideanSpace ℝ (Fin d))) (n : ℕ)
     (f : EuclideanSpace ℝ (Fin d) → ℝ) : 0 ≤ normeK K n f :=
-  Real.iSup_nonneg fun _ => Real.iSup_nonneg fun _ => Real.iSup_nonneg fun _ => norm_nonneg _
+  Real.iSup_nonneg fun _ => Real.iSup_nonneg fun _ => norm_nonneg _
 
 lemma normeK_le {K : Set (EuclideanSpace ℝ (Fin d))} {n : ℕ}
     {f : EuclideanSpace ℝ (Fin d) → ℝ} {c : ℝ} (hc : 0 ≤ c)
-    (h : ∀ x ∈ K, ∀ j ≤ n, ∀ w : Fin j → Fin d, ‖derivPartielle j w f x‖ ≤ c) :
+    (h : ∀ x ∈ K, ∀ α : Fin d → ℕ, ∑ i, α i ≤ n → ‖deriveePartielle α f x‖ ≤ c) :
     normeK K n f ≤ c :=
-  Real.iSup_le (fun x => Real.iSup_le (fun j => Real.iSup_le
-    (fun w => h x x.2 j (Nat.lt_succ_iff.1 j.2) w) hc) hc) hc
+  Real.iSup_le (fun x => Real.iSup_le (fun α => h x x.2 α.1 α.2) hc) hc
 
 lemma le_normeK {K : Set (EuclideanSpace ℝ (Fin d))} {n : ℕ}
     {f : EuclideanSpace ℝ (Fin d) → ℝ} {c : ℝ}
-    (h : ∀ x ∈ K, ∀ j ≤ n, ∀ w : Fin j → Fin d, ‖derivPartielle j w f x‖ ≤ c)
-    {x : EuclideanSpace ℝ (Fin d)} (hx : x ∈ K) {j : ℕ} (hj : j ≤ n) (w : Fin j → Fin d) :
-    ‖derivPartielle j w f x‖ ≤ normeK K n f := by
+    (h : ∀ x ∈ K, ∀ α : Fin d → ℕ, ∑ i, α i ≤ n → ‖deriveePartielle α f x‖ ≤ c)
+    {x : EuclideanSpace ℝ (Fin d)} (hx : x ∈ K) {α : Fin d → ℕ} (hα : ∑ i, α i ≤ n) :
+    ‖deriveePartielle α f x‖ ≤ normeK K n f := by
   have hc : 0 ≤ max c 0 := le_max_right _ _
-  have h' : ∀ x ∈ K, ∀ j ≤ n, ∀ w : Fin j → Fin d, ‖derivPartielle j w f x‖ ≤ max c 0 :=
-    fun x hx j hj w => (h x hx j hj w).trans (le_max_left _ _)
-  have b1 : ∀ (y : K) (i : Fin (n + 1)),
-      BddAbove (range fun w : Fin i → Fin d => ‖derivPartielle i w f y‖) := by
-    rintro y i
-    exact ⟨max c 0, by rintro _ ⟨w, rfl⟩; exact h' y y.2 i (Nat.lt_succ_iff.1 i.2) w⟩
-  have b2 : ∀ y : K, BddAbove (range fun i : Fin (n + 1) =>
-      ⨆ w : Fin i → Fin d, ‖derivPartielle i w f y‖) := by
+  have h' : ∀ x ∈ K, ∀ α : Fin d → ℕ, ∑ i, α i ≤ n → ‖deriveePartielle α f x‖ ≤ max c 0 :=
+    fun x hx α hα => (h x hx α hα).trans (le_max_left _ _)
+  have b1 : ∀ y : K, BddAbove (range fun β : {α : Fin d → ℕ // ∑ i, α i ≤ n} =>
+      ‖deriveePartielle β.1 f y‖) := by
     intro y
-    refine ⟨max c 0, ?_⟩
-    rintro _ ⟨i, rfl⟩
-    exact Real.iSup_le (fun w => h' y y.2 i (Nat.lt_succ_iff.1 i.2) w) hc
-  have b3 : BddAbove (range fun y : K => ⨆ i : Fin (n + 1),
-      ⨆ w : Fin i → Fin d, ‖derivPartielle i w f y‖) := by
+    exact ⟨max c 0, by rintro _ ⟨β, rfl⟩; exact h' y y.2 β.1 β.2⟩
+  have b2 : BddAbove (range fun y : K => ⨆ β : {α : Fin d → ℕ // ∑ i, α i ≤ n},
+      ‖deriveePartielle β.1 f y‖) := by
     refine ⟨max c 0, ?_⟩
     rintro _ ⟨y, rfl⟩
-    exact Real.iSup_le (fun i => Real.iSup_le
-      (fun w => h' y y.2 i (Nat.lt_succ_iff.1 i.2) w) hc) hc
-  exact le_ciSup_of_le b3 ⟨x, hx⟩ (le_ciSup_of_le (b2 ⟨x, hx⟩) ⟨j, Nat.lt_succ_of_le hj⟩
-    (le_ciSup (b1 ⟨x, hx⟩ ⟨j, Nat.lt_succ_of_le hj⟩) w))
+    exact Real.iSup_le (fun β => h' y y.2 β.1 β.2) hc
+  exact le_ciSup_of_le b2 ⟨x, hx⟩ (le_ciSup (b1 ⟨x, hx⟩) ⟨α, hα⟩)
 
 variable {K : TopologicalSpace.Compacts (EuclideanSpace ℝ (Fin d))}
+
+/-- Pour `g ∈ 𝓓_K` et `|α|_1 ≤ n`, `|∂_α g(x)|` est majoré par le max des semi-normes de
+Mathlib d'ordre `≤ n`. -/
+lemma norm_deriveePartielle_le_sup_seminorm {n : ℕ} (g : 𝓓_{K}(EuclideanSpace ℝ (Fin d), ℝ))
+    (x : EuclideanSpace ℝ (Fin d)) {α : Fin d → ℕ} (hα : ∑ i, α i ≤ n) :
+    ‖deriveePartielle α g x‖ ≤ (Finset.range (n + 1)).sup
+      (ContDiffMapSupportedIn.seminorm ℝ (EuclideanSpace ℝ (Fin d)) ℝ ⊤ K) g :=
+  (norm_deriveePartielle_le α g x).trans
+    ((ContDiffMapSupportedIn.norm_iteratedFDeriv_apply_le_seminorm_top ℝ).trans
+      (Seminorm.le_finset_sup_apply (Finset.mem_range.2 (Nat.lt_succ_of_le
+        ((length_directions α).trans_le hα)))))
 
 /-- Pour `g ∈ 𝓓_K`, la semi-norme du cours est majorée par le max des semi-normes de Mathlib. -/
 lemma normeK_le_sup_seminorm (n : ℕ) (g : 𝓓_{K}(EuclideanSpace ℝ (Fin d), ℝ)) :
     normeK K n g ≤ (Finset.range (n + 1)).sup
       (ContDiffMapSupportedIn.seminorm ℝ (EuclideanSpace ℝ (Fin d)) ℝ ⊤ K) g :=
-  normeK_le (apply_nonneg _ _) fun _ _ j hj w =>
-    (norm_derivPartielle_le j w g _).trans
-      ((ContDiffMapSupportedIn.norm_iteratedFDeriv_apply_le_seminorm_top ℝ).trans
-        (Seminorm.le_finset_sup_apply (Finset.mem_range.2 (Nat.lt_succ_of_le hj))))
+  normeK_le (apply_nonneg _ _) fun _ _ _ hα => norm_deriveePartielle_le_sup_seminorm g _ hα
 
 /-- Pour `g ∈ 𝓓_K` et `i ≤ n`, la `i`-ème semi-norme de Mathlib est majorée par
-`(d+1)^n` fois la semi-norme du cours. -/
+`(d+1)^n` fois la semi-norme du cours (lemme de Schwarz). -/
 lemma seminorm_le_normeK {i n : ℕ} (hi : i ≤ n) (g : 𝓓_{K}(EuclideanSpace ℝ (Fin d), ℝ)) :
     ContDiffMapSupportedIn.seminorm ℝ (EuclideanSpace ℝ (Fin d)) ℝ ⊤ K i g ≤
       ((d : ℝ) + 1) ^ n * normeK K n g := by
   have hN := normeK_nonneg (K : Set (EuclideanSpace ℝ (Fin d))) n g
-  have hbound : ∀ x ∈ (K : Set (EuclideanSpace ℝ (Fin d))), ∀ j ≤ n, ∀ w : Fin j → Fin d,
-      ‖derivPartielle j w g x‖ ≤ (Finset.range (n + 1)).sup
+  have hbound : ∀ x ∈ (K : Set (EuclideanSpace ℝ (Fin d))), ∀ α : Fin d → ℕ, ∑ j, α j ≤ n →
+      ‖deriveePartielle α g x‖ ≤ (Finset.range (n + 1)).sup
         (ContDiffMapSupportedIn.seminorm ℝ (EuclideanSpace ℝ (Fin d)) ℝ ⊤ K) g :=
-    fun _ _ j hj w => (norm_derivPartielle_le j w g _).trans
-      ((ContDiffMapSupportedIn.norm_iteratedFDeriv_apply_le_seminorm_top ℝ).trans
-        (Seminorm.le_finset_sup_apply (Finset.mem_range.2 (Nat.lt_succ_of_le hj))))
+    fun _ _ _ hα => norm_deriveePartielle_le_sup_seminorm g _ hα
+  have hg : ContDiff ℝ i g := g.contDiff.of_le (by exact_mod_cast le_top)
   rw [ContDiffMapSupportedIn.seminorm_top_le_iff ℝ (by positivity)]
   intro x hx
-  calc ‖iteratedFDeriv ℝ i g x‖ ≤ ∑ w : Fin i → Fin d, ‖derivPartielle i w g x‖ :=
-        norm_iteratedFDeriv_le_sum i g x
+  calc ‖iteratedFDeriv ℝ i g x‖
+      ≤ ∑ w : Fin i → Fin d, ‖deriveePartielle (multiIndice w) g x‖ :=
+        norm_iteratedFDeriv_le_sum hg x
     _ ≤ ∑ _w : Fin i → Fin d, normeK K n g :=
-        Finset.sum_le_sum fun w _ => le_normeK hbound hx hi w
+        Finset.sum_le_sum fun w _ =>
+          le_normeK hbound hx ((sum_multiIndice w).trans_le hi)
     _ = (d : ℝ) ^ i * normeK K n g := by
         rw [Finset.sum_const, Finset.card_univ, Fintype.card_fun, Fintype.card_fin,
           Fintype.card_fin, nsmul_eq_mul]
@@ -395,8 +386,7 @@ seulement si elle vérifie l'estimation locale du cours `eq:distrib_cont_loc` :
 `∀ K ⊂⊂ Ω, ∃ C_K, ∃ n_K, ∀ f ∈ 𝓓_K(Ω), |φ(f)| ≤ C_K max_{|α|_1 ≤ n_K} ‖∂_α f‖_{L^∞(K)}`.
 Remarques : les fonctions test de Mathlib sont définies sur `ℝ^d` entier, nulles hors d'un
 compact de `Ω` (identification standard avec les fonctions sur `Ω`) ; `𝓓_K(Ω)` est décrit par
-la condition `tsupport f ⊆ K` ; dérivées partielles indexées par des mots (cf.
-`derivPartielle`). -/
+la condition `tsupport f ⊆ K`. -/
 theorem def_distribution (Ω : TopologicalSpace.Opens (EuclideanSpace ℝ (Fin d)))
     (φ : 𝓓(Ω, ℝ) →ₗ[ℝ] ℝ) :
     Continuous φ ↔ ∀ K : Set (EuclideanSpace ℝ (Fin d)), IsCompact K → K ⊆ Ω →

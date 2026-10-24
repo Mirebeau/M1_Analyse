@@ -388,25 +388,26 @@ theorem iteratedFDeriv_convolution {k : ℕ} {f g : ℝᵈ → ℝ} (hf : Integr
     congr 1
 
 /-- **Prop. `prop:convolDeriv` (Dérivation d'une convolution).** Soit `f ∈ L^1(ℝ^d)` et
-`g ∈ C^k_c(ℝ^d)`. Alors `f ⋆ g ∈ C^k(ℝ^d)` et `∂_α (f ⋆ g) = f ⋆ (∂_α g)` pour `|α|_1 ≤ k`.
-Remarque : dérivées partielles indexées par des mots `w` de longueur `j ≤ k`
-(`derivPartielle`, cf. `def:distribution`) plutôt que par des multi-indices ;
-voir aussi `iteratedFDeriv_convolution` pour la version intrinsèque `D^j (f ⋆ g) = f ⋆ D^j g`. -/
+`g ∈ C^k_c(ℝ^d)`. Alors `f ⋆ g ∈ C^k(ℝ^d)` et `∂_α (f ⋆ g) = f ⋆ (∂_α g)` pour `|α|_1 ≤ k`
+(`deriveePartielle`, cf. `def:normeCnb`) ; voir aussi `iteratedFDeriv_convolution` pour la
+version intrinsèque `D^j (f ⋆ g) = f ⋆ D^j g`. -/
 theorem prop_convolDeriv {k : ℕ} {f g : ℝᵈ → ℝ} (hf : Integrable f) (hg : ContDiff ℝ k g)
     (hgc : HasCompactSupport g) :
     ContDiff ℝ k (f ⋆ g) ∧
-      ∀ j ≤ k, ∀ w : Fin j → Fin d, derivPartielle j w (f ⋆ g) = f ⋆ derivPartielle j w g := by
+      ∀ α : Fin d → ℕ, ∑ i, α i ≤ k → deriveePartielle α (f ⋆ g) = f ⋆ deriveePartielle α g := by
   refine ⟨hgc.contDiff_convolution_right (lsmul ℝ ℝ) hf.locallyIntegrable hg,
-    fun j hj w => ?_⟩
+    fun α hα => ?_⟩
+  have hj : (directions α).length ≤ k := (length_directions α).trans_le hα
   funext x
-  simp only [derivPartielle]
+  simp only [deriveePartielle]
   rw [iteratedFDeriv_convolution hf hg hgc hj]
   simp only [convolution_def]
-  have hint : Integrable (fun t => lsmul ℝ ℝ (f t) (iteratedFDeriv ℝ j g (x - t))) :=
-    (hgc.iteratedFDeriv j).convolutionExists_right (lsmul ℝ ℝ) hf.locallyIntegrable
+  have hint : Integrable (fun t => lsmul ℝ ℝ (f t)
+      (iteratedFDeriv ℝ (directions α).length g (x - t))) :=
+    (hgc.iteratedFDeriv _).convolutionExists_right (lsmul ℝ ℝ) hf.locallyIntegrable
       (hg.continuous_iteratedFDeriv (by exact_mod_cast hj)) x
   rw [ContinuousMultilinearMap.integral_apply hint]
-  simp [derivPartielle]
+  simp [deriveePartielle]
 
 /-! ### Densité de `𝓓(Ω)` dans `L^p(Ω)` -/
 
