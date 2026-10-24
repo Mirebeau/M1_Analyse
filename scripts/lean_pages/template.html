@@ -254,9 +254,9 @@ function projectUses(d) {  // the course statements used by d (other than its ow
     return `<a href="#label=${encodeURIComponent(l)}" title="${esc(x.name)}">${esc(ref)} · ${esc(x.name.replace(/^M1Analyse\./, ""))}</a>`;
   }).join("") + "</div>";
 }
-function codeHtml(code) {  // the statement, then the proof folded (hidden by default)
-  const k = code.indexOf(":=");
-  if (k < 0) return `<pre><code>${leanHtml(code)}</code></pre>`;
+function codeHtml(code, kind) {  // a theorem: the statement, then the proof folded (hidden by
+  const k = code.indexOf(":=");  // default); a definition: shown whole, its body is its meaning
+  if (k < 0 || !["theorem", "lemma"].includes(kind)) return `<pre><code>${leanHtml(code)}</code></pre>`;
   const stmt = code.slice(0, k + 2), proof = code.slice(k + 2).replace(/^[ \t]*\n/, "");
   const n = proof.split("\n").length;
   return `<pre><code>${leanHtml(stmt)}</code></pre>
@@ -267,7 +267,7 @@ function declHtml(d) {
   return `<section class="decl" id="decl-${esc(d.name)}">
     <h3><span><span class="k">${esc(d.kind)}</span> ${esc(d.name)}</span><span class="file">${esc(d.file)}:${d.line}</span></h3>
     <p class="ddoc">${docHtml(d.doc)}</p>
-    ${codeHtml(d.code)}
+    ${codeHtml(d.code, d.kind)}
     ${projectUses(d)}
     ${uses("Notions Mathlib", d.notions)}
     ${uses("Lemmes Mathlib utilisés", d.lemmas)}
