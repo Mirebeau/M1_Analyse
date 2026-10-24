@@ -3,6 +3,7 @@ Copyright (c) 2026 Jean-Marie Mirebeau. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Jean-Marie Mirebeau
 -/
+import M1Analyse.Outils.Schwarz
 import M1Analyse.TopologieGenerale.OuvertsFermes
 import M1Analyse.TopologieGenerale.ComparaisonTopologies
 import M1Analyse.TopologieGenerale.Voisinages

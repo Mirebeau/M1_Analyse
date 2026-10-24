@@ -26,6 +26,8 @@ small "Lean✓" mark linking to `<site>#label=<label>`, or nothing and a LaTeX w
 declaration cites the label. It is loaded by `\input{leananchors}` after `hyperref`; the marks are
 placed on their own line right after the `\label` (after `\end{equation}` for an equation).
 Rerun it after formalizing new statements.
+To compile the course without Lean links, put `\newcommand\leancheck[1]{}` before
+`\input{leananchors}` (or on the command line); `leananchors.tex` then does nothing.
 
 `paper.py` compiles a copy of the course in `build/paper` (when the sources changed) and reads the
 `.aux` (printed numbers, pages, section titles); it converts each statement to HTML, the math being

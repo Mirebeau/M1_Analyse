@@ -30,7 +30,9 @@ scalaire de `L²` est `∫ conj (f x) * g x` (`ex:l2Hilbert`) ; les coordonnées
 hilbertienne sont `⟪e_n, x⟫` (`th:baseHilbert`). Aucune adaptation n'est donc nécessaire.
 
 La projection `P_K` sur un convexe fermé non vide (`th:projConvexe`), absente de Mathlib en
-dehors du cas des sous-espaces, est introduite comme `M1Analyse.projConvexe`.
+dehors du cas des sous-espaces, est introduite comme `M1Analyse.projConvexe 𝕜 K`, définie
+seulement pour `K : ConvexeFerme H` (partie non vide, fermée, convexe), à partir du théorème
+d'existence et d'unicité `th_projConvexe_existsUnique`.
 -/
 
 open Set Filter Topology RCLike
@@ -123,13 +125,19 @@ theorem def_Hilbert :
 
 /-! ### Projection sur un convexe fermé -/
 
-/-- **Projection `P_K` de `th:projConvexe` (définition du cours).** `projConvexe K x` est un
-minimiseur de `y ↦ ‖x - y‖` sur `K` s'il en existe un (valeur arbitraire `x` sinon). Sous les
-hypothèses de `th:projConvexe` (Hilbert, `K` convexe fermé non vide), c'est l'unique tel
-minimiseur, cf. `th_projConvexe`. -/
-noncomputable def projConvexe {E : Type*} [NormedAddCommGroup E] (K : Set E) (x : E) : E :=
-  open Classical in
-  if h : ∃ y ∈ K, ∀ z ∈ K, ‖x - y‖ ≤ ‖x - z‖ then h.choose else x
+/-- **Convexe fermé non vide** (hypothèses de `th:projConvexe`) : une partie `K ⊆ H` non vide,
+fermée et convexe. C'est le domaine de définition de la projection `P_K` (`projConvexe`). -/
+structure ConvexeFerme (H : Type*) [AddCommGroup H] [Module ℝ H] [TopologicalSpace H] where
+  /-- La partie `K ⊆ H`. -/
+  carrier : Set H
+  nonempty : carrier.Nonempty
+  isClosed : IsClosed carrier
+  convex : Convex ℝ carrier
+
+instance {H : Type*} [AddCommGroup H] [Module ℝ H] [TopologicalSpace H] :
+    SetLike (ConvexeFerme H) H where
+  coe := ConvexeFerme.carrier
+  coe_injective K L h := by cases K; cases L; congr
 
 section ProjAux
 
@@ -182,13 +190,13 @@ private lemma convexCoe_of_convex {K : Set H} (h : Convex ℝ K) : ConvexCoe �
   have := h hx hy ha hb hab
   rwa [RCLike.real_smul_eq_coe_smul (K := 𝕜), RCLike.real_smul_eq_coe_smul (K := 𝕜)] at this
 
-variable [CompleteSpace H] {K : Set H}
+variable [CompleteSpace H]
 
 include 𝕜 in
 /-- **Thm. `th:projConvexe` (Projection sur un convexe fermé), existence et unicité.**
 Soit `H` Hilbert et `K ⊆ H` convexe fermé non vide. Pour tout `x ∈ H`, le problème
 `argmin_{y ∈ K} ‖x - y‖` admet une unique solution. -/
-theorem th_projConvexe_existsUnique (hne : K.Nonempty) (hcl : IsClosed K)
+theorem th_projConvexe_existsUnique {K : Set H} (hne : K.Nonempty) (hcl : IsClosed K)
     (hconv : Convex ℝ K) (x : H) : ∃! y, y ∈ K ∧ ∀ z ∈ K, ‖x - y‖ ≤ ‖x - z‖ := by
   have hc := convexCoe_of_convex (𝕜 := 𝕜) hconv
   obtain ⟨y, hyK, hy⟩ := exists_min_aux hne hcl hc x
@@ -200,53 +208,55 @@ theorem th_projConvexe_existsUnique (hne : K.Nonempty) (hcl : IsClosed K)
   exact (sub_eq_zero.mp (pow_eq_zero_iff two_ne_zero |>.mp
     (le_antisymm this (sq_nonneg _)) |> norm_eq_zero.mp)).symm
 
-include 𝕜 in
-/-- **Thm. `th:projConvexe`, définition de `P_K`.** `P_K(x) := projConvexe K x` appartient à
-`K` et minimise `y ↦ ‖x - y‖` sur `K`. -/
-theorem th_projConvexe (hne : K.Nonempty) (hcl : IsClosed K) (hconv : Convex ℝ K) (x : H) :
-    projConvexe K x ∈ K ∧ ∀ z ∈ K, ‖x - projConvexe K x‖ ≤ ‖x - z‖ := by
-  have h : ∃ y ∈ K, ∀ z ∈ K, ‖x - y‖ ≤ ‖x - z‖ :=
-    (th_projConvexe_existsUnique (𝕜 := 𝕜) hne hcl hconv x).exists.imp fun _ h => h
-  simp only [projConvexe, h, ↓reduceDIte]
-  exact h.choose_spec
+variable (𝕜) in
+/-- **Projection `P_K` de `th:projConvexe`.** Pour `H` un `𝕜`-Hilbert et `K ⊆ H` convexe fermé
+non vide, `P_K(x) := projConvexe 𝕜 K x` est l'unique minimiseur de `y ↦ ‖x - y‖` sur `K`
+(`th_projConvexe_existsUnique`) ; caractérisation : `th_projConvexe`, `eq_projConvexe_of_isMin`.
+(Le corps `𝕜` ne sert qu'à invoquer le théorème ; la valeur n'en dépend pas, puisque le
+minimiseur est défini par la seule norme.)
+Lien avec Mathlib : pour un sous-espace fermé, `P_K` est `Submodule.starProjection`
+(`projConvexe_eq_starProjection`) ; Mathlib n'a pas de projection sur un convexe général. -/
+noncomputable def projConvexe (K : ConvexeFerme H) (x : H) : H :=
+  (th_projConvexe_existsUnique (𝕜 := 𝕜) K.nonempty K.isClosed K.convex x).exists.choose
 
-include 𝕜 in
-/-- Unicité : tout minimiseur est `P_K(x)`. -/
-theorem eq_projConvexe_of_isMin (hne : K.Nonempty) (hcl : IsClosed K) (hconv : Convex ℝ K)
-    {x y : H} (hy : y ∈ K) (hmin : ∀ z ∈ K, ‖x - y‖ ≤ ‖x - z‖) : y = projConvexe K x :=
-  (th_projConvexe_existsUnique (𝕜 := 𝕜) hne hcl hconv x).unique ⟨hy, hmin⟩
-    (th_projConvexe (𝕜 := 𝕜) hne hcl hconv x)
+/-- **Thm. `th:projConvexe`, définition de `P_K`.** `P_K(x)` appartient à `K` et minimise
+`y ↦ ‖x - y‖` sur `K`. -/
+theorem th_projConvexe (K : ConvexeFerme H) (x : H) :
+    projConvexe 𝕜 K x ∈ K ∧ ∀ z ∈ K, ‖x - projConvexe 𝕜 K x‖ ≤ ‖x - z‖ :=
+  (th_projConvexe_existsUnique (𝕜 := 𝕜) K.nonempty K.isClosed K.convex x).exists.choose_spec
+
+/-- **Thm. `th:projConvexe`, unicité.** Tout minimiseur de `y ↦ ‖x - y‖` sur `K` est `P_K(x)`. -/
+theorem eq_projConvexe_of_isMin (K : ConvexeFerme H) {x y : H} (hy : y ∈ K)
+    (hmin : ∀ z ∈ K, ‖x - y‖ ≤ ‖x - z‖) : y = projConvexe 𝕜 K x :=
+  (th_projConvexe_existsUnique (𝕜 := 𝕜) K.nonempty K.isClosed K.convex x).unique ⟨hy, hmin⟩
+    (th_projConvexe K x)
 
 /-- **Thm. `th:projConvexe`, condition d'angle obtus (`eq:proj_obtus`).**
 `P_K(x)` est caractérisé par : pour tout `y ∈ K`, `Re⟪x - P_K(x), y - P_K(x)⟫ ≤ 0`. -/
-theorem th_projConvexe_caract (hne : K.Nonempty) (hcl : IsClosed K) (hconv : Convex ℝ K)
-    {x p : H} (hp : p ∈ K) :
-    p = projConvexe K x ↔ ∀ y ∈ K, re ⟪x - p, y - p⟫_𝕜 ≤ 0 := by
-  have hc := convexCoe_of_convex (𝕜 := 𝕜) hconv
-  rw [← caract_aux hc hp]
-  refine ⟨fun h => ?_, eq_projConvexe_of_isMin (𝕜 := 𝕜) hne hcl hconv hp⟩
-  rw [h]; exact (th_projConvexe (𝕜 := 𝕜) hne hcl hconv x).2
+theorem th_projConvexe_caract (K : ConvexeFerme H) {x p : H} (hp : p ∈ K) :
+    p = projConvexe 𝕜 K x ↔ ∀ y ∈ K, re ⟪x - p, y - p⟫_𝕜 ≤ 0 := by
+  have hc := convexCoe_of_convex (𝕜 := 𝕜) K.convex
+  refine (?_ : _ ↔ ∀ z ∈ (K : Set H), ‖x - p‖ ≤ ‖x - z‖).trans (caract_aux hc hp)
+  refine ⟨fun h => ?_, eq_projConvexe_of_isMin K hp⟩
+  rw [h]; exact (th_projConvexe K x).2
 
 /-- **Thm. `th:projConvexe`, opérateur moyenné (`eq:proj_moyennee`).**
 Pour tous `x, y ∈ H`, `‖P_K(x) - P_K(y)‖² ≤ Re⟪x - y, P_K(x) - P_K(y)⟫`. -/
-theorem th_projConvexe_moyennee (hne : K.Nonempty) (hcl : IsClosed K) (hconv : Convex ℝ K)
-    (x y : H) :
-    ‖projConvexe K x - projConvexe K y‖ ^ 2 ≤ re ⟪x - y, projConvexe K x - projConvexe K y⟫_𝕜 := by
-  have hx := th_projConvexe (𝕜 := 𝕜) hne hcl hconv x
-  have hy := th_projConvexe (𝕜 := 𝕜) hne hcl hconv y
-  exact moyennee_aux
-    ((th_projConvexe_caract (𝕜 := 𝕜) hne hcl hconv hx.1).mp rfl _ hy.1)
-    ((th_projConvexe_caract (𝕜 := 𝕜) hne hcl hconv hy.1).mp rfl _ hx.1)
+theorem th_projConvexe_moyennee (K : ConvexeFerme H) (x y : H) :
+    ‖projConvexe 𝕜 K x - projConvexe 𝕜 K y‖ ^ 2 ≤
+      re ⟪x - y, projConvexe 𝕜 K x - projConvexe 𝕜 K y⟫_𝕜 := by
+  have hx := th_projConvexe (𝕜 := 𝕜) K x
+  have hy := th_projConvexe (𝕜 := 𝕜) K y
+  exact moyennee_aux ((th_projConvexe_caract (𝕜 := 𝕜) K hx.1).mp rfl _ hy.1)
+    ((th_projConvexe_caract (𝕜 := 𝕜) K hy.1).mp rfl _ hx.1)
 
-include 𝕜 in
 /-- **Thm. `th:projConvexe`, Lipschitz.** `P_K` est `1`-Lipschitz. -/
-theorem th_projConvexe_lipschitz (hne : K.Nonempty) (hcl : IsClosed K) (hconv : Convex ℝ K) :
-    LipschitzWith 1 (projConvexe K) := by
+theorem th_projConvexe_lipschitz (K : ConvexeFerme H) : LipschitzWith 1 (projConvexe 𝕜 K) := by
   refine LipschitzWith.of_dist_le_mul fun x y => ?_
   rw [NNReal.coe_one, one_mul, dist_eq_norm, dist_eq_norm]
-  have h := th_projConvexe_moyennee (𝕜 := 𝕜) hne hcl hconv x y
-  have h' := re_inner_le_norm (𝕜 := 𝕜) (x - y) (projConvexe K x - projConvexe K y)
-  nlinarith [norm_nonneg (projConvexe K x - projConvexe K y), norm_nonneg (x - y)]
+  have h := th_projConvexe_moyennee (𝕜 := 𝕜) K x y
+  have h' := re_inner_le_norm (𝕜 := 𝕜) (x - y) (projConvexe 𝕜 K x - projConvexe 𝕜 K y)
+  nlinarith [norm_nonneg (projConvexe 𝕜 K x - projConvexe 𝕜 K y), norm_nonneg (x - y)]
 
 end Projection
 
@@ -318,41 +328,57 @@ theorem prop_decompOrth_orthogonal (F : Submodule 𝕜 H) :
     (Fᗮ : Set H) = {y | ∀ x ∈ F, ⟪x, y⟫_𝕜 = 0} := by
   ext y; exact Submodule.mem_orthogonal F y
 
-/-- Pont : pour un sous-espace admettant une projection orthogonale (par exemple fermé dans un
-Hilbert), la projection du cours `P_F` est la projection orthogonale de Mathlib. -/
-theorem projConvexe_eq_starProjection (F : Submodule 𝕜 H) [F.HasOrthogonalProjection]
-    (x : H) : projConvexe (F : Set H) x = F.starProjection x := by
-  have hmin : ∀ z ∈ (F : Set H), ‖x - F.starProjection x‖ ≤ ‖x - z‖ :=
-    (isMin_iff_iInf (F.starProjection_apply_mem x)).mp (Submodule.starProjection_minimal x)
-  have h : ∃ y ∈ (F : Set H), ∀ z ∈ (F : Set H), ‖x - y‖ ≤ ‖x - z‖ :=
-    ⟨_, F.starProjection_apply_mem x, hmin⟩
-  simp only [projConvexe, h, ↓reduceDIte]
-  obtain ⟨hyF, hy⟩ := h.choose_spec
-  exact (Submodule.eq_starProjection_of_mem_of_inner_eq_zero hyF
-    ((Submodule.norm_eq_iInf_iff_inner_eq_zero F hyF).mp ((isMin_iff_iInf hyF).mpr hy))).symm
+section DecompOrth
+
+variable [Module ℝ H] [IsScalarTower ℝ 𝕜 H]
+
+/-- Un sous-espace vectoriel fermé `F ⊆ H` est un convexe fermé non vide. -/
+def ConvexeFerme.ofSubmodule (F : Submodule 𝕜 H) (hF : IsClosed (F : Set H)) :
+    ConvexeFerme H where
+  carrier := F
+  nonempty := ⟨0, F.zero_mem⟩
+  isClosed := hF
+  convex := (F.restrictScalars ℝ).convex
+
+variable [CompleteSpace H]
+
+/-- Pont avec Mathlib : pour un sous-espace fermé `F`, la projection du cours `P_F` est la
+projection orthogonale `Submodule.starProjection` de Mathlib. -/
+theorem projConvexe_eq_starProjection (F : Submodule 𝕜 H) (hF : IsClosed (F : Set H))
+    [F.HasOrthogonalProjection] (x : H) :
+    projConvexe 𝕜 (ConvexeFerme.ofSubmodule F hF) x = F.starProjection x :=
+  (eq_projConvexe_of_isMin (ConvexeFerme.ofSubmodule F hF) (F.starProjection_apply_mem x)
+    ((isMin_iff_iInf (F.starProjection_apply_mem x)).mp (Submodule.starProjection_minimal x))).symm
 
 /-- **Prop. `prop:decompOrth` (Décomposition orthogonale).** Soit `H` Hilbert et `F ⊆ H` un
 sous-espace vectoriel fermé. La projection `P_F` est caractérisée par `⟪x - P_F(x), y⟫ = 0`
 pour tout `y ∈ F` ; de plus `F ⊕ F^⊥ = H`, `P_F + P_{F^⊥} = Id`, et `P_F`, `P_{F^⊥}` sont
 linéaires continues. -/
-theorem prop_decompOrth [CompleteSpace H] (F : Submodule 𝕜 H) (hF : IsClosed (F : Set H)) :
-    (∀ x p : H, p ∈ F → (p = projConvexe (F : Set H) x ↔ ∀ y ∈ F, ⟪x - p, y⟫_𝕜 = 0)) ∧
-    IsCompl F Fᗮ ∧
-    (∀ x, projConvexe (F : Set H) x + projConvexe (Fᗮ : Set H) x = x) ∧
-    (∃ L : H →L[𝕜] H, ⇑L = projConvexe (F : Set H)) ∧
-    (∃ L : H →L[𝕜] H, ⇑L = projConvexe (Fᗮ : Set H)) := by
+theorem prop_decompOrth (F : Submodule 𝕜 H) (hF : IsClosed (F : Set H)) :
+    let PF := projConvexe 𝕜 (ConvexeFerme.ofSubmodule F hF)
+    let PFo := projConvexe 𝕜 (ConvexeFerme.ofSubmodule Fᗮ F.isClosed_orthogonal)
+    (∀ x p : H, p ∈ F → (p = PF x ↔ ∀ y ∈ F, ⟪x - p, y⟫_𝕜 = 0)) ∧
+    IsCompl F Fᗮ ∧ (∀ x, PF x + PFo x = x) ∧
+    (∃ L : H →L[𝕜] H, ⇑L = PF) ∧ (∃ L : H →L[𝕜] H, ⇑L = PFo) := by
+  intro PF PFo
   have : CompleteSpace F := hF.isComplete.completeSpace_coe
+  have hPF : ∀ x, PF x = F.starProjection x := projConvexe_eq_starProjection F hF
+  have hPFo : ∀ x, PFo x = Fᗮ.starProjection x :=
+    projConvexe_eq_starProjection Fᗮ F.isClosed_orthogonal
   refine ⟨fun x p hp => ?_, F.isCompl_orthogonal, fun x => ?_,
-    ⟨F.starProjection, funext fun x => (projConvexe_eq_starProjection F x).symm⟩,
-    ⟨Fᗮ.starProjection, funext fun x => (projConvexe_eq_starProjection Fᗮ x).symm⟩⟩
-  · rw [projConvexe_eq_starProjection]
+    ⟨F.starProjection, funext fun x => (hPF x).symm⟩,
+    ⟨Fᗮ.starProjection, funext fun x => (hPFo x).symm⟩⟩
+  · rw [hPF]
     constructor
     · rintro rfl y hy
       exact inner_eq_zero_symm.mp ((Submodule.mem_orthogonal F _).mp
         (Submodule.sub_starProjection_mem_orthogonal x) y hy)
     · exact fun h => (Submodule.eq_starProjection_of_mem_of_inner_eq_zero hp h).symm
-  · rw [projConvexe_eq_starProjection, projConvexe_eq_starProjection]
+  · rw [hPF, hPFo]
     exact Submodule.starProjection_add_starProjection_orthogonal x
+
+end DecompOrth
+
 
 /-! ### Décomposition associée à un cône (facultatif) -/
 
@@ -365,17 +391,23 @@ Lien avec Mathlib : le cône dual `ProperCone.innerDual K = {y | ∀ x ∈ K, 0 
 Mathlib a la convention de signe opposée : `K° = -K*` (`conePolaire_eq_neg_innerDual`). -/
 def conePolaire (K : Set E) : Set E := {y | ∀ x ∈ K, ⟪x, y⟫_ℝ ≤ 0}
 
-private lemma conePolaire_props (K : Set E) :
-    (conePolaire K).Nonempty ∧ IsClosed (conePolaire K) ∧ Convex ℝ (conePolaire K) := by
-  refine ⟨⟨0, fun x _ => by simp⟩, ?_, ?_⟩
-  · have : conePolaire K = ⋂ x ∈ K, {y | ⟪x, y⟫_ℝ ≤ 0} := by
-      ext; simp [conePolaire]
+/-- Le cône polaire `K°` est un convexe fermé non vide (il contient `0`). -/
+def ConvexeFerme.conePolaire (K : Set E) : ConvexeFerme E where
+  carrier := M1Analyse.conePolaire K
+  nonempty := ⟨0, fun x _ => by simp⟩
+  isClosed := by
+    have : M1Analyse.conePolaire K = ⋂ x ∈ K, {y | ⟪x, y⟫_ℝ ≤ 0} := by
+      ext; simp [M1Analyse.conePolaire]
     rw [this]
     exact isClosed_biInter fun x _ =>
       isClosed_le (continuous_const.inner continuous_id) continuous_const
-  · intro y₁ h₁ y₂ h₂ a b ha hb _ x hx
+  convex := by
+    intro y₁ h₁ y₂ h₂ a b ha hb _ x hx
     rw [inner_add_right, real_inner_smul_right, real_inner_smul_right]
     nlinarith [h₁ x hx, h₂ x hx]
+
+@[simp] lemma ConvexeFerme.coe_conePolaire (K : Set E) :
+    (ConvexeFerme.conePolaire K : Set E) = M1Analyse.conePolaire K := rfl
 
 variable [CompleteSpace E]
 
@@ -386,20 +418,17 @@ theorem conePolaire_eq_neg_innerDual (K : Set E) :
   ext y
   simp [conePolaire]
 
-
-private lemma decompCone_aux {K : Set E} (hne : K.Nonempty) (hcl : IsClosed K)
-    (hcone : ∀ x ∈ K, ∀ y ∈ K, ∀ a b : ℝ, 0 ≤ a → 0 ≤ b → a • x + b • y ∈ K)
+private lemma decompCone_aux (K : ConvexeFerme E)
     {x y z : E} (hy : y ∈ K) (hz : z ∈ conePolaire K) (hyz : ⟪y, z⟫_ℝ = 0) (hx : x = y + z) :
-    y = projConvexe K x ∧ z = projConvexe (conePolaire K) x := by
-  have hconv : Convex ℝ K := fun u hu v hv a b ha hb _ => hcone u hu v hv a b ha hb
-  obtain ⟨hne', hcl', hconv'⟩ := conePolaire_props K
+    y = projConvexe ℝ K x ∧ z = projConvexe ℝ (ConvexeFerme.conePolaire K) x := by
   subst hx
   constructor
-  · refine (th_projConvexe_caract (𝕜 := ℝ) hne hcl hconv hy).mpr fun y' hy' => ?_
+  · refine (th_projConvexe_caract K hy).mpr fun y' hy' => ?_
     rw [add_sub_cancel_left, RCLike.re_to_real, inner_sub_right, real_inner_comm y' z,
       real_inner_comm y z, hyz, sub_zero]
     exact hz y' hy'
-  · refine (th_projConvexe_caract (𝕜 := ℝ) hne' hcl' hconv' hz).mpr fun z' hz' => ?_
+  · refine (th_projConvexe_caract (ConvexeFerme.conePolaire (K : Set E)) (x := y + z) hz).mpr
+      fun z' hz' => ?_
     rw [add_sub_cancel_right, RCLike.re_to_real, inner_sub_right, hyz, sub_zero]
     exact hz' y hy
 
@@ -407,21 +436,21 @@ private lemma decompCone_aux {K : Set E} (hne : K.Nonempty) (hcl : IsClosed K)
 Soit `H` un `ℝ`-Hilbert, `K ⊆ H` un cône convexe fermé (`λx + μy ∈ K` pour `x, y ∈ K`,
 `λ, μ ≥ 0`) et `K°` son cône polaire. Alors `y = P_K(x)` et `z = P_{K°}(x)` ssi
 `y ∈ K`, `z ∈ K°`, `⟪y, z⟫ = 0` et `x = y + z`.
-Remarque : on suppose `K` non vide (hypothèse implicite dans le cours : la partie vide satisfait
-la définition de cône convexe donnée, mais la projection sur `∅` n'est pas définie). -/
-theorem prop_decompCone {K : Set E} (hne : K.Nonempty) (hcl : IsClosed K)
+Remarque : `K` est supposé non vide (`K : ConvexeFerme E`), hypothèse implicite dans le cours :
+la partie vide satisfait la définition de cône convexe donnée, mais la projection sur `∅` n'est
+pas définie. -/
+theorem prop_decompCone (K : ConvexeFerme E)
     (hcone : ∀ x ∈ K, ∀ y ∈ K, ∀ a b : ℝ, 0 ≤ a → 0 ≤ b → a • x + b • y ∈ K) (x y z : E) :
-    (y = projConvexe K x ∧ z = projConvexe (conePolaire K) x) ↔
+    (y = projConvexe ℝ K x ∧ z = projConvexe ℝ (ConvexeFerme.conePolaire K) x) ↔
       (y ∈ K ∧ z ∈ conePolaire K ∧ ⟪y, z⟫_ℝ = 0 ∧ x = y + z) := by
-  have hconv : Convex ℝ K := fun u hu v hv a b ha hb _ => hcone u hu v hv a b ha hb
-  refine ⟨?_, fun ⟨hy, hz, hyz, hx⟩ => decompCone_aux hne hcl hcone hy hz hyz hx⟩
+  refine ⟨?_, fun ⟨hy, hz, hyz, hx⟩ => decompCone_aux K hy hz hyz hx⟩
   rintro ⟨rfl, rfl⟩
-  set p := projConvexe K x
-  have hp : p ∈ K := (th_projConvexe (𝕜 := ℝ) hne hcl hconv x).1
-  have hc := (th_projConvexe_caract (𝕜 := ℝ) hne hcl hconv hp).mp rfl
+  set p := projConvexe ℝ K x
+  have hp : p ∈ K := (th_projConvexe K x).1
+  have hc := (th_projConvexe_caract K hp).mp rfl
   simp only [RCLike.re_to_real] at hc
   have h0 : (0 : E) ∈ K := by
-    obtain ⟨a, ha⟩ := hne
+    obtain ⟨a, ha⟩ := K.nonempty
     simpa using hcone a ha a ha 0 0 le_rfl le_rfl
   have hw : x - p ∈ conePolaire K := by
     intro y' hy'
@@ -433,7 +462,7 @@ theorem prop_decompCone {K : Set E} (hne : K.Nonempty) (hcl : IsClosed K)
     rw [zero_sub, inner_neg_right] at h1
     rw [add_sub_cancel_left] at h2
     rw [real_inner_comm]; linarith
-  have := decompCone_aux hne hcl hcone hp hw hpw (add_sub_cancel p x).symm
+  have := decompCone_aux K hp hw hpw (add_sub_cancel p x).symm
   exact ⟨hp, this.2 ▸ hw, this.2 ▸ hpw, (this.2 ▸ (add_sub_cancel p x).symm)⟩
 
 /-- **Ex. `ex:coneSdp` (Cône dual de `ℝ₊^d`), auto-dualité.** Le cône `ℝ₊^d ⊆ ℝ^d` est
@@ -452,28 +481,37 @@ theorem ex_coneSdp_autoDual (d : ℕ) :
     rw [PiLp.inner_apply]
     exact Finset.sum_nonneg fun i _ => by simpa using mul_nonneg (hy i) (hx i)
 
+/-- Le cône `ℝ₊^d = {x ∈ ℝ^d | ∀ i, x_i ≥ 0}` (`ex:coneSdp`), convexe fermé non vide. -/
+def orthantPositif (d : ℕ) : ConvexeFerme (EuclideanSpace ℝ (Fin d)) where
+  carrier := {x | ∀ i, 0 ≤ x i}
+  nonempty := ⟨0, fun i => by simp⟩
+  isClosed := by
+    have : {x : EuclideanSpace ℝ (Fin d) | ∀ i, 0 ≤ x i} =
+        ⋂ i, {x : EuclideanSpace ℝ (Fin d) | 0 ≤ x i} := by ext; simp
+    rw [this]
+    exact isClosed_iInter fun i =>
+      isClosed_le continuous_const ((PiLp.continuous_apply 2 _ i).comp continuous_id)
+  convex := fun u hu v hv a b ha hb _ i => by
+    simp only [PiLp.add_apply, PiLp.smul_apply, smul_eq_mul]
+    exact add_nonneg (mul_nonneg ha (hu i)) (mul_nonneg hb (hv i))
+
 /-- **Ex. `ex:coneSdp`, décomposition associée à `ℝ₊^d`.** Pour `K = ℝ₊^d`, la décomposition
 de `prop:decompCone` est `x = x⁺ - x⁻` : `P_K(x) = x⁺` et `P_{K°}(x) = -x⁻`, où
 `x⁺_i = max{x_i, 0}` et `x⁻_i = max{-x_i, 0}`. -/
 theorem ex_coneSdp_partiesPosNeg (d : ℕ) (x : EuclideanSpace ℝ (Fin d)) :
-    let K : Set (EuclideanSpace ℝ (Fin d)) := {x | ∀ i, 0 ≤ x i}
+    let K := orthantPositif d
     let xp : EuclideanSpace ℝ (Fin d) := WithLp.toLp 2 fun i => max (x i) 0
     let xm : EuclideanSpace ℝ (Fin d) := WithLp.toLp 2 fun i => max (-x i) 0
-    x = xp - xm ∧ projConvexe K x = xp ∧ projConvexe (conePolaire K) x = -xm := by
+    x = xp - xm ∧ projConvexe ℝ K x = xp ∧
+      projConvexe ℝ (ConvexeFerme.conePolaire K) x = -xm := by
   intro K xp xm
   have hx : x = xp - xm := by
     ext i; simp [xp, xm]
-  have hne : K.Nonempty := ⟨0, fun i => by simp⟩
-  have hcl : IsClosed K := by
-    have : K = ⋂ i, {x : EuclideanSpace ℝ (Fin d) | 0 ≤ x i} := by ext; simp [K]
-    rw [this]
-    exact isClosed_iInter fun i =>
-      isClosed_le continuous_const ((PiLp.continuous_apply 2 _ i).comp continuous_id)
   have hcone : ∀ u ∈ K, ∀ v ∈ K, ∀ a b : ℝ, 0 ≤ a → 0 ≤ b → a • u + b • v ∈ K :=
     fun u hu v hv a b ha hb i => by
       simp only [PiLp.add_apply, PiLp.smul_apply, smul_eq_mul]
       exact add_nonneg (mul_nonneg ha (hu i)) (mul_nonneg hb (hv i))
-  have h := (prop_decompCone hne hcl hcone x xp (-xm)).mpr ⟨fun i => by simp [xp], ?_, ?_, ?_⟩
+  have h := (prop_decompCone K hcone x xp (-xm)).mpr ⟨fun i => by simp [xp], ?_, ?_, ?_⟩
   · exact ⟨hx, h.1.symm, h.2.symm⟩
   · intro k hk
     rw [PiLp.inner_apply]

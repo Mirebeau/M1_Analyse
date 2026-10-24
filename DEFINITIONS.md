@@ -173,8 +173,8 @@ Mathlib utilisés). Voir `scripts/lean_pages/README.md`.
 
 ### EVN (§1.3)
 - Nouvelles définitions (Mathlib n'a pas ces normes) : normeSup, seminormeModule, seminormeHolder (= seminormeModule (s ↦ s^α)), constLip, normeHolder, espaceHolder, normeCnb, espaceCnb, espaceCnbAdherence, deriveePartielle. Chaque docstring indique le pont avec Mathlib (eHolderNorm, MemHolder, HolderWith, LipschitzWith, iteratedFDeriv…).
-- (24 octobre, décision de l'auteur) Normes de Hölder et |·|_ω à valeurs dans [0, ∞] ; C^α_b = {f | ‖f‖_{C^α} < ∞} ; axiomes de norme valables pour toute fonction, version réelle (toReal) sur le sous-espace. α ∈ ℝ≥0 quelconque (cours : ]0,1[) ; pour α = 0, l'espace contient des fonctions discontinues.
-- (24 octobre, décision de l'auteur) Une seule dérivée partielle `deriveePartielle α f` (multi-indice, sur EuclideanSpace, fonctions définies sur ℝ^d, iteratedFDeriv) ; lemme de Schwarz itéré démontré ici (Mathlib : seulement ordre 2 ou analytique).
+- (24 octobre, décision de l'auteur) Normes de Hölder et |·|_ω à valeurs dans [0, ∞] ; C^α_b = {f | ‖f‖_{C^α} < ∞} ; axiomes de norme valables pour toute fonction, version réelle (toReal) sur le sous-espace. `espaceHolder 𝕜 α hα` exige α > 0 (décision de l'auteur ; cours : ]0,1[) ; ses éléments sont continus (`continuous_of_mem_espaceHolder`).
+- (24 octobre, décision de l'auteur) Une seule dérivée partielle `deriveePartielle α f` (multi-indice, sur EuclideanSpace, fonctions définies sur ℝ^d, iteratedFDeriv) ; lemme de Schwarz itéré démontré dans le fichier utilitaire `M1Analyse/Outils/Schwarz.lean` (Mathlib : seulement ordre 2 ou analytique).
 - normeCnb reste réelle (sup réels : n'ont de sens que sur l'espace).
 - C^n_b(Ω) : fonctions définies sur ℝ^d dont seules les valeurs sur Ω comptent (sous-module de (ℝ^d → 𝕜), pas un quotient) ; séparation énoncée « f non nulle sur Ω ⇒ ‖f‖ > 0 ».
 - Hölder énoncé pour tout α ≥ 0 (le cours : α ∈ ]0,1[).
@@ -214,7 +214,6 @@ Mathlib utilisés). Voir `scripts/lean_pages/README.md`.
 - Non formalisé : lem:regModuleCont (construction longue, absente de Mathlib).
 ### Espaces fonctionnels, topologie faible (fin du §1.4)
 - Les deux sous-sous-sections n'ont pas de label : modules rattachés à `subsec:evtlc` (suggestion : ajouter des \label).
-- Dérivées partielles indexées par des mots (j, w : Fin j → Fin d) plutôt que des multi-indices (équivalent par Schwarz, non prouvé).
 - Classe de Schwartz, L^p_loc, C^k(Ω) : seule l'appartenance est formalisée, pas la topologie (Mathlib n'a pas L^p_loc ni C^k(Ω) comme espaces topologiques).
 - Distributions : via `TestFunction` de Mathlib (topologie LF) ; « continue ⇔ estimation locale ».
 - lem:omegaNmuN énoncé dans [0,∞] (+ corollaire réel).
@@ -253,7 +252,7 @@ Mathlib utilisés). Voir `scripts/lean_pages/README.md`.
 - Non formalisés : second point de prop:opCompactComplCont, lem:convK_compact, corol:eqFuncNoyau, prop:StoneCtrEx (facultatif).
 ### Hilbert
 - Convention sesquilinéaire du cours (antilinéaire à gauche) = celle de Mathlib ; texte actuel cohérent.
-- DÉFINITION À RELIRE : projConvexe K x = un minimiseur choisi s'il existe, x sinon (valeur arbitraire hors du cas convexe fermé non vide) ; égal à starProjection pour un sous-espace fermé.
+- (24 octobre, décision de l'auteur) `projConvexe 𝕜 K`, définie seulement pour `K : ConvexeFerme H` (structure : partie non vide, fermée, convexe), à partir de `th_projConvexe_existsUnique` ; la version totale est supprimée. Sous-espaces fermés : `ConvexeFerme.ofSubmodule`, égal à `starProjection` ; cône polaire : `ConvexeFerme.conePolaire` ; `ℝ₊^d` : `orthantPositif`.
 - Convexité énoncée sur ℝ (Convex ℝ K) même si 𝕜 = ℂ.
 - prop:decompCone : hypothèse K non vide ajoutée.
 - ℓ² = lp (fun _ => 𝕜) 2 de Mathlib.

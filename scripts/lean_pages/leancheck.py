@@ -53,6 +53,9 @@ def main():
 % where \\leancheck appears; in an unnumbered display, it takes the place of the number.
 % Website: \\newcommand\\leanmapurl{{<address>}} before \\input{{leananchors}} overrides the default.
 % Mark: likewise \\newcommand\\leancheckmark{{...}}.
+% Without Lean links: \\newcommand\\leancheck[1]{{}} before \\input{{leananchors}}; this file then does
+% nothing (it stops here as soon as \\leancheck is already defined).
+\\ifdefined\\leancheck\\endinput\\fi
 \\providecommand\\leanmapurl{{{args.url}}}
 \\providecommand\\leancheckmark{{\\textup{{\\textsf{{\\scriptsize Lean}}}}\\ensuremath{{^\\checkmark}}}}
 \\makeatletter

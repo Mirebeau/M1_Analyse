@@ -17,6 +17,7 @@ import Mathlib.Data.List.Sort
 import Mathlib.Analysis.Calculus.FDeriv.Symmetric
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.GroupTheory.Perm.Sign
+import M1Analyse.Outils.Schwarz
 
 /-!
 # §1.3 Espaces vectoriels normés (`subsec:evn`)
@@ -38,8 +39,9 @@ on montre qu'elles coïncident avec les objets de Mathlib (`eHolderNorm`, `Holde
 
 Les dérivées partielles `∂_α f` (`deriveePartielle`), pour un multi-indice `α ∈ ℕ^d` et
 `f : ℝ^d → F` (`ℝ^d = EuclideanSpace ℝ (Fin d)`), sont définies à partir de la différentielle
-itérée `iteratedFDeriv` de Mathlib ; on démontre le lemme de Schwarz itéré
-(`iteratedFDeriv_comp_perm_of_contDiff`), absent de Mathlib pour les fonctions `C^n`.
+itérée `iteratedFDeriv` de Mathlib ; on utilise le lemme de Schwarz itéré
+(`iteratedFDeriv_comp_perm_of_contDiff`, absent de Mathlib pour les fonctions `C^n`), démontré
+dans le fichier utilitaire `M1Analyse.Outils.Schwarz`.
 -/
 
 open Set Filter Topology MeasureTheory
@@ -346,11 +348,14 @@ lemma normeHolder_add_le (f g : X → E) :
 `‖f‖_{C^α} = ‖f‖_∞ + |f|_{C^α}` finie, vu comme sous-espace vectoriel de `X → E`. Pour `α = 1`,
 ce sont les fonctions Lipschitziennes bornées.
 Pont Mathlib : `f ∈ C^α_b(X,E) ↔ (f bornée ∧ MemHolder α f)` (`mem_espaceHolder_iff`).
+L'exposant est supposé `α > 0` (hypothèse `hα`), conformément à la décision de l'auteur : `C^0_b`
+ne peut pas être formé (pour `α = 0`, on obtiendrait toutes les fonctions bornées, sans
+intérêt ici).
 Remarques : (1) le cours prend `𝕂 = ℝ, ℂ` comme espace d'arrivée et `α ∈ ]0,1[` ; on autorise un
-evn `E` quelconque et tout `α ∈ ℝ₊`. (2) Le cours se place dans `C⁰_b(X,𝕂)` ; pour `α > 0`, une
-fonction Hölderienne est continue (`HolderWith.continuous`), donc la continuité est automatique ;
-pour `α = 0` (hors du cours), l'espace contient toutes les fonctions bornées. -/
-def espaceHolder (𝕜 : Type*) [RCLike 𝕜] [NormedSpace 𝕜 E] (α : ℝ≥0) :
+evn `E` quelconque et tout `α > 0`. (2) Le cours se place dans `C⁰_b(X,𝕂)` ; comme `α > 0`, les
+éléments de `C^α_b(X,E)` sont automatiquement continus (`continuous_of_mem_espaceHolder`). -/
+@[nolint unusedArguments]
+def espaceHolder (𝕜 : Type*) [RCLike 𝕜] [NormedSpace 𝕜 E] (α : ℝ≥0) (_hα : 0 < α) :
     Submodule 𝕜 (X → E) where
   carrier := {f | normeHolder α f < ∞}
   zero_mem' := by
@@ -365,9 +370,16 @@ def espaceHolder (𝕜 : Type*) [RCLike 𝕜] [NormedSpace 𝕜 E] (α : ℝ≥0
     exact ENNReal.mul_lt_top enorm_lt_top hf
 
 /-- Pont Mathlib : `f ∈ C^α_b(X,E)` si et seulement si `f` est bornée et `MemHolder α f`. -/
-theorem mem_espaceHolder_iff [NormedSpace 𝕜 E] {f : X → E} :
-    f ∈ espaceHolder 𝕜 α ↔ BddAbove (range fun x => ‖f x‖) ∧ MemHolder α f :=
+theorem mem_espaceHolder_iff [NormedSpace 𝕜 E] (hα : 0 < α) {f : X → E} :
+    f ∈ espaceHolder 𝕜 α hα ↔ BddAbove (range fun x => ‖f x‖) ∧ MemHolder α f :=
   normeHolder_lt_top_iff
+
+/-- Les éléments de `C^α_b(X,E)` (`α > 0`) sont continus : `C^α_b(X,E)` est bien inclus dans
+`C⁰_b(X,E)`, comme dans le cours (`def:normeHolder`). -/
+theorem continuous_of_mem_espaceHolder [NormedSpace 𝕜 E] (hα : 0 < α) {f : X → E}
+    (hf : f ∈ espaceHolder 𝕜 α hα) : Continuous f := by
+  obtain ⟨C, hC⟩ := ((mem_espaceHolder_iff hα).1 hf).2
+  exact hC.continuous hα
 
 /-- **Déf. `def:normeHolder` (semi-norme de Hölder).** La semi-norme du cours
 `|f|_{C^α} = sup_{x ≠ y} |f(x)-f(y)|/d(x,y)^α ∈ [0, ∞]` est la plus petite constante
@@ -433,120 +445,17 @@ theorem def_normeHolder [NormedSpace 𝕜 E] (α : ℝ≥0) :
 
 /-- **Déf. `def:normeHolder` (evn `C^α_b(X,𝕂)`), version réelle.** Sur `C^α_b(X,E)`, la norme
 réelle `‖f‖_{C^α}` (finie) satisfait les axiomes de norme du cours (`def:norme`). -/
-theorem def_normeHolder_espace [NormedSpace 𝕜 E] (α : ℝ≥0) :
-    (∀ f ∈ espaceHolder 𝕜 α (X := X) (E := E), 0 ≤ (normeHolder α f).toReal) ∧
-    (∀ f ∈ espaceHolder 𝕜 α (X := X) (E := E), f ≠ 0 → 0 < (normeHolder α f).toReal) ∧
-    (∀ f ∈ espaceHolder 𝕜 α (X := X) (E := E), ∀ c : 𝕜,
+theorem def_normeHolder_espace [NormedSpace 𝕜 E] (α : ℝ≥0) (hα : 0 < α) :
+    (∀ f ∈ espaceHolder 𝕜 α hα (X := X) (E := E), 0 ≤ (normeHolder α f).toReal) ∧
+    (∀ f ∈ espaceHolder 𝕜 α hα (X := X) (E := E), f ≠ 0 → 0 < (normeHolder α f).toReal) ∧
+    (∀ f ∈ espaceHolder 𝕜 α hα (X := X) (E := E), ∀ c : 𝕜,
       (normeHolder α (c • f)).toReal = ‖c‖ * (normeHolder α f).toReal) ∧
-    (∀ f ∈ espaceHolder 𝕜 α (X := X) (E := E), ∀ g ∈ espaceHolder 𝕜 α (X := X) (E := E),
+    (∀ f ∈ espaceHolder 𝕜 α hα (X := X) (E := E), ∀ g ∈ espaceHolder 𝕜 α hα (X := X) (E := E),
       (normeHolder α (f + g)).toReal ≤ (normeHolder α f).toReal + (normeHolder α g).toReal) :=
   axiomesNorme_toReal _ _ (fun _ hf => hf) (fun _ => normeHolder_eq_zero_iff) normeHolder_smul
     normeHolder_add_le
 
 end Holder
-
-/-! ### Lemme de Schwarz pour les différentielles itérées -/
-
-section Schwarz
-
-variable {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-  [NormedAddCommGroup F] [NormedSpace ℝ F]
-
-open Equiv Fin
-
-lemma iteratedFDeriv_succ_apply_right_apply {n : ℕ} {f : E → F} (hf : ContDiff ℝ (n + 1) f)
-    (x : E) (m : Fin (n + 1) → E) :
-    iteratedFDeriv ℝ (n + 1) f x m =
-      iteratedFDeriv ℝ n (fun y => fderiv ℝ f y (m (last n))) x (init m) := by
-  rw [iteratedFDeriv_succ_apply_right]
-  have h2 : (fun y => fderiv ℝ f y (m (last n))) =
-      (ContinuousLinearMap.apply ℝ F (m (last n))) ∘ fderiv ℝ f := rfl
-  rw [h2, (ContinuousLinearMap.apply ℝ F (m (last n))).iteratedFDeriv_comp_left
-    (hf.fderiv_right (m := n) (by norm_cast)).contDiffAt le_rfl]
-  rfl
-
-lemma iteratedFDeriv_two_succ_apply {n : ℕ} (f : E → F) (x : E) (m : Fin (n + 2) → E) :
-    iteratedFDeriv ℝ (n + 2) f x m =
-      iteratedFDeriv ℝ n (fderiv ℝ (fderiv ℝ f)) x (init (init m))
-        (m (castSucc (last n))) (m (last (n + 1))) := by
-  rw [iteratedFDeriv_succ_apply_right, iteratedFDeriv_succ_apply_right]
-  rfl
-
-lemma iteratedFDeriv_apply_eq {G : Type*} [NormedAddCommGroup G] [NormedSpace ℝ G] {n : ℕ}
-    {g : E → G →L[ℝ] F} {x : E} (hg : ContDiffAt ℝ n g x) (u : Fin n → E) (a : G) :
-    iteratedFDeriv ℝ n g x u a = iteratedFDeriv ℝ n (fun y => g y a) x u := by
-  have h2 : (fun y => g y a) = (ContinuousLinearMap.apply ℝ F a) ∘ g := rfl
-  rw [h2, (ContinuousLinearMap.apply ℝ F a).iteratedFDeriv_comp_left hg le_rfl]
-  rfl
-
-/-- Lemme de Schwarz itéré : si `f` est de classe `C^n` sur `E`, sa différentielle `n`-ième
-`D^n f(x)` est symétrique. (Mathlib ne contient ce résultat que pour `n = 2`,
-`ContDiffAt.isSymmSndFDerivAt`, ou pour `f` analytique, `ContDiffAt.iteratedFDeriv_comp_perm` ;
-on l'en déduit par récurrence, les transpositions adjacentes engendrant `𝔖_n`.) -/
-theorem iteratedFDeriv_comp_perm_of_contDiff : ∀ (n : ℕ) {f : E → F}, ContDiff ℝ n f →
-    ∀ (x : E) (v : Fin n → E) (σ : Perm (Fin n)),
-      iteratedFDeriv ℝ n f x (v ∘ σ) = iteratedFDeriv ℝ n f x v
-  | 0, _, _, _, _, σ => by rw [Subsingleton.elim σ 1]; rfl
-  | 1, _, _, _, _, σ => by rw [Subsingleton.elim σ 1]; rfl
-  | k + 2, f, hf, x, v, σ => by
-    let S : Submonoid (Perm (Fin (k + 2))) :=
-      { carrier := {σ | ∀ v : Fin (k + 2) → E,
-          iteratedFDeriv ℝ (k + 2) f x (v ∘ σ) = iteratedFDeriv ℝ (k + 2) f x v}
-        one_mem' := fun v => rfl
-        mul_mem' := fun {a b} ha hb v => by
-          change iteratedFDeriv ℝ (k + 2) f x ((v ∘ a) ∘ b) = _
-          rw [hb, ha] }
-    have hS : S = ⊤ := by
-      refine top_unique ?_
-      rw [← Perm.mclosure_swap_castSucc_succ, Submonoid.closure_le]
-      rintro _ ⟨i, rfl⟩ w
-      rcases Fin.eq_castSucc_or_eq_last i with ⟨j, rfl⟩ | rfl
-      · -- transposition fixant le dernier indice : hypothèse de récurrence
-        have hd : ContDiff ℝ (k + 1 : ℕ) (fderiv ℝ f) := hf.fderiv_right (by norm_cast)
-        have hg : ContDiff ℝ (k + 1 : ℕ) fun y => fderiv ℝ f y (w (last (k + 1))) :=
-          (ContinuousLinearMap.apply ℝ F (w (last (k + 1)))).contDiff.comp hd
-        have hf' : ContDiff ℝ ((k + 1 : ℕ) + 1) f := by exact_mod_cast hf
-        rw [iteratedFDeriv_succ_apply_right_apply hf', iteratedFDeriv_succ_apply_right_apply hf']
-        dsimp only; rw [Fin.succ_castSucc]
-        have h1 : (w ∘ swap (castSucc j).castSucc (j.succ).castSucc) (last (k + 1)) =
-            w (last (k + 1)) := by
-          rw [Function.comp_apply, swap_apply_of_ne_of_ne (Fin.castSucc_lt_last _).ne'
-            (Fin.castSucc_lt_last _).ne']
-        have h2 : init (w ∘ swap (castSucc j).castSucc (j.succ).castSucc) =
-            init w ∘ swap (castSucc j) j.succ := by
-          funext l
-          simp only [init, Function.comp_apply]
-          rw [(Fin.castSucc_injective _).swap_apply]
-        rw [h1, h2]
-        exact iteratedFDeriv_comp_perm_of_contDiff (k + 1) hg x _ _
-      · -- transposition des deux derniers indices : lemme de Schwarz d'ordre 2
-        dsimp only
-        have hsymm : ∀ y, IsSymmSndFDerivAt ℝ f y := fun y =>
-          hf.contDiffAt.isSymmSndFDerivAt (by simp)
-        rw [iteratedFDeriv_two_succ_apply, iteratedFDeriv_two_succ_apply]
-        have h1 : init (init (w ∘ swap (castSucc (last k)) (last k).succ)) = init (init w) := by
-          funext l
-          simp only [init, Function.comp_apply]
-          rw [swap_apply_of_ne_of_ne]
-          · exact (Fin.castSucc_lt_castSucc_iff.2 (Fin.castSucc_lt_last l)).ne
-          · exact (Fin.castSucc_lt_last _).ne
-        rw [h1]
-        simp only [Function.comp_apply, Fin.succ_last, swap_apply_left, swap_apply_right]
-        have hd2 : ContDiff ℝ k (fderiv ℝ (fderiv ℝ f)) :=
-          (hf.fderiv_right (m := (k + 1 : ℕ)) (by norm_cast)).fderiv_right (by norm_cast)
-        rw [iteratedFDeriv_apply_eq hd2.contDiffAt, iteratedFDeriv_apply_eq hd2.contDiffAt]
-        have hd2' : ContDiff ℝ k fun y => fderiv ℝ (fderiv ℝ f) y (w (last (k + 1))) :=
-          hd2.clm_apply contDiff_const
-        have hd2'' : ContDiff ℝ k fun y => fderiv ℝ (fderiv ℝ f) y (w (castSucc (last k))) :=
-          hd2.clm_apply contDiff_const
-        rw [iteratedFDeriv_apply_eq hd2'.contDiffAt, iteratedFDeriv_apply_eq hd2''.contDiffAt]
-        congr 2
-        funext y
-        exact hsymm y _ _
-    have : σ ∈ S := hS ▸ Submonoid.mem_top σ
-    exact this v
-
-end Schwarz
 
 /-! ### Dérivées partielles et espaces `C^n_b(Ω)` -/
 

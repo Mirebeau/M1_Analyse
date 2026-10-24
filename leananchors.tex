@@ -5,6 +5,9 @@
 % where \leancheck appears; in an unnumbered display, it takes the place of the number.
 % Website: \newcommand\leanmapurl{<address>} before \input{leananchors} overrides the default.
 % Mark: likewise \newcommand\leancheckmark{...}.
+% Without Lean links: \newcommand\leancheck[1]{} before \input{leananchors}; this file then does
+% nothing (it stops here as soon as \leancheck is already defined).
+\ifdefined\leancheck\endinput\fi
 \providecommand\leanmapurl{https://mirebeau.github.io/lean-proof-maps/M1Analyse/}
 \providecommand\leancheckmark{\textup{\textsf{\scriptsize Lean}}\ensuremath{^\checkmark}}
 \makeatletter
@@ -122,7 +125,7 @@
 \@namedef{leancheck@ex:Holder_Banach}{7}% seminormeModule, normeModule, espaceModule, ex_Holder_Banach_norme, ex_Holder_Banach_norme_toReal, ex_Holder_Banach, ex_Holder_Banach_holder
 \@namedef{leancheck@ex:LpBanach}{1}% ex_LpBanach
 \@namedef{leancheck@ex:T1nonT2}{5}% ex_T1nonT2_cofinie, Zariski, EstFermeZariski, ex_T1nonT2_zariski_isClosed, ex_T1nonT2_zariski
-\@namedef{leancheck@ex:coneSdp}{2}% ex_coneSdp_autoDual, ex_coneSdp_partiesPosNeg
+\@namedef{leancheck@ex:coneSdp}{3}% ex_coneSdp_autoDual, orthantPositif, ex_coneSdp_partiesPosNeg
 \@namedef{leancheck@ex:cont_bornee_Banach}{1}% ex_cont_bornee_Banach
 \@namedef{leancheck@ex:dualSeparable}{1}% ex_dualSeparable
 \@namedef{leancheck@ex:eqFunctIntegr}{1}% ex_eqFunctIntegr
@@ -268,7 +271,7 @@
 \@namedef{leancheck@th:compProdTycho}{2}% th_compProdTycho, th_compProdTycho_metrique
 \@namedef{leancheck@th:fixe_Picard}{1}% th_fixe_Picard
 \@namedef{leancheck@th:grapheFerme}{2}% th_grapheFerme, corol_projectionContinue_iff
-\@namedef{leancheck@th:projConvexe}{7}% projConvexe, th_projConvexe_existsUnique, th_projConvexe, th_projConvexe_caract, th_projConvexe_moyennee, th_projConvexe_lipschitz, projConvexe_moyennee_iff
+\@namedef{leancheck@th:projConvexe}{8}% th_projConvexe_existsUnique, projConvexe, th_projConvexe, eq_projConvexe_of_isMin, th_projConvexe_caract, th_projConvexe_moyennee, th_projConvexe_lipschitz, projConvexe_moyennee_iff
 \@namedef{leancheck@th:reprRiesz}{1}% th_reprRiesz
 \@namedef{leancheck@th:separFermeComp}{2}% th_separFermeComp, th_separFermeComp_zero
 \@namedef{leancheck@th:separOuvertPt}{1}% th_separOuvertPt
