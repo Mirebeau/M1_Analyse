@@ -115,7 +115,7 @@ theorem eq_powLpw {α : ℝ} (hα : 0 < α) (hαd : α ≤ d) :
 `u : ℝ^d → ℝ`, `p ∈ [1, ∞]` et `λ > 0` (noté `c`), la fonction `u_λ(x) := u(λ x)` vérifie
 `‖u_λ‖_p = λ^{-d/p} ‖u‖_p` (avec `d/∞ = 0`; dans Lean, `p.toReal = 0` si `p = ∞` et `x / 0 = 0`).
 Remarque : le cours suppose `u ∈ 𝒟(ℝ^d)` ; l'identité vaut pour toute fonction `u` et tout
-exposant `p`. La seconde identité (dérivées `∂_α u_λ`) n'est pas formalisée. -/
+exposant `p`. La seconde identité (dérivées `∂_α u_λ`) est `eq_homog_lp_deriv`. -/
 theorem eq_homog_lp (u : ℝᵈ → ℝ) (p : ℝ≥0∞) {c : ℝ} (hc : 0 < c) :
     eLpNorm (fun x => u (c • x)) p = ENNReal.ofReal (c ^ (-(d : ℝ) / p.toReal)) * eLpNorm u p := by
   have h1 : (fun x => u (c • x)) = u ∘ (MeasurableEquiv.smul₀ c hc.ne' : ℝᵈ ≃ᵐ ℝᵈ) := rfl
@@ -128,6 +128,47 @@ theorem eq_homog_lp (u : ℝᵈ → ℝ) (p : ℝ≥0∞) {c : ℝ} (hc : 0 < c)
   rw [abs_of_pos (by positivity), ← Real.rpow_natCast, ← Real.rpow_neg hc.le, ← Real.rpow_mul hc.le,
     one_div, ENNReal.toReal_inv]
   rw [div_eq_mul_inv]
+
+/-- Dérivée partielle d'une fonction dilatée (`rem:homogSobolev`) : pour `c ≠ 0`, un
+multi-indice `α` et `s := |α|₁ = ∑ i, α i`, on a `∂_α (x ↦ u(c x))(x) = c^s ∂_α u(c x)`.
+Remarque : aucune hypothèse de régularité sur `u` n'est requise (`x ↦ c x` est un isomorphisme
+linéaire continu, et Mathlib ne demande aucune différentiabilité pour composer à droite par un
+tel isomorphisme ; si `u` n'est pas dérivable, les deux membres sont nuls). -/
+theorem deriveePartielle_comp_smul {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+    (α : Fin d → ℕ) (u : ℝᵈ → F) {c : ℝ} (hc : c ≠ 0) (x : ℝᵈ) :
+    deriveePartielle α (fun y => u (c • y)) x = c ^ (∑ i, α i) • deriveePartielle α u (c • x) := by
+  let g : ℝᵈ ≃L[ℝ] ℝᵈ :=
+    (LinearEquiv.smulOfNeZero ℝ ℝᵈ c hc).toContinuousLinearEquiv
+  have hg : ∀ y, g y = c • y := fun _ => rfl
+  have h := g.iteratedFDerivWithin_comp_right u uniqueDiffOn_univ (mem_univ (g x))
+    (directions α).length
+  simp only [preimage_univ, iteratedFDerivWithin_univ] at h
+  have hfun : (fun y => u (c • y)) = u ∘ g := rfl
+  rw [deriveePartielle, deriveePartielle, hfun, h,
+    ContinuousMultilinearMap.compContinuousLinearMap_apply]
+  simp only [ContinuousLinearEquiv.coe_coe, hg]
+  rw [ContinuousMultilinearMap.map_smul_univ, Finset.prod_const, Finset.card_univ,
+    Fintype.card_fin]
+  congr 1
+  rw [length_directions]
+
+/-- **Éq. `eq:homog_lp` (Homogénéité), seconde identité.** Pour `u : ℝ^d → ℝ`, `p ∈ [1, ∞]`,
+un multi-indice `α ∈ ℕ^d` de longueur `s := |α|₁` et `λ > 0` (noté `c`), la fonction
+`u_λ(x) := u(λ x)` vérifie `‖∂_α u_λ‖_p = λ^{s - d/p} ‖∂_α u‖_p` (avec `d/∞ = 0` ; dans Lean,
+`p.toReal = 0` si `p = ∞` et `x / 0 = 0`).
+Remarque : le cours suppose `u ∈ 𝒟(ℝ^d)` ; l'identité vaut pour toute fonction `u`, sans
+hypothèse de régularité, et tout exposant `p` (cf. `deriveePartielle_comp_smul`). -/
+theorem eq_homog_lp_deriv (u : ℝᵈ → ℝ) (α : Fin d → ℕ) (p : ℝ≥0∞) {c : ℝ} (hc : 0 < c) :
+    eLpNorm (deriveePartielle α (fun x => u (c • x))) p =
+      ENNReal.ofReal (c ^ ((∑ i, α i : ℕ) - (d : ℝ) / p.toReal)) *
+        eLpNorm (deriveePartielle α u) p := by
+  have h1 : deriveePartielle α (fun x => u (c • x)) =
+      c ^ (∑ i, α i) • fun x => deriveePartielle α u (c • x) := by
+    ext x
+    simp [deriveePartielle_comp_smul α u hc.ne' x]
+  rw [h1, eLpNorm_const_smul, eq_homog_lp _ p hc, ← mul_assoc,
+    Real.enorm_eq_ofReal (by positivity), ← ENNReal.ofReal_mul (by positivity),
+    ← Real.rpow_natCast, ← Real.rpow_add hc, sub_eq_add_neg, neg_div]
 
 /-! ### Inégalité de Young -/
 

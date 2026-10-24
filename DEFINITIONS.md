@@ -241,7 +241,7 @@ Mathlib utilisés). Voir `scripts/lean_pages/README.md`.
 - Partition indexée par Fin I (0..I−1).
 ### Dualité
 - Définitions propres au cours : Inductif, SousLineaire, Reflexif (Φ bijective ; équivalent à surjective), jauge (valeurs dans [0,∞], inf ∅ = ∞ ; égale à gauge de Mathlib si C absorbant), polaire (unilatérale φ(x) ≤ 1 ; égale à celle de Mathlib si C symétrique).
-- Hölder : inégalité seulement (cas d'égalité non formalisé).
+- Hölder : inégalité, et cas d'égalité (`th_HolderIneq_eq` pour 1<p<∞, `th_HolderIneq_eq_one` pour p=1, avec ‖g‖_∞ = λ ; le cours a été corrigé en ce sens).
 - corol:minFctCvxRefl : convexité de f : E → ]−∞,∞] exprimée par la convexité de l'épigraphe (ConvexOn ne s'applique pas à EReal) ; « faiblement continue sur les bornés » interprété via WeakSpace.
 - Les items après le \subsection commenté (lignes 546–631) sont dans CompaciteFaible.lean, rattaché à `sec:dual`.
 - Non formalisés : th:unifCvxReflex (Milman–Pettis), prop:ClarksonIneq, th:lpDualLq (dual de L^p absent de Mathlib), ex:nonReflex.
@@ -249,7 +249,8 @@ Mathlib utilisés). Voir `scripts/lean_pages/README.md`.
 - Brouwer absent de Mathlib : seuls le changement de variables (th:chgVarIntegr), le cas d = 1, le transfert par rétraction et la projection de Schauder sont formalisés ; th:Brouwer, th:Schauder, Cauchy–Peano non formalisés.
 - Stone–Weierstrass : énoncé pour [CompactSpace X] (sans séparation) ; preuve via le théorème unitaire de Mathlib, pas celle du cours ; lem:StoneSqrt et corol:StoneMinMax déduits du théorème (énoncés vrais, mais pas comme étapes de la preuve).
 - Fredholm : alternative de Mathlib ; corol:FredholmPrecise (i)–(iv) prouvés.
-- Non formalisés : second point de prop:opCompactComplCont, lem:convK_compact, corol:eqFuncNoyau, prop:StoneCtrEx (facultatif).
+- Second point de prop:opCompactComplCont : `prop_opCompactComplCont_boule`, sans l'hypothèse E* séparable (décision de l'auteur : superflue, argument par filtres).
+- Non formalisés : lem:convK_compact, corol:eqFuncNoyau, prop:StoneCtrEx (facultatif).
 ### Hilbert
 - Convention sesquilinéaire du cours (antilinéaire à gauche) = celle de Mathlib ; texte actuel cohérent.
 - (24 octobre, décision de l'auteur) `projConvexe 𝕜 K`, définie seulement pour `K : ConvexeFerme H` (structure : partie non vide, fermée, convexe), à partir de `th_projConvexe_existsUnique` ; la version totale est supprimée. Sous-espaces fermés : `ConvexeFerme.ofSubmodule`, égal à `starProjection` ; cône polaire : `ConvexeFerme.conePolaire` ; `ℝ₊^d` : `orthantPositif`.
@@ -265,7 +266,7 @@ Mathlib utilisés). Voir `scripts/lean_pages/README.md`.
 - Fenchel–Rockafellar : signes vérifiés, corrects dans le texte actuel.
 ### Sobolev (début)
 - Inégalité de Young L¹ × L^p (prop:convolLp) : absente de Mathlib, démontrée ici.
-- prop:Jensen : seulement pour g réelle convexe, avec Integrable (g∘f) (l'intégrale de Bochner vaut 0 hors intégrabilité) ; le cas g à valeurs dans ]−∞,∞] n'est pas couvert.
+- prop:Jensen : version du cours, g : ℝ^d → ]−∞,∞] convexe s.c.i. (EReal, `ConvexeEtendue`), avec la nouvelle définition `integraleEtendue μ h = ∫ h⁺ − ∫ h⁻ ∈ ℝ̄` (bonne définition : `integraleEtendue_comp_bienDefinie`). Version réelle conservée : `prop_Jensen_reel`.
 - Hypothèses inutiles retirées : 1 ≤ p (prop:densC0Lp, corol:lpInclusLq), « A mesurable » (lem:convolTranslat).
 - Définitions propres au cours : noyauEps (ρ_ε), moduleTransl (ω_p).
 - ARRÊT à def:Sobolev (W^{s,p}(Ω) absent de Mathlib, qui n'a que H^{s,p}(ℝ^d) via Fourier). Non formalisés : lem:intDerivIter, prop:testFunSeparab, corol:convolTestFun (topologie limite inductive de 𝓓(Ω)), ex:operCompactL2, corol:distribLp (dual de L^p), et tout ce qui fait intervenir W^{s,p} (injections de Sobolev, Rellich), ainsi que th:YoungFaible (admis).
@@ -273,7 +274,7 @@ Mathlib utilisés). Voir `scripts/lean_pages/README.md`.
 - th:FrechetKolmogorov : 𝓕 ⊆ Lp ℝ p (volume.restrict Ω), conclusion TotallyBounded (et adhérence compacte). La condition |h| ≤ d(K, ℝ^d∖Ω) est écrite K + B'(0,|h|) ⊆ Ω (pour K compact : |h| < d(K, ℝ^d∖Ω), hypothèse très légèrement plus faible ; la formulation littérale dégénère pour Ω = ℝ^d car infDist x ∅ = 0). ω_K : EstModuleCont (convention à trancher). Preuve sans fonction plateau lisse (indicatrice de K₀ + B'(0,η)).
 - th:Young : trilinéaire (fonctions positives, et réelles L^p) et convolution ‖f⋆g‖_{r'} ≤ ‖f‖_p‖g‖_q ; preuve dans l'ordre inverse du cours (convolution d'abord, Hölder à trois facteurs + Fubini). Convolution de Mathlib (intégrale p.p.), et non prolongement continu depuis C⁰_c.
 - Nouvelle définition normeFaible (‖·‖_{p,w}, formule littérale ; L^{p,w} faible absent de Mathlib) ; ‖f‖_{p,w} ≤ ‖f‖_p ; eq:powLpw.
-- eq:homog_lp : première identité seulement, pour toute fonction u (pas seulement u ∈ 𝒟).
+- eq:homog_lp : les deux identités (`eq_homog_lp`, `eq_homog_lp_deriv`, via `deriveePartielle_comp_smul`), pour toute fonction u, sans hypothèse de régularité (pas seulement u ∈ 𝒟).
 - prop:interpLp : hypothèse p₀, p₁ ≥ 1 inutile, retirée.
 - prop:convolPow, corol:noyauGreen : hypothèse d ≥ 1 explicite ; |𝕊_{d-1}| = mesure de Mathlib volume.toSphere (= d·|B(0,1)|, pont avec la définition du cours toSphere_eq_cone_Ioc). −ΔG = δ₀ sous deux formes (∫ G(−Δφ) = φ(0), et distributions de Mathlib) ; preuve par régularisation G_ε(x) = c(d)k(|x|²+ε²) au lieu de Stokes. φ = −Δ(G⋆φ) avec la convolution de fonctions (G ∈ L¹_loc), pas celle des distributions.
 - Nouvelles définitions : constGreen (c(d)), noyauGreen (G, valeur en 0 sans importance).

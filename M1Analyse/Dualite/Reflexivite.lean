@@ -13,6 +13,9 @@ import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Function.LpSeminorm.CompareExp
 import Mathlib.Topology.MetricSpace.Completion
 import M1Analyse.Completude.Prolongements
+import Mathlib.Analysis.MeanInequalities
+import Mathlib.MeasureTheory.Function.LpSeminorm.LpNorm
+import Mathlib.Basic.Real.Sign
 
 /-!
 # §3.2 Réflexivité (`subsec:reflexivite`)
@@ -148,7 +151,7 @@ variable {X : Type*} [MeasurableSpace X] {μ : Measure X}
 /-- **Th. `th:HolderIneq` (Inégalité de Hölder), inégalité.** Soient `p, q ∈ [1, ∞]` avec
 `1/p + 1/q = 1`. Pour tous `f ∈ L^p(X, μ)` et `g ∈ L^q(X, μ)` on a `fg ∈ L^1` et
 `∫ f g ≤ ‖f‖_p ‖g‖_q`.
-Remarque : le cas d'égalité énoncé dans le cours n'est pas formalisé. -/
+Les cas d'égalité sont `th_HolderIneq_eq` (`1 < p < ∞`) et `th_HolderIneq_eq_one` (`p = 1`). -/
 theorem th_HolderIneq {p q : ℝ≥0∞} (hpq : p⁻¹ + q⁻¹ = 1) {f g : X → ℝ}
     (hf : MemLp f p μ) (hg : MemLp g q μ) :
     Integrable (f * g) μ ∧
@@ -169,6 +172,235 @@ theorem th_HolderIneq {p q : ℝ≥0∞} (hpq : p⁻¹ + q⁻¹ = 1) {f g : X �
     _ ≤ (eLpNorm f p μ * eLpNorm g q μ).toReal :=
       ENNReal.toReal_mono (ENNReal.mul_ne_top hf.eLpNorm_lt_top.ne hg.eLpNorm_lt_top.ne) hle
     _ = _ := ENNReal.toReal_mul
+
+/-- **Th. `th:HolderIneq` (Inégalité de Hölder), cas d'égalité, `1 < p < ∞`.** Soient
+`p, q ∈ [1, ∞]` avec `1/p + 1/q = 1` et `1 < p < ∞`, `f ∈ L^p(X, μ)`, `g ∈ L^q(X, μ)`, et
+supposons `‖f‖_p ‖g‖_q ≠ 0`. On a égalité dans `∫ f g ≤ ‖f‖_p ‖g‖_q` ssi
+`f = λ sign(g) |g|^{q/p}` `μ`-presque partout, avec `λ > 0` (`λ` est noté `c` en Lean). -/
+theorem th_HolderIneq_eq {p q : ℝ≥0∞} (hpq : p⁻¹ + q⁻¹ = 1) (hp : 1 < p) (hp' : p < ∞)
+    {f g : X → ℝ} (hf : MemLp f p μ) (hg : MemLp g q μ)
+    (hfg : (eLpNorm f p μ).toReal * (eLpNorm g q μ).toReal ≠ 0) :
+    ∫ x, f x * g x ∂μ = (eLpNorm f p μ).toReal * (eLpNorm g q μ).toReal ↔
+      ∃ c : ℝ, 0 < c ∧
+        f =ᵐ[μ] fun x => c * Real.sign (g x) * |g x| ^ (q.toReal / p.toReal) := by
+  have : ENNReal.HolderConjugate p q := ⟨by rw [hpq, inv_one]⟩
+  have hP1 : 1 < p.toReal := by
+    have := (ENNReal.toReal_lt_toReal ENNReal.one_ne_top hp'.ne).2 hp
+    simpa using this
+  have hPQ : p.toReal.HolderConjugate q.toReal := ENNReal.HolderConjugate.toReal hP1
+  have hq0 : q ≠ 0 := by
+    intro h; rw [h, ENNReal.inv_zero, add_top] at hpq; exact ENNReal.top_ne_one hpq
+  have hqtop : q ≠ ∞ := by
+    have : 0 < q.toReal := hPQ.symm.pos
+    exact (ENNReal.toReal_pos_iff.1 this).2.ne
+  set P := p.toReal with hPdef
+  set Q := q.toReal with hQdef
+  set A := (eLpNorm f p μ).toReal with hAdef
+  set B := (eLpNorm g q μ).toReal with hBdef
+  have hP0 : 0 < P := hPQ.pos
+  have hQ0 : 0 < Q := hPQ.symm.pos
+  have hA : 0 < A := lt_of_le_of_ne ENNReal.toReal_nonneg (fun h => hfg (by rw [← h, zero_mul]))
+  have hB : 0 < B := lt_of_le_of_ne ENNReal.toReal_nonneg (fun h => hfg (by rw [← h, mul_zero]))
+  -- `∫ |f|^p = ‖f‖_p^p`
+  have hIf : ∫ x, |f x| ^ P ∂μ = A ^ P := by
+    have := lpNorm_eq_integral_norm_rpow_toReal (μ := μ) (by positivity : p ≠ 0) hp'.ne
+      hf.aestronglyMeasurable
+    rw [← toReal_eLpNorm] at this
+    rw [← hAdef] at this
+    rw [this, ← Real.rpow_mul (integral_nonneg fun x => by positivity),
+      inv_mul_cancel₀ hP0.ne', Real.rpow_one]
+    simp only [Real.norm_eq_abs, hPdef]
+  have hIg : ∫ x, |g x| ^ Q ∂μ = B ^ Q := by
+    have := lpNorm_eq_integral_norm_rpow_toReal (μ := μ) hq0 hqtop hg.aestronglyMeasurable
+    rw [← toReal_eLpNorm] at this
+    rw [← hBdef] at this
+    rw [this, ← Real.rpow_mul (integral_nonneg fun x => by positivity),
+      inv_mul_cancel₀ hQ0.ne', Real.rpow_one]
+    simp only [Real.norm_eq_abs, hQdef]
+  have hintF : Integrable (fun x => |f x| ^ P) μ := by
+    simpa only [Real.norm_eq_abs] using hf.integrable_norm_rpow (by positivity) hp'.ne
+  have hintG : Integrable (fun x => |g x| ^ Q) μ := by
+    simpa only [Real.norm_eq_abs] using hg.integrable_norm_rpow hq0 hqtop
+  have hintFG : Integrable (fun x => f x * g x) μ := hf.integrable_mul hg
+  have hQP : Q / P + 1 = Q := by
+    have := hPQ.inv_add_inv_eq_one
+    field_simp at this ⊢
+    linarith
+  constructor
+  · intro heq
+    set D : X → ℝ := fun x =>
+      |f x| ^ P / (A ^ P * P) + |g x| ^ Q / (B ^ Q * Q) - f x * g x / (A * B) with hDdef
+    have hD0 : ∀ x, 0 ≤ D x := by
+      intro x
+      have hy := Real.young_inequality_of_nonneg (div_nonneg (abs_nonneg (f x)) hA.le)
+        (div_nonneg (abs_nonneg (g x)) hB.le) hPQ
+      rw [Real.div_rpow (abs_nonneg _) hA.le, Real.div_rpow (abs_nonneg _) hB.le] at hy
+      have h1 : f x * g x / (A * B) ≤ |f x| / A * (|g x| / B) := by
+        rw [div_mul_div_comm, ← abs_mul]
+        exact div_le_div_of_nonneg_right (le_abs_self _) (by positivity)
+      simp only [hDdef, div_div] at hy ⊢
+      linarith
+    have hDint : Integrable D μ :=
+      ((hintF.div_const _).add (hintG.div_const _)).sub (hintFG.div_const _)
+    have hDzero : ∫ x, D x ∂μ = 0 := by
+      have h12 : Integrable (fun x => |f x| ^ P / (A ^ P * P) + |g x| ^ Q / (B ^ Q * Q)) μ :=
+        (hintF.div_const _).add (hintG.div_const _)
+      simp only [hDdef]
+      rw [integral_sub h12 (hintFG.div_const _),
+        integral_add (hintF.div_const _) (hintG.div_const _), integral_div, integral_div,
+        integral_div, hIf, hIg, heq]
+      have := hPQ.inv_add_inv_eq_one
+      have hAP : 0 < A ^ P := Real.rpow_pos_of_pos hA _
+      have hBQ : 0 < B ^ Q := Real.rpow_pos_of_pos hB _
+      field_simp
+      field_simp at this
+      linarith
+    have hDae : D =ᵐ[μ] 0 :=
+      (integral_eq_zero_iff_of_nonneg (fun x => hD0 x) hDint).1 hDzero
+    refine ⟨A / B ^ (Q / P), div_pos hA (Real.rpow_pos_of_pos hB _), ?_⟩
+    filter_upwards [hDae] with x hx
+    simp only [Pi.zero_apply] at hx
+    set a := |f x| / A
+    set b := |g x| / B
+    have ha : 0 ≤ a := div_nonneg (abs_nonneg _) hA.le
+    have hb : 0 ≤ b := div_nonneg (abs_nonneg _) hB.le
+    have hy := Real.young_inequality_of_nonneg ha hb hPQ
+    have hy' : a ^ P / P + b ^ Q / Q = |f x| ^ P / (A ^ P * P) + |g x| ^ Q / (B ^ Q * Q) := by
+      simp only [a, b, Real.div_rpow (abs_nonneg _) hA.le, Real.div_rpow (abs_nonneg _) hB.le,
+        div_div]
+    have h1 : f x * g x / (A * B) ≤ a * b := by
+      simp only [a, b]
+      rw [div_mul_div_comm, ← abs_mul]
+      exact div_le_div_of_nonneg_right (le_abs_self _) (by positivity)
+    simp only [hDdef] at hx
+    have hab : a * b = a ^ P / P + b ^ Q / Q := by linarith
+    have hfgabs : f x * g x = |f x * g x| := by
+      have : f x * g x / (A * B) = |f x * g x| / (A * B) := by
+        have : |f x * g x| / (A * B) = a * b := by
+          simp only [a, b]; rw [div_mul_div_comm, abs_mul]
+        linarith
+      have hAB : (A * B) ≠ 0 := by positivity
+      field_simp at this
+      exact this
+    have hpow : a ^ P = b ^ Q := (Real.young_inequality_eq_iff_of_nonneg ha hb hPQ).1 hab
+    have ha' : a = b ^ (Q / P) := by
+      rw [← Real.rpow_rpow_inv ha hP0.ne', hpow, ← Real.rpow_mul hb, div_eq_mul_inv]
+    have hfabs : |f x| = A / B ^ (Q / P) * |g x| ^ (Q / P) := by
+      have : |f x| = A * a := by simp only [a]; field_simp
+      rw [this, ha', Real.div_rpow (abs_nonneg _) hB.le]
+      ring
+    have hQP0 : 0 < Q / P := div_pos hQ0 hP0
+    rcases lt_trichotomy (g x) 0 with hgx | hgx | hgx
+    · rw [abs_mul, abs_of_neg hgx] at hfgabs
+      have hf' : f x = -|f x| :=
+        mul_right_cancel₀ hgx.ne (by linarith : f x * g x = (-|f x|) * g x)
+      rw [Real.sign_of_neg hgx, hf', hfabs]
+      ring
+    · rw [hgx, abs_zero, Real.zero_rpow hQP0.ne', mul_zero, abs_eq_zero] at hfabs
+      rw [hfabs, hgx, Real.sign_zero]; ring
+    · rw [Real.sign_of_pos hgx, mul_one, ← hfabs]
+      rw [abs_mul, abs_of_pos hgx] at hfgabs
+      exact mul_right_cancel₀ hgx.ne' hfgabs
+  · rintro ⟨c, hc, hfe⟩
+    have hsg : ∀ y : ℝ, Real.sign y * y = |y| := by
+      intro y
+      rcases lt_trichotomy y 0 with h | h | h
+      · rw [Real.sign_of_neg h, abs_of_neg h]; ring
+      · rw [h]; simp
+      · rw [Real.sign_of_pos h, abs_of_pos h]; ring
+    -- `∫ f g = c ‖g‖_q^q`
+    have hI1 : ∫ x, f x * g x ∂μ = c * B ^ Q := by
+      rw [← hIg, ← integral_const_mul]
+      refine integral_congr_ae ?_
+      filter_upwards [hfe] with x hx
+      rw [hx]
+      calc c * Real.sign (g x) * |g x| ^ (Q / P) * g x
+          = c * (|g x| ^ (Q / P) * (Real.sign (g x) * g x)) := by ring
+        _ = c * |g x| ^ Q := by
+          rw [hsg, ← Real.rpow_add_one' (abs_nonneg _) (by rw [hQP]; exact hQ0.ne'), hQP]
+    -- `‖f‖_p^p = c^p ‖g‖_q^q`
+    have hI2 : A ^ P = c ^ P * B ^ Q := by
+      rw [← hIf, ← hIg, ← integral_const_mul]
+      refine integral_congr_ae ?_
+      filter_upwards [hfe] with x hx
+      rw [hx, abs_mul, abs_mul, abs_of_pos hc, mul_assoc, Real.mul_rpow hc.le (by positivity),
+        abs_of_nonneg (Real.rpow_nonneg (abs_nonneg _) _)]
+      congr 1
+      rcases eq_or_ne (g x) 0 with h | h
+      · rw [h, abs_zero, Real.zero_rpow (div_pos hQ0 hP0).ne', mul_zero,
+          Real.zero_rpow hP0.ne', Real.zero_rpow hQ0.ne']
+      · have : |Real.sign (g x)| = 1 := by
+          rcases Real.sign_apply_eq_of_ne_zero _ h with h' | h' <;> rw [h'] <;> simp
+        rw [this, one_mul, ← Real.rpow_mul (abs_nonneg _), div_mul_cancel₀ _ hP0.ne']
+    have hAc : A = c * B ^ (Q / P) := by
+      rw [← Real.rpow_rpow_inv hA.le hP0.ne', hI2, Real.mul_rpow (by positivity) (by positivity),
+        Real.rpow_rpow_inv hc.le hP0.ne', ← Real.rpow_mul hB.le, div_eq_mul_inv]
+    rw [hI1, hAc, mul_assoc, ← Real.rpow_add_one hB.ne', hQP]
+
+/-- **Th. `th:HolderIneq` (Inégalité de Hölder), cas d'égalité, `p = 1`.** Soient
+`p, q ∈ [1, ∞]` avec `1/p + 1/q = 1` et `p = 1` (donc `q = ∞`), `f ∈ L^1(X, μ)`,
+`g ∈ L^∞(X, μ)`, et supposons `‖f‖_1 ‖g‖_∞ ≠ 0`. On a égalité dans `∫ f g ≤ ‖f‖_1 ‖g‖_∞`
+ssi `g = λ sign(f)` `μ`-presque partout où `|f| > 0`, et `‖g‖_∞ = λ` (`λ` est noté `c`
+en Lean). -/
+theorem th_HolderIneq_eq_one {p q : ℝ≥0∞} (hpq : p⁻¹ + q⁻¹ = 1) (hp : p = 1)
+    {f g : X → ℝ} (hf : MemLp f p μ) (hg : MemLp g q μ)
+    (hfg : (eLpNorm f p μ).toReal * (eLpNorm g q μ).toReal ≠ 0) :
+    ∫ x, f x * g x ∂μ = (eLpNorm f p μ).toReal * (eLpNorm g q μ).toReal ↔
+      ∃ c : ℝ, (∀ᵐ x ∂μ, 0 < |f x| → g x = c * Real.sign (f x)) ∧
+        (eLpNorm g q μ).toReal = c := by
+  subst hp
+  have hq : q = ∞ := by
+    rw [inv_one] at hpq
+    have : q⁻¹ = 0 :=
+      (ENNReal.add_right_inj ENNReal.one_ne_top).1 (by rw [hpq, add_zero])
+    simpa using this
+  subst hq
+  set A := (eLpNorm f 1 μ).toReal with hAdef
+  set B := (eLpNorm g ∞ μ).toReal with hBdef
+  have hIf : ∫ x, |f x| ∂μ = A := by
+    rw [hAdef, toReal_eLpNorm, lpNorm_one_eq_integral_norm hf.aestronglyMeasurable]
+    simp only [Real.norm_eq_abs]
+  have hgB : ∀ᵐ x ∂μ, |g x| ≤ B := by
+    have := ae_le_lpNorm_exponent_top hg
+    rw [← toReal_eLpNorm] at this
+    simpa only [Real.norm_eq_abs] using this
+  have hintF : Integrable (fun x => |f x|) μ := (memLp_one_iff_integrable.1 hf).abs
+  have hintFG : Integrable (fun x => f x * g x) μ := hf.integrable_mul hg
+  constructor
+  · intro heq
+    set D : X → ℝ := fun x => |f x| * B - f x * g x with hDdef
+    have hD0 : 0 ≤ᵐ[μ] D := by
+      filter_upwards [hgB] with x hx
+      simp only [Pi.zero_apply, hDdef, sub_nonneg]
+      calc f x * g x ≤ |f x * g x| := le_abs_self _
+        _ = |f x| * |g x| := abs_mul _ _
+        _ ≤ |f x| * B := mul_le_mul_of_nonneg_left hx (abs_nonneg _)
+    have hDint : Integrable D μ := (hintF.mul_const _).sub hintFG
+    have hDzero : ∫ x, D x ∂μ = 0 := by
+      simp only [hDdef]
+      rw [integral_sub (hintF.mul_const _) hintFG, integral_mul_const, hIf, heq, sub_self]
+    have hDae : D =ᵐ[μ] 0 := (integral_eq_zero_iff_of_nonneg_ae hD0 hDint).1 hDzero
+    refine ⟨B, ?_, rfl⟩
+    filter_upwards [hDae] with x hx hfx
+    simp only [hDdef, Pi.zero_apply, sub_eq_zero] at hx
+    rcases lt_trichotomy (f x) 0 with h | h | h
+    · rw [Real.sign_of_neg h]
+      rw [abs_of_neg h] at hx
+      have := mul_left_cancel₀ h.ne (by linarith : f x * g x = f x * (-B))
+      linarith
+    · rw [h, abs_zero] at hfx; exact absurd hfx (lt_irrefl 0)
+    · rw [Real.sign_of_pos h, mul_one]
+      rw [abs_of_pos h] at hx
+      exact (mul_left_cancel₀ h.ne' hx).symm
+  · rintro ⟨c, hgc, hBc⟩
+    have : ∫ x, f x * g x ∂μ = ∫ x, |f x| * c ∂μ := by
+      refine integral_congr_ae ?_
+      filter_upwards [hgc] with x hx
+      rcases lt_trichotomy (f x) 0 with h | h | h
+      · rw [hx (abs_pos.2 h.ne), Real.sign_of_neg h, abs_of_neg h]; ring
+      · rw [h]; simp
+      · rw [hx (abs_pos.2 h.ne'), Real.sign_of_pos h, abs_of_pos h]; ring
+    rw [this, integral_mul_const, hIf, hBc]
 
 end Holder
 

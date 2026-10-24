@@ -26,8 +26,7 @@ sous-module `compactOperator (RingHom.id 𝕜) E F`. Le spectre `σ(T)` est `spe
 `Module.End.HasEigenvalue`. Le théorème de Fredholm est
 `IsCompactOperator.hasEigenvalue_or_mem_resolventSet` de Mathlib.
 
-Non formalisés : le second point de `prop:opCompactComplCont` (continuité faible-forte sur la
-boule si `E*` est séparable), l'exemple d'opérateur intégral `lem:convK_compact` et son
+Non formalisés : l'exemple d'opérateur intégral `lem:convK_compact` et son
 application `corol:eqFuncNoyau`.
 -/
 
@@ -161,8 +160,7 @@ private lemma eq_of_mapClusterPt_of_tendsto {Y : Type*} [TopologicalSpace Y] [T2
 /-- **Prop. `prop:opCompactComplCont` (Complète continuité des opérateurs compacts), premier
 point.** Soit `T ∈ L_c(E, F)` et `x_n ⇀ x_*` une suite de `E` convergeant faiblement (i.e. pour
 la topologie faible `WeakSpace 𝕜 E`). Alors `T x_n → T x_*` en norme.
-Remarque : le second point (continuité faible-forte de `T` sur la boule unité si `E*` est
-séparable) n'est pas formalisé. -/
+Le second point est `prop_opCompactComplCont_boule`. -/
 theorem prop_opCompactComplCont (T : E →L[𝕜] F) (hT : IsCompactOperator T) (x : ℕ → E)
     (x₀ : E) (hx : Tendsto (fun n => toWeakSpace 𝕜 E (x n)) atTop (𝓝 (toWeakSpace 𝕜 E x₀))) :
     Tendsto (fun n => T (x n)) atTop (𝓝 (T x₀)) := by
@@ -244,6 +242,36 @@ private lemma riesz_seq_false (T : E →L[𝕜] E) (hT : IsCompactOperator T)
       _ = ε := add_halves ε
   rw [dist_eq_norm] at this
   linarith
+
+/-- **Prop. `prop:opCompactComplCont` (Complète continuité des opérateurs compacts), second
+point.** Soit `T ∈ L_c(E, F)`. Alors la restriction `T : B'_E(0,1) → F` est continue de la
+topologie faible (`WeakSpace 𝕜 E`) dans la topologie forte (de la norme de `F`).
+Remarque : le cours suppose `E*` séparable, ce qui rend la topologie faible métrisable sur la
+boule et permet de raisonner par suites. Cette hypothèse est superflue : l'argument de
+compacité du premier point s'applique directement aux filtres (suites généralisées). -/
+theorem prop_opCompactComplCont_boule
+    (T : E →L[𝕜] F) (hT : IsCompactOperator T) :
+    ContinuousOn (fun w : WeakSpace 𝕜 E => T ((toWeakSpace 𝕜 E).symm w))
+      (toWeakSpace 𝕜 E '' closedBall 0 1) := by
+  intro w _
+  set f : WeakSpace 𝕜 E → F := fun w => T ((toWeakSpace 𝕜 E).symm w) with hf
+  -- pour toute forme `φ ∈ F*`, `φ ∘ T` est faiblement continue
+  have hφ : ∀ φ : StrongDual 𝕜 F,
+      Tendsto (fun v => φ (f v)) (𝓝[toWeakSpace 𝕜 E '' closedBall 0 1] w) (𝓝 (φ (f w))) :=
+    fun φ => ((WeakBilin.eval_continuous (topDualPairing 𝕜 E).flip (φ ∘L T)).tendsto w).mono_left
+      nhdsWithin_le_nhds
+  refine (hT.isCompact_closure_image_closedBall 1).tendsto_nhds_of_unique_mapClusterPt
+    (eventually_nhdsWithin_of_forall fun v hv => ?_) ?_
+  · obtain ⟨x, hx, rfl⟩ := hv
+    exact subset_closure (mem_image_of_mem _ (by simpa using hx))
+  intro y _ hy
+  rw [SeparatingDual.eq_iff_forall_dual_eq (R := 𝕜)]
+  intro φ
+  have h1 : MapClusterPt (φ y) (𝓝[toWeakSpace 𝕜 E '' closedBall 0 1] w) (fun v => φ (f v)) :=
+    hy.continuousAt_comp φ.continuous.continuousAt
+  by_contra hne
+  have h2 : ClusterPt (φ y) (𝓝 (φ (f w))) := ClusterPt.mono h1 (hφ φ)
+  exact h2.ne (disjoint_iff.1 (disjoint_nhds_nhds.2 hne))
 
 /-- **Cor. `corol:FredholmPrecise` (Fredholm précisé), point (iii).** Soit `E` un Banach et
 `T ∈ L_c(E)`. Pour tout `λ ∈ σ(T) ∖ {0}`, il existe `m` tel que

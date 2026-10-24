@@ -17,6 +17,7 @@ import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
 import Mathlib.Topology.ContinuousMap.ZeroAtInfty
 import Mathlib.Analysis.Normed.Lp.SmoothApprox
 import M1Analyse.Bosse.Bosse
+import M1Analyse.LegendreFenchel.LegendreFenchel
 
 /-!
 # §5.1 Convolution dans les espaces `L^p` (`subsec:convLp`)
@@ -95,18 +96,106 @@ end DensC0Lp
 
 /-! ### Inégalité de Jensen et inclusions `L^q ⊂ L^p` -/
 
-/-- **Prop. `prop:Jensen` (Inégalité de Jensen).** Soit `(X, μ)` un espace probabilisé,
-`f : X → ℝ^d` intégrable et `g : ℝ^d → ℝ` convexe. Alors `g(∫ f dμ) ≤ ∫ g ∘ f dμ`.
-Remarque : version à valeurs réelles. Le cours autorise `g : ℝ^d → ]-∞, ∞]` convexe s.c.i. ;
-ici `g` est finie (elle est alors automatiquement continue, donc s.c.i.), et l'on suppose
-`g ∘ f` intégrable (sinon `∫ g ∘ f = +∞` dans le cours, et l'inégalité est triviale, alors
-que l'intégrale de Bochner de Mathlib vaut `0`). -/
-theorem prop_Jensen {X : Type*} [MeasurableSpace X] {μ : Measure X} [IsProbabilityMeasure μ]
-    {d : ℕ} {f : X → EuclideanSpace ℝ (Fin d)} (hf : Integrable f μ)
-    {g : EuclideanSpace ℝ (Fin d) → ℝ} (hg : ConvexOn ℝ univ g) (hgf : Integrable (g ∘ f) μ) :
-    g (∫ x, f x ∂μ) ≤ ∫ x, g (f x) ∂μ :=
-  hg.map_integral_le (hg.continuousOn isOpen_univ) isClosed_univ
-    (ae_of_all _ fun _ => mem_univ _) hf hgf
+section Jensen
+
+variable {X : Type*} [MeasurableSpace X]
+
+/-- Intégrale de Lebesgue d'une fonction `h : X → ℝ̄`, au sens usuel :
+`∫ h dμ := ∫ h⁺ dμ - ∫ h⁻ dμ ∈ ℝ̄`, où `h⁺ = max(h, 0)` et `h⁻ = max(-h, 0)` sont intégrées
+par l'intégrale de Lebesgue des fonctions positives (`lintegral`, à valeurs dans `[0, ∞]`).
+Remarque : bien définie (sans forme `∞ - ∞`) dès que l'une des deux intégrales est finie ;
+dans le cas `∞ - ∞`, la soustraction de `EReal` donne la valeur conventionnelle `-∞`
+(sans objet ici : voir `integraleEtendue_comp_bienDefinie`). -/
+noncomputable def integraleEtendue (μ : Measure X) (h : X → EReal) : EReal :=
+  ((∫⁻ x, (h x).toENNReal ∂μ : ℝ≥0∞) : EReal) - ((∫⁻ x, (-h x).toENNReal ∂μ : ℝ≥0∞) : EReal)
+
+/-- Pour `u : X → ℝ` intégrable, `integraleEtendue` coïncide avec l'intégrale de Bochner. -/
+theorem integraleEtendue_coe {μ : Measure X} {u : X → ℝ} (hu : Integrable u μ) :
+    integraleEtendue μ (fun x => (u x : EReal)) = ((∫ x, u x ∂μ : ℝ) : EReal) := by
+  have h1 : (∫⁻ x, ENNReal.ofReal (u x) ∂μ) ≠ ⊤ :=
+    (lt_of_le_of_lt (lintegral_mono fun x => ENNReal.ofReal_le_of_le_toReal
+      (by simpa using le_abs_self (u x))) hu.2).ne
+  have h2 : (∫⁻ x, ENNReal.ofReal (-u x) ∂μ) ≠ ⊤ :=
+    (lt_of_le_of_lt (lintegral_mono fun x => ENNReal.ofReal_le_of_le_toReal
+      (by simpa using neg_le_abs (u x))) hu.2).ne
+  simp only [integraleEtendue, ← EReal.coe_neg, EReal.real_coe_toENNReal]
+  rw [integral_eq_lintegral_pos_part_sub_lintegral_neg_part hu, EReal.coe_sub,
+    ← EReal.coe_ennreal_toReal h1, ← EReal.coe_ennreal_toReal h2]
+
+/-- Monotonie : si `u ≤ h` avec `u : X → ℝ` intégrable, alors `∫ u dμ ≤ ∫ h dμ` dans `ℝ̄`. -/
+theorem integral_le_integraleEtendue {μ : Measure X} {u : X → ℝ} (hu : Integrable u μ)
+    {h : X → EReal} (huh : ∀ x, (u x : EReal) ≤ h x) :
+    ((∫ x, u x ∂μ : ℝ) : EReal) ≤ integraleEtendue μ h := by
+  rw [← integraleEtendue_coe hu]
+  refine EReal.sub_le_sub ?_ ?_
+  · exact EReal.coe_ennreal_le_coe_ennreal_iff.mpr
+      (lintegral_mono fun x => EReal.toENNReal_le_toENNReal (huh x))
+  · exact EReal.coe_ennreal_le_coe_ennreal_iff.mpr
+      (lintegral_mono fun x => EReal.toENNReal_le_toENNReal (EReal.neg_le_neg_iff.mpr (huh x)))
+
+variable {d : ℕ}
+
+/-- Bonne définition de `∫ g ∘ f dμ` : si `g : ℝ^d → ]-∞, ∞]` est convexe s.c.i. et `f`
+intégrable sur un espace de mesure finie, alors `g ∘ f` est (presque) mesurable et sa partie
+négative est d'intégrale finie, de sorte que `∫ g ∘ f dμ ∈ ]-∞, ∞]` est bien définie. -/
+theorem integraleEtendue_comp_bienDefinie {μ : Measure X} [IsFiniteMeasure μ]
+    {f : X → EuclideanSpace ℝ (Fin d)} (hf : Integrable f μ)
+    {g : EuclideanSpace ℝ (Fin d) → EReal} (hbot : ∀ y, g y ≠ ⊥) (hc : ConvexeEtendue g)
+    (hl : LowerSemicontinuous g) :
+    AEMeasurable (fun x => g (f x)) μ ∧ ∫⁻ x, (-g (f x)).toENNReal ∂μ < ⊤ ∧
+      ⊥ < integraleEtendue μ (fun x => g (f x)) := by
+  refine ⟨hl.measurable.comp_aemeasurable hf.aemeasurable, ?_⟩
+  obtain ⟨t, -, ht⟩ := EReal.lt_iff_exists_real_btwn.mp (bot_lt_iff_ne_bot.mpr (hbot 0))
+  obtain ⟨α, φ, hφ, -⟩ := lem_minorantCvxSci g hbot hc hl 0 t ht
+  have hu : Integrable (fun x => α + φ (f x)) μ := (integrable_const α).add (φ.integrable_comp hf)
+  refine ⟨lt_of_le_of_lt (lintegral_mono fun x => ?_) hu.2, lt_of_lt_of_le (EReal.bot_lt_coe _)
+    (integral_le_integraleEtendue hu (h := fun x => g (f x)) fun x => (hφ (f x)).le)⟩
+  calc (-g (f x)).toENNReal ≤ ((-(α + φ (f x)) : ℝ) : EReal).toENNReal :=
+        EReal.toENNReal_le_toENNReal
+          (by rw [EReal.coe_neg]; exact EReal.neg_le_neg_iff.mpr (hφ (f x)).le)
+    _ ≤ ‖α + φ (f x)‖ₑ := by
+        rw [EReal.real_coe_toENNReal]
+        exact ENNReal.ofReal_le_of_le_toReal (by simpa using neg_le_abs (α + φ (f x)))
+
+/-- **Prop. `prop:Jensen` (Inégalité de Jensen).** Soit `(X, μ)` un espace probabilisé, soit
+`f : X → ℝ^d` intégrable, et soit `g : ℝ^d → ]-∞, ∞]` convexe et s.c.i. Alors
+`g(∫_X f dμ) ≤ ∫_X g(f(x)) dμ(x)`.
+Encodage : `g : ℝ^d → ℝ̄` avec `g ≠ -∞` partout (espace d'arrivée `]-∞, ∞]`), convexité au
+sens du sur-graphe (`ConvexeEtendue`) ; l'intégrale de droite est l'intégrale de Lebesgue dans
+`ℝ̄` (`integraleEtendue`, `∫ (g∘f)⁺ - ∫ (g∘f)⁻`), bien définie dans `]-∞, ∞]`
+(`integraleEtendue_comp_bienDefinie`) ; si elle vaut `+∞`, l'inégalité est triviale. -/
+theorem prop_Jensen {μ : Measure X} [IsProbabilityMeasure μ]
+    {f : X → EuclideanSpace ℝ (Fin d)} (hf : Integrable f μ)
+    {g : EuclideanSpace ℝ (Fin d) → EReal} (hbot : ∀ y, g y ≠ ⊥) (hc : ConvexeEtendue g)
+    (hl : LowerSemicontinuous g) :
+    g (∫ x, f x ∂μ) ≤ integraleEtendue μ (fun x => g (f x)) := by
+  by_contra hlt
+  push Not at hlt
+  obtain ⟨t, ht₁, ht₂⟩ := EReal.lt_iff_exists_real_btwn.mp hlt
+  obtain ⟨α, φ, hφ, hαt⟩ := lem_minorantCvxSci g hbot hc hl (∫ x, f x ∂μ) t ht₂
+  have hu : Integrable (fun x => α + φ (f x)) μ := (integrable_const α).add (φ.integrable_comp hf)
+  have hint : ∫ x, (α + φ (f x)) ∂μ = α + φ (∫ x, f x ∂μ) := by
+    rw [integral_add (integrable_const α) (φ.integrable_comp hf), φ.integral_comp_comm hf]
+    simp
+  have := integral_le_integraleEtendue hu (h := fun x => g (f x)) fun x => (hφ (f x)).le
+  rw [hint] at this
+  exact absurd (lt_of_lt_of_le (EReal.coe_lt_coe_iff.mpr hαt) this) (not_lt.mpr ht₁.le)
+
+/-- La version réelle (ancienne `prop_Jensen`) est un cas particulier : pour `g : ℝ^d → ℝ`
+convexe et `g ∘ f` intégrable, `g(∫ f dμ) ≤ ∫ g ∘ f dμ` (intégrale de Bochner). -/
+theorem prop_Jensen_reel {μ : Measure X} [IsProbabilityMeasure μ]
+    {f : X → EuclideanSpace ℝ (Fin d)} (hf : Integrable f μ)
+    {g : EuclideanSpace ℝ (Fin d) → ℝ} (hg : ConvexOn ℝ Set.univ g)
+    (hgf : Integrable (g ∘ f) μ) :
+    g (∫ x, f x ∂μ) ≤ ∫ x, g (f x) ∂μ := by
+  have hcont : Continuous g := continuousOn_univ.mp (hg.continuousOn isOpen_univ)
+  have := prop_Jensen hf (g := fun y => (g y : EReal)) (fun _ => EReal.coe_ne_bot _)
+    ((convexeEtendue_coe_iff g).mpr hg)
+    (continuous_coe_real_ereal.comp hcont).lowerSemicontinuous
+  rw [integraleEtendue_coe (u := fun x => g (f x)) hgf] at this
+  exact_mod_cast this
+
+end Jensen
 
 /-- **Cor. `corol:lpInclusLq` (Injection `L^p`).** Soit `(X, μ)` un espace mesuré de mesure
 finie non nulle, et `p ≤ q`. Alors `L^q(X, μ) ⊂ L^p(X, μ)` et pour toute `f ∈ L^q`,
