@@ -22,11 +22,11 @@ de Mathlib `Lp ℝ p (volume.restrict Ω)`. Une partie « précompacte » d'un e
 partie `TotallyBounded` ; comme `L^p(Ω)` est complet, c'est équivalent à être relativement
 compacte (`th_FrechetKolmogorov_isCompact_closure`).
 
-Non formalisés :
-* `corol:convolTestFun` (convergence `ρ_ε ⋆ φ → (∫ ρ) φ` dans `𝓓(Ω)`) : la topologie de
-  `𝓓(Ω)` (`TestFunction`, limite inductive) rend l'énoncé et la preuve longs ;
-* `ex:operCompactL2` (compacité d'un opérateur intégral à noyau `L^2`) : non traité faute de
-  temps (il faudrait construire l'opérateur comme élément de `L(L^2, L^2)`).
+`ex:operCompactL2` (`ex_operCompactL2`) est démontré par un argument de Hilbert–Schmidt
+(approximation par des opérateurs de rang fini) plutôt que par Fréchet–Kolmogorov.
+
+Non formalisé : `corol:convolTestFun` (convergence `ρ_ε ⋆ φ → (∫ ρ) φ` dans `𝓓(Ω)`) : la
+topologie de `𝓓(Ω)` (`TestFunction`, limite inductive) rend l'énoncé et la preuve longs.
 -/
 
 open Set Filter Topology MeasureTheory Metric
@@ -345,5 +345,293 @@ theorem th_FrechetKolmogorov_isCompact_closure (Ω : TopologicalSpace.Opens ℝ�
     ⟨(th_FrechetKolmogorov Ω hpt 𝓕 hb hi hii).closure, isClosed_closure.isComplete⟩
 
 end FrechetKolmogorov
+
+section OperCompactL2Aux
+
+open scoped InnerProductSpace
+
+variable {X : Type*} [MeasurableSpace X] {μ : Measure X} [IsFiniteMeasure μ]
+
+private lemma operCompactL2_memLp (g f : Lp ℝ 2 μ) :
+    MemLp (fun p : X × X => g p.1 * f p.2) 2 (μ.prod μ) := by
+  have hg := Lp.memLp g
+  have hf := Lp.memLp f
+  refine (memLp_two_iff_integrable_sq ?_).2 ?_
+  · exact (hg.aestronglyMeasurable.comp_quasiMeasurePreserving
+      Measure.quasiMeasurePreserving_fst).mul
+      (hf.aestronglyMeasurable.comp_quasiMeasurePreserving Measure.quasiMeasurePreserving_snd)
+  · have := ((memLp_two_iff_integrable_sq hg.aestronglyMeasurable).1 hg).mul_prod
+      ((memLp_two_iff_integrable_sq hf.aestronglyMeasurable).1 hf)
+    simpa [mul_pow] using this
+
+/-- Le produit tensoriel `g ⊗ f : (x, y) ↦ g x * f y`, vu dans `L²(μ ⊗ μ)`. -/
+private noncomputable def operCompactL2_tens (g f : Lp ℝ 2 μ) : Lp ℝ 2 (μ.prod μ) :=
+  (operCompactL2_memLp g f).toLp _
+
+private lemma operCompactL2_tens_coeFn (g f : Lp ℝ 2 μ) :
+    operCompactL2_tens g f =ᵐ[μ.prod μ] fun p => g p.1 * f p.2 :=
+  MemLp.coeFn_toLp _
+
+private lemma operCompactL2_ae_fst {g g' : X → ℝ} (h : g =ᵐ[μ] g') :
+    (fun p : X × X => g p.1) =ᵐ[μ.prod μ] fun p => g' p.1 :=
+  Measure.quasiMeasurePreserving_fst.ae_eq_comp h
+
+private lemma operCompactL2_ae_snd {g g' : X → ℝ} (h : g =ᵐ[μ] g') :
+    (fun p : X × X => g p.2) =ᵐ[μ.prod μ] fun p => g' p.2 :=
+  Measure.quasiMeasurePreserving_snd.ae_eq_comp h
+
+private lemma operCompactL2_inner_tens (g f a b : Lp ℝ 2 μ) :
+    ⟪operCompactL2_tens g f, operCompactL2_tens a b⟫_ℝ = ⟪g, a⟫_ℝ * ⟪f, b⟫_ℝ := by
+  simp only [L2.inner_def]
+  rw [← integral_prod_mul]
+  apply integral_congr_ae
+  filter_upwards [operCompactL2_tens_coeFn g f, operCompactL2_tens_coeFn a b] with p h1 h2
+  simp only [h1, h2, RCLike.inner_apply, conj_trivial]
+  ring
+
+private lemma operCompactL2_norm_tens (g f : Lp ℝ 2 μ) :
+    ‖operCompactL2_tens g f‖ = ‖g‖ * ‖f‖ := by
+  have h := operCompactL2_inner_tens g f g f
+  simp only [real_inner_self_eq_norm_sq] at h
+  rw [← sq_eq_sq₀ (norm_nonneg _) (mul_nonneg (norm_nonneg _) (norm_nonneg _)), h, mul_pow]
+
+private lemma operCompactL2_tens_add_left (g g' f : Lp ℝ 2 μ) :
+    operCompactL2_tens (g + g') f = operCompactL2_tens g f + operCompactL2_tens g' f := by
+  apply Lp.ext
+  filter_upwards [operCompactL2_tens_coeFn (g + g') f, operCompactL2_tens_coeFn g f,
+    operCompactL2_tens_coeFn g' f, Lp.coeFn_add (operCompactL2_tens g f)
+    (operCompactL2_tens g' f), operCompactL2_ae_fst (Lp.coeFn_add g g')]
+    with p h1 h2 h3 h4 h5
+  simp only [Pi.add_apply] at h4 h5 ⊢
+  rw [h1, h4, h2, h3, h5]
+  ring
+
+private lemma operCompactL2_tens_add_right (g f f' : Lp ℝ 2 μ) :
+    operCompactL2_tens g (f + f') = operCompactL2_tens g f + operCompactL2_tens g f' := by
+  apply Lp.ext
+  filter_upwards [operCompactL2_tens_coeFn g (f + f'), operCompactL2_tens_coeFn g f,
+    operCompactL2_tens_coeFn g f', Lp.coeFn_add (operCompactL2_tens g f)
+    (operCompactL2_tens g f'), operCompactL2_ae_snd (Lp.coeFn_add f f')]
+    with p h1 h2 h3 h4 h5
+  simp only [Pi.add_apply] at h4 h5 ⊢
+  rw [h1, h4, h2, h3, h5]
+  ring
+
+private lemma operCompactL2_tens_smul_left (c : ℝ) (g f : Lp ℝ 2 μ) :
+    operCompactL2_tens (c • g) f = c • operCompactL2_tens g f := by
+  apply Lp.ext
+  filter_upwards [operCompactL2_tens_coeFn (c • g) f, operCompactL2_tens_coeFn g f,
+    Lp.coeFn_smul c (operCompactL2_tens g f), operCompactL2_ae_fst (Lp.coeFn_smul c g)]
+    with p h1 h2 h4 h5
+  simp only [Pi.smul_apply, smul_eq_mul] at h4 h5 ⊢
+  rw [h1, h4, h2, h5]
+  ring
+
+private lemma operCompactL2_tens_smul_right (c : ℝ) (g f : Lp ℝ 2 μ) :
+    operCompactL2_tens g (c • f) = c • operCompactL2_tens g f := by
+  apply Lp.ext
+  filter_upwards [operCompactL2_tens_coeFn g (c • f), operCompactL2_tens_coeFn g f,
+    Lp.coeFn_smul c (operCompactL2_tens g f), operCompactL2_ae_snd (Lp.coeFn_smul c f)]
+    with p h1 h2 h4 h5
+  simp only [Pi.smul_apply, smul_eq_mul] at h4 h5 ⊢
+  rw [h1, h4, h2, h5]
+  ring
+
+/-- Pour `f` fixé, l'opérateur continu `g ↦ g ⊗ f`. -/
+private noncomputable def operCompactL2_tensR (f : Lp ℝ 2 μ) :
+    Lp ℝ 2 μ →L[ℝ] Lp ℝ 2 (μ.prod μ) :=
+  LinearMap.mkContinuous
+    { toFun := fun g => operCompactL2_tens g f
+      map_add' := fun g g' => operCompactL2_tens_add_left g g' f
+      map_smul' := fun c g => operCompactL2_tens_smul_left c g f } ‖f‖
+    (fun g => by simp [operCompactL2_norm_tens, mul_comm])
+
+private lemma operCompactL2_tensR_apply (f g : Lp ℝ 2 μ) :
+    operCompactL2_tensR f g = operCompactL2_tens g f := rfl
+
+private lemma operCompactL2_norm_tensR_le (f : Lp ℝ 2 μ) : ‖operCompactL2_tensR f‖ ≤ ‖f‖ :=
+  LinearMap.mkContinuous_norm_le _ (norm_nonneg _) _
+
+private lemma operCompactL2_tensR_add (f f' : Lp ℝ 2 μ) :
+    operCompactL2_tensR (f + f') = operCompactL2_tensR f + operCompactL2_tensR f' := by
+  ext1 g
+  simp [operCompactL2_tensR_apply, operCompactL2_tens_add_right]
+
+private lemma operCompactL2_tensR_smul (c : ℝ) (f : Lp ℝ 2 μ) :
+    operCompactL2_tensR (c • f) = c • operCompactL2_tensR f := by
+  ext1 g
+  simp [operCompactL2_tensR_apply, operCompactL2_tens_smul_right]
+
+/-- L'opérateur à noyau `K ↦ 𝒦_K`, défini par dualité :
+`⟪g, 𝒦_K f⟫ = ⟪g ⊗ f, K⟫`, i.e. `𝒦_K f = (g ↦ g ⊗ f)† K`. -/
+private noncomputable def operCompactL2_op :
+    Lp ℝ 2 (μ.prod μ) →L[ℝ] Lp ℝ 2 μ →L[ℝ] Lp ℝ 2 μ :=
+  LinearMap.mkContinuous₂
+    (LinearMap.mk₂ ℝ (fun K f => ContinuousLinearMap.adjoint (operCompactL2_tensR f) K)
+      (fun K K' f => map_add _ K K')
+      (fun c K f => map_smul _ c K)
+      (fun K f f' => by
+        rw [operCompactL2_tensR_add, map_add]; rfl)
+      (fun c K f => by
+        rw [operCompactL2_tensR_smul, map_smulₛₗ, conj_trivial]; rfl))
+    1 (fun K f => by
+      simp only [LinearMap.mk₂_apply, one_mul]
+      calc ‖ContinuousLinearMap.adjoint (operCompactL2_tensR f) K‖
+          ≤ ‖ContinuousLinearMap.adjoint (operCompactL2_tensR f)‖ * ‖K‖ :=
+            ContinuousLinearMap.le_opNorm _ _
+        _ ≤ ‖f‖ * ‖K‖ := by
+            rw [LinearIsometryEquiv.norm_map]
+            exact mul_le_mul_of_nonneg_right (operCompactL2_norm_tensR_le f) (norm_nonneg _)
+        _ = ‖K‖ * ‖f‖ := mul_comm _ _)
+
+private lemma operCompactL2_inner_op (K : Lp ℝ 2 (μ.prod μ)) (g f : Lp ℝ 2 μ) :
+    ⟪g, operCompactL2_op K f⟫_ℝ = ⟪operCompactL2_tens g f, K⟫_ℝ := by
+  change ⟪g, ContinuousLinearMap.adjoint (operCompactL2_tensR f) K⟫_ℝ = _
+  rw [ContinuousLinearMap.adjoint_inner_right, operCompactL2_tensR_apply]
+
+/-- Noyau de rang un : `𝒦_{a ⊗ b} f = ⟪b, f⟫ a`. -/
+private lemma operCompactL2_op_tens (a b : Lp ℝ 2 μ) :
+    operCompactL2_op (operCompactL2_tens a b) =
+      (ContinuousLinearMap.smulRight (1 : ℝ →L[ℝ] ℝ) a).comp (innerSL ℝ b) := by
+  ext1 f
+  refine ext_inner_left ℝ fun g => ?_
+  rw [operCompactL2_inner_op, operCompactL2_inner_tens]
+  simp [real_inner_smul_right, mul_comm, real_inner_comm f b]
+
+private lemma operCompactL2_isCompact_tens (a b : Lp ℝ 2 μ) :
+    IsCompactOperator (operCompactL2_op (operCompactL2_tens a b)) := by
+  rw [operCompactL2_op_tens]
+  exact ((isCompactOperator_of_locallyCompactSpace_dom (innerSL ℝ b)).clm_comp
+    (ContinuousLinearMap.smulRight (1 : ℝ →L[ℝ] ℝ) a) :)
+
+private lemma operCompactL2_tens_indicator {A B : Set X} (hA : MeasurableSet A)
+    (hB : MeasurableSet B) :
+    operCompactL2_tens (indicatorConstLp 2 hA (measure_ne_top μ A) (1 : ℝ))
+        (indicatorConstLp 2 hB (measure_ne_top μ B) (1 : ℝ)) =
+      indicatorConstLp 2 (hA.prod hB) (measure_ne_top (μ.prod μ) _) (1 : ℝ) := by
+  apply Lp.ext
+  filter_upwards [operCompactL2_tens_coeFn (indicatorConstLp 2 hA (measure_ne_top μ A) (1 : ℝ))
+      (indicatorConstLp 2 hB (measure_ne_top μ B) (1 : ℝ)),
+    operCompactL2_ae_fst (indicatorConstLp_coeFn (hs := hA) (hμs := measure_ne_top μ A)
+      (c := (1 : ℝ)) (p := 2)),
+    operCompactL2_ae_snd (indicatorConstLp_coeFn (hs := hB) (hμs := measure_ne_top μ B)
+      (c := (1 : ℝ)) (p := 2)),
+    indicatorConstLp_coeFn (hs := hA.prod hB) (hμs := measure_ne_top (μ.prod μ) _)
+      (c := (1 : ℝ)) (p := 2)] with p h1 h2 h3 h4
+  rw [h1, h2, h3, h4]
+  by_cases hpA : p.1 ∈ A <;> by_cases hpB : p.2 ∈ B <;> simp [hpA, hpB]
+
+/-- Les produits tensoriels `g ⊗ f` sont totaux dans `L²(μ ⊗ μ)` : un noyau orthogonal à
+tous les `g ⊗ f` est nul (argument de classe monotone sur les rectangles mesurables). -/
+private lemma operCompactL2_eq_zero (K : Lp ℝ 2 (μ.prod μ))
+    (h : ∀ g f : Lp ℝ 2 μ, ⟪operCompactL2_tens g f, K⟫_ℝ = 0) : K = 0 := by
+  have hK : Integrable K (μ.prod μ) := (Lp.memLp K).integrable one_le_two
+  have hrect : ∀ A B, MeasurableSet A → MeasurableSet B →
+      ∫ p in A ×ˢ B, K p ∂(μ.prod μ) = 0 := by
+    intro A B hA hB
+    have := h (indicatorConstLp 2 hA (measure_ne_top μ A) 1)
+      (indicatorConstLp 2 hB (measure_ne_top μ B) 1)
+    rwa [operCompactL2_tens_indicator, L2.inner_indicatorConstLp_one] at this
+  have hall : ∀ S (_ : MeasurableSet S), ∫ p in S, K p ∂(μ.prod μ) = 0 := by
+    refine MeasurableSpace.induction_on_inter generateFrom_prod.symm isPiSystem_prod ?_ ?_ ?_ ?_
+    · simp
+    · rintro _ ⟨A, hA, B, hB, rfl⟩
+      exact hrect A B hA hB
+    · intro t ht h
+      rw [setIntegral_compl ht hK, h, sub_zero, ← setIntegral_univ, ← univ_prod_univ]
+      exact hrect _ _ MeasurableSet.univ MeasurableSet.univ
+    · intro f hd hm hf
+      rw [integral_iUnion hm hd hK.integrableOn]
+      simp [hf]
+  rw [Lp.eq_zero_iff_ae_eq_zero]
+  exact hK.ae_eq_zero_of_forall_setIntegral_eq_zero (fun s hs _ => hall s hs)
+
+/-- Densité + fermeture : `𝒦_K` est compact pour tout `K ∈ L²(μ ⊗ μ)`. -/
+private lemma operCompactL2_isCompactOperator (K : Lp ℝ 2 (μ.prod μ)) :
+    IsCompactOperator (operCompactL2_op K) := by
+  let S : Submodule ℝ (Lp ℝ 2 (μ.prod μ)) :=
+    Submodule.span ℝ {u | ∃ g f : Lp ℝ 2 μ, operCompactL2_tens g f = u}
+  let C : Submodule ℝ (Lp ℝ 2 (μ.prod μ)) :=
+    (compactOperator (RingHom.id ℝ) (Lp ℝ 2 μ) (Lp ℝ 2 μ)).comap
+      (operCompactL2_op (μ := μ)).toLinearMap
+  have hSC : S ≤ C := by
+    rw [Submodule.span_le]
+    rintro _ ⟨g, f, rfl⟩
+    exact operCompactL2_isCompact_tens g f
+  have hC : IsClosed (C : Set (Lp ℝ 2 (μ.prod μ))) :=
+    isClosed_setOfPred_isCompactOperator.preimage (operCompactL2_op (μ := μ)).continuous
+  have hS : S.topologicalClosure = ⊤ := by
+    rw [← Submodule.orthogonal_orthogonal_eq_closure]
+    have : Sᗮ = ⊥ := by
+      rw [Submodule.eq_bot_iff]
+      intro K hK
+      apply operCompactL2_eq_zero
+      intro g f
+      exact (Submodule.mem_orthogonal _ _).1 hK _ (Submodule.subset_span ⟨g, f, rfl⟩)
+    rw [this, Submodule.bot_orthogonal_eq_top]
+  have hKC : K ∈ C := Submodule.topologicalClosure_minimal S hSC hC (hS ▸ Submodule.mem_top)
+  exact hKC
+
+private lemma operCompactL2_integrable (K : Lp ℝ 2 (μ.prod μ)) (g f : Lp ℝ 2 μ) :
+    Integrable (fun p : X × X => g p.1 * (K p * f p.2)) (μ.prod μ) := by
+  refine (L2.integrable_inner (operCompactL2_tens g f) K).congr ?_
+  filter_upwards [operCompactL2_tens_coeFn g f] with p hp
+  simp only [hp, RCLike.inner_apply, conj_trivial]
+  ring
+
+private lemma operCompactL2_inner_eq (K : Lp ℝ 2 (μ.prod μ)) (g f : Lp ℝ 2 μ) :
+    ⟪operCompactL2_tens g f, K⟫_ℝ = ∫ x, g x * ∫ y, K (x, y) * f y ∂μ ∂μ := by
+  rw [L2.inner_def, integral_congr_ae (g := fun p : X × X => g p.1 * (K p * f p.2)) ?_]
+  · rw [integral_prod _ (operCompactL2_integrable K g f)]
+    simp_rw [integral_const_mul]
+  · filter_upwards [operCompactL2_tens_coeFn g f] with p hp
+    simp only [hp, RCLike.inner_apply, conj_trivial]
+    ring
+
+/-- Identification de `𝒦_K f` avec la formule intégrale `x ↦ ∫ K(x, y) f(y) dy`. -/
+private lemma operCompactL2_ae (K : Lp ℝ 2 (μ.prod μ)) (f : Lp ℝ 2 μ) :
+    operCompactL2_op K f =ᵐ[μ] fun x => ∫ y, K (x, y) * f y ∂μ := by
+  have hone : Integrable (fun p : X × X => K p * f p.2) (μ.prod μ) := by
+    refine (operCompactL2_integrable K
+      (indicatorConstLp 2 MeasurableSet.univ (measure_ne_top μ _) (1 : ℝ)) f).congr ?_
+    filter_upwards [operCompactL2_ae_fst (indicatorConstLp_coeFn (hs := MeasurableSet.univ)
+      (hμs := measure_ne_top μ _) (c := (1 : ℝ)) (p := 2))] with p hp
+    rw [hp]
+    simp
+  have hF := hone.integral_prod_left
+  refine ae_eq_of_forall_setIntegral_eq_of_sigmaFinite
+    (fun s _ _ => ((Lp.memLp (operCompactL2_op K f)).integrable one_le_two).integrableOn)
+    (fun s _ _ => hF.integrableOn) ?_
+  intro s hs _
+  rw [← L2.inner_indicatorConstLp_one hs (measure_ne_top μ s), operCompactL2_inner_op,
+    operCompactL2_inner_eq, ← integral_indicator hs]
+  apply integral_congr_ae
+  filter_upwards [indicatorConstLp_coeFn (hs := hs) (hμs := measure_ne_top μ s)
+    (c := (1 : ℝ)) (p := 2)] with x hx
+  rw [hx]
+  by_cases hxs : x ∈ s <;> simp [hxs]
+
+end OperCompactL2Aux
+
+/-- **Ex. `ex:operCompactL2` (Compacité d'un opérateur intégral, version L²).**
+Pour tout `K ∈ L²([0,1]², ℝ)`, l'endomorphisme de `L²([0,1])` défini par
+`𝒦(f)(x) := ∫₀¹ K(x, y) f(y) dy` est compact.
+
+Ici `[0,1]` est `Icc 0 1` muni de la mesure de Lebesgue restreinte, et `L²([0,1]²)` est
+relatif à la mesure produit de cette mesure par elle-même. L'énoncé fournit un opérateur
+continu `T` compact, qui coïncide presque partout avec la formule intégrale.
+
+Route suivie (différente du cours, qui utilise Fréchet–Kolmogorov) : `𝒦_K` est défini par
+dualité, `⟪g, 𝒦_K f⟫ = ⟪g ⊗ f, K⟫`, ce qui donne `‖𝒦_K‖ ≤ ‖K‖₂` et la continuité de
+`K ↦ 𝒦_K` ; pour `K = a ⊗ b` l'opérateur est de rang un, donc compact ; les `a ⊗ b` sont
+totaux dans `L²([0,1]²)` (classe monotone sur les rectangles) et les opérateurs compacts
+forment un fermé, d'où la compacité pour tout `K` (argument de Hilbert–Schmidt). -/
+theorem ex_operCompactL2 (K : Lp ℝ 2 ((volume.restrict (Icc (0 : ℝ) 1)).prod
+      (volume.restrict (Icc (0 : ℝ) 1)))) :
+    ∃ T : Lp ℝ 2 (volume.restrict (Icc (0 : ℝ) 1)) →L[ℝ] Lp ℝ 2 (volume.restrict (Icc (0 : ℝ) 1)),
+      IsCompactOperator T ∧ ∀ f : Lp ℝ 2 (volume.restrict (Icc (0 : ℝ) 1)),
+        T f =ᵐ[volume.restrict (Icc (0 : ℝ) 1)]
+          fun x => ∫ y in Icc (0 : ℝ) 1, K (x, y) * f y :=
+  ⟨operCompactL2_op K, operCompactL2_isCompactOperator K, operCompactL2_ae K⟩
 
 end M1Analyse

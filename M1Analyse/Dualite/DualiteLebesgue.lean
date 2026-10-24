@@ -9,6 +9,8 @@ import Mathlib.MeasureTheory.Function.Holder
 import Mathlib.Analysis.Normed.Lp.lpSpace
 import Mathlib.Analysis.Normed.Lp.lpHolder
 import Mathlib.Topology.ContinuousMap.ZeroAtInfty
+import Mathlib.MeasureTheory.Function.L2Space
+import Mathlib.MeasureTheory.Integral.DominatedConvergence
 
 /-!
 # §3.2 Réflexivité : dualité dans les espaces de Lebesgue (`subsec:reflexivite`, fin)
@@ -22,7 +24,9 @@ L'application `g ↦ φ_g` est `dualLp` (construite à partir de `lpPairing` de 
 
 La bijectivité de `th:lpDualLq` repose sur le théorème de Milman–Pettis, posé comme **axiome**
 (`th_unifCvxReflex`, voir `Reflexivite.lean`). Pour `p = 1`, l'isométrie suppose `μ` `σ`-finie
-(l'énoncé du cours est faux sans hypothèse sur `μ`) et la bijectivité n'est pas formalisée.
+(l'énoncé du cours est faux sans hypothèse sur `μ`) ; la bijectivité pour `p = 1`
+(`th_lpDualLq_bijectif_un`, non démontrée dans le cours) est prouvée sans Milman–Pettis, via
+le théorème de Riesz dans `L^2` pour un poids `u > 0` de carré intégrable.
 -/
 
 open NormedSpace MeasureTheory Filter Topology
@@ -566,6 +570,209 @@ theorem reflexif_Lp {p : ℝ≥0∞} [Fact (1 ≤ p)] (hp : 1 < p) (hp' : p ≠ 
   simp_rw [mul_comm]
 
 end Lebesgue
+
+section L1
+
+open Set
+
+variable {X : Type*} [MeasurableSpace X] {μ : Measure X}
+
+/-- Poids strictement positif de carré intégrable (mesure σ-finie). -/
+private lemma dualL1_exists_weight [SigmaFinite μ] :
+    ∃ u : X → ℝ, Measurable u ∧ (∀ x, 0 < u x) ∧ MemLp u 2 μ := by
+  obtain ⟨w, hw0, hwm, hwi⟩ := exists_pos_lintegral_lt_of_sigmaFinite μ one_ne_zero
+  have hwm' : Measurable fun x => (w x : ℝ) := hwm.coe_nnreal_real
+  refine ⟨fun x => Real.sqrt (w x), hwm'.sqrt,
+    fun x => Real.sqrt_pos.2 (by exact_mod_cast hw0 x), ?_⟩
+  rw [memLp_two_iff_integrable_sq hwm'.sqrt.aestronglyMeasurable]
+  simp_rw [Real.sq_sqrt (NNReal.coe_nonneg _)]
+  have := integrable_toReal_of_lintegral_ne_top hwm.coe_nnreal_ennreal.aemeasurable
+    (hwi.trans ENNReal.one_lt_top).ne
+  simpa using this
+
+/-- Représentation de Riesz de `k ↦ φ(k u)` sur `L^2`. -/
+private lemma dualL1_riesz {u : X → ℝ} (hu : MemLp u 2 μ) (φ : StrongDual ℝ (Lp ℝ 1 μ)) :
+    ∃ h : Lp ℝ 2 μ, ∀ (k : X → ℝ), MemLp k 2 μ → ∀ F : Lp ℝ 1 μ,
+      (F : X → ℝ) =ᵐ[μ] (fun x => k x * u x) → φ F = ∫ x, h x * k x ∂μ := by
+  let ι : Lp ℝ 2 μ →L[ℝ] Lp ℝ 1 μ :=
+    ((ContinuousLinearMap.mul ℝ ℝ).holderL μ 2 2 1).flip (hu.toLp u)
+  refine ⟨(InnerProductSpace.toDual ℝ (Lp ℝ 2 μ)).symm (φ.comp ι), fun k hk F hF => ?_⟩
+  have hιF : ι (hk.toLp k) = F := by
+    apply Lp.ext
+    have h1 := ContinuousLinearMap.coeFn_holder (r := 1) (ContinuousLinearMap.mul ℝ ℝ)
+      (hk.toLp k) (hu.toLp u)
+    filter_upwards [h1, hk.coeFn_toLp, hu.coeFn_toLp, hF] with x h1 h2 h3 h4
+    rw [h4]
+    exact h1.trans (by simp [h2, h3])
+  rw [← hιF, ← ContinuousLinearMap.comp_apply, ← InnerProductSpace.toDual_symm_apply,
+    L2.inner_def]
+  refine integral_congr_ae ?_
+  filter_upwards [hk.coeFn_toLp] with x hx
+  simp [hx, mul_comm]
+
+/-- Borne essentielle : `|h/u| ≤ ‖φ‖ + 1` presque partout. -/
+private lemma dualL1_bound {u : X → ℝ} (hum : Measurable u) (hu0 : ∀ x, 0 < u x)
+    (hu : MemLp u 2 μ) (φ : StrongDual ℝ (Lp ℝ 1 μ)) (h : Lp ℝ 2 μ)
+    (hφ : ∀ (k : X → ℝ), MemLp k 2 μ → ∀ F : Lp ℝ 1 μ,
+      (F : X → ℝ) =ᵐ[μ] (fun x => k x * u x) → φ F = ∫ x, h x * k x ∂μ) :
+    ∀ᵐ x ∂μ, |h x / u x| ≤ ‖φ‖ + 1 := by
+  set g : X → ℝ := fun x => h x / u x with hg
+  have hgm : Measurable g := (Lp.stronglyMeasurable h).measurable.div hum
+  set c := ‖φ‖ + 1 with hc
+  let S : ℕ → Set X := fun n => {x | c < |g x|} ∩ {x | 1 ≤ n * u x}
+  have hSm : ∀ n, MeasurableSet (S n) := fun n =>
+    (measurableSet_lt measurable_const (continuous_abs.measurable.comp hgm)).inter
+      (measurableSet_le measurable_const (measurable_const.mul hum))
+  have hu2 : Integrable (fun x => u x ^ 2) μ :=
+    (memLp_two_iff_integrable_sq hu.aestronglyMeasurable).1 hu
+  have hSfin : ∀ n, μ (S n) < ∞ := by
+    intro n
+    refine (measure_mono fun x hx => ?_).trans_lt
+      ((hu2.const_mul ((n : ℝ) ^ 2)).measure_norm_ge_lt_top one_pos)
+    have h1 : 1 ≤ (n : ℝ) * u x := hx.2
+    change 1 ≤ ‖(n : ℝ) ^ 2 * u x ^ 2‖
+    rw [Real.norm_eq_abs]
+    rw [abs_of_nonneg (by positivity), ← mul_pow]
+    nlinarith
+  have hS0 : ∀ n, μ (S n) = 0 := by
+    intro n
+    let s : X → ℝ := fun x => if 0 ≤ g x then 1 else -1
+    have hsm : Measurable s :=
+      Measurable.ite (measurableSet_le measurable_const hgm) measurable_const measurable_const
+    have hsg : ∀ x, s x * g x = |g x| := by
+      intro x
+      by_cases hx : 0 ≤ g x
+      · simp [s, hx, abs_of_nonneg hx]
+      · simp [s, hx, abs_of_neg (not_le.1 hx)]
+    have hs1 : ∀ x, |s x| = 1 := fun x => by by_cases hx : 0 ≤ g x <;> simp [s, hx]
+    let k : X → ℝ := (S n).indicator (fun x => s x / u x)
+    have hk : MemLp k 2 μ := by
+      rw [memLp_indicator_iff_restrict (hSm n)]
+      have : IsFiniteMeasure (μ.restrict (S n)) := isFiniteMeasure_restrict.2 (hSfin n).ne
+      refine MemLp.of_bound (hsm.div hum).aestronglyMeasurable n ?_
+      refine ae_restrict_of_forall_mem (hSm n) fun x hx => ?_
+      have h1 : 1 ≤ (n : ℝ) * u x := hx.2
+      rw [Real.norm_eq_abs, abs_div, hs1, abs_of_pos (hu0 x), div_le_iff₀ (hu0 x)]
+      exact h1
+    have hku : MemLp (k * u) 1 μ := hk.mul (r := 1) hu
+    have hF := hφ k hk (hku.toLp _) hku.coeFn_toLp
+    have hpt : ∀ x, h x * k x = (S n).indicator (fun x => |g x|) x := by
+      intro x
+      by_cases hx : x ∈ S n
+      · simp only [k, indicator_of_mem hx, ← hsg]
+        simp only [g]
+        field_simp [(hu0 x).ne']
+      · simp [k, hx]
+    have hint : ∫ x, h x * k x ∂μ = ∫ x, (S n).indicator (fun x => |g x|) x ∂μ :=
+      integral_congr_ae (ae_of_all _ hpt)
+    have hnorm : ‖hku.toLp (k * u)‖ = μ.real (S n) := by
+      rw [L1.norm_eq_integral_norm, ← integral_indicator_one (hSm n)]
+      refine integral_congr_ae ?_
+      filter_upwards [hku.coeFn_toLp] with x hx
+      rw [hx]
+      by_cases hxS : x ∈ S n
+      · simp [k, hxS, hs1, (hu0 x).ne']
+      · simp [k, hxS]
+    have hlow : c * μ.real (S n) ≤ ∫ x, (S n).indicator (fun x => |g x|) x ∂μ := by
+      rw [mul_comm, ← smul_eq_mul, ← integral_indicator_const _ (hSm n)]
+      refine integral_mono ?_ ?_ fun x => ?_
+      · exact (integrable_indicator_iff (hSm n)).2 (integrableOn_const (hSfin n).ne)
+      · exact ((Lp.memLp h).integrable_mul hk).congr (ae_of_all _ hpt)
+      · by_cases hx : x ∈ S n
+        · simp only [indicator_of_mem hx]; exact hx.1.le
+        · simp [hx]
+    have hup : φ (hku.toLp (k * u)) ≤ ‖φ‖ * μ.real (S n) := by
+      rw [← hnorm]; exact (le_abs_self _).trans (φ.le_opNorm _)
+    have hm : μ.real (S n) ≤ 0 := by
+      rw [hF, hint] at hup; rw [hc] at hlow; linarith
+    exact (measureReal_eq_zero_iff (hSfin n).ne).1 (le_antisymm hm measureReal_nonneg)
+  refine ae_iff.2 (measure_mono_null (fun x hx => ?_) (measure_iUnion_null hS0))
+  obtain ⟨n, hn⟩ := exists_nat_ge (1 / u x)
+  refine mem_iUnion.2 ⟨n, not_le.1 hx, ?_⟩
+  change 1 ≤ (n : ℝ) * u x
+  rwa [div_le_iff₀ (hu0 x)] at hn
+
+/-- **Th. `th:lpDualLq` (Dualité dans les espaces de Lebesgue), bijectivité pour `p = 1`.**
+Si `μ` est σ-finie, `g ∈ L^∞ ↦ φ_g ∈ (L^1)^*` est bijective (`(L^1)^* = L^∞`).
+Remarque : non démontré dans le cours ; l'hypothèse de σ-finitude est nécessaire
+(cf. \claudereport). -/
+theorem th_lpDualLq_bijectif_un [SigmaFinite μ] : Function.Bijective (dualLp μ 1 ∞) := by
+  refine ⟨(th_lpDualLq_isometrie (p := 1) (q := ∞) fun _ => inferInstance).injective,
+    fun φ => ?_⟩
+  obtain ⟨u, hum, hu0, hu⟩ := dualL1_exists_weight (μ := μ)
+  obtain ⟨h, hφ⟩ := dualL1_riesz hu φ
+  have hb := dualL1_bound hum hu0 hu φ h hφ
+  set g : X → ℝ := fun x => h x / u x with hg
+  have hgm : Measurable g := (Lp.stronglyMeasurable h).measurable.div hum
+  have hG : MemLp g ∞ μ :=
+    memLp_top_of_bound hgm.aestronglyMeasurable _
+      (hb.mono fun x hx => by rw [Real.norm_eq_abs]; exact hx)
+  refine ⟨hG.toLp g, ContinuousLinearMap.ext fun F => ?_⟩
+  set Φ := φ - dualLp μ 1 ∞ (hG.toLp g) with hΦ
+  have hFm : Measurable (F : X → ℝ) := (Lp.stronglyMeasurable F).measurable
+  let A : ℕ → Set X := fun n => {x | |F x| ≤ n * u x ^ 2}
+  have hAm : ∀ n, MeasurableSet (A n) := fun n =>
+    measurableSet_le (continuous_abs.measurable.comp hFm) (measurable_const.mul (hum.pow_const 2))
+  have hFn : ∀ n, MemLp ((A n).indicator F) 1 μ := fun n => (Lp.memLp F).indicator (hAm n)
+  have hzero : ∀ n, Φ ((hFn n).toLp _) = 0 := by
+    intro n
+    let k : X → ℝ := fun x => (A n).indicator F x / u x
+    have hk : MemLp k 2 μ := by
+      refine (memLp_two_iff_integrable_sq (f := k)
+        ((hFm.indicator (hAm n)).div hum).aestronglyMeasurable).2 ?_
+      refine (((L1.integrable_coeFn F).norm.const_mul n)).mono'
+        (((hFm.indicator (hAm n)).div hum).pow_const 2).aestronglyMeasurable
+        (ae_of_all _ fun x => ?_)
+      by_cases hx : x ∈ A n
+      · have hx' : |F x| ≤ n * u x ^ 2 := hx
+        have hu2 : 0 < u x ^ 2 := by have := hu0 x; positivity
+        simp only [k, indicator_of_mem hx, Real.norm_eq_abs]
+        rw [abs_of_nonneg (sq_nonneg _), div_pow, div_le_iff₀ hu2]
+        nlinarith [abs_nonneg (F x), sq_abs (F x), mul_le_mul_of_nonneg_left hx' (abs_nonneg (F x))]
+      · simp only [k, indicator_of_notMem hx]
+        simp only [zero_div, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, norm_zero]
+        positivity
+    have hF := hφ k hk ((hFn n).toLp _) (by
+      filter_upwards [(hFn n).coeFn_toLp] with x hx
+      rw [hx]
+      simp only [k]
+      rw [div_mul_cancel₀ _ (hu0 x).ne'])
+    simp only [Φ, FunLike.coe_sub, Pi.sub_apply, dualLp_apply, hF, sub_eq_zero]
+    refine integral_congr_ae ?_
+    filter_upwards [(hFn n).coeFn_toLp, hG.coeFn_toLp] with x h1 h2
+    rw [h1, h2]
+    simp only [k, g]
+    field_simp [(hu0 x).ne']
+  have hT : Filter.Tendsto (fun n => (hFn n).toLp _) Filter.atTop (nhds F) := by
+    rw [tendsto_iff_norm_sub_tendsto_zero]
+    have heq : ∀ n, ‖(hFn n).toLp _ - F‖ = ∫ x, ‖(A n).indicator F x - F x‖ ∂μ := by
+      intro n
+      rw [L1.norm_eq_integral_norm]
+      refine integral_congr_ae ?_
+      filter_upwards [Lp.coeFn_sub ((hFn n).toLp _) F, (hFn n).coeFn_toLp] with x h1 h2
+      rw [h1, Pi.sub_apply, h2]
+    simp_rw [heq]
+    have := tendsto_integral_of_dominated_convergence (fun x => ‖F x‖)
+      (F := fun n x => ‖(A n).indicator F x - F x‖) (f := fun _ => 0)
+      (fun n => ((hFm.indicator (hAm n)).sub hFm).norm.aestronglyMeasurable)
+      (L1.integrable_coeFn F).norm (fun n => ae_of_all _ fun x => ?_) (ae_of_all _ fun x => ?_)
+    · simpa using this
+    · by_cases hx : x ∈ A n <;> simp [hx]
+    · have hu2 : 0 < u x ^ 2 := by have := hu0 x; positivity
+      obtain ⟨N, hN⟩ := exists_nat_ge (|F x| / u x ^ 2)
+      refine tendsto_const_nhds.congr' ((Filter.eventually_ge_atTop N).mono fun n hn => ?_)
+      have hxA : x ∈ A n := by
+        change |F x| ≤ n * u x ^ 2
+        rw [div_le_iff₀ hu2] at hN
+        have : (N : ℝ) ≤ n := by exact_mod_cast hn
+        nlinarith
+      simp [hxA]
+  have hlim := (Φ.continuous.tendsto F).comp hT
+  have key : Φ F = 0 :=
+    (tendsto_nhds_unique (tendsto_const_nhds.congr fun n => (hzero n).symm) hlim).symm
+  exact (sub_eq_zero.1 key).symm
+
+end L1
 
 section NonReflex
 local notation "ℓ" p => lp (fun _ : ℕ => ℝ) p
