@@ -17,7 +17,8 @@ Les espaces `L^p` du cours sont ceux de Mathlib (`MemLp`, `eLpNorm`), la convolu
 de Lebesgue `volume`. La quasi-norme faible `‖·‖_{p,w}`, absente de Mathlib, est introduite
 (`normeFaible`) avec sa formule littérale.
 
-Ne sont pas formalisés : `th:YoungFaible` (admis dans le cours), `prop:convolPow`,
+La proposition `prop:convolPow` est formalisée dans `M1Analyse/Sobolev/NoyauGreen.lean`
+(`prop_convolPow`). Ne sont pas formalisés : `th:YoungFaible` (admis dans le cours),
 `th:injSousCrit` et `corol:injSousCritOm` (les espaces de Sobolev `W^{s,p}` ne sont pas dans
 Mathlib), ni la seconde identité de `eq:homog_lp` (dérivées).
 -/
