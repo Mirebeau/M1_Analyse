@@ -25,7 +25,10 @@ variable {X : Type*}
 
 /-- **Déf. `def:topo` (Espace topologique), sens direct.**
 Les ouverts d'une topologie Mathlib `TopologicalSpace X` satisfont les trois axiomes (i)–(iii)
-du cours : `∅, X ∈ 𝕌` ; union quelconque ; intersection de deux ouverts. -/
+du cours : `∅, X ∈ 𝕌` ; union quelconque ; intersection de deux ouverts.
+Remarque : l'axiome `∅ ∈ 𝕌` est redondant, puisque `∅` est l'union vide (`rem:unionVide`) ;
+pour cette raison il ne figure pas dans la définition de `TopologicalSpace` de Mathlib, et
+`isOpen_empty` y est un théorème. -/
 theorem def_topo_axioms [TopologicalSpace X] :
     (IsOpen (∅ : Set X) ∧ IsOpen (univ : Set X)) ∧
     (∀ 𝒰 : Set (Set X), (∀ U ∈ 𝒰, IsOpen U) → IsOpen (⋃₀ 𝒰)) ∧
@@ -34,7 +37,10 @@ theorem def_topo_axioms [TopologicalSpace X] :
 
 /-- **Déf. `def:topo` (Espace topologique), sens réciproque.**
 Toute partie `𝕌 ⊆ 𝒫(X)` satisfaisant les axiomes (i)–(iii) est l'ensemble des ouverts
-d'une (unique) topologie Mathlib sur `X`. -/
+d'une (unique) topologie Mathlib sur `X`.
+Remarque : l'hypothèse `∅ ∈ 𝕌` (dans `h₁`) est redondante, comme indiqué dans `rem:unionVide`
+(`∅ = ⋃₀ ∅ ∈ 𝕌` par (ii)) ; elle est absente de la définition de `TopologicalSpace` de Mathlib,
+et n'est pas utilisée dans la preuve. -/
 theorem def_topo_of_axioms (𝕌 : Set (Set X))
     (h₁ : ∅ ∈ 𝕌 ∧ univ ∈ 𝕌)
     (h₂ : ∀ 𝒰 ⊆ 𝕌, ⋃₀ 𝒰 ∈ 𝕌)
