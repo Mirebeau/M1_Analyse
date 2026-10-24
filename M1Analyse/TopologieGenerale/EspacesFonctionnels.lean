@@ -38,13 +38,13 @@ variable {d : ℕ}
 /-- Une suite `(K_n)` de parties de `Ω` est une *suite exhaustive de compacts* de `Ω`
 (`eqdef:exhaustive_compacts`) si chaque `K_n` est compact, si `⋃_n K_n = Ω`, et si
 `K_n ⊆ int(K_{n+1})` pour tout `n`. (Pour `Ω = X` tout entier, c'est la notion Mathlib
-`CompactExhaustion X`, cf. `isSuiteExhaustive_compactExhaustion`.) -/
-def IsSuiteExhaustive {X : Type*} [TopologicalSpace X] (Ω : Set X) (K : ℕ → Set X) : Prop :=
+`CompactExhaustion X`, cf. `estSuiteExhaustive_compactExhaustion`.) -/
+def EstSuiteExhaustive {X : Type*} [TopologicalSpace X] (Ω : Set X) (K : ℕ → Set X) : Prop :=
   (∀ n, IsCompact (K n)) ∧ (⋃ n, K n) = Ω ∧ ∀ n, K n ⊆ interior (K (n + 1))
 
 /-- Une `CompactExhaustion` de Mathlib est une suite exhaustive de compacts de l'espace entier. -/
-theorem isSuiteExhaustive_compactExhaustion {X : Type*} [TopologicalSpace X]
-    (K : CompactExhaustion X) : IsSuiteExhaustive univ K :=
+theorem estSuiteExhaustive_compactExhaustion {X : Type*} [TopologicalSpace X]
+    (K : CompactExhaustion X) : EstSuiteExhaustive univ K :=
   ⟨K.isCompact, K.iUnion_eq, K.subset_interior_succ⟩
 
 /-- **Prop. `prop:exhaustComp` (Suite exhaustive de compacts).** Tout ouvert `Ω ⊆ ℝ^d` admet
@@ -52,7 +52,7 @@ une suite exhaustive de compacts `(K_n)` : `⋃_n K_n = Ω` et `K_n ⊂⊂ int(K
 (`eqdef:exhaustive_compacts`). (Preuve via `CompactExhaustion.choice` sur le sous-espace `Ω`,
 et non via la suite explicite du cours.) -/
 theorem prop_exhaustComp {Ω : Set (EuclideanSpace ℝ (Fin d))} (hΩ : IsOpen Ω) :
-    ∃ K : ℕ → Set (EuclideanSpace ℝ (Fin d)), IsSuiteExhaustive Ω K := by
+    ∃ K : ℕ → Set (EuclideanSpace ℝ (Fin d)), EstSuiteExhaustive Ω K := by
   have : LocallyCompactSpace Ω := hΩ.locallyCompactSpace
   let C := CompactExhaustion.choice Ω
   refine ⟨fun n => Subtype.val '' C n, fun n => (C.isCompact n).image continuous_subtype_val, ?_,
@@ -65,8 +65,8 @@ theorem prop_exhaustComp {Ω : Set (EuclideanSpace ℝ (Fin d))} (hΩ : IsOpen �
 
 /-- Propriété utilisée implicitement dans le cours : tout compact `K ⊆ Ω` est contenu dans l'un
 des `K_n` d'une suite exhaustive. -/
-theorem IsSuiteExhaustive.exists_subset {X : Type*} [TopologicalSpace X] {Ω : Set X}
-    {K : ℕ → Set X} (hK : IsSuiteExhaustive Ω K) {L : Set X} (hL : IsCompact L)
+theorem EstSuiteExhaustive.exists_subset {X : Type*} [TopologicalSpace X] {Ω : Set X}
+    {K : ℕ → Set X} (hK : EstSuiteExhaustive Ω K) {L : Set X} (hL : IsCompact L)
     (hLΩ : L ⊆ Ω) : ∃ n, L ⊆ K n := by
   have hmono : Monotone K :=
     monotone_nat_of_le_succ fun n => (hK.2.2 n).trans interior_subset
@@ -92,7 +92,7 @@ l'ensemble `L^p_loc(Ω)` ne dépend pas de la suite exhaustive choisie.
 Remarque : on énonce seulement la condition d'appartenance ; l'espace quotient `L^p_loc(Ω)` et
 sa topologie n'existent pas dans Mathlib. L'énoncé vaut pour tout `p ∈ [0, ∞]`. -/
 theorem def_lploc {Ω : Set (EuclideanSpace ℝ (Fin d))} {K : ℕ → Set (EuclideanSpace ℝ (Fin d))}
-    (hK : IsSuiteExhaustive Ω K) (p : ℝ≥0∞) (f : EuclideanSpace ℝ (Fin d) → F) :
+    (hK : EstSuiteExhaustive Ω K) (p : ℝ≥0∞) (f : EuclideanSpace ℝ (Fin d) → F) :
     (∀ n, MemLp f p (volume.restrict (K n))) ↔
       ∀ L, IsCompact L → L ⊆ Ω → MemLp f p (volume.restrict L) := by
   constructor
@@ -105,7 +105,7 @@ theorem def_lploc {Ω : Set (EuclideanSpace ℝ (Fin d))} {K : ℕ → Set (Eucl
 /-- **Déf. `def:lploc`, cas `p = 1`.** Pour `p = 1`, `L^1_loc(Ω)` est la notion Mathlib
 `LocallyIntegrableOn f Ω` (intégrabilité sur chaque `K_n`). -/
 theorem def_lploc_un {Ω : Set (EuclideanSpace ℝ (Fin d))} (hΩ : IsOpen Ω)
-    {K : ℕ → Set (EuclideanSpace ℝ (Fin d))} (hK : IsSuiteExhaustive Ω K)
+    {K : ℕ → Set (EuclideanSpace ℝ (Fin d))} (hK : EstSuiteExhaustive Ω K)
     (f : EuclideanSpace ℝ (Fin d) → F) :
     (∀ n, MemLp f 1 (volume.restrict (K n))) ↔ LocallyIntegrableOn f Ω := by
   rw [def_lploc hK, locallyIntegrableOn_iff hΩ.isLocallyClosed]
@@ -238,7 +238,7 @@ Remarque : seule la finitude des semi-normes est formalisée ; Mathlib ne possè
 `C^k(Ω)` muni de cette topologie (dérivées partielles indexées par des mots, cf.
 `derivPartielle`). -/
 theorem def_cont_nonbornee {Ω : Set (EuclideanSpace ℝ (Fin d))} (hΩ : IsOpen Ω)
-    {K : ℕ → Set (EuclideanSpace ℝ (Fin d))} (hK : IsSuiteExhaustive Ω K) {k : ℕ∞}
+    {K : ℕ → Set (EuclideanSpace ℝ (Fin d))} (hK : EstSuiteExhaustive Ω K) {k : ℕ∞}
     {f : EuclideanSpace ℝ (Fin d) → F} (hf : ContDiffOn ℝ k f Ω) (n j : ℕ) (hj : (j : ℕ∞) ≤ k)
     (w : Fin j → Fin d) : ∃ C, ∀ x ∈ K n, ‖derivPartielle j w f x‖ ≤ C := by
   have hcont : ContinuousOn (iteratedFDeriv ℝ j f) Ω :=

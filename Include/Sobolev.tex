@@ -327,6 +327,7 @@ La convolution permet, outre les propriétés de densité, d'établir un résult
 
 \begin{theorem}[Fréchet-Kolmogorov]
 \label{th:FrechetKolmogorov}
+\leancheck{th:FrechetKolmogorov}%
 	Soit $p \in [1,\infty[$ et $\cF$ une partie bornée de $L^p(\Omega)$ t.q.\ %satisfaisant aux hypothèses suivantes :
 	\begin{enumerate}[(i)]
 		\item (Régularité sous translation) Pour tout $K \csubset \Omega$, il existe un module de continuité $\omega_K$ t.q.\
@@ -706,6 +707,7 @@ Cet espace a l'avantage de contenir une fonction radiale puissance :
 \begin{equation}
 \label{eq:powLpw}
 	\frac 1 {|x|^\alpha} \in L^{d/\alpha,\, w} (\bR^d),
+\leancheck{eq:powLpw}%
 \end{equation}
 pour tout $0< \alpha \leq d$. Par contraste, ces fonctions n'appartiennent à aucun espace $L^p (\bR^d)$.
 
@@ -731,6 +733,7 @@ La sphère unité de $\bR^d$ est notée $\bS_{d-1} := \{x \in \bR^d \mid \|x\|=1
 
 \begin{proposition}
 \label{prop:convolPow} 
+\leancheck{prop:convolPow}%
 Pour tous $f \in C^1_c(\bR^d)$ et $x \in \bR^d$ on a 
 \begin{equation*}
 	f(x) = \frac 1 {|\bS_{d-1}|} \int_{\bR^d} \big\<\nabla f(x-y), \frac y {\|y\|^d}\big\> \diff y.
@@ -759,6 +762,7 @@ $u_\lambda(x) := u(\lambda x)$ pour tout $\lambda\in ]0,\infty[$. Alors
 \label{eq:homog_lp}
 	\|u_\lambda\|_{p} &= \lambda^{-d/p} \|u\|_p, &
 	\|\partial_\alpha u_\lambda\|_p &= \lambda^{s-d/p}\|\partial_\alpha u\|_p,
+\leancheck{eq:homog_lp}%
 \end{align}
 	par changement de variable dans l'intégrale et comme $\partial_\alpha u_\lambda (x) = \lambda^s \partial_\alpha u(\lambda x)$. 
 	En insérant $u_\lambda$ dans l'estimation \eqref{eq:inj_ss_critique} ci-dessous, et en considérant les limites $\lambda\to 0^+$ et $\lambda\to \infty$, on voit que la relation imposée entre $s$, $d$, $p$ et $p^*$ est la seule envisageable.
@@ -809,6 +813,7 @@ Comme annoncé, nous prouvons l'inégalité de Young usuelle, dont la variante f
 
 \begin{theorem}[Inégalité de Young]
 \label{th:Young}
+\leancheck{th:Young}%
 	Soient $p,q,r \in [1,\infty]$ tels que $2 = \frac 1 p + \frac 1 q +\frac 1 r$. 
 	Alors 
 	\begin{align*}
@@ -859,6 +864,7 @@ Dans le résultat suivant, la notation $\delta_0$ désigne la masse de Dirac à 
 
 \begin{corollary}[Noyau de Green]
 \label{corol:noyauGreen}
+\leancheck{corol:noyauGreen}%
 La fonction $G : \bR^d \to \bR$ définie par
 \begin{equation*}
 	G(x) := c(d)
@@ -1078,6 +1084,7 @@ Soit $\omega \csubset \Omega$ compact tel que $\omega_h := \omega+B'(0,|h|) \sub
 
 \begin{proposition}[Inégalité d'interpolation $L^p$]
 \label{prop:interpLp}
+\leancheck{prop:interpLp}%
 	Soit $(X,\mu)$ un espace mesuré, et $f: X \to \bR$ mesurable, et $p_0,p_1\in [1,\infty]$ des exposants. Alors pour tout $\theta \in ]0,1[$ on a
 	\begin{align*}
 		\|f\|_{p_\theta} &\leq \|f\|_{p_0}^{1-\theta} \|f\|_{p_1}^\theta, &

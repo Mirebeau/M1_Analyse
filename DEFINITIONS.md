@@ -18,7 +18,7 @@ Mathlib utilisés). Voir `scripts/lean_pages/README.md`.
 ## Couverture
 
 
-**Bilan : 211 énoncés du cours formalisés (435 déclarations Lean), dans 33 fichiers.**
+**Bilan : 217 énoncés du cours formalisés (465 déclarations Lean), dans 37 fichiers.**
 
 
 ### §1.1.1 Ouverts et fermés — `M1Analyse/TopologieGenerale/OuvertsFermes.lean`
@@ -63,7 +63,7 @@ Mathlib utilisés). Voir `scripts/lean_pages/README.md`.
 
 ### §2.1 Critère de Cauchy — `M1Analyse/Completude/Cauchy.lean`
 
-7 énoncés du cours, 11 déclarations Lean : `def:suiteCauchy`, `eqdef:suiteCauchyMin`, `def:complet`, `eqdef:evtlc_dist`, `lem:serie_Banach`, `prop:fermeComplet`, `prop:LEFcomplet`
+6 énoncés du cours, 11 déclarations Lean : `def:suiteCauchy`, `eqdef:suiteCauchyMin`, `def:complet`, `lem:serie_Banach`, `prop:fermeComplet`, `prop:LEFcomplet`
 
 ### §2.2 Espaces fonctionnels complets — `M1Analyse/Completude/FonctionnelsComplets.lean`
 
@@ -103,15 +103,15 @@ Mathlib utilisés). Voir `scripts/lean_pages/README.md`.
 
 ### §3.5 Point fixe de Brouwer — `M1Analyse/Compacite/Brouwer.lean`
 
-2 énoncés du cours, 3 déclarations Lean : `th:chgVarIntegr`, `th:Brouwer`
+1 énoncés du cours, 3 déclarations Lean : `th:chgVarIntegr`
 
 ### §3.6 Point fixe de Schauder — `M1Analyse/Compacite/Schauder.lean`
 
-1 énoncés du cours, 3 déclarations Lean : `th:Schauder`
+0 énoncés du cours, 3 déclarations Lean : 
 
 ### §3.7 Théorème de Stone-Weierstrass — `M1Analyse/Compacite/StoneWeierstrass.lean`
 
-7 énoncés du cours, 9 déclarations Lean : `lem:StoneUnite`, `th:StoneWeierstrass`, `lem:StoneSqrt`, `corol:StoneMinMax`, `lem:StoneDirac`, `corol:StoneComplexe`, `rem:polDens`
+7 énoncés du cours, 9 déclarations Lean : `th:StoneWeierstrass`, `lem:StoneUnite`, `lem:StoneSqrt`, `corol:StoneMinMax`, `lem:StoneDirac`, `corol:StoneComplexe`, `rem:polDens`
 
 ### §3.8 Opérateurs linéaires compacts — `M1Analyse/Compacite/OperateursCompacts.lean`
 
@@ -140,6 +140,22 @@ Mathlib utilisés). Voir `scripts/lean_pages/README.md`.
 ### §5.2 Convolution de distributions et espaces de Sobolev — `M1Analyse/Sobolev/ConvolutionSobolev.lean`
 
 1 énoncés du cours, 3 déclarations Lean : `prop:distribL1Loc`
+
+### §5.1 Théorème de Fréchet-Kolmogorov — `M1Analyse/Sobolev/FrechetKolmogorov.lean`
+
+1 énoncés du cours, 8 déclarations Lean : `th:FrechetKolmogorov`
+
+### §5.3 Injections de Sobolev - cas sous-critique — `M1Analyse/Sobolev/InjSousCritique.lean`
+
+5 énoncés du cours, 12 déclarations Lean : `subsec:injSousCrit`, `eq:powLpw`, `eq:homog_lp`, `rem:homogSobolev`, `th:Young`
+
+### §5.3 Injections de Sobolev, cas sous-critique : noyau de Green — `M1Analyse/Sobolev/NoyauGreen.lean`
+
+2 énoncés du cours, 9 déclarations Lean : `prop:convolPow`, `corol:noyauGreen`
+
+### §5.5 Injection compacte de Sobolev - théorème de Rellich — `M1Analyse/Sobolev/Rellich.lean`
+
+1 énoncés du cours, 1 déclarations Lean : `prop:interpLp`
 
 ### §A Fonctions bosse `C^∞` — `M1Analyse/Bosse/Bosse.lean`
 
@@ -188,11 +204,11 @@ Mathlib utilisés). Voir `scripts/lean_pages/README.md`.
 - def:complet (Fréchet) : via evtlcDist ; hypothèse de séparation inutile.
 - Non formalisés (absents de Mathlib) : C^k_b Banach, C^k(Ω) Fréchet, C^∞_b et 𝒟_K Fréchet, Schwartz Fréchet (pas d'instance CompleteSpace pour SchwartzMap), L^p_loc.
 ### Espaces métriques (§1.2)
-- DÉCISION : module de continuité `IsModuleCont ω := Tendsto ω (𝓝 0) (𝓝 0)` avec ω : ℝ≥0 → ℝ≥0∞ ; la limite inclut s = 0 (convention française), ce qui impose ω(0) = 0 (prouvé équivalent à ω(0) = 0 ∧ limite en 0⁺). Alternative : limite épointée.
-- Nouvelles distances (rem:distInfinie, rem:dist_of_mod_cont, prop:distCvSimple, def:dist_unif) énoncées comme « IsDistance d ∧ les boules de d forment une base de voisinages de la topologie existante ».
+- DÉCISION : module de continuité `EstModuleCont ω := Tendsto ω (𝓝 0) (𝓝 0)` avec ω : ℝ≥0 → ℝ≥0∞ ; la limite inclut s = 0 (convention française), ce qui impose ω(0) = 0 (prouvé équivalent à ω(0) = 0 ∧ limite en 0⁺). Alternative : limite épointée.
+- Nouvelles distances (rem:distInfinie, rem:dist_of_mod_cont, prop:distCvSimple, def:dist_unif) énoncées comme « EstDistance d ∧ les boules de d forment une base de voisinages de la topologie existante ».
 - def:dist_unif seulement pour Y^I (Mathlib n'a pas la convergence uniforme sur un produit dépendant).
 - Contractante : ∃ K < 1, LipschitzWith K f (ContractingWith de Mathlib ne couvre que X → X).
-- Helpers : IsDistance, metricSpaceOfIsDistance.
+- Helpers : EstDistance, metricSpaceOfIsDistance.
 - Non formalisé : lem:regModuleCont (construction longue, absente de Mathlib).
 ### Espaces fonctionnels, topologie faible (fin du §1.4)
 - Les deux sous-sous-sections n'ont pas de label : modules rattachés à `subsec:evtlc` (suggestion : ajouter des \label).
@@ -251,7 +267,15 @@ Mathlib utilisés). Voir `scripts/lean_pages/README.md`.
 - prop:Jensen : seulement pour g réelle convexe, avec Integrable (g∘f) (l'intégrale de Bochner vaut 0 hors intégrabilité) ; le cas g à valeurs dans ]−∞,∞] n'est pas couvert.
 - Hypothèses inutiles retirées : 1 ≤ p (prop:densC0Lp, corol:lpInclusLq), « A mesurable » (lem:convolTranslat).
 - Définitions propres au cours : noyauEps (ρ_ε), moduleTransl (ω_p).
-- ARRÊT à def:Sobolev (W^{s,p}(Ω) absent de Mathlib, qui n'a que H^{s,p}(ℝ^d) via Fourier). Non formalisés : lem:intDerivIter, prop:testFunSeparab, corol:convolTestFun, th:FrechetKolmogorov, ex:operCompactL2, corol:distribLp, et tout à partir de prop:deriv_distrib (injections de Sobolev, Rellich).
+- ARRÊT à def:Sobolev (W^{s,p}(Ω) absent de Mathlib, qui n'a que H^{s,p}(ℝ^d) via Fourier). Non formalisés : lem:intDerivIter, prop:testFunSeparab, corol:convolTestFun (topologie limite inductive de 𝓓(Ω)), ex:operCompactL2, corol:distribLp (dual de L^p), et tout ce qui fait intervenir W^{s,p} (injections de Sobolev, Rellich), ainsi que th:YoungFaible (admis).
+### Sobolev (24 octobre : résultats indépendants des espaces de Sobolev)
+- th:FrechetKolmogorov : 𝓕 ⊆ Lp ℝ p (volume.restrict Ω), conclusion TotallyBounded (et adhérence compacte). La condition |h| ≤ d(K, ℝ^d∖Ω) est écrite K + B'(0,|h|) ⊆ Ω (pour K compact : |h| < d(K, ℝ^d∖Ω), hypothèse très légèrement plus faible ; la formulation littérale dégénère pour Ω = ℝ^d car infDist x ∅ = 0). ω_K : EstModuleCont (convention à trancher). Preuve sans fonction plateau lisse (indicatrice de K₀ + B'(0,η)).
+- th:Young : trilinéaire (fonctions positives, et réelles L^p) et convolution ‖f⋆g‖_{r'} ≤ ‖f‖_p‖g‖_q ; preuve dans l'ordre inverse du cours (convolution d'abord, Hölder à trois facteurs + Fubini). Convolution de Mathlib (intégrale p.p.), et non prolongement continu depuis C⁰_c.
+- Nouvelle définition normeFaible (‖·‖_{p,w}, formule littérale ; L^{p,w} faible absent de Mathlib) ; ‖f‖_{p,w} ≤ ‖f‖_p ; eq:powLpw.
+- eq:homog_lp : première identité seulement, pour toute fonction u (pas seulement u ∈ 𝒟).
+- prop:interpLp : hypothèse p₀, p₁ ≥ 1 inutile, retirée.
+- prop:convolPow, corol:noyauGreen : hypothèse d ≥ 1 explicite ; |𝕊_{d-1}| = mesure de Mathlib volume.toSphere (= d·|B(0,1)|, pont avec la définition du cours toSphere_eq_cone_Ioc). −ΔG = δ₀ sous deux formes (∫ G(−Δφ) = φ(0), et distributions de Mathlib) ; preuve par régularisation G_ε(x) = c(d)k(|x|²+ε²) au lieu de Stokes. φ = −Δ(G⋆φ) avec la convolution de fonctions (G ∈ L¹_loc), pas celle des distributions.
+- Nouvelles définitions : constGreen (c(d)), noyauGreen (G, valeur en 0 sans importance).
 
 ## Erreurs ou imprécisions du cours relevées pendant la formalisation
 
@@ -271,4 +295,4 @@ Chacune fait l'objet d'un \claudereport dans le texte.
 
 ## Non formalisé (absent de Mathlib, ou trop long)
 
-Voir les lignes « Non formalisé(s) » ci-dessus. En résumé : théorèmes de Brouwer et de Schauder, Cauchy–Peano, solutions maximales (Cauchy–Lipschitz autonome), dual de L^p, Milman–Pettis et Clarkson, Fréchet–Kolmogorov, espaces de Sobolev W^{s,p}(Ω) et tout le chapitre des injections de Sobolev, espaces C^k_b / C^∞_b / C^k(Ω) comme espaces topologiques, lem:regModuleCont, divergence des séries de Fourier.
+Voir les lignes « Non formalisé(s) » ci-dessus. En résumé : théorèmes de Brouwer et de Schauder, Cauchy–Peano, solutions maximales (Cauchy–Lipschitz autonome), dual de L^p, Milman–Pettis et Clarkson, espaces de Sobolev W^{s,p}(Ω) et les injections de Sobolev (sauf Young, interpolation et noyau de Green), espaces C^k_b / C^∞_b / C^k(Ω) comme espaces topologiques, lem:regModuleCont, divergence des séries de Fourier.

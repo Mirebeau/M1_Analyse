@@ -96,13 +96,13 @@ def Zariski (d : ℕ) : Type := Fin d → ℂ
 /-- Fermé de Zariski de `ℂ^d` (`ex:T1nonT2`) : ensemble de la forme
 `{x ∈ ℂ^d | P₁(x) = ⋯ = P_I(x) = 0}`, où `I ≥ 0` est un entier et
 `P₁, …, P_I ∈ ℂ[X₁, …, X_d]`. -/
-def IsZariskiClosed (d : ℕ) (F : Set (Zariski d)) : Prop :=
+def EstFermeZariski (d : ℕ) (F : Set (Zariski d)) : Prop :=
   ∃ (I : ℕ) (P : Fin I → MvPolynomial (Fin d) ℂ), F = {x | ∀ i, eval x (P i) = 0}
 
 /-- L'ensemble des zéros communs d'une famille quelconque de polynômes est un fermé de Zariski
 (théorème de la base de Hilbert : l'idéal engendré est de type fini). -/
-theorem isZariskiClosed_zeroLocus (d : ℕ) (S : Set (MvPolynomial (Fin d) ℂ)) :
-    IsZariskiClosed d {x | ∀ p ∈ S, eval x p = 0} := by
+theorem estFermeZariski_zeroLocus (d : ℕ) (S : Set (MvPolynomial (Fin d) ℂ)) :
+    EstFermeZariski d {x | ∀ p ∈ S, eval x p = 0} := by
   obtain ⟨t, ht⟩ := (IsNoetherian.noetherian (Ideal.span S) : (Ideal.span S).FG)
   refine ⟨t.toList.length, fun i => t.toList.get i, ?_⟩
   ext x
@@ -121,17 +121,17 @@ theorem isZariskiClosed_zeroLocus (d : ℕ) (S : Set (MvPolynomial (Fin d) ℂ))
 /-- Les fermés de Zariski satisfont les axiomes des fermés (`rem:fermes`) : `Zariski d` est
 muni de la topologie correspondante (preuve du cours, par la base de Hilbert). -/
 instance (d : ℕ) : TopologicalSpace (Zariski d) :=
-  TopologicalSpace.ofClosed {F | IsZariskiClosed d F}
+  TopologicalSpace.ofClosed {F | EstFermeZariski d F}
     -- `∅` : `I = 1`, `P₁ = 1`.
     ⟨1, fun _ => 1, by
       ext x
       exact ⟨fun h => absurd h (notMem_empty x), fun h => by simpa using h 0⟩⟩
     -- intersection quelconque : base de Hilbert.
     (fun A hA => by
-      have := isZariskiClosed_zeroLocus d
+      have := estFermeZariski_zeroLocus d
         {p | ∃ F ∈ A, ∃ (I : ℕ) (P : Fin I → MvPolynomial (Fin d) ℂ) (i : Fin I),
           F = {x | ∀ i, eval x (P i) = 0} ∧ p = P i}
-      change IsZariskiClosed d (⋂₀ A)
+      change EstFermeZariski d (⋂₀ A)
       convert this using 2
       ext x
       simp only [mem_sInter, mem_ofPred_eq]
@@ -167,9 +167,9 @@ instance (d : ℕ) : TopologicalSpace (Zariski d) :=
 /-- **Ex. `ex:T1nonT2` (Topologie de Zariski), fermés.** Les fermés de `Zariski d` sont
 exactement les fermés de Zariski `{P₁ = ⋯ = P_I = 0}`. -/
 theorem ex_T1nonT2_zariski_isClosed (d : ℕ) (F : Set (Zariski d)) :
-    IsClosed F ↔ IsZariskiClosed d F := by
+    IsClosed F ↔ EstFermeZariski d F := by
   rw [← isOpen_compl_iff]
-  change IsZariskiClosed d Fᶜᶜ ↔ _
+  change EstFermeZariski d Fᶜᶜ ↔ _
   rw [compl_compl]
 
 /-- **Ex. `ex:T1nonT2` (Topologie de Zariski), T1 et non T2.** `ℂ^d` muni de la topologie de

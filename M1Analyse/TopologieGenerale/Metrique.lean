@@ -24,9 +24,9 @@ lipschitziennes `LipschitzWith`, équicontinuité `EquicontinuousAt` / `UniformE
 topologie de la convergence uniforme `UniformFun` (notée `I →ᵤ Y`).
 
 Notions propres au cours, absentes de Mathlib, introduites ici par une `def` :
-* `IsDistance d` : la fonction `d : X → X → ℝ` satisfait les axiomes de distance de
+* `EstDistance d` : la fonction `d : X → X → ℝ` satisfait les axiomes de distance de
   `def:distance` (sert à énoncer « ... est une distance » sans introduire d'instance) ;
-* `IsModuleCont ω`, `IsSousAdditif ω` : module de continuité (`def:moduleCont`) ;
+* `EstModuleCont ω`, `EstSousAdditif ω` : module de continuité (`def:moduleCont`) ;
 * `distCvSimple` : la distance de `prop:distCvSimple` sur un produit dénombrable.
 
 Choix de formalisation pour les modules de continuité : `ω : ℝ≥0 → ℝ≥0∞` (le cours :
@@ -49,20 +49,20 @@ variable {X Y : Type*}
 /-- Les axiomes de distance du cours (`def:distance`) pour une fonction `d : X → X → ℝ` :
 séparation (`d ≥ 0`, avec égalité ssi `x = y`), symétrie, inégalité triangulaire.
 Prédicat auxiliaire, utilisé pour énoncer « `d` est une distance » sans instance. -/
-def IsDistance (d : X → X → ℝ) : Prop :=
+def EstDistance (d : X → X → ℝ) : Prop :=
   (∀ x y, 0 ≤ d x y ∧ (d x y = 0 ↔ x = y)) ∧ (∀ x y, d x y = d y x) ∧
     ∀ x y z, d x z ≤ d x y + d y z
 
 /-- **Déf. `def:distance` (Espace métrique), sens direct.** La distance d'un espace métrique
 Mathlib `MetricSpace X` satisfait les axiomes du cours (séparation, symétrie, inégalité
 triangulaire). -/
-theorem def_distance [MetricSpace X] : IsDistance (dist : X → X → ℝ) :=
+theorem def_distance [MetricSpace X] : EstDistance (dist : X → X → ℝ) :=
   ⟨fun _ _ => ⟨dist_nonneg, dist_eq_zero⟩, dist_comm, dist_triangle⟩
 
 /-- Structure d'espace métrique Mathlib associée à une fonction `d` satisfaisant les axiomes
 de distance du cours. -/
 @[instance_reducible]
-noncomputable def metricSpaceOfIsDistance (d : X → X → ℝ) (hd : IsDistance d) :
+noncomputable def metricSpaceOfIsDistance (d : X → X → ℝ) (hd : EstDistance d) :
     MetricSpace X where
   dist := d
   dist_self x := (hd.1 x x).2.2 rfl
@@ -73,7 +73,7 @@ noncomputable def metricSpaceOfIsDistance (d : X → X → ℝ) (hd : IsDistance
 /-- **Déf. `def:distance` (Espace métrique), sens réciproque.** Toute fonction
 `d : X → X → ℝ` satisfaisant les axiomes du cours est la distance d'une structure d'espace
 métrique Mathlib sur `X`. -/
-theorem def_distance_of_axioms (d : X → X → ℝ) (hd : IsDistance d) :
+theorem def_distance_of_axioms (d : X → X → ℝ) (hd : EstDistance d) :
     ∃ m : MetricSpace X, ∀ x y, @dist X m.toDist x y = d x y :=
   ⟨metricSpaceOfIsDistance d hd, fun _ _ => rfl⟩
 
@@ -99,7 +99,7 @@ valeurs dans `[0, ∞]`) d'un `EMetricSpace` Mathlib. Alors `d := min{1, d_∞}`
 (à valeurs réelles) qui définit la même topologie : les boules `{y | d(x,y) < r}`, `r > 0`,
 forment une base de voisinages de `x` pour la topologie de `d_∞`. -/
 theorem rem_distInfinie [EMetricSpace X] :
-    IsDistance (fun x y : X => (min 1 (edist x y)).toReal) ∧
+    EstDistance (fun x y : X => (min 1 (edist x y)).toReal) ∧
       ∀ x : X, (𝓝 x).HasBasis (fun r : ℝ => 0 < r)
         (fun r => {y | (min 1 (edist x y)).toReal < r}) := by
   have hfin : ∀ x y : X, min 1 (edist x y) ≠ ⊤ :=
@@ -178,26 +178,26 @@ theorem prop_baseVoisMetric_sep [MetricSpace X] (u : ℕ → X) (hu : DenseRange
 
 /-- **Déf. `def:moduleCont` (Module de continuité).** Un module de continuité est une
 application `ω : ℝ₊ → [0, ∞]` telle que `ω(s) → 0` lorsque `s → 0`.
-Choix (à valider) : la limite est prise au sens de `𝓝 0` dans `ℝ≥0`, *point `0` inclus*
-(convention française de limite en un point du domaine) ; ceci impose `ω(0) = 0`, et équivaut à
-`ω 0 = 0 ∧ ω(s) → 0` quand `s → 0⁺` (cf. `isModuleCont_iff`). -/
-def IsModuleCont (ω : ℝ≥0 → ℝ≥0∞) : Prop :=
+Convention (validée par l'auteur) : la limite est prise au sens de `𝓝 0` dans `ℝ≥0`,
+*point `0` inclus* (convention française de limite en un point du domaine) ; ceci
+impose `ω(0) = 0`, et équivaut à `ω 0 = 0 ∧ ω(s) → 0` quand `s → 0⁺` (cf. `estModuleCont_iff`). -/
+def EstModuleCont (ω : ℝ≥0 → ℝ≥0∞) : Prop :=
   Tendsto ω (𝓝 0) (𝓝 0)
 
 /-- **Déf. `def:moduleCont` (Sous-additivité).** Un module de continuité `ω` est sous-additif si
 `ω(s + t) ≤ ω(s) + ω(t)` pour tous `s, t ≥ 0`. -/
-def IsSousAdditif (ω : ℝ≥0 → ℝ≥0∞) : Prop :=
+def EstSousAdditif (ω : ℝ≥0 → ℝ≥0∞) : Prop :=
   ∀ s t, ω (s + t) ≤ ω s + ω t
 
 /-- Un module de continuité s'annule en `0`. -/
-theorem IsModuleCont.map_zero {ω : ℝ≥0 → ℝ≥0∞} (h : IsModuleCont ω) : ω 0 = 0 :=
+theorem EstModuleCont.map_zero {ω : ℝ≥0 → ℝ≥0∞} (h : EstModuleCont ω) : ω 0 = 0 :=
   tendsto_nhds_unique (tendsto_pure_nhds ω 0) (h.mono_left (pure_le_nhds 0))
 
-/-- Explicitation du choix fait dans `IsModuleCont` (`def:moduleCont`) : la condition
+/-- Explicitation du choix fait dans `EstModuleCont` (`def:moduleCont`) : la condition
 `ω(s) → 0` quand `s → 0` (point `0` inclus) équivaut à `ω(0) = 0` et `ω(s) → 0` quand
 `s → 0, s > 0`. -/
-theorem isModuleCont_iff (ω : ℝ≥0 → ℝ≥0∞) :
-    IsModuleCont ω ↔ ω 0 = 0 ∧ Tendsto ω (𝓝[>] 0) (𝓝 0) := by
+theorem estModuleCont_iff (ω : ℝ≥0 → ℝ≥0∞) :
+    EstModuleCont ω ↔ ω 0 = 0 ∧ Tendsto ω (𝓝[>] 0) (𝓝 0) := by
   constructor
   · intro h
     exact ⟨tendsto_nhds_unique (tendsto_pure_nhds ω 0) (h.mono_left (pure_le_nhds 0)),
@@ -207,11 +207,11 @@ theorem isModuleCont_iff (ω : ℝ≥0 → ℝ≥0∞) :
       have hu : (univ : Set ℝ≥0) = insert 0 (Ioi 0) := by
         ext t; simp
       rw [← nhdsWithin_univ, hu, nhdsWithin_insert, sup_comm]
-    rw [IsModuleCont, this, tendsto_sup]
+    rw [EstModuleCont, this, tendsto_sup]
     exact ⟨h, by simpa [h0] using tendsto_pure_nhds ω 0⟩
 
 /-- Sous-additivité itérée : `ω(n s) ≤ n ω(s)`. -/
-theorem IsSousAdditif.le_nsmul {ω : ℝ≥0 → ℝ≥0∞} (h : IsSousAdditif ω) (h0 : ω 0 = 0)
+theorem EstSousAdditif.le_nsmul {ω : ℝ≥0 → ℝ≥0∞} (h : EstSousAdditif ω) (h0 : ω 0 = 0)
     (n : ℕ) (s : ℝ≥0) : ω (n * s) ≤ n * ω s := by
   induction n with
   | zero => simp [h0]
@@ -223,8 +223,8 @@ theorem IsSousAdditif.le_nsmul {ω : ℝ≥0 → ℝ≥0∞} (h : IsSousAdditif 
 
 /-- **Rem. `rem:dist_of_mod_cont`, premier point.** Un module de continuité sous-additif est
 à valeurs finies. -/
-theorem rem_dist_of_mod_cont_fini {ω : ℝ≥0 → ℝ≥0∞} (hω : IsModuleCont ω)
-    (hs : IsSousAdditif ω) (s : ℝ≥0) : ω s ≠ ⊤ := by
+theorem rem_dist_of_mod_cont_fini {ω : ℝ≥0 → ℝ≥0∞} (hω : EstModuleCont ω)
+    (hs : EstSousAdditif ω) (s : ℝ≥0) : ω s ≠ ⊤ := by
   have ht : Tendsto (fun n : ℕ => ω (s / n)) atTop (𝓝 0) :=
     hω.comp (tendsto_const_div_atTop_nhds_zero_nat s)
   obtain ⟨n, hn⟩ := ((ht.eventually (gt_mem_nhds ENNReal.zero_lt_top)).and
@@ -239,9 +239,9 @@ theorem rem_dist_of_mod_cont_fini {ω : ℝ≥0 → ℝ≥0∞} (hω : IsModuleC
 identiquement nul, et si `d` est la distance d'un espace métrique `X`, alors `ω ∘ d` est une
 distance (à valeurs réelles, `ω` étant fini) définissant la même topologie : les boules
 `{y | ω(d(x,y)) < r}`, `r > 0`, forment une base de voisinages de `x`. -/
-theorem rem_dist_of_mod_cont [MetricSpace X] {ω : ℝ≥0 → ℝ≥0∞} (hω : IsModuleCont ω)
-    (hs : IsSousAdditif ω) (hmono : Monotone ω) (hne : ∃ s, ω s ≠ 0) :
-    IsDistance (fun x y : X => (ω (nndist x y)).toReal) ∧
+theorem rem_dist_of_mod_cont [MetricSpace X] {ω : ℝ≥0 → ℝ≥0∞} (hω : EstModuleCont ω)
+    (hs : EstSousAdditif ω) (hmono : Monotone ω) (hne : ∃ s, ω s ≠ 0) :
+    EstDistance (fun x y : X => (ω (nndist x y)).toReal) ∧
       ∀ x : X, (𝓝 x).HasBasis (fun r : ℝ => 0 < r)
         (fun r => {y | (ω (nndist x y)).toReal < r}) := by
   have hfin := rem_dist_of_mod_cont_fini hω hs
@@ -293,7 +293,7 @@ theorem rem_dist_of_mod_cont [MetricSpace X] {ω : ℝ≥0 → ℝ≥0∞} (hω 
 tout `a` équivaut à la condition `∀ ε > 0, ∃ δ > 0, d(a) ≤ δ ⇒ r(a) ≤ ε`. Le sens réciproque
 utilise `ω(t) := sup {r(a) | d(a) ≤ t}`, comme dans la preuve de `lem:contDistance`. -/
 theorem exists_moduleCont_iff {α : Type*} (r : α → ℝ) (d : α → ℝ≥0) :
-    (∃ ω, IsModuleCont ω ∧ ∀ a, ENNReal.ofReal (r a) ≤ ω (d a)) ↔
+    (∃ ω, EstModuleCont ω ∧ ∀ a, ENNReal.ofReal (r a) ≤ ω (d a)) ↔
       ∀ ε : ℝ, 0 < ε → ∃ δ : ℝ, 0 < δ ∧ ∀ a, (d a : ℝ) ≤ δ → r a ≤ ε := by
   constructor
   · rintro ⟨ω, hω, hle⟩ ε hε
@@ -308,7 +308,7 @@ theorem exists_moduleCont_iff {α : Type*} (r : α → ℝ) (d : α → ℝ≥0)
   · intro h
     refine ⟨fun t => ⨆ a, ⨆ (_ : d a ≤ t), ENNReal.ofReal (r a), ?_,
       fun a => le_iSup₂_of_le a le_rfl le_rfl⟩
-    rw [IsModuleCont, ENNReal.tendsto_nhds_zero]
+    rw [EstModuleCont, ENNReal.tendsto_nhds_zero]
     intro ε hε
     obtain ⟨e, he0, heε⟩ := ENNReal.lt_iff_exists_nnreal_btwn.mp hε
     obtain ⟨δ, hδ, hδ'⟩ := h e (by exact_mod_cast he0)
@@ -343,7 +343,7 @@ theorem lem_contDistance [MetricSpace X] [MetricSpace Y] (f : X → Y) (x : X) :
       [ ContinuousAt f x,
         ∀ ε > 0, ∃ δ > 0, ∀ x', dist x x' < δ → dist (f x) (f x') < ε,
         ∀ ε > 0, ∃ δ > 0, ∀ x', dist x x' ≤ δ → dist (f x) (f x') ≤ ε,
-        ∃ ω, IsModuleCont ω ∧ ∀ x', edist (f x) (f x') ≤ ω (nndist x x'),
+        ∃ ω, EstModuleCont ω ∧ ∀ x', edist (f x) (f x') ≤ ω (nndist x x'),
         ∀ u : ℕ → X, Tendsto u atTop (𝓝 x) → Tendsto (f ∘ u) atTop (𝓝 (f x)) ] := by
   tfae_have 1 ↔ 2 := by
     rw [Metric.continuousAt_iff]
@@ -361,7 +361,7 @@ theorem lem_contDistance [MetricSpace X] [MetricSpace Y] (f : X → Y) (x : X) :
 Mathlib `UniformContinuous`) ssi il existe un module de continuité `ω` tel que
 `d_Y(f x, f x') ≤ ω(d_X(x, x'))` pour tous `x, x'`. -/
 theorem def_unifContinu [MetricSpace X] [MetricSpace Y] (f : X → Y) :
-    UniformContinuous f ↔ ∃ ω, IsModuleCont ω ∧ ∀ x x', edist (f x) (f x') ≤ ω (nndist x x') := by
+    UniformContinuous f ↔ ∃ ω, EstModuleCont ω ∧ ∀ x x', edist (f x) (f x') ≤ ω (nndist x x') := by
   have h1 := epsDelta_lt_iff_le (fun p : X × X => dist (f p.1) (f p.2)) (fun p => dist p.1 p.2)
   have h2 := exists_moduleCont_iff (fun p : X × X => dist (f p.1) (f p.2))
     (fun p => nndist p.1 p.2)
@@ -472,7 +472,7 @@ theorem distCvSimple_max (x y : ∀ n, Z n) :
   exact absurd this (not_le.mpr (max_lt (hlt m) hN))
 
 /-- `distCvSimple` satisfait les axiomes de distance. -/
-theorem isDistance_distCvSimple : IsDistance (distCvSimple (Z := Z)) := by
+theorem estDistance_distCvSimple : EstDistance (distCvSimple (Z := Z)) := by
   refine ⟨fun x y => ⟨(le_min (by positivity) dist_nonneg).trans (le_distCvSimple x y 0), ?_⟩,
     fun x y => by simp only [distCvSimple, dist_comm], fun x y z => ?_⟩
   · constructor
@@ -493,14 +493,14 @@ dénombrable `(Zₙ, dₙ)` d'espaces métriques, `d(x, y) := maxₙ min{2⁻ⁿ
 distance sur `Πₙ Zₙ` qui métrise la topologie produit : ses boules `{y | d(x,y) < r}`, `r > 0`,
 forment une base de voisinages de `x` pour la topologie produit (Mathlib `Pi.topologicalSpace`). -/
 theorem prop_distCvSimple :
-    IsDistance (distCvSimple (Z := Z)) ∧
+    EstDistance (distCvSimple (Z := Z)) ∧
       ∀ x : ∀ n, Z n, (𝓝 x).HasBasis (fun r : ℝ => 0 < r)
         (fun r => {y | distCvSimple x y < r}) := by
-  refine ⟨isDistance_distCvSimple, fun x => ?_⟩
+  refine ⟨estDistance_distCvSimple, fun x => ?_⟩
   have hb := @Metric.nhds_basis_ball _
-    (metricSpaceOfIsDistance _ (isDistance_distCvSimple (Z := Z))).toPseudoMetricSpace x
+    (metricSpaceOfIsDistance _ (estDistance_distCvSimple (Z := Z))).toPseudoMetricSpace x
   have heq : @nhds _ (metricSpaceOfIsDistance _
-      (isDistance_distCvSimple (Z := Z))).toUniformSpace.toTopologicalSpace x = 𝓝 x := by
+      (estDistance_distCvSimple (Z := Z))).toUniformSpace.toTopologicalSpace x = 𝓝 x := by
     apply le_antisymm
     · rw [nhds_pi]
       refine Filter.le_pi.mpr fun n => (hb.tendsto_iff Metric.nhds_basis_ball).mpr
@@ -529,10 +529,10 @@ theorem prop_distCvSimple :
     (fun r hr => ⟨r, hr, fun y hy => ?_⟩)
   · change distCvSimple x y < r at hy
     change distCvSimple y x < r
-    rwa [isDistance_distCvSimple.2.1]
+    rwa [estDistance_distCvSimple.2.1]
   · change distCvSimple y x < r at hy
     change distCvSimple x y < r
-    rwa [isDistance_distCvSimple.2.1]
+    rwa [estDistance_distCvSimple.2.1]
 
 end CvSimple
 
@@ -543,7 +543,7 @@ topologie de la convergence uniforme (Mathlib `I →ᵤ Y`), `min{1, d_∞}` ave
 distincts ; Mathlib ne définit la topologie de la convergence uniforme que pour `Y^I`
 (cas utilisé dans `rem:equicont`), d'où la restriction à ce cas. -/
 theorem def_dist_unif {I : Type*} [MetricSpace Y] :
-    IsDistance (fun f g : I →ᵤ Y =>
+    EstDistance (fun f g : I →ᵤ Y =>
         (min 1 (⨆ i, edist (UniformFun.toFun f i) (UniformFun.toFun g i))).toReal) ∧
       ∀ f : I →ᵤ Y, (𝓝 f).HasBasis (fun r : ℝ => 0 < r)
         (fun r => {g | (min 1 (⨆ i, edist (UniformFun.toFun f i)
@@ -554,7 +554,7 @@ theorem def_dist_unif {I : Type*} [MetricSpace Y] :
 équicontinue en `x` au sens du cours (module de continuité `ω_x` commun :
 `d(fᵢ x, fᵢ x') ≤ ω_x(d(x, x'))`) ssi elle l'est au sens Mathlib `EquicontinuousAt`. -/
 theorem rem_equicont_at [MetricSpace X] [MetricSpace Y] {I : Type*} (f : I → X → Y) (x : X) :
-    (∃ ω, IsModuleCont ω ∧ ∀ x', ∀ i, edist (f i x) (f i x') ≤ ω (nndist x x')) ↔
+    (∃ ω, EstModuleCont ω ∧ ∀ x', ∀ i, edist (f i x) (f i x') ≤ ω (nndist x x')) ↔
       EquicontinuousAt f x := by
   have h1 := epsDelta_lt_iff_le (fun p : X × I => dist (f p.2 x) (f p.2 p.1))
     (fun p => dist x p.1)
@@ -583,7 +583,7 @@ theorem rem_equicont_at_unif [MetricSpace X] [MetricSpace Y] {I : Type*} (f : I 
 équicontinue au sens du cours (module de continuité `ω` commun) ssi elle l'est au sens Mathlib
 `UniformEquicontinuous`. -/
 theorem rem_equicont_unif [MetricSpace X] [MetricSpace Y] {I : Type*} (f : I → X → Y) :
-    (∃ ω, IsModuleCont ω ∧ ∀ x x', ∀ i, edist (f i x) (f i x') ≤ ω (nndist x x')) ↔
+    (∃ ω, EstModuleCont ω ∧ ∀ x x', ∀ i, edist (f i x) (f i x') ≤ ω (nndist x x')) ↔
       UniformEquicontinuous f := by
   have h1 := epsDelta_lt_iff_le (fun p : X × X × I => dist (f p.2.2 p.1) (f p.2.2 p.2.1))
     (fun p => dist p.1 p.2.1)

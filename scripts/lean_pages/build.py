@@ -87,9 +87,11 @@ def read_decls(labels):
             if dm:
                 name = ".".join(ns + [dm.group(2)])
                 # the labels formalized: those of the bold lead `**...**` of the docstring (the
-                # others are mere cross-references); all of them if there is no bold lead
+                # others are mere cross-references). Without a bold lead: all the labels cited by a
+                # definition (course notions), none for a theorem (helper lemma)
                 lead = re.match(r"\*\*(.*?)\*\*", doc, re.S)
-                cited = re.findall(r"`([A-Za-z]+:[A-Za-z0-9_]+)`", lead.group(1) if lead else doc)
+                cited = re.findall(r"`([A-Za-z]+:[A-Za-z0-9_]+)`", lead.group(1) if lead else
+                                   "" if dm.group(1) in ("theorem", "lemma") else doc)
                 decls.append(dict(
                     name=name, short=dm.group(2), kind=dm.group(1), module=mod, file=rel,
                     line=j + 2, doc=doc, code=code,

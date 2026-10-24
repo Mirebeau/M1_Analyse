@@ -181,12 +181,12 @@ private def decale {α : Type*} (K : ℕ → Set α) : ℕ → Set α
   | n + 1 => K n
 
 /-- **Prop. `prop:cinfExhaust` (Exhaustion lisse).** Soit `Ω ⊆ ℝ^d` ouvert et `(K_n)` une suite
-exhaustive de compacts de `Ω` (`prop:exhaustComp`, prédicat `IsSuiteExhaustive`) ; on pose
+exhaustive de compacts de `Ω` (`prop:exhaustComp`, prédicat `EstSuiteExhaustive`) ; on pose
 `K_{-1} = ∅`. Alors il existe des `φ_n ∈ C^∞_c(ℝ^d, [0,1])` telles que
 `supp φ_n ⊆ int(K_{n+1}) \ K_{n-1}` et `∑_n φ_n = 1` sur `Ω`. (Le cas `n = 0`, où
 `K_{-1} = ∅`, est énoncé séparément.) -/
 theorem prop_cinfExhaust {Ω : Set (EuclideanSpace ℝ (Fin d))} (_hΩ : IsOpen Ω)
-    {K : ℕ → Set (EuclideanSpace ℝ (Fin d))} (hK : IsSuiteExhaustive Ω K) :
+    {K : ℕ → Set (EuclideanSpace ℝ (Fin d))} (hK : EstSuiteExhaustive Ω K) :
     ∃ φ : ℕ → EuclideanSpace ℝ (Fin d) → ℝ,
       (∀ n, ContDiff ℝ ∞ (φ n) ∧ HasCompactSupport (φ n) ∧ ∀ x, φ n x ∈ Icc 0 1) ∧
       tsupport (φ 0) ⊆ interior (K 1) ∧

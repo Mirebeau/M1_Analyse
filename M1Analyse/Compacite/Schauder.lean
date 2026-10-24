@@ -27,8 +27,8 @@ namespace M1Analyse
 
 variable {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
 
-/-- Projection de Schauder (preuve du `th:Schauder`) : pour des points `x₀, …, x_I` et `ε > 0`,
-`g_ε(x) := (∑ᵢ φᵢ(x) xᵢ) / (∑ᵢ φᵢ(x))`, où `φᵢ(x) := max {0, ε - ‖x - xᵢ‖}`
+/-- Projection de Schauder (étape de la preuve du théorème de Schauder) : pour des points
+`x₀, …, x_I` et `ε > 0`, `g_ε(x) := (∑ᵢ φᵢ(x) xᵢ) / (∑ᵢ φᵢ(x))`, où `φᵢ(x) := max {0, ε - ‖x - xᵢ‖}`
 (barycentre `Finset.centerMass` des `xᵢ` pour les poids `φᵢ(x)`). -/
 noncomputable def schauderProj {n : ℕ} (ε : ℝ) (xs : Fin n → X) (x : X) : X :=
   Finset.univ.centerMass (fun i => max 0 (ε - ‖x - xs i‖)) xs
