@@ -99,7 +99,10 @@ theorem def_evtlc_evn (F : Type*) [NormedAddCommGroup F] [NormedSpace 𝕜 F] :
   norm_withSeminorms 𝕜 F
 
 /-- **Lemme `lem:evtlc_separe` (Séparation dans les evtlc).** Un evtlc est séparé ssi pour tout
-`x ∈ E`, `(∀ i ∈ I, |x|_i = 0) ⇒ x = 0`. -/
+`x ∈ E`, `(∀ i ∈ I, |x|_i = 0) ⇒ x = 0`.
+Preuve (différente du cours) : via Mathlib (`WithSeminorms.separating_of_T1`,
+`WithSeminorms.T1_of_separating`) : la condition équivaut à T1, qui implique T2 dans un groupe
+topologique, au lieu des voisinages disjoints de rayon `ε/2`. -/
 theorem lem_evtlc_separe (hp : WithSeminorms p) :
     T2Space E ↔ ∀ x : E, (∀ i, p i x = 0) → x = 0 := by
   have := hp.isTopologicalAddGroup
@@ -118,7 +121,10 @@ variable [AddCommGroup F] [Module 𝕜 F] [TopologicalSpace F] {q : SeminormFami
 
 /-- **Lemme `lem:evtlcLinCont` (Continuité linéaire entre evtlc), éq. `eq:cont_lin_evtlc`.**
 Une application linéaire `u : E → F` entre evtlc est continue ssi pour tout `j ∈ J` il existe
-`I_j ⊆ I` fini et une constante `C_j` tels que `|u(x)|_j ≤ C_j max_{i ∈ I_j} |x|_i`. -/
+`I_j ⊆ I` fini et une constante `C_j` tels que `|u(x)|_j ≤ C_j max_{i ∈ I_j} |x|_i`.
+Preuve (différente du cours) : résultats de Mathlib `Seminorm.bound_of_continuous` et
+`WithSeminorms.continuous_of_isBounded`, au lieu de l'argument direct par les voisinages
+`eq:evtlc_vois` et l'homogénéité. -/
 theorem lem_evtlcLinCont (hp : WithSeminorms p) (hq : WithSeminorms q) (u : E →ₗ[𝕜] F) :
     Continuous u ↔ ∀ j, ∃ I : Finset ι, ∃ C : ℝ, ∀ x, q j (u x) ≤ C * (I.sup p) x := by
   constructor
@@ -422,7 +428,10 @@ omit [TopologicalSpace E] in
 /-- **Déf. `def:lineairBorne`, caractérisation métrique.** Si la famille de semi-normes est
 dénombrable et si `d` désigne la distance `eqdef:evtlc_dist`, alors `A` est linéairement bornée
 ssi `∀ ε > 0, ∃ δ > 0, δ A ⊆ B_d(0, ε)`.
-Remarque : cette caractérisation ne fait pas intervenir la topologie, ni la séparation. -/
+Remarque : cette caractérisation ne fait pas intervenir la topologie, ni la séparation.
+Preuve (absente du cours) : si `2⁻ᴺ < ε`, seules les semi-normes `|·|_n`, `n ≤ N`, comptent
+dans `B_d(0, ε)` (`evtlcDist_lt_iff`), et on les borne uniformément sur `A` ;
+réciproquement, on applique l'hypothèse avec `ε = 2⁻ⁿ`. -/
 theorem def_lineairBorne_dist (p : SeminormFamily 𝕜 E ℕ) (A : Set E) :
     (∀ n, BddAbove (p n '' A)) ↔
       ∀ ε > 0, ∃ δ > (0 : ℝ), (δ : 𝕜) • A ⊆ {y | evtlcDist p 0 y < ε} := by

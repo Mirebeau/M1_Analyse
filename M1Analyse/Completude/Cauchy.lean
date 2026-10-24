@@ -162,7 +162,9 @@ end Frechet
 
 /-- **Lemme `lem:serie_Banach` (Séries dans un Banach).** Un evn `E` est complet ssi toute
 série absolument convergente (`∑ ‖x_n‖ < ∞`) y est convergente (la suite des sommes partielles
-`∑_{n < N} x_n` admet une limite). -/
+`∑_{n < N} x_n` admet une limite).
+Preuve (différente du cours) : résultat de Mathlib
+(`NormedAddCommGroup.summable_imp_tendsto_iff_completeSpace`), non redémontré. -/
 theorem lem_serie_Banach {E : Type*} [NormedAddCommGroup E] :
     CompleteSpace E ↔ ∀ x : ℕ → E, Summable (fun n => ‖x n‖) →
       ∃ l, Tendsto (fun N => ∑ n ∈ range N, x n) atTop (𝓝 l) :=
@@ -170,14 +172,17 @@ theorem lem_serie_Banach {E : Type*} [NormedAddCommGroup E] :
 
 /-- **Prop. `prop:fermeComplet`.** Une partie `A` d'un espace métrique complet `X` est complète
 (pour la distance induite, i.e. le sous-espace `↥A` est complet) ssi elle est fermée. On donne
-aussi la version `IsComplete A` de Mathlib. -/
+aussi la version `IsComplete A` de Mathlib.
+Preuve (différente du cours) : lemmes Mathlib `IsComplete.isClosed` et `IsClosed.isComplete`
+(formulés avec les filtres de Cauchy), sans l'argument séquentiel du cours. -/
 theorem prop_fermeComplet {X : Type*} [MetricSpace X] [CompleteSpace X] (A : Set X) :
     (CompleteSpace A ↔ IsClosed A) ∧ (IsComplete A ↔ IsClosed A) :=
   have h : IsComplete A ↔ IsClosed A := ⟨IsComplete.isClosed, IsClosed.isComplete⟩
   ⟨completeSpace_coe_iff_isComplete.trans h, h⟩
 
 /-- **Prop. `prop:LEFcomplet`.** Soient `E` un evn et `F` un Banach. Alors `L(E,F)` est un Banach,
-et en particulier le dual `E*` est un Banach. -/
+et en particulier le dual `E*` est un Banach.
+Preuve (différente du cours) : instances de complétude de Mathlib, non redémontrées. -/
 theorem prop_LEFcomplet {𝕜 E F : Type*} [RCLike 𝕜] [NormedAddCommGroup E] [NormedSpace 𝕜 E]
     [NormedAddCommGroup F] [NormedSpace 𝕜 F] [CompleteSpace F] :
     CompleteSpace (E →L[𝕜] F) ∧ CompleteSpace (StrongDual 𝕜 E) :=

@@ -175,7 +175,10 @@ theorem corol_StoneMinMax (A : NonUnitalSubalgebra ℝ C(X, ℝ))
 
 /-- **Lemme `lem:StoneDirac`.** Sous les hypothèses du `th:StoneWeierstrass`, pour tout
 voisinage ouvert `V` de tout `x ∈ X` et tout `ε > 0`, il existe `f ∈ A` telle que
-`0 ≤ f ≤ 1`, `f(x) > 1 - ε` et `f < ε` sur `X ∖ V`. -/
+`0 ≤ f ≤ 1`, `f(x) > 1 - ε` et `f < ε` sur `X ∖ V`.
+Preuve (différente du cours) : déduit du `th:StoneWeierstrass` (et non étape de sa preuve) :
+on approche à `δ/2` près `δ/2 + (1 - δ) u`, où `u` est une fonction d'Urysohn valant `1` en
+`x` et `0` hors de `V` (`δ = min ε 1`), au lieu du minimum des `f_y` du cours. -/
 theorem lem_StoneDirac (A : NonUnitalSubalgebra ℝ C(X, ℝ))
     (hsep : ∀ x y : X, x ≠ y → ∃ f ∈ A, f x ≠ f y)
     (hnv : ∀ x : X, ∃ f ∈ A, f x ≠ 0) (x : X) (V : Set X) (hV : IsOpen V) (hxV : x ∈ V)
@@ -248,7 +251,10 @@ private def realPart (A : NonUnitalSubalgebra ℂ C(X, ℂ)) : NonUnitalSubalgeb
 /-- **Cor. `corol:StoneComplexe` (Stone-Weierstrass complexe).** Soit `X` un espace topologique
 compact et `A ⊆ C⁰(X, ℂ)` une algèbre qui (i) sépare les points, (ii) ne s'annule pas
 simultanément en un point, (iii) est stable par conjugaison complexe. Alors `Ā = C⁰(X, ℂ)`
-pour la convergence uniforme. -/
+pour la convergence uniforme.
+Preuve (différente du cours) : `1 ∈ Ā` via la `ℝ`-algèbre `A ∩ C⁰(X, ℝ)` (`lem:StoneUnite`),
+puis Stone-Weierstrass de Mathlib pour une `*`-sous-algèbre unitaire, au lieu d'approcher
+séparément parties réelle et imaginaire par le cas réel. -/
 theorem corol_StoneComplexe (A : NonUnitalSubalgebra ℂ C(X, ℂ))
     (hsep : ∀ x y : X, x ≠ y → ∃ f ∈ A, f x ≠ f y)
     (hnv : ∀ x : X, ∃ f ∈ A, f x ≠ 0)

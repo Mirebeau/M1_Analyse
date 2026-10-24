@@ -34,7 +34,8 @@ namespace M1Analyse
 /-! ### Espaces de Banach -/
 
 /-- **Ex. `ex:cont_bornee_Banach`.** Soient `X` un espace topologique et `E` un Banach. Alors
-`C⁰_b(X,E)` (muni de la norme uniforme) est un Banach. -/
+`C⁰_b(X,E)` (muni de la norme uniforme) est un Banach.
+Preuve (différente du cours) : instance de complétude de Mathlib, non redémontrée. -/
 theorem ex_cont_bornee_Banach {𝕜 X E : Type*} [RCLike 𝕜] [TopologicalSpace X]
     [NormedAddCommGroup E] [NormedSpace 𝕜 E] [CompleteSpace E] :
     CompleteSpace (X →ᵇ E) :=
@@ -198,7 +199,9 @@ theorem ex_Holder_Banach_holder {𝕜 : Type*} [RCLike 𝕜] [NormedSpace 𝕜 E
 end Module
 
 /-- **Ex. `ex:LpBanach`.** Soit `(X,μ)` un espace mesuré. Alors `L^p(X,μ)` est un Banach, pour
-tout `p ∈ [1, ∞]`. -/
+tout `p ∈ [1, ∞]`.
+Preuve (différente du cours) : instance de complétude de Mathlib (valable aussi pour
+`p = ∞`), au lieu de l'argument par séries absolument convergentes du cours. -/
 theorem ex_LpBanach {𝕜 X : Type*} [RCLike 𝕜] [MeasurableSpace X] (μ : Measure X)
     (p : ℝ≥0∞) [Fact (1 ≤ p)] :
     CompleteSpace (Lp 𝕜 p μ) :=

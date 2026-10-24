@@ -37,7 +37,9 @@ variable {X : Type*}
 `f : X → X` `K`-lipschitzienne avec `K < 1`. Alors `f` admet un unique point fixe `x_*`, et pour
 tout `x_0 ∈ X` et `n ∈ ℕ`, `d(x_n, x_*) ≤ K^n d(x_0, x_1)/(1 - K)` où `x_n := f^{∘n}(x_0)`.
 Remarque : on suppose `X` non vide (hypothèse implicite dans le cours, nécessaire à
-l'existence du point fixe). -/
+l'existence du point fixe).
+Preuve (différente du cours) : appel à `ContractingWith.fixedPoint` et à l'estimation
+`apriori_dist_iterate_fixedPoint_le` de Mathlib, non redémontrés. -/
 theorem th_fixe_Picard [MetricSpace X] [CompleteSpace X] [Nonempty X] (K : ℝ≥0) (hK : K < 1)
     (f : X → X) (hf : LipschitzWith K f) :
     ∃ xs : X, (f xs = xs ∧ ∀ y, f y = y → y = xs) ∧
@@ -51,7 +53,10 @@ theorem th_fixe_Picard [MetricSpace X] [CompleteSpace X] [Nonempty X] (K : ℝ�
 
 /-- **Lemme `lem:Gronwall` (Grönwall).** Soit `f ∈ C⁰([0,T], ℝ₊)` et `A, B ≥ 0` tels que
 `f(t) ≤ A ∫_0^t f(s) ds + B` pour tout `t ∈ [0,T]`. Alors `f(t) ≤ B exp(A t)` pour tout
-`t ∈ [0,T]`. -/
+`t ∈ [0,T]`.
+Preuve (différente du cours) : on applique à `F(t) := A ∫_0^t f + B` le lemme de Grönwall
+différentiel de Mathlib (`norm_le_gronwallBound_of_norm_deriv_right_le`), au lieu de la
+décroissance de `F(t) e^{-At}`. -/
 theorem lem_Gronwall (T A B : ℝ) (f : ℝ → ℝ) (hf : ContinuousOn f (Icc 0 T))
     (hpos : ∀ t ∈ Icc 0 T, 0 ≤ f t) (hA : 0 ≤ A) (hB : 0 ≤ B)
     (h : ∀ t ∈ Icc 0 T, f t ≤ A * (∫ s in (0)..t, f s) + B) :
@@ -97,7 +102,10 @@ Remarques : `f` est une fonction `ℝ → ℝ^d → ℝ^d` dont seules les valeu
 Une solution `C¹` sur `[0,t₀]` est une fonction `u` dérivable sur `[0,t₀]` (dérivées à droite
 et à gauche aux bords, `HasDerivWithinAt … (Icc 0 t₀)`), de dérivée `t ↦ f(t,u(t))` continue.
 Pour la stabilité, l'hypothèse `u, v ∈ C¹` est remplacée par la seule dérivabilité sur `[0,T]`
-(la continuité de la dérivée n'est pas utilisée). -/
+(la continuité de la dérivée n'est pas utilisée).
+Preuve (différente du cours) : existence par le Picard-Lindelöf de Mathlib
+(`IsPicardLindelof`, point fixe d'une itérée contractante) ; stabilité par
+`dist_le_of_trajectories_ODE_of_mem` de Mathlib, sans le `lem:Gronwall`. -/
 theorem th_Cauchy_Lipschitz {d : ℕ} (Ω : Set (EuclideanSpace ℝ (Fin d))) (hΩ : IsOpen Ω)
     (f : ℝ → EuclideanSpace ℝ (Fin d) → EuclideanSpace ℝ (Fin d))
     (hf : ContinuousOn (uncurry f) (Ici 0 ×ˢ Ω))

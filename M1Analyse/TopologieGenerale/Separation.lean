@@ -74,7 +74,9 @@ theorem rem_T1_nonUnique :
 
 /-- **Ex. `ex:T1nonT2` (Topologie cofinie).** Sur `ℕ` muni de la topologie cofinie
 (`CofiniteTopology ℕ`), les fermés sont les parties finies (et `ℕ` lui-même) ; cet espace est
-T1 mais pas T2. -/
+T1 mais pas T2.
+Preuve (absente du cours) : T1 par Mathlib ; non T2 car la suite `n ↦ n` converge à la fois
+vers `0` et vers `1` (`tendsto_cofiniteTopology_nat`, `rem_uniqueLim`). -/
 theorem ex_T1nonT2_cofinie :
     (∀ F : Set (CofiniteTopology ℕ), IsClosed F ↔ F.Finite ∨ F = univ) ∧
     T1Space (CofiniteTopology ℕ) ∧ ¬ T2Space (CofiniteTopology ℕ) := by
@@ -176,7 +178,10 @@ theorem ex_T1nonT2_zariski_isClosed (d : ℕ) (F : Set (Zariski d)) :
   rw [compl_compl]
 
 /-- **Ex. `ex:T1nonT2` (Topologie de Zariski), T1 et non T2.** `ℂ^d` muni de la topologie de
-Zariski est T1, et n'est pas T2 (`d ≥ 1`). -/
+Zariski est T1, et n'est pas T2 (`d ≥ 1`).
+Preuve (absente du cours) : T1 car `{a} = {X_k - a_k = 0, k < d}` ; non T2 : si `U ∋ 0` et
+`V ∋ 1` sont des ouverts disjoints, un produit `P_i Q_j` d'équations de `Uᶜ` et `Vᶜ`
+s'annule sur `ℂ^d`, donc est nul (`MvPolynomial.funext`), ce qui est absurde. -/
 theorem ex_T1nonT2_zariski (d : ℕ) (hd : 1 ≤ d) :
     T1Space (Zariski d) ∧ ¬ T2Space (Zariski d) := by
   refine ⟨⟨fun a => ?_⟩, fun h => ?_⟩

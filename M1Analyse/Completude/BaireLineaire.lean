@@ -29,7 +29,9 @@ variable {𝕜 : Type*} [RCLike 𝕜]
 
 /-- **Th. `th:BanachSteinhaus` (Banach-Steinhaus).** Soit `E` un Banach, `F` un evn et
 `𝒜 ⊆ L(E,F)` simplement bornée : `∀ x, sup_{L ∈ 𝒜} ‖Lx‖ < ∞`. Alors `𝒜` est uniformément
-bornée : `sup_{L ∈ 𝒜} |||L||| < ∞`. -/
+bornée : `sup_{L ∈ 𝒜} |||L||| < ∞`.
+Preuve (différente du cours) : appel direct au théorème `banach_steinhaus` de Mathlib, sans
+l'argument de Baire sur les fermés `E_k` du cours. -/
 theorem th_BanachSteinhaus [CompleteSpace E] (𝒜 : Set (E →L[𝕜] F))
     (h : ∀ x : E, ∃ C, ∀ L ∈ 𝒜, ‖L x‖ ≤ C) : ∃ C, ∀ L ∈ 𝒜, ‖L‖ ≤ C := by
   obtain ⟨C, hC⟩ := banach_steinhaus (g := fun L : 𝒜 => (L : E →L[𝕜] F))
@@ -58,7 +60,9 @@ theorem corol_BanachSteinhausK [CompleteSpace E] (𝒜 : Set (E →L[𝕜] 𝕜)
 
 /-- **Th. `th:appliOuverte` (Application ouverte).** Soient `E, F` des Banach et `L ∈ L(E,F)`
 surjective. Alors `∃ δ > 0, B_F(0,δ) ⊆ L(B_E(0,1))`, et l'image par `L` de tout ouvert est un
-ouvert. -/
+ouvert.
+Preuve (différente du cours) : l'ouverture de `L` est le théorème de Mathlib
+`ContinuousLinearMap.isOpenMap` ; l'inclusion de boules s'en déduit (ordre inverse du cours). -/
 theorem th_appliOuverte [CompleteSpace E] [CompleteSpace F] (L : E →L[𝕜] F)
     (hL : Surjective L) :
     (∃ δ > 0, ball (0 : F) δ ⊆ L '' ball 0 1) ∧ IsOpenMap L := by
@@ -96,7 +100,9 @@ theorem corol_equivNormes {E' : Type*} [NormedAddCommGroup E'] [NormedSpace 𝕜
   nlinarith [norm_nonneg (e x)]
 
 /-- **Th. `th:grapheFerme` (Graphe fermé).** Soient `E, F` des Banach et `L : E → F` linéaire.
-Alors `L` est continue ssi son graphe `G := {(x, Lx) | x ∈ E}` est fermé dans `E × F`. -/
+Alors `L` est continue ssi son graphe `G := {(x, Lx) | x ∈ E}` est fermé dans `E × F`.
+Preuve (différente du cours) : le sens réciproque est le théorème de Mathlib
+`LinearMap.continuous_of_isClosed_graph`, sans passer par `corol:isomBanach`. -/
 theorem th_grapheFerme [CompleteSpace E] [CompleteSpace F] (L : E →ₗ[𝕜] F) :
     Continuous L ↔ IsClosed (range fun x => (x, L x)) := by
   have hG : range (fun x => (x, L x)) = {p : E × F | p.2 = L p.1} := by
@@ -116,7 +122,9 @@ theorem th_grapheFerme [CompleteSpace E] [CompleteSpace F] (L : E →ₗ[𝕜] F
 /-- **Corollaire (sans label) du `th:grapheFerme` : projection sur un supplémentaire.** Soit `E`
 un Banach et `E = V ⊕ W` une décomposition en sev supplémentaires. La projection `P : E → V`
 parallèlement à `W` (Mathlib : `Submodule.projectionOnto`) est continue ssi `V` et `W` sont
-fermés. -/
+fermés.
+Preuve (différente du cours) : la réciproque utilise `IsTopCompl.continuous_projectionOnto`
+de Mathlib, et non le théorème du graphe fermé. -/
 theorem corol_projectionContinue_iff [CompleteSpace E] (V W : Submodule 𝕜 E)
     (h : IsCompl V W) :
     Continuous (V.projectionOnto W h) ↔ IsClosed (V : Set E) ∧ IsClosed (W : Set E) := by

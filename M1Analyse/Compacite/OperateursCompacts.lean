@@ -107,7 +107,10 @@ theorem def_linSpectre_valeurPropre [CompleteSpace E] (T : E →L[𝕜] E) (μ :
     exact (sub_eq_zero.1 this).symm
 
 /-- **Thm. `th:Fredholm` (Fredholm).** Soit `E` un Banach et `T ∈ L_c(E)` un opérateur compact
-tel que `Ker(Id - T) = {0}`. Alors `Im(Id - T) = E`, et `Id - T` admet un inverse continu. -/
+tel que `Ker(Id - T) = {0}`. Alors `Im(Id - T) = E`, et `Id - T` admet un inverse continu.
+Preuve (différente du cours) : alternative de Fredholm de Mathlib
+(`IsCompactOperator.hasEigenvalue_or_mem_resolventSet`) ; ni fermeture de `Im(Id - T)`, ni
+suite décroissante `(Id - T)^n E` avec le lemme de Riesz, ni isomorphisme de Banach. -/
 theorem th_Fredholm [CompleteSpace E] (T : E →L[𝕜] E) (hT : IsCompactOperator T)
     (hker : LinearMap.ker ((ContinuousLinearMap.id 𝕜 E - T : E →L[𝕜] E) : E →ₗ[𝕜] E) = ⊥) :
     LinearMap.range ((ContinuousLinearMap.id 𝕜 E - T : E →L[𝕜] E) : E →ₗ[𝕜] E) = ⊤ ∧
@@ -381,7 +384,10 @@ private lemma finite_spectrum_ge [CompleteSpace E] (T : E →L[𝕜] E) (hT : Is
 
 /-- **Cor. `corol:FredholmPrecise` (Fredholm précisé), point (iv).** Soit `E` un Banach et
 `T ∈ L_c(E)`. L'ensemble `σ(T) ⊆ B'(0, ‖T‖)` est dénombrable, et `0` est son seul point
-d'accumulation possible. -/
+d'accumulation possible.
+Preuve (ordre différent du cours) : on montre d'abord que `σ(T) ∩ {|λ| ≥ ε}` est fini
+(argument de Riesz sur les vecteurs propres), d'où dénombrabilité et point d'accumulation ;
+la borne `|λ| ≤ ‖T‖` est `spectrum.subset_closedBall_norm` de Mathlib. -/
 theorem corol_FredholmPrecise_iv [CompleteSpace E] (T : E →L[𝕜] E) (hT : IsCompactOperator T) :
     spectrum 𝕜 T ⊆ closedBall 0 ‖T‖ ∧ (spectrum 𝕜 T).Countable ∧
       ∀ μ : 𝕜, AccPt μ (𝓟 (spectrum 𝕜 T)) → μ = 0 := by

@@ -28,7 +28,9 @@ open Set Filter Topology Metric
 namespace M1Analyse
 
 /-- **Prop. `prop:compSsiFermeBorne`.** Une partie de `ℝ^d` est compacte ssi elle est fermée et
-bornée. -/
+bornée.
+Preuve (différente du cours) : théorème de Heine-Borel de Mathlib dans un espace propre
+(`Metric.isCompact_iff_isClosed_bounded`), sans le recouvrement par une grille du cours. -/
 theorem prop_compSsiFermeBorne {d : ℕ} (s : Set (EuclideanSpace ℝ (Fin d))) :
     IsCompact s ↔ IsClosed s ∧ Bornology.IsBounded s :=
   Metric.isCompact_iff_isClosed_bounded
@@ -102,7 +104,10 @@ private theorem majoration_seminorme (N M : E → ℝ) (h₀ : ∀ x, 0 ≤ N x)
 
 /-- **Cor. `corol:normesEquivRd` (Équivalence des normes en dimension finie).** Soit `E` un
 espace vectoriel de dimension finie, muni de deux normes `N₁ = ‖·‖` et `N₂ = ‖·‖'` (au sens
-de `def:norme`). Alors il existe `C, c > 0` tels que `c ‖x‖ ≤ ‖x‖' ≤ C ‖x‖` pour tout `x`. -/
+de `def:norme`). Alors il existe `C, c > 0` tels que `c ‖x‖ ≤ ‖x‖' ≤ C ‖x‖` pour tout `x`.
+Preuve (différente du cours) : par une base, `N₂ ≤ C N₁` car les formes coordonnées sont
+continues pour `N₁` (dimension finie, Mathlib) ; la minoration s'obtient en échangeant les
+rôles, sans la compacité de la sphère ni `corol:bornesAtteintes`. -/
 theorem corol_normesEquivRd (N₁ N₂ : E → ℝ)
     (h₁₀ : ∀ x, 0 ≤ N₁ x) (h₁sep : ∀ x, x ≠ 0 → 0 < N₁ x)
     (h₁hom : ∀ (x : E) (c : 𝕜), N₁ (c • x) = ‖c‖ * N₁ x)

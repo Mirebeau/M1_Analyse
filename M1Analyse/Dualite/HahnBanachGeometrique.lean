@@ -262,7 +262,9 @@ theorem lem_jaugeOuvertCvx_ferme (hC : Convex ℝ C) (h0 : (0 : E) ∈ C) (hF : 
 
 /-- **Th. `th:separOuvertPt` (Séparation d'un ouvert convexe et d'un point).** Soient `E` un evn,
 `C ⊆ E` un ouvert convexe contenant `0` et `x ∈ E \ C`. Il existe `φ ∈ E^*` telle que
-`φ(x) = 1` et `φ < 1` sur `C`. -/
+`φ(x) = 1` et `φ < 1` sur `C`.
+Preuve (différente du cours) : séparation de Mathlib `geometric_hahn_banach_open` (ouvert `C`,
+point `x`) puis normalisation, au lieu de Hahn-Banach analytique avec la jauge `p_C`. -/
 theorem th_separOuvertPt (hC : Convex ℝ C) (hO : IsOpen C) (h0 : (0 : E) ∈ C) {x : E}
     (hx : x ∉ C) : ∃ φ : StrongDual ℝ E, φ x = 1 ∧ ∀ y ∈ C, φ y < 1 := by
   obtain ⟨f, u, hfC, hfx⟩ := geometric_hahn_banach_open hC hO (convex_singleton x)
@@ -276,7 +278,9 @@ theorem th_separOuvertPt (hC : Convex ℝ C) (hO : IsOpen C) (h0 : (0 : E) ∈ C
   exact (hfC y hy).trans_le hfxu
 
 /-- **Cor. `corol:separOuvertPt`, premier point.** Si `C` est un ouvert convexe d'un evn `E` ne
-contenant pas `0`, il existe `φ ∈ E^*` telle que `φ > 0` sur `C`. -/
+contenant pas `0`, il existe `φ ∈ E^*` telle que `φ > 0` sur `C`.
+Preuve (différente du cours) : `geometric_hahn_banach_open` appliqué à `C` et `{0}`, au lieu
+de `th:separOuvertPt` appliqué à `C - x₀` et `-x₀`. -/
 theorem corol_separOuvertPt_zero (hC : Convex ℝ C) (hO : IsOpen C) (h0 : (0 : E) ∉ C) :
     ∃ φ : StrongDual ℝ E, ∀ y ∈ C, 0 < φ y := by
   obtain ⟨f, u, hfC, hf0⟩ := geometric_hahn_banach_open hC hO (convex_singleton 0)
@@ -286,7 +290,9 @@ theorem corol_separOuvertPt_zero (hC : Convex ℝ C) (hO : IsOpen C) (h0 : (0 : 
 
 /-- **Cor. `corol:separOuvertPt`, second point.** Soient `A` un convexe et `B` un ouvert convexe
 d'un evn `E`, non vides et disjoints. Il existe `φ ∈ E^*` et `α ∈ ℝ` tels que
-`φ(a) ≤ α < φ(b)` pour tous `a ∈ A`, `b ∈ B`. -/
+`φ(a) ≤ α < φ(b)` pour tous `a ∈ A`, `b ∈ B`.
+Preuve (différente du cours) : `geometric_hahn_banach_open` appliqué directement à `B` et `A`,
+sans passer par l'ouvert `B - A` et le premier point. -/
 theorem corol_separOuvertPt {A B : Set E} (hA : Convex ℝ A) (hB : Convex ℝ B) (hBo : IsOpen B)
     (_hAne : A.Nonempty) (_hBne : B.Nonempty) (hAB : Disjoint A B) :
     ∃ (φ : StrongDual ℝ E) (α : ℝ), ∀ a ∈ A, ∀ b ∈ B, φ a ≤ α ∧ α < φ b := by
@@ -298,7 +304,9 @@ theorem corol_separOuvertPt {A B : Set E} (hA : Convex ℝ A) (hB : Convex ℝ B
 /-- **Th. `th:separFermeComp` (Séparation stricte d'un fermé et d'un compact convexes).** Soient
 `A, B ⊆ E` convexes, non vides, disjoints, avec `A` fermé et `B` compact. Il existe `φ ∈ E^*`
 telle que `sup_A φ < inf_B φ`. La clause `BddAbove (φ '' A)` explicite que `sup_A φ` est fini
-(en Lean, le `sSup` d'une partie non majorée de `ℝ` vaut `0` par convention). -/
+(en Lean, le `sSup` d'une partie non majorée de `ℝ` vaut `0` par convention).
+Preuve (différente du cours) : `geometric_hahn_banach_closed_compact` de Mathlib, au lieu de
+la fermeture de `B - A` et de `corol:separOuvertPt`. -/
 theorem th_separFermeComp {A B : Set E} (hA : Convex ℝ A) (hAf : IsClosed A) (hB : Convex ℝ B)
     (hBc : IsCompact B) (hAne : A.Nonempty) (hBne : B.Nonempty) (hAB : Disjoint A B) :
     ∃ φ : StrongDual ℝ E, BddAbove (φ '' A) ∧ sSup (φ '' A) < sInf (φ '' B) := by
@@ -312,7 +320,9 @@ theorem th_separFermeComp {A B : Set E} (hA : Convex ℝ A) (hAf : IsClosed A) (
 
 /-- **Th. `th:separFermeComp`, dernier point.** Sous les mêmes hypothèses, si `0 ∈ A`, on peut
 choisir `φ ∈ E^*` telle que `sup_A φ < 1 < inf_B φ`. La clause `BddAbove (φ '' A)` explicite
-que `sup_A φ` est fini (en Lean, le `sSup` d'une partie non majorée de `ℝ` vaut `0`). -/
+que `sup_A φ` est fini (en Lean, le `sSup` d'une partie non majorée de `ℝ` vaut `0`).
+Preuve (différente du cours) : `geometric_hahn_banach_closed_compact` (séparation par
+`u < v`), puis division par `(u + v)/2`. -/
 theorem th_separFermeComp_zero {A B : Set E} (hA : Convex ℝ A) (hAf : IsClosed A)
     (hB : Convex ℝ B) (hBc : IsCompact B) (h0 : (0 : E) ∈ A) (hBne : B.Nonempty)
     (hAB : Disjoint A B) :

@@ -200,7 +200,9 @@ end Jensen
 /-- **Cor. `corol:lpInclusLq` (Injection `L^p`).** Soit `(X, μ)` un espace mesuré de mesure
 finie non nulle, et `p ≤ q`. Alors `L^q(X, μ) ⊂ L^p(X, μ)` et pour toute `f ∈ L^q`,
 `μ(X)^{-1/p} ‖f‖_p ≤ μ(X)^{-1/q} ‖f‖_q` (avec la convention `1/∞ = 0`).
-Remarque : l'hypothèse `1 ≤ p` du cours est superflue. -/
+Remarque : l'hypothèse `1 ≤ p` du cours est superflue.
+Preuve (différente du cours) : inégalité de Hölder de Mathlib
+(`eLpNorm_le_eLpNorm_mul_rpow_measure_univ`) au lieu de l'inégalité de Jensen. -/
 theorem corol_lpInclusLq {X : Type*} [MeasurableSpace X] {μ : Measure X} [IsFiniteMeasure μ]
     [NeZero μ] {E : Type*} [NormedAddCommGroup E] {p q : ℝ≥0∞} (hpq : p ≤ q) {f : X → E}
     (hf : MemLp f q μ) :
@@ -479,7 +481,10 @@ theorem iteratedFDeriv_convolution {k : ℕ} {f g : ℝᵈ → ℝ} (hf : Integr
 /-- **Prop. `prop:convolDeriv` (Dérivation d'une convolution).** Soit `f ∈ L^1(ℝ^d)` et
 `g ∈ C^k_c(ℝ^d)`. Alors `f ⋆ g ∈ C^k(ℝ^d)` et `∂_α (f ⋆ g) = f ⋆ (∂_α g)` pour `|α|_1 ≤ k`
 (`deriveePartielle`, cf. `def:normeCnb`) ; voir aussi `iteratedFDeriv_convolution` pour la
-version intrinsèque `D^j (f ⋆ g) = f ⋆ D^j g`. -/
+version intrinsèque `D^j (f ⋆ g) = f ⋆ D^j g`.
+Preuve (différente du cours) : régularité et différentielle de `f ⋆ g` fournies par Mathlib
+(`HasCompactSupport.contDiff_convolution_right`, `hasFDerivAt_convolution_right`), sans le
+calcul des taux d'accroissement. -/
 theorem prop_convolDeriv {k : ℕ} {f g : ℝᵈ → ℝ} (hf : Integrable f) (hg : ContDiff ℝ k g)
     (hgc : HasCompactSupport g) :
     ContDiff ℝ k (f ⋆ g) ∧

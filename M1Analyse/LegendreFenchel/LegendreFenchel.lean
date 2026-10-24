@@ -591,7 +591,10 @@ theorem majoration_locale [CompleteSpace E] {f : E → EReal} (hbot : ∀ x, f x
   ring
 
 /-- **Lemme `lem:cvxImplBorne` (Convexe implique localement borné).** Soit `f : E → ]-∞, ∞]`
-convexe s.c.i. sur un Banach. Alors `f` est localement bornée sur l'intérieur de `Dom(f)`. -/
+convexe s.c.i. sur un Banach. Alors `f` est localement bornée sur l'intérieur de `Dom(f)`.
+Preuve (différente du cours) : Baire dans `E` tout entier, recouvert par les fermés
+`{v | f(x₀ ± v/(n+1)) ≤ n+1}`, puis symétrie et convexité (`majoration_locale`) ; la
+minoration au voisinage de `x₀`, non traitée dans le cours, vient de la s.c.i. -/
 theorem lem_cvxImplBorne [CompleteSpace E] (f : E → EReal) (hbot : ∀ x, f x ≠ ⊥)
     (hc : ConvexeEtendue f) (hl : LowerSemicontinuous f) (x₀ : E)
     (hx₀ : x₀ ∈ interior (domaine f)) :
@@ -647,7 +650,10 @@ theorem clm_eq_zero_of_local_max {X : Type*} [NormedAddCommGroup X] [NormedSpace
 
 /-- **Thm. `th:ssGrad` (Sous-différentiel et sous-gradient d'une fonction convexe).** Soient `E`
 un Banach et `f : E → ]-∞, ∞]` convexe et s.c.i. Alors `f` est localement Lipschitz sur
-l'intérieur de `Dom(f)`, et `∂f(x)` est non vide pour tout `x` intérieur à `Dom(f)`. -/
+l'intérieur de `Dom(f)`, et `∂f(x)` est non vide pour tout `x` intérieur à `Dom(f)`.
+Preuve (différente du cours) : pour `∂f(x₀) ≠ ∅`, Hahn-Banach géométrique (point hors de
+l'intérieur d'un convexe d'intérieur non vide) appliqué à `(x₀, f(x₀))` et au sur-graphe,
+via la seule majoration locale (`majoration_locale`) et non le caractère lipschitzien. -/
 theorem th_ssGrad [CompleteSpace E] (f : E → EReal) (hbot : ∀ x, f x ≠ ⊥)
     (hc : ConvexeEtendue f) (hl : LowerSemicontinuous f) :
     (∀ x ∈ interior (domaine f), ∃ U ∈ 𝓝 x, ∃ K : ℝ, ∀ y ∈ U,

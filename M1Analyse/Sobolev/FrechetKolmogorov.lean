@@ -196,7 +196,10 @@ Remarque : la condition `|h| ≤ d(K, ℝ^d ∖ Ω)` est écrite `K + B'(0, |h|)
 cours, et le théorème plus fort ; elle garantit que `f(x - h)` n'est évaluée qu'en des points de
 `Ω` (sans extension de `f` hors de `Ω`). Pour `Ω = ℝ^d` elle porte sur tout `h`, alors que la
 convention de Mathlib `infDist x ∅ = 0` rendrait la formulation littérale dégénérée.
-Les fonctions `f ∈ 𝓕` sont des classes de `L^p(Ω)` ; `f x` désigne un représentant. -/
+Les fonctions `f ∈ 𝓕` sont des classes de `L^p(Ω)` ; `f x` désigne un représentant.
+Preuve (différente du cours) : sans fonction plateau `φ` ; on régularise `1_{K₀ + B'(0,η)} f`
+par un noyau `ρ` lipschitzien, comparé à `f` sur `K₀` seulement (`lem:convolTranslat`), puis
+Ascoli (bornes uniforme et de Lipschitz) et découpage `Ω = K₀ ∪ (Ω ∖ K₀)`. -/
 theorem th_FrechetKolmogorov (Ω : TopologicalSpace.Opens ℝᵈ) {p : ℝ≥0∞} [Fact (1 ≤ p)]
     (hpt : p ≠ ∞) (𝓕 : Set (Lp ℝ p (volume.restrict (Ω : Set ℝᵈ))))
     (hb : Bornology.IsBounded 𝓕)

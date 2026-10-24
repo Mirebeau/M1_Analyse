@@ -63,7 +63,8 @@ theorem prop_conjugueDual (x : E) :
     · rw [norm_smul, hg1, norm_norm, mul_one]
 
 /-- **Prop. `prop:conjugueDual`, conséquence.** La fonction d'évaluation `Φ : E → E^{**}` est
-isométrique, donc injective. -/
+isométrique, donc injective.
+Preuve (différente du cours) : isométrie de Mathlib `inclusionInDoubleDualLi`. -/
 theorem prop_conjugueDual_isometrie :
     Isometry (inclusionInDoubleDual ℝ E) ∧ Function.Injective (inclusionInDoubleDual ℝ E) :=
   ⟨(inclusionInDoubleDualLi (E := E) ℝ).isometry, (inclusionInDoubleDualLi (E := E) ℝ).injective⟩
@@ -75,7 +76,8 @@ theorem def_reflexif_iff_surjective :
   ⟨fun h => h.2, fun h => ⟨(prop_conjugueDual_isometrie E).2, h⟩⟩
 
 /-- **Cor. `corol:faibleSepare`.** La topologie faible sur un evn `E` (topologie de
-`WeakSpace ℝ E`) est séparée. -/
+`WeakSpace ℝ E`) est séparée.
+Preuve (différente du cours) : instance `T2Space (WeakSpace ℝ E)` de Mathlib. -/
 theorem corol_faibleSepare : T2Space (WeakSpace ℝ E) :=
   inferInstance
 
@@ -172,7 +174,9 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
 /-- **Rem. `rem:unifCvxHilbert` (Cas hilbertien).** Un espace préhilbertien réel satisfait
 l'identité du parallélogramme, et est uniformément convexe au sens de `eq:unif_cvx_ball` :
 `∀ ε > 0, ∃ δ > 0, ‖x‖ = ‖y‖ = 1, ‖x - y‖ ≥ ε ⇒ ‖(x+y)/2‖ ≤ 1 - δ`. De plus, pour tout
-`x ∈ H`, la forme `⟨x, ·⟩` est un conjugué dual de `x` (cf. `prop:conjugueDual`). -/
+`x ∈ H`, la forme `⟨x, ·⟩` est un conjugué dual de `x` (cf. `prop:conjugueDual`).
+Preuve (différente du cours) : l'uniforme convexité est tirée de l'instance Mathlib
+`UniformConvexSpace` des espaces préhilbertiens, et non de l'identité du parallélogramme. -/
 theorem rem_unifCvxHilbert :
     (∀ x y : H, ‖x + y‖ ^ 2 + ‖x - y‖ ^ 2 = 2 * (‖x‖ ^ 2 + ‖y‖ ^ 2)) ∧
     (∀ ε : ℝ, 0 < ε → ∃ δ : ℝ, 0 < δ ∧ ∀ x y : H, ‖x‖ = 1 → ‖y‖ = 1 → ε ≤ ‖x - y‖ →
@@ -198,7 +202,9 @@ variable {X : Type*} [MeasurableSpace X] {μ : Measure X}
 /-- **Th. `th:HolderIneq` (Inégalité de Hölder), inégalité.** Soient `p, q ∈ [1, ∞]` avec
 `1/p + 1/q = 1`. Pour tous `f ∈ L^p(X, μ)` et `g ∈ L^q(X, μ)` on a `fg ∈ L^1` et
 `∫ f g ≤ ‖f‖_p ‖g‖_q`.
-Les cas d'égalité sont `th_HolderIneq_eq` (`1 < p < ∞`) et `th_HolderIneq_eq_one` (`p = 1`). -/
+Les cas d'égalité sont `th_HolderIneq_eq` (`1 < p < ∞`) et `th_HolderIneq_eq_one` (`p = 1`).
+Preuve (différente du cours) : inégalité de Hölder de Mathlib (`eLpNorm_smul_le_mul_eLpNorm`),
+sans passer par l'inégalité de Young (utilisée en revanche pour le cas d'égalité). -/
 theorem th_HolderIneq {p q : ℝ≥0∞} (hpq : p⁻¹ + q⁻¹ = 1) {f g : X → ℝ}
     (hf : MemLp f p μ) (hg : MemLp g q μ) :
     Integrable (f * g) μ ∧

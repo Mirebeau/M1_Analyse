@@ -75,7 +75,9 @@ theorem prop_cvxFaibleFerme (C : Set E) (hC : Convex ℝ C) (hCf : IsClosed C) (
   linarith
 
 /-- **Cor. `corol:cvxFermeBdComp`, premier point.** Tout convexe fermé `C` d'un evn `E` est
-faiblement fermé. -/
+faiblement fermé.
+Preuve (différente du cours) : `Convex.toWeakSpace_closure` de Mathlib (adhérences forte et
+faible d'un convexe coïncident), au lieu de la dualité polaire `prop:cvxFaibleFerme`. -/
 theorem corol_cvxFermeBdComp_ferme (C : Set E) (hC : Convex ℝ C) (hCf : IsClosed C) :
     IsClosed (toWeakSpace ℝ E '' C) := by
   have := hC.toWeakSpace_closure (𝕜 := ℝ)
@@ -132,7 +134,10 @@ theorem lowerSemicontinuous_faible {f : E → EReal} (hbot : ∀ x, f x ≠ ⊥)
 Soient `E` un evn réflexif, `f : E → ]-∞, ∞]` convexe s.c.i. et `M ∈ ℝ`. Si `{f ≤ M}` est non
 vide et borné, alors `f` admet un minimiseur.
 Remarque : la convexité d'une fonction à valeurs dans `]-∞, ∞]` est exprimée par la convexité de
-son épigraphe `{(x, t) ∈ E × ℝ | f(x) ≤ t}`. -/
+son épigraphe `{(x, t) ∈ E × ℝ | f(x) ≤ t}`.
+Preuve (différente du cours) : `f`, faiblement s.c.i., atteint son minimum sur le compact
+faible `{f ≤ M}` (`LowerSemicontinuousOn.exists_isMinOn`), au lieu de l'intersection
+emboîtée des `{f ≤ m}`. -/
 theorem corol_minFctCvxRefl (hE : Reflexif E) {f : E → EReal} (hbot : ∀ x, f x ≠ ⊥)
     (hcvx : Convex ℝ {p : E × ℝ | f p.1 ≤ p.2}) (hlsc : LowerSemicontinuous f) (M : ℝ)
     (hne : {x | f x ≤ M}.Nonempty) (hbd : Bornology.IsBounded {x | f x ≤ M}) :
@@ -157,7 +162,10 @@ convexe s.c.i., `g : E → ℝ` faiblement continue sur les bornés et `M ∈ �
 `{f + g ≤ M}` est non vide et borné, alors `f + g` admet un minimiseur.
 Remarque : « `g` faiblement continue sur les bornés » est formalisé par : pour toute partie bornée
 `A ⊆ E`, la restriction de `g` à `A` est continue pour la topologie faible ; la convexité de `f`
-est exprimée par celle de son épigraphe. -/
+est exprimée par celle de son épigraphe.
+Preuve (différente du cours) : `f + g`, faiblement s.c.i. sur une boule fermée `B` (compacte
+faible), y atteint son minimum (`LowerSemicontinuousOn.exists_isMinOn`), au lieu de
+l'intersection emboîtée des `{f + g ≤ m}`. -/
 theorem corol_minFctCvxRefl_perturbation (hE : Reflexif E) {f : E → EReal} (hbot : ∀ x, f x ≠ ⊥)
     (hcvx : Convex ℝ {p : E × ℝ | f p.1 ≤ p.2}) (hlsc : LowerSemicontinuous f) (g : E → ℝ)
     (hg : ∀ A : Set E, Bornology.IsBounded A →

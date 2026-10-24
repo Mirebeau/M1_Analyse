@@ -58,7 +58,9 @@ theorem prop_distribL1Loc_ordre (Ω : TopologicalSpace.Opens ℝᵈ) {f : ℝᵈ
 
 /-- **Prop. `prop:distribL1Loc`, injectivité.** Si `f, g ∈ L^1_loc(Ω)` vérifient `U_f = U_g`,
 alors `f = g` presque partout sur `Ω`.
-Remarque : la continuité de `f ↦ U_f` (de `L^1_loc(Ω)` dans `𝓓'(Ω)`) n'est pas formalisée. -/
+Remarque : la continuité de `f ↦ U_f` (de `L^1_loc(Ω)` dans `𝓓'(Ω)`) n'est pas formalisée.
+Preuve (différente du cours) : résultat de Mathlib `Distribution.ofFun_injective`, au lieu de
+l'argument de régularisation par convolution `ρ_ε ⋆ f → f` du cours. -/
 theorem prop_distribL1Loc_injective (Ω : TopologicalSpace.Opens ℝᵈ) {f g : ℝᵈ → ℝ}
     (hf : LocallyIntegrableOn f Ω) (hg : LocallyIntegrableOn g Ω)
     (h : Distribution.ofFun Ω f volume ⊤ = Distribution.ofFun Ω g volume ⊤) :
@@ -108,9 +110,11 @@ private lemma distribLp_norm_toLp (Ω : TopologicalSpace.Opens ℝᵈ) (q : ℝ�
 (b) il existe `f ∈ L^p(Ω)` telle que `T = U_f`.
 Ici `U_f` est la distribution `Distribution.ofFun Ω f volume ⊤` de Mathlib, `⟨U_f, φ⟩ = ∫ f φ`
 (`prop_distribL1Loc_apply`), et `L^r(Ω)` est pris pour la mesure de Lebesgue restreinte à `Ω`.
-(Preuve : (a) ⇒ (b), `T` définit une forme linéaire continue sur l'image de `𝓓(Ω)` dans
-`L^q(Ω)`, prolongée à `L^q(Ω)` par Hahn–Banach, puis représentée par `f ∈ L^p` par
-`th:lpDualLq` (`th_lpDualLq_bijectif` si `p < ∞`, `th_lpDualLq_bijectif_un` si `p = ∞`) ;
+(Preuve, différente du cours : (a) ⇒ (b), `T` définit une forme linéaire continue sur
+l'image de `𝓓(Ω)` dans `L^q(Ω)`, prolongée à `L^q(Ω)` par Hahn–Banach, puis représentée
+par `f ∈ L^p` par `th:lpDualLq` (`th_lpDualLq_bijectif` si `p < ∞`,
+`th_lpDualLq_bijectif_un` si `p = ∞`), au lieu du prolongement par densité de `𝓓(Ω)` dans
+`L^q(Ω)` (`corol:testDenseLp`) ;
 (b) ⇒ (a), inégalité de Hölder avec `C = ‖f‖_p`.) -/
 theorem corol_distribLp (Ω : TopologicalSpace.Opens ℝᵈ) (T : 𝓓'(Ω, ℝ)) {p q : ℝ≥0∞}
     (hp : 1 < p) (hpq : p⁻¹ + q⁻¹ = 1) :

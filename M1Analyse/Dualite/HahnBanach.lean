@@ -55,13 +55,17 @@ theorem def_inductif_iff :
 /-- **Lemme `lem:Zorn` (Zorn).** Tout ensemble non vide et inductif admet un élément maximal
 `m` (i.e. `m ≤ y → y = m`).
 Remarque : l'hypothèse de non-vacuité est en fait conséquence du caractère inductif (la partie
-vide admet un majorant). -/
+vide admet un majorant).
+Preuve (différente du cours) : le cours admet ce lemme ; il est déduit ici de `zorn_le`
+de Mathlib. -/
 theorem lem_Zorn [Nonempty α] (h : Inductif α) : ∃ m : α, ∀ y, m ≤ y → y = m := by
   obtain ⟨m, hm⟩ := zorn_le ((def_inductif_iff α).1 h)
   exact ⟨m, fun y hy => le_antisymm (hm hy) hy⟩
 
 /-- **Déf. `def:axiomChoix` (Axiome du choix).** Pour tout ensemble `𝒜` d'ensembles non vides,
-il existe une fonction de choix `f : 𝒜 → ⋃ 𝒜` telle que `f(a) ∈ a` pour tout `a ∈ 𝒜`. -/
+il existe une fonction de choix `f : 𝒜 → ⋃ 𝒜` telle que `f(a) ∈ a` pour tout `a ∈ 𝒜`.
+Preuve (différente du cours) : le cours déduit l'axiome du choix du lemme de Zorn ; en Lean,
+`f(a) := (h𝒜 a).some` utilise directement l'axiome du choix de la théorie (`Classical.choice`). -/
 theorem def_axiomChoix {β : Type*} (𝒜 : Set (Set β)) (h𝒜 : ∀ a ∈ 𝒜, a.Nonempty) :
     ∃ f : 𝒜 → ⋃₀ 𝒜, ∀ a : 𝒜, (f a : β) ∈ (a : Set β) :=
   ⟨fun a => ⟨(h𝒜 a a.2).some, mem_sUnion_of_mem (h𝒜 a a.2).some_mem a.2⟩,
@@ -108,7 +112,9 @@ theorem def_sousLin (ρ : E → ℝ) :
 
 /-- **Th. `th:HahnBanach` (Hahn-Banach).** Soient `E` un `ℝ`-espace vectoriel, `F` un
 sous-espace, `ρ : E → ℝ` sous-linéaire et `φ_F : F → ℝ` linéaire avec `φ_F ≤ ρ` sur `F`. Alors il
-existe `φ : E → ℝ` linéaire avec `φ ≤ ρ` sur `E` et `φ|_F = φ_F`. -/
+existe `φ : E → ℝ` linéaire avec `φ ≤ ρ` sur `E` et `φ|_F = φ_F`.
+Preuve (différente du cours) : pas de construction par Zorn ; application directe de
+`exists_extension_of_le_sublinear` de Mathlib. -/
 theorem th_HahnBanach (F : Submodule ℝ E) (ρ : E → ℝ) (hρ : SousLineaire ρ)
     (φF : F →ₗ[ℝ] ℝ) (hφF : ∀ x : F, φF x ≤ ρ x) :
     ∃ φ : E →ₗ[ℝ] ℝ, (∀ x, φ x ≤ ρ x) ∧ ∀ x : F, φ x = φF x := by
@@ -124,13 +130,18 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
 /-- **Cor. `corol:prol_forme_evn` (Prolongement de même norme d'une forme linéaire).** Soient `E`
 un evn, `F ⊆ E` un sous-espace et `φ_F ∈ F^*`. Il existe `φ ∈ E^*` prolongeant `φ_F` et de même
-norme. -/
+norme.
+Preuve (différente du cours) : `exists_extension_norm_eq` de Mathlib, au lieu de Hahn-Banach
+avec `ρ(x) := ‖φ_F‖ ‖x‖`. -/
 theorem corol_prol_forme_evn (F : Submodule ℝ E) (φF : StrongDual ℝ F) :
     ∃ φ : StrongDual ℝ E, (∀ x : F, φ x = φF x) ∧ ‖φ‖ = ‖φF‖ :=
   exists_extension_norm_eq F φF
 
 /-- **Cor. `corol:dens_banach` (Critère de densité).** Un sous-espace `F` d'un `ℝ`-evn `E` est
-dense si et seulement si la seule forme linéaire continue s'annulant sur `F` est `0`. -/
+dense si et seulement si la seule forme linéaire continue s'annulant sur `F` est `0`.
+Preuve (différente du cours) : pour `x ∉ cl(F)`, séparation géométrique de `x` et du convexe
+fermé `cl(F)` (`geometric_hahn_banach_point_closed`) ; la forme obtenue, majorée sur le
+sous-espace `F`, y est nulle. Le cours utilise le lemme de Riesz et `corol:prol_forme_evn`. -/
 theorem corol_dens_banach (F : Submodule ℝ E) :
     Dense (F : Set E) ↔ ∀ φ : StrongDual ℝ E, (∀ x ∈ F, φ x = 0) → φ = 0 := by
   constructor
@@ -214,7 +225,9 @@ theorem ex_dualSeparable [TopologicalSpace.SeparableSpace (StrongDual ℝ E)] :
 
 /-- **Cor. `corol:projDimFinie` (Projection sur un sous-espace de dimension finie).** Pour tout
 sous-espace de dimension finie `F` d'un evn `E`, il existe une projection linéaire continue
-`P_F : E → F` (i.e. `P_F x = x` pour `x ∈ F`). -/
+`P_F : E → F` (i.e. `P_F x = x` pour `x ∈ F`).
+Preuve (différente du cours) : `Submodule.ClosedComplemented.of_finiteDimensional` de Mathlib,
+au lieu du prolongement explicite de la base duale. -/
 theorem corol_projDimFinie (F : Submodule ℝ E) [FiniteDimensional ℝ F] :
     ∃ P : E →L[ℝ] F, ∀ x : F, P x = x :=
   Submodule.ClosedComplemented.of_finiteDimensional F

@@ -33,7 +33,9 @@ namespace M1Analyse
 
 /-- **Lemme `lem:cinfExpInv` (Prolongement lisse de la fonction nulle).** La fonction
 `φ(x) = exp(-1/x)` si `x > 0`, `φ(x) = 0` sinon, est `C^∞` sur `ℝ`. (C'est la fonction
-`expNegInvGlue` de Mathlib.) -/
+`expNegInvGlue` de Mathlib.)
+Preuve (différente du cours) : identification avec `expNegInvGlue`, dont la régularité
+`C^∞` est fournie par Mathlib (`expNegInvGlue.contDiff`), sans récurrence explicite. -/
 theorem lem_cinfExpInv :
     ContDiff ℝ ∞ (fun x : ℝ => if 0 < x then Real.exp (-1 / x) else 0) := by
   have h : (fun x : ℝ => if 0 < x then Real.exp (-1 / x) else 0) = expNegInvGlue := by
@@ -46,7 +48,9 @@ theorem lem_cinfExpInv :
 
 /-- **Prop. `prop:cinfHeaviside` (Approximation de Heaviside).** Il existe `φ ∈ C^∞(ℝ)`,
 croissante, positive, telle que `φ = 0` sur `]-∞, 0]` et `φ = 1` sur `[1, ∞[`.
-(Mathlib : `Real.smoothTransition`.) -/
+(Mathlib : `Real.smoothTransition`.)
+Preuve (différente du cours) : `φ = Real.smoothTransition`, i.e.
+`φ(x) = φ₀(x) / (φ₀(x) + φ₀(1 - x))`, au lieu de la primitive normalisée de `φ₀(s) φ₀(1 - s)`. -/
 theorem prop_cinfHeaviside :
     ∃ φ : ℝ → ℝ, ContDiff ℝ ∞ φ ∧ Monotone φ ∧ (∀ x, 0 ≤ φ x) ∧
       EqOn φ 0 (Iic 0) ∧ EqOn φ 1 (Ici 1) :=

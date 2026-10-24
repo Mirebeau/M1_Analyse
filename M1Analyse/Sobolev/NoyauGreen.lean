@@ -564,7 +564,10 @@ private theorem integral_noyauGreen_mul_lapl (hd : 1 ≤ d) {φ : ℝᵈ → ℝ
 
 /-- **Cor. `corol:noyauGreen` (Noyau de Green), `-ΔG = δ₀` sous forme intégrale.**
 Pour toute `φ ∈ 𝓓(ℝ^d)` (`C^∞` à support compact), `⟨G, -Δφ⟩ = ∫ G(x) (-Δφ)(x) dx = φ(0)`,
-i.e. `-ΔG = δ₀` au sens des distributions. Remarque : on suppose `d ≥ 1`. -/
+i.e. `-ΔG = δ₀` au sens des distributions. Remarque : on suppose `d ≥ 1`.
+Preuve (différente du cours) : sans formule de Stokes ; régularisation
+`G_ε(x) = c(d) k(|x|² + ε²)`, intégration par parties sur `ℝ^d`, convergence dominée
+(`ε → 0⁺`), puis `prop:convolPow` en `x = 0`. -/
 theorem corol_noyauGreen (hd : 1 ≤ d) {φ : ℝᵈ → ℝ} (hφ : ContDiff ℝ ∞ φ)
     (hφc : HasCompactSupport φ) :
     ∫ x, noyauGreen d x * (-Δ φ x) = φ 0 := by
@@ -612,7 +615,9 @@ private theorem testFunction_lineDerivOp_apply (ψ : 𝓓(⊤, ℝ)) (v x : ℝ�
 /-- **Cor. `corol:noyauGreen` (Noyau de Green), `-ΔG = δ₀` dans `𝓓'(ℝ^d)`.** Avec les
 distributions de Mathlib : `-Δ U_G = δ₀`, où `U_G = Distribution.ofFun ⊤ G volume ⊤` est la
 distribution associée à `G ∈ L¹_loc` et `Δ = LineDeriv.laplacianCLM` est le laplacien
-distributionnel `∑_i ∂_i ∂_i`. Remarque : on suppose `d ≥ 1`. -/
+distributionnel `∑_i ∂_i ∂_i`. Remarque : on suppose `d ≥ 1`.
+Preuve (différente du cours) : déduit de la forme intégrale (`corol_noyauGreen`, preuve par
+régularisation de `G`), sans établir `∇G = -V` au sens des distributions. -/
 theorem corol_noyauGreen_distrib (hd : 1 ≤ d) :
     -(LineDeriv.laplacianCLM ℝ ℝᵈ 𝓓'(⊤, ℝ) (Distribution.ofFun ⊤ (noyauGreen d) volume ⊤)) =
       Distribution.delta 0 := by
@@ -643,7 +648,9 @@ private theorem fderiv_convolution_apply (hd : 1 ≤ d) {ψ : ℝᵈ → ℝ} (h
 `G ⋆ φ` est `C^∞` et `φ = -Δ(G ⋆ φ)`.
 Remarque : `G ⋆ φ` est la convolution usuelle `(G ⋆ φ)(x) = ∫ G(y) φ(x-y) dy` de la fonction
 `G ∈ L¹_loc` avec `φ`, qui coïncide avec la convolution distribution–fonction test du cours
-(`def:convolDistrib`) ; l'égalité est ponctuelle. On suppose `d ≥ 1`. -/
+(`def:convolDistrib`) ; l'égalité est ponctuelle. On suppose `d ≥ 1`.
+Preuve (différente du cours) : dérivation sous l'intégrale (`∂_v (G ⋆ ψ) = G ⋆ ∂_v ψ`) et forme
+intégrale appliquée à `φ(x + ·)`, au lieu de `(-ΔG) ⋆ φ = δ₀ ⋆ φ` (`prop:convolDistrib`). -/
 theorem corol_noyauGreen_convol (hd : 1 ≤ d) {φ : ℝᵈ → ℝ} (hφ : ContDiff ℝ ∞ φ)
     (hφc : HasCompactSupport φ) :
     ContDiff ℝ ∞ (noyauGreen d ⋆ φ) ∧ ∀ x, φ x = -Δ (noyauGreen d ⋆ φ) x := by

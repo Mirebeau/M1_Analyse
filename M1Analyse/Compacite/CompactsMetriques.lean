@@ -81,7 +81,10 @@ theorem rem_precompact_separable_englobant (s : Set X) :
 
 /-- **Th. `th:BolzanoWeierstrass` (Compacité via Bolzano-Weierstrass).** Pour un espace
 métrique `X`, sont équivalents : (i) `X` est compact ; (ii) toute suite à valeurs dans `X`
-admet une valeur d'adhérence ; (iii) `X` est précompact et complet. -/
+admet une valeur d'adhérence ; (iii) `X` est précompact et complet.
+Preuve (différente du cours) : (i) ⇔ (iii) par `isCompact_iff_totallyBounded_isComplete` de
+Mathlib, (ii) ⇒ (i) par la compacité séquentielle (`isCompact_iff_isSeqCompact`), sans le
+nombre de Lebesgue ni l'extraction par boules emboîtées du cours. -/
 theorem th_BolzanoWeierstrass :
     List.TFAE [CompactSpace X,
       ∀ x : ℕ → X, ∃ a, MapClusterPt a atTop x,
@@ -110,7 +113,9 @@ theorem th_BolzanoWeierstrass_sousSuite :
       fun ⟨_, hφ, h⟩ => MapClusterPt.of_comp hφ.tendsto_atTop h.mapClusterPt⟩
 
 /-- **Th. `th:Heine` (Heine).** Soit `X` métrique compact et `Y` métrique. Toute fonction
-continue `f : X → Y` est uniformément continue. -/
+continue `f : X → Y` est uniformément continue.
+Preuve (différente du cours) : lemme de Mathlib (par les entourages uniformes), au lieu de
+l'argument par suites et sous-suite convergente du cours. -/
 theorem th_Heine [CompactSpace X] {f : X → Y} (hf : Continuous f) : UniformContinuous f :=
   CompactSpace.uniformContinuous_of_continuous hf
 

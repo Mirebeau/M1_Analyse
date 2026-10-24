@@ -48,7 +48,9 @@ theorem lem_fermeEmboite [MetricSpace X] [CompleteSpace X] (F : ℕ → Set X)
   exact edist_le_zero.1 h0
 
 /-- **Th. `th:BaireOuvert` (Baire).** Dans un espace métrique complet, une intersection
-dénombrable d'ouverts denses est dense. -/
+dénombrable d'ouverts denses est dense.
+Preuve (différente du cours) : théorème de Baire de Mathlib (`dense_iInter_of_isOpen_nat`,
+instance `BaireSpace` des complets), sans la construction de boules emboîtées du cours. -/
 theorem th_BaireOuvert [MetricSpace X] [CompleteSpace X] (U : ℕ → Set X)
     (hU : ∀ n, IsOpen (U n)) (hd : ∀ n, Dense (U n)) : Dense (⋂ n, U n) :=
   dense_iInter_of_isOpen_nat hU hd
@@ -109,7 +111,9 @@ noncomputable def exGrasQ_U (q : ℕ → ℚ) (n : ℕ) : Set ℝ :=
 /-- **Ex. `ex:GrasQ`, première partie.** Si `(q_k)_{k > 0}` énumère `ℚ`, alors pour tout `n > 0`,
 `U_n` est un ouvert dense de `ℝ`, de mesure `|U_n| ≤ π²/(3n)`.
 Remarque : l'énumération est modélisée par `q : ℕ → ℚ` dont la restriction aux indices `k > 0`
-est surjective (la valeur `q 0` ne sert pas). -/
+est surjective (la valeur `q 0` ne sert pas).
+Preuve (absente du cours) : `U_n ⊇ ℚ` est dense ; la mesure est majorée par sous-additivité
+dénombrable et `∑ 1/k² = π²/6` (`hasSum_zeta_two`). -/
 theorem ex_GrasQ_U (q : ℕ → ℚ) (hq : ∀ r : ℚ, ∃ k, 0 < k ∧ q k = r) (n : ℕ) (hn : 0 < n) :
     IsOpen (exGrasQ_U q n) ∧ Dense (exGrasQ_U q n) ∧
       volume (exGrasQ_U q n) ≤ ENNReal.ofReal (Real.pi ^ 2 / (3 * n)) := by
@@ -133,7 +137,9 @@ theorem ex_GrasQ_U (q : ℕ → ℚ) (hq : ∀ r : ℚ, ∃ k, 0 < k ∧ q k = r
       _ = ENNReal.ofReal (Real.pi ^ 2 / (3 * n)) := by congr 1; field_simp; ring
 
 /-- **Ex. `ex:GrasQ`, seconde partie.** `U_∞ := ⋂_{n > 0} U_n` est un ensemble gras de mesure
-nulle contenant `ℚ`, et son complémentaire est un ensemble maigre de mesure pleine. -/
+nulle contenant `ℚ`, et son complémentaire est un ensemble maigre de mesure pleine.
+Preuve (absente du cours) : `U_∞` est gras comme intersection dénombrable d'ouverts denses,
+et de mesure nulle car `|U_∞| ≤ |U_{n+1}| ≤ π²/(3(n+1)) → 0`. -/
 theorem ex_GrasQ (q : ℕ → ℚ) (hq : ∀ r : ℚ, ∃ k, 0 < k ∧ q k = r) :
     (⋂ n, ⋂ (_ : 0 < n), exGrasQ_U q n) ∈ residual ℝ ∧
       volume (⋂ n, ⋂ (_ : 0 < n), exGrasQ_U q n) = 0 ∧

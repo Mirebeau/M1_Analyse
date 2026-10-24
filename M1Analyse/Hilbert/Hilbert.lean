@@ -96,7 +96,9 @@ theorem prehilbert_identites (x y : H) :
 
 /-- **Prop. `prop:CauchySchwarz` (Inégalité de Cauchy-Schwarz).**
 `|⟪x,y⟫| ≤ ‖x‖ ‖y‖`, avec égalité ssi `x` et `y` sont colinéaires
-(colinéarité exprimée par : `x = 0` ou `y = λ x` pour un `λ ∈ 𝕜`). -/
+(colinéarité exprimée par : `x = 0` ou `y = λ x` pour un `λ ∈ 𝕜`).
+Preuve (différente du cours) : lemmes de Mathlib `norm_inner_le_norm` et
+`norm_inner_eq_norm_tfae` (cas d'égalité), au lieu de l'argument du discriminant. -/
 theorem prop_CauchySchwarz (x y : H) :
     ‖⟪x, y⟫_𝕜‖ ≤ ‖x‖ * ‖y‖ ∧
     (‖⟪x, y⟫_𝕜‖ = ‖x‖ * ‖y‖ ↔ x = 0 ∨ ∃ c : 𝕜, y = c • x) :=
@@ -195,7 +197,10 @@ variable [CompleteSpace H]
 include 𝕜 in
 /-- **Thm. `th:projConvexe` (Projection sur un convexe fermé), existence et unicité.**
 Soit `H` Hilbert et `K ⊆ H` convexe fermé non vide. Pour tout `x ∈ H`, le problème
-`argmin_{y ∈ K} ‖x - y‖` admet une unique solution. -/
+`argmin_{y ∈ K} ‖x - y‖` admet une unique solution.
+Preuve (différente du cours) : existence par `exists_norm_eq_iInf_of_complete_convex`
+(Mathlib) ; unicité par la condition d'angle obtus écrite pour deux minimiseurs
+(inégalité `eq:proj_moyennee` avec `x = y`), et non par l'estimation de Cauchy. -/
 theorem th_projConvexe_existsUnique {K : Set H} (hne : K.Nonempty) (hcl : IsClosed K)
     (hconv : Convex ℝ K) (x : H) : ∃! y, y ∈ K ∧ ∀ z ∈ K, ‖x - y‖ ≤ ‖x - z‖ := by
   have hc := convexCoe_of_convex (𝕜 := 𝕜) hconv
@@ -232,7 +237,9 @@ theorem eq_projConvexe_of_isMin (K : ConvexeFerme H) {x y : H} (hy : y ∈ K)
     (th_projConvexe K x)
 
 /-- **Thm. `th:projConvexe`, condition d'angle obtus (`eq:proj_obtus`).**
-`P_K(x)` est caractérisé par : pour tout `y ∈ K`, `Re⟪x - P_K(x), y - P_K(x)⟫ ≤ 0`. -/
+`P_K(x)` est caractérisé par : pour tout `y ∈ K`, `Re⟪x - P_K(x), y - P_K(x)⟫ ≤ 0`.
+Preuve (différente du cours) : caractérisation de Mathlib
+`norm_eq_iInf_iff_real_inner_le_zero`, sur la structure réelle sous-jacente de `H`. -/
 theorem th_projConvexe_caract (K : ConvexeFerme H) {x p : H} (hp : p ∈ K) :
     p = projConvexe 𝕜 K x ↔ ∀ y ∈ K, re ⟪x - p, y - p⟫_𝕜 ≤ 0 := by
   have hc := convexCoe_of_convex (𝕜 := 𝕜) K.convex
@@ -293,7 +300,9 @@ theorem projConvexe_moyennee_iff (P : H → H) :
 
 /-- **Thm. `th:reprRiesz` (Représentation de Riesz).** Soit `H` Hilbert. L'application
 `x ↦ φ_x := ⟪x, ·⟫` (`innerSL 𝕜`) de `H` dans son dual `H* = StrongDual 𝕜 H` est une bijection
-isométrique antilinéaire. (Mathlib : `InnerProductSpace.toDual`.) -/
+isométrique antilinéaire. (Mathlib : `InnerProductSpace.toDual`.)
+Preuve (différente du cours) : bijectivité et isométrie lues sur `InnerProductSpace.toDual`
+(Mathlib), au lieu de Cauchy-Schwarz et de la projection sur le noyau `φ⁻¹{0}`. -/
 theorem th_reprRiesz [CompleteSpace H] :
     (∀ x y : H, innerSL 𝕜 x y = ⟪x, y⟫_𝕜) ∧
     Function.Bijective (innerSL 𝕜 : H → StrongDual 𝕜 H) ∧
@@ -353,7 +362,10 @@ theorem projConvexe_eq_starProjection (F : Submodule 𝕜 H) (hF : IsClosed (F :
 /-- **Prop. `prop:decompOrth` (Décomposition orthogonale).** Soit `H` Hilbert et `F ⊆ H` un
 sous-espace vectoriel fermé. La projection `P_F` est caractérisée par `⟪x - P_F(x), y⟫ = 0`
 pour tout `y ∈ F` ; de plus `F ⊕ F^⊥ = H`, `P_F + P_{F^⊥} = Id`, et `P_F`, `P_{F^⊥}` sont
-linéaires continues. -/
+linéaires continues.
+Preuve (différente du cours) : identification `P_F = F.starProjection`
+(`projConvexe_eq_starProjection`), puis propriétés de la projection orthogonale de Mathlib,
+au lieu de la déduction à partir de `eq:proj_obtus`. -/
 theorem prop_decompOrth (F : Submodule 𝕜 H) (hF : IsClosed (F : Set H)) :
     let PF := projConvexe 𝕜 (ConvexeFerme.ofSubmodule F hF)
     let PFo := projConvexe 𝕜 (ConvexeFerme.ofSubmodule Fᗮ F.isClosed_orthogonal)
@@ -470,7 +482,9 @@ auto-dual : `K* = K`, où `K* = {y | ∀ x ∈ K, ⟪x, y⟫ ≥ 0}` est `Proper
 Seul le cas de `ℝ₊^d` de `ex:coneSdp` est formalisé (ici et dans `ex_coneSdp_partiesPosNeg`) :
 le cône `𝒮_d^+ ⊆ 𝒮_d` des matrices symétriques positives (son auto-dualité, et la
 décomposition de `prop:decompCone` associée, donnée par les parties positive et négative du
-spectre) n'est pas formalisé. -/
+spectre) n'est pas formalisé.
+Preuve (absente du cours) : tester `y` contre les vecteurs de base `single i 1` ; réciproque
+par positivité de la somme `⟪x, y⟫ = ∑ x_i y_i`. -/
 theorem ex_coneSdp_autoDual (d : ℕ) :
     (ProperCone.innerDual {x : EuclideanSpace ℝ (Fin d) | ∀ i, 0 ≤ x i} :
       Set (EuclideanSpace ℝ (Fin d))) = {x | ∀ i, 0 ≤ x i} := by
@@ -501,7 +515,9 @@ def orthantPositif (d : ℕ) : ConvexeFerme (EuclideanSpace ℝ (Fin d)) where
 
 /-- **Ex. `ex:coneSdp`, décomposition associée à `ℝ₊^d`.** Pour `K = ℝ₊^d`, la décomposition
 de `prop:decompCone` est `x = x⁺ - x⁻` : `P_K(x) = x⁺` et `P_{K°}(x) = -x⁻`, où
-`x⁺_i = max{x_i, 0}` et `x⁻_i = max{-x_i, 0}`. -/
+`x⁺_i = max{x_i, 0}` et `x⁻_i = max{-x_i, 0}`.
+Preuve (absente du cours) : vérification du critère `eq:proj_cone` de `prop:decompCone`
+pour `y = x⁺` et `z = -x⁻`. -/
 theorem ex_coneSdp_partiesPosNeg (d : ℕ) (x : EuclideanSpace ℝ (Fin d)) :
     let K := orthantPositif d
     let xp : EuclideanSpace ℝ (Fin d) := WithLp.toLp 2 fun i => max (x i) 0
@@ -536,7 +552,11 @@ end Cone
 deux à deux orthogonaux) d'espace engendré dense ;
 (iii) il existe une bijection linéaire isométrique entre `H` et `ℓ² = ℓ²(ℕ, 𝕜)`.
 Remarque : `ℓ²(ℕ, 𝕜)` est ici l'espace Mathlib `lp (fun _ : ℕ => 𝕜) 2` des suites de carré
-sommable, i.e. `L²(ℕ, 𝕜)` pour la mesure de comptage. -/
+sommable, i.e. `L²(ℕ, 𝕜)` pour la mesure de comptage.
+Preuve (différente du cours) : (i) ⇒ (ii) via une base hilbertienne de Mathlib
+(`exists_hilbertBasis`, lemme de Zorn), dénombrable car ses éléments sont deux à deux à
+distance `≥ 1`, et infinie ; pas de Gram-Schmidt sur une suite dense. (ii) ⇒ (iii) par
+`HilbertBasis.repr`, (iii) ⇒ (ii) par `HilbertBasis.ofRepr`, et (ii) ⇒ (i) directement. -/
 theorem th_baseHilbert [CompleteSpace H] :
     [TopologicalSpace.SeparableSpace H ∧ ¬ FiniteDimensional 𝕜 H,
       ∃ e : ℕ → H, Orthonormal 𝕜 e ∧ Dense (Submodule.span 𝕜 (range e) : Set H),

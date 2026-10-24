@@ -55,7 +55,10 @@ theorem def_continuite_comp (f : X → Y) (g : Y → Z) (x : X)
 /-- **Prop. `prop:caract_cont` (Caractérisations de la continuité).** Pour `f : X → Y`, sont
 équivalents : (i) `f` est continue en tout point ; (ii) l'image réciproque de tout ouvert est
 un ouvert ; (iii) l'image réciproque de tout fermé est un fermé ;
-(iv) `∀ A ⊆ X, f(Ā) ⊆ closure (f(A))`. -/
+(iv) `∀ A ⊆ X, f(Ā) ⊆ closure (f(A))`.
+Preuve (différente du cours) : chaque point est relié à (i) par un lemme de Mathlib
+(`continuous_def`, `continuous_iff_isClosed`,
+`continuous_iff_image_closure_subset_closure_image`), au lieu de (ii) ⇔ (iii) ⇒ (iv) ⇒ (iii). -/
 theorem prop_caract_cont (f : X → Y) :
     List.TFAE [∀ x, ContinuousAt f x,
       ∀ V : Set Y, IsOpen V → IsOpen (f ⁻¹' V),

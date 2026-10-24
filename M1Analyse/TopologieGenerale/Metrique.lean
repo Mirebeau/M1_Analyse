@@ -342,7 +342,9 @@ theorem epsDelta_lt_iff_le {α : Type*} (r d : α → ℝ) :
 espaces métriques et `x ∈ X`, sont équivalents : (i) `f` est continue en `x` ;
 (ii) `∀ ε > 0, ∃ δ > 0, ∀ x', d(x,x') < δ ⇒ d(f x, f x') < ε` ; (iii) idem avec `≤` ;
 (iv) il existe un module de continuité `ω_x` avec `d(f x, f x') ≤ ω_x(d(x,x'))` pour tout `x'` ;
-(v) pour toute suite `xₙ → x`, on a `f(xₙ) → f(x)`. -/
+(v) pour toute suite `xₙ → x`, on a `f(xₙ) → f(x)`.
+Preuve (différente du cours) : (i) ⇔ (v) par la caractérisation séquentielle de Mathlib
+(`tendsto_nhds_iff_seq_tendsto`), au lieu de (iv) ⇒ (v) et non (iii) ⇒ non (v). -/
 theorem lem_contDistance [MetricSpace X] [MetricSpace Y] (f : X → Y) (x : X) :
     List.TFAE
       [ ContinuousAt f x,
@@ -496,7 +498,10 @@ theorem estDistance_distCvSimple : EstDistance (distCvSimple (Z := Z)) := by
 /-- **Prop. `prop:distCvSimple` (Distance associée à la convergence simple).** Pour une famille
 dénombrable `(Zₙ, dₙ)` d'espaces métriques, `d(x, y) := maxₙ min{2⁻ⁿ, dₙ(xₙ, yₙ)}` est une
 distance sur `Πₙ Zₙ` qui métrise la topologie produit : ses boules `{y | d(x,y) < r}`, `r > 0`,
-forment une base de voisinages de `x` pour la topologie produit (Mathlib `Pi.topologicalSpace`). -/
+forment une base de voisinages de `x` pour la topologie produit (Mathlib `Pi.topologicalSpace`).
+Preuve (absente du cours) : axiomes vérifiés terme à terme ; pour les voisinages,
+`d(x, y) < min(ε, 2⁻ⁿ)` force `dₙ(xₙ, yₙ) < ε` (comparaison avec `nhds_pi`), et
+réciproquement des `N` premières coordonnées proches, avec `2⁻ᴺ < ε/2`, on tire `d ≤ ε/2`. -/
 theorem prop_distCvSimple :
     EstDistance (distCvSimple (Z := Z)) ∧
       ∀ x : ∀ n, Z n, (𝓝 x).HasBasis (fun r : ℝ => 0 < r)

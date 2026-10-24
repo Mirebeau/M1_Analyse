@@ -32,7 +32,9 @@ namespace M1Analyse
 /-- **Prop. `prop:prolongement_complet` (Prolongement des fonctions uniformément continues).**
 Soient `(X,d)` un espace métrique, `(Y,d_Y)` un complet, `A ⊆ X` une partie dense, et
 `f : A → Y` admettant un module de continuité `ω` (continu et croissant). Alors `f` admet une
-unique extension continue `F : X → Y`, qui admet de plus le même module de continuité `ω`. -/
+unique extension continue `F : X → Y`, qui admet de plus le même module de continuité `ω`.
+Preuve (différente du cours) : extension par `Dense.extend` de Mathlib (limites selon un
+filtre) ; le module `ω` passe à `X × X` car l'inégalité définit un fermé contenant `A × A`. -/
 theorem prop_prolongement_complet {X Y : Type*} [MetricSpace X] [MetricSpace Y]
     [CompleteSpace Y] {A : Set X} (hA : Dense A) (f : A → Y) (ω : ℝ≥0 → ℝ≥0∞)
     (hω0 : Tendsto ω (𝓝 0) (𝓝 0)) (hωc : Continuous ω) (_hωm : Monotone ω)
@@ -71,7 +73,9 @@ theorem prop_prolongement_complet {X Y : Type*} [MetricSpace X] [MetricSpace Y]
 /-- **Prop. `prop:espaceComplete` (Complété d'un espace métrique), existence.** Pour tout espace
 métrique `(A,d)`, il existe un espace métrique complet `X` et une isométrie `ι : A → X`
 d'image dense (une partie dense de `X` est donc en bijection isométrique avec `A`).
-Mathlib : `X = UniformSpace.Completion A`. -/
+Mathlib : `X = UniformSpace.Completion A`.
+Preuve (différente du cours) : complété de Mathlib, construit par filtres de Cauchy
+minimaux et non comme quotient des suites de Cauchy. -/
 theorem prop_espaceComplete {A : Type u} [MetricSpace A] :
     ∃ (X : Type u) (_ : MetricSpace X), CompleteSpace X ∧
       ∃ ι : A → X, Isometry ι ∧ DenseRange ι :=

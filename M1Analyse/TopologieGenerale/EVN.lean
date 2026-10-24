@@ -719,7 +719,10 @@ theorem def_normeLp_infty (f : Lp 𝕜 ∞ μ) :
 
 /-- **Déf. `def:normeLp`, structure d'evn.** Pour `p ∈ [1, ∞]`, `L^p(X,μ)` est un evn : sa norme
 satisfait les axiomes du cours (`def:norme`) ; l'inégalité triangulaire est l'inégalité de
-Minkowski. -/
+Minkowski.
+Preuve (différente du cours) : structure d'evn de `Lp` dans Mathlib, où l'inégalité de
+Minkowski (`ENNReal.lintegral_Lp_add_le`) découle de l'inégalité de Hölder, et non de la
+convexité de `s ↦ s^p`. -/
 theorem def_normeLp (p : ℝ≥0∞) [Fact (1 ≤ p)] :
     (∀ f : Lp 𝕜 p μ, 0 ≤ ‖f‖) ∧ (∀ f : Lp 𝕜 p μ, f ≠ 0 → 0 < ‖f‖) ∧
     (∀ (f : Lp 𝕜 p μ) (c : 𝕜), ‖c • f‖ = ‖c‖ * ‖f‖) ∧

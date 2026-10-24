@@ -20,7 +20,7 @@ de Lebesgue `volume`. La quasi-norme faible `‖·‖_{p,w}`, absente de Mathlib
 La proposition `prop:convolPow` est formalisée dans `M1Analyse/Sobolev/NoyauGreen.lean`
 (`prop_convolPow`). Ne sont pas formalisés : `th:YoungFaible` (admis dans le cours),
 `th:injSousCrit` et `corol:injSousCritOm` (les espaces de Sobolev `W^{s,p}` ne sont pas dans
-Mathlib), ni la seconde identité de `eq:homog_lp` (dérivées).
+Mathlib). Les deux identités de `eq:homog_lp` sont `eq_homog_lp` et `eq_homog_lp_deriv`.
 -/
 
 open Set Filter MeasureTheory Metric
@@ -69,7 +69,9 @@ theorem normeFaible_le_eLpNorm {X : Type*} [MeasurableSpace X] (μ : Measure X) 
 
 /-- **Éq. `eq:powLpw`.** Pour `0 < α ≤ d`, la fonction `x ↦ 1 / |x|^α` est dans
 `L^{d/α, w}(ℝ^d)` : elle est mesurable et `‖1/|x|^α‖_{d/α, w} < ∞`. (En `x = 0`, la valeur
-`1 / 0 = 0` de Lean est sans importance.) On a en fait `μ{1/|x|^α ≥ t} t^{d/α} ≤ |B(0,1)|`. -/
+`1 / 0 = 0` de Lean est sans importance.) On a en fait `μ{1/|x|^α ≥ t} t^{d/α} ≤ |B(0,1)|`.
+Preuve (le cours n'en donne pas) : `{1/|x|^α ≥ t} ⊆ B'(0, t^{-1/α})`, boule de mesure
+`|B(0,1)| t^{-d/α}`. -/
 theorem eq_powLpw {α : ℝ} (hα : 0 < α) (hαd : α ≤ d) :
     Measurable (fun x : ℝᵈ => 1 / ‖x‖ ^ α) ∧
       normeFaible volume (d / α) (fun x : ℝᵈ => 1 / ‖x‖ ^ α) < ∞ := by
@@ -448,7 +450,9 @@ theorem th_Young_reel {p q r : ℝ≥0∞} (hp : 1 ≤ p) (hq : 1 ≤ q) (hr : 1
 `f ⋆ g ∈ L^{r'}(ℝ^d)` et `‖f ⋆ g‖_{r'} ≤ ‖f‖_p ‖g‖_q`.
 Remarque : la convolution est ici l'intégrale de Mathlib, définie presque partout ; le cours
 l'obtient (pour `p, q < ∞`) comme prolongement continu de la convolution sur `C^0_c`, ce qui
-donne la même fonction. La condition `r' ∈ [1, ∞]` découle de la relation entre exposants. -/
+donne la même fonction. La condition `r' ∈ [1, ∞]` découle de la relation entre exposants.
+Preuve (différente du cours) : estimation démontrée directement (Hölder à trois facteurs et
+Fubini, `eLpNorm_lintegral_conv_le`), sans passer par la forme trilinéaire ni par densité. -/
 theorem th_Young_convol {p q r' : ℝ≥0∞} (hp : 1 ≤ p) (hq : 1 ≤ q)
     (hpqr : 1 + r'⁻¹ = p⁻¹ + q⁻¹) {f g : ℝᵈ → ℝ} (hf : MemLp f p) (hg : MemLp g q) :
     (∀ᵐ x, ConvolutionExistsAt f g x (lsmul ℝ ℝ) volume) ∧ MemLp (f ⋆ g) r' ∧

@@ -75,7 +75,9 @@ theorem def_topoEngendree (𝕌₀ : Set (Set X)) :
 /-- **Déf. `def:topoEngendree`, description explicite.** Les éléments de la topologie engendrée
 par `𝕌₀` sont `X` lui-même, ainsi que les unions quelconques d'intersections finies d'éléments
 de `𝕌₀` : `U = ⋃_{i ∈ I} ⋂_{1 ≤ j ≤ J(i)} U_{ij}`, avec `J : I → ℕ*` et `U_{ij} ∈ 𝕌₀`
-(remarque non numérotée suivant `def:topoEngendree` ; les indices `j` parcourent `Fin (J i)`). -/
+(remarque non numérotée suivant `def:topoEngendree` ; les indices `j` parcourent `Fin (J i)`).
+Preuve (absente du cours) : via la base de Mathlib `isTopologicalBasis_of_subbasis`, formée
+des intersections finies d'éléments de `𝕌₀` ; l'intersection vide donne le cas `U = X`. -/
 theorem def_topoEngendree_description (𝕌₀ : Set (Set X)) (U : Set X) :
     IsOpen[generateFrom 𝕌₀] U ↔ U = univ ∨
       ∃ (I : Type u) (J : I → ℕ) (V : (i : I) → Fin (J i) → Set X),
@@ -126,7 +128,9 @@ theorem prop_baseOuverts_iff [t : TopologicalSpace X] (𝕌₀ : Set (Set X)) :
 
 /-- **Prop. `prop:baseOuverts` (Base d'ouverts).** Si `𝕌₀ ⊆ 𝒫(X)` satisfait (i) la couverture
 de `X` et (ii) la stabilité par intersection en tout point, alors la topologie engendrée par
-`𝕌₀` consiste en les unions quelconques d'éléments de `𝕌₀` (éq. `eq:topo_engendree`). -/
+`𝕌₀` consiste en les unions quelconques d'éléments de `𝕌₀` (éq. `eq:topo_engendree`).
+Preuve (différente du cours) : lemme de Mathlib `IsTopologicalBasis.open_iff_eq_sUnion`, au
+lieu de vérifier que les unions d'éléments de `𝕌₀` forment une topologie. -/
 theorem prop_baseOuverts (𝕌₀ : Set (Set X)) (h₁ : ⋃₀ 𝕌₀ = univ)
     (h₂ : ∀ U ∈ 𝕌₀, ∀ V ∈ 𝕌₀, ∀ x ∈ U ∩ V, ∃ W ∈ 𝕌₀, x ∈ W ∧ W ⊆ U ∩ V) :
     {U : Set X | IsOpen[generateFrom 𝕌₀] U} = {U | ∃ 𝒰 ⊆ 𝕌₀, U = ⋃₀ 𝒰} := by
@@ -138,7 +142,9 @@ theorem prop_baseOuverts (𝕌₀ : Set (Set X)) (h₁ : ⋃₀ 𝕌₀ = univ)
 /-- **Cor. `corol:baseOuverts`.** Soit `(X, 𝕌)` un espace topologique et `𝕌₀ ⊆ 𝕌` tel que pour
 tout ouvert `U` et tout `x ∈ U`, il existe `U_x ∈ 𝕌₀` avec `x ∈ U_x ⊆ U`. Alors `𝕌₀` est une
 base d'ouverts pour la topologie `𝕌` : il vérifie (i), (ii), et engendre `𝕌`
-(cf. `prop_baseOuverts_iff`). -/
+(cf. `prop_baseOuverts_iff`).
+Preuve (différente du cours) : critère de Mathlib `isTopologicalBasis_of_isOpen_of_nhds`,
+au lieu de la vérification directe de (i), (ii) et de `U = ⋃_{x ∈ U} U_x`. -/
 theorem corol_baseOuverts [t : TopologicalSpace X] (𝕌₀ : Set (Set X))
     (h𝕌₀ : ∀ U ∈ 𝕌₀, IsOpen U) (h : ∀ U, IsOpen U → ∀ x ∈ U, ∃ V ∈ 𝕌₀, x ∈ V ∧ V ⊆ U) :
     ⋃₀ 𝕌₀ = univ ∧
@@ -200,7 +206,10 @@ theorem ex_topoOrdre [TopologicalSpace X] [LinearOrder X] [OrderTopology X] [Non
 
 /-- **Ex. `ex:topoProduit` (Topologie produit).** La topologie produit de Mathlib sur
 `Π i, X i` admet pour base d'ouverts les produits `Π i, U i` d'ouverts `U i` de `X i`, avec
-`U i = X i` sauf pour un nombre fini d'indices. -/
+`U i = X i` sauf pour un nombre fini d'indices.
+Preuve (différente du cours) : la topologie produit étant celle de Mathlib, on montre que ces
+pavés sont ouverts et contiennent un pavé de `isTopologicalBasis_pi` dans tout voisinage
+(`isTopologicalBasis_of_isOpen_of_nhds`), au lieu de vérifier les axiomes (i)–(ii). -/
 theorem ex_topoProduit {I : Type*} {X : I → Type*} [∀ i, TopologicalSpace (X i)] :
     IsTopologicalBasis {S : Set (Π i, X i) | ∃ U : Π i, Set (X i),
       (∀ i, IsOpen (U i)) ∧ {i | U i ≠ univ}.Finite ∧ S = univ.pi U} := by
