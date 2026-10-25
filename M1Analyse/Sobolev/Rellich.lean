@@ -19,7 +19,8 @@ théorèmes (cas sous-critique, critique, sur-critique), pour `p > 1` (et `p < �
 sur-critique), sous l'hypothèse `Ω` borné et `ProlongementSobolevTout Ω` (au lieu de « `Ω` borné
 régulier », \claudereport). Les espaces `W^{1,p}(Ω)` sont ceux de
 `M1Analyse/Sobolev/W1p.lean`. `corol:Rellich` est dans `M1Analyse/Sobolev/RellichCorollaire.lean`.
-Non formalisés (pour l'instant) : `ex:nonLinMinH1`, `rem:bouleW1pFerme`.
+`ex:nonLinMinH1` est dans `M1Analyse/Sobolev/MinNonLinH1.lean`. Non formalisé (pour
+l'instant) : `rem:bouleW1pFerme`.
 -/
 
 open MeasureTheory
