@@ -1,6 +1,7 @@
 \documentclass[11pt]{article} 
 \usepackage{etoolbox} \newtoggle{perso}
 \toggletrue{perso} % Comment for student version
+%\newcommand\leancheck[1]{} % Comment to show the lean anchor links 
 \usepackage[mathletters]{ucs}
 \usepackage[utf8x]{inputenc}
 
@@ -17,6 +18,7 @@
 \usepackage{abraces}
 \newcommand\overpar[1]{\aoverbrace[L1R]{#1}}
 \usepackage{hyperref}
+
 \input{leananchors} % \leancheck{<label>} : lien vers la formalisation Lean (généré par scripts/lean_pages/leancheck.py)
 \usepackage{pifont} \def\facultatif{\ding{40}} % avion
 

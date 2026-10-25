@@ -268,8 +268,7 @@ L'image fermée $\overline {\Phi(E)} \subset E^{**}$ d'un evn $E$ s'identifie à
 
 
 Pour établir la propriété de réflexivité, on dispose de la condition géométrique suffisante suivante.
-Sa preuve, élémentaire mais assez technique, est admise. Il existe également un critère nécessaire et suffisant, donné par le théorème de James. 
-
+Il existe également un critère nécessaire et suffisant, donné par le théorème de James. 
 %\begin{theorem}[Théorème de James]
 %Soit $E$ un Banach et $B := B'_E(0,1)$ sa boule unité fermée. Sont équivalents:
 %\begin{enumerate}[(i)]
@@ -291,6 +290,7 @@ Sa preuve, élémentaire mais assez technique, est admise. Il existe également 
 
 \begin{theorem}[Milman-Pettis \facultatif]
 \label{th:unifCvxReflex}
+\leancheck{th:unifCvxReflex}%
 	Un evn $E$ est dit uniformément convexe si $\forall \ve>0$, $\exists \delta>0$, $\forall x,y \in E$,
 	\begin{align}
 	\label{eq:unif_cvx_ball}
@@ -299,6 +299,11 @@ Sa preuve, élémentaire mais assez technique, est admise. Il existe également 
 	Tout espace de Banach uniformément convexe est réflexif. 
 	%es espaces uniformément convexes sont parfois appelés super-réflexifs
 \end{theorem}
+
+\begin{proof}
+	La preuve, élémentaire mais assez technique, est admise. 
+	L'énoncé est formalisé en tant qu'axiome dans Lean.\leancheck{th:unifCvxReflex}
+\end{proof}
 
 %L'uniforme convexité implique la réflexivité, comme le montre la proposition ci-dessous. 
 %Noter que les espaces uniformément convexes sont parfois appelés super-réflexifs, et que leur réflexivité peut être établie de manière élémentaire (sans passer par le théorème de James).
@@ -384,6 +389,7 @@ si $1<p \leq 2$ et $\frac 1 p + \frac 1 q =1$.
 
 \begin{proposition}[Première inégalité de Clarkson \facultatif]
 \label{prop:ClarksonIneq}
+\leancheck{prop:ClarksonIneq}%
 Soient $2 \leq p < \infty$ et $f,g\in L^p(X,\mu)$. Alors
 	\begin{equation*}
 		\Big\|\frac{f+g} 2\Big\|_p^p + \Big\|\frac{f-g} 2\Big\|_p^p \leq \frac 1 2 \|f\|_p^p + \frac 1 2 \|g\|_p^p.
@@ -414,6 +420,8 @@ Soient $2 \leq p < \infty$ et $f,g\in L^p(X,\mu)$. Alors
 
 \begin{theorem}[Dualité dans les espaces de Lebesgue]
 \label{th:lpDualLq}
+\leancheck{th:lpDualLq}%
+\claudereport{Pour $p=1$ (donc $q=\infty$), l'énoncé requiert une hypothèse sur la mesure. Si $X=\{*\}$ et $\mu(\{*\})=\infty$, alors $L^1(X,\mu)=\{0\}$ et $L^\infty(X,\mu)=\bR$, de sorte que $g\mapsto \vp_g$ n'est pas injective. L'isométrie vaut si $\mu$ est semi-finie (par exemple $\sigma$-finie), et la bijectivité si $\mu$ est $\sigma$-finie. La formalisation Lean suppose $\mu$ $\sigma$-finie dans le cas $p=1$. La bijectivité pour $p=1$ est également formalisée, sous l'hypothèse $\sigma$-finie, bien que non démontrée dans le cours.}
 Soit $1 \leq p \leq \infty$, et $q$ l'exposant conjugué, i.e. $\frac 1 p + \frac 1 q =1$. Posons pour tous $f\in L^p(X,\mu)$ et $g \in L^q(X,\mu)$
 \begin{equation*}
 	\vp_g(f) := \int_X fg.
@@ -440,6 +448,7 @@ Pour terminer, nous montrons que $\ell^1\subsetneq (\ell^\infty)^*$, où $\ell^p
 
 \begin{exemple}[Non réflexivité]	
 \label{ex:nonReflex}
+\leancheck{ex:nonReflex}%
 On a $(\ell^\infty_0)^* = \ell^1$ et $(\ell^1)^* = \ell^\infty$ (identification via des isométries bijectives), où $\ell^\infty_0$ désigne l'espace des suites convergeant vers $0$, le crochet de dualité étant 
 \begin{equation*}
 	\<(x_n)_{n \in \bN}, (y_n)_{n\in \bN}\> := \sum_{n \in \bN} x_n y_n.

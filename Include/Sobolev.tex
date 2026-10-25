@@ -109,6 +109,7 @@ On note $\alpha \preceq \beta$ l'ordre partiel coordonnée par coordonnée sur $
 
 \begin{proposition}[Séparabilité de $\cD(\Omega)$]
 \label{prop:testFunSeparab}	
+\leancheck{prop:testFunSeparab}%
 	L'espace des fonctions test $\cD(\Omega)$ est séparable.
 \end{proposition}
 
@@ -517,6 +518,8 @@ La condition $\partial_\alpha f \in L^p(\Omega)$ apparaissant dans celle-ci sign
 
 \begin{definition}[Espace de Sobolev]
 \label{def:Sobolev}
+\leancheck{def:Sobolev}%
+\claudereport{La formalisation Lean ne traite que le cas $s=1$. Un élément de $W^{1,p}(\Omega)$ y est représenté par le couple $(f,\nabla f) \in L^p(\Omega)\times L^p(\Omega)^d$, où $\nabla f$ est le gradient au sens des distributions. Le gradient étant unique, la projection $(f,\nabla f)\mapsto f$ identifie isométriquement cet espace au sous-espace $W^{1,p}(\Omega)\subset L^p(\Omega)$ du cours.}
 	Pour tout $s \in \bN$, $p \in [1,\infty]$, on définit l'espace de Sobolev $W^{s,p}(\Omega) \subset L^p(\Omega)$ et sa norme comme suit : 
 	\begin{align*}
 		W^{s,p}(\Omega) &:= \{f \in L^p(\Omega) \mid \forall |\alpha|_1 \leq s,\, \partial_\alpha f \in L^p(\Omega)\}, &
@@ -528,6 +531,7 @@ La condition $\partial_\alpha f \in L^p(\Omega)$ apparaissant dans celle-ci sign
 
 \begin{proposition}
 \label{prop:SobolevBanach}
+\leancheck{prop:SobolevBanach}%
 	Pour tous $s \in \bN$ et $p \in [1,\infty]$, l'espace $W^{s,p}(\Omega)$ est un Banach. Si $p=2$, c'est un espace de Hilbert, aussi noté $H^s(\Omega) := W^{s,2}(\Omega)$.
 \end{proposition}
 
@@ -583,6 +587,7 @@ Finalement, les propriétés (ii) et (iii) annoncées découlent immédiatement 
 
 \begin{proposition}
 \label{prop:testDenseWsp}
+\leancheck{prop:testDenseWsp}%
 	Soient $s\in \bN$, $p \in [1,\infty[$, $f \in W^{s,p}( \bR^d)$ et $\rho \in \cD(\bR^d)$ telle que $\int \rho=1$. Alors 
 	$f \star \rho_\ve \to f$ dans $W^{s,p}(\bR^d)$, et de plus $\cD(\bR^d)$ est dense dans $W^{s,p}(\bR^d)$. % qui est donc séparable.  
 \end{proposition}
@@ -616,13 +621,19 @@ Un résultat de prolongement, admis, permet d'étendre à $\bR^d$ les éléments
 	Un ouvert $\Omega \subset \bR^d$ est dit régulier (de classe $C^\infty$) si pour tout $x \in \partial \Omega$ il existe des ouverts $U\ni x$ et $V \ni 0$ et un difféomorphisme $\phi \in C^\infty(U,V)$, tels que $\phi(x) = 0$ et $\phi(U \cap \Omega) = V \cap (]0,\infty[ \times \bR^{d-1})$. 
 \end{definition}
 
-\begin{theorem}[Prolongement dans les espaces de Sobolev, admis]
+\begin{theorem}[Prolongement dans les espaces de Sobolev]
 \label{th:prolSobolev}
 Soient $\Omega \subset \bR^d$ un ouvert régulier, $s\in \bN$ et $p \in [1,\infty]$. Alors il existe un opérateur linéaire continu $P : W^{s,p}(\Omega)\to W^{s,p}(\bR^d)$ tel que $(P u)_{|\Omega} = u$ pour tout $u \in W^{s,p}(\Omega)$.  
 \end{theorem}
 
+\begin{proof}
+	Ce résultat est \emph{admis}. La formalisation Lean définit une \emph{propriété de prolongement de Sobolev}, associée à un domaine de $\bR^d$, qui reprend la conclusion de ce résultat.\leancheck{th:prolSobolev}
+\end{proof}
+
 \begin{corollary}
 \label{corol:testDenseWspO}
+\leancheck{corol:testDenseWspO}%
+\claudereport{La formalisation Lean (cas $s=1$) remplace l'hypothèse "$\Omega$ régulier" par la propriété de prolongement de Sobolev, conclusion du \cref{th:prolSobolev} (qui n'est pas formalisé).}
 	Soient $\Omega \subset \bR^d$ un ouvert régulier, $s \in \bN$ et $p \in [1,\infty[$. Alors $\{\phi_{|\Omega} \mid \phi \in \cD(\bR^d)\}$ est dense dans $W^{s,p}(\Omega)$. 
 \end{corollary}
 
@@ -638,12 +649,15 @@ Une autre preuve alternative utilisant la compacité faible est présentée dans
 
 \begin{remark}[Conditions au bord de Dirichlet]
 \label{rem:bcDirichlet}
+\leancheck{rem:bcDirichlet}%
 L'adhérence de $\cD(\Omega)$ dans $W^{1,p}(\Omega)$ est notée $W^{1,p}_0(\Omega)$. Ce sous espace, strict en général, est donc séparable et complet. On dit qu'il implémente les conditions au bord nulles de Dirichlet.
 \end{remark}
 
 
+\claudereport{L'hypothèse "$\Omega$ borné" n'est pas utilisée par la preuve, la forme $Q$ étant exactement le produit scalaire de $H^1(\Omega)$. La formalisation Lean l'omet.}
 \begin{theorem}[Problème de Poisson] % avec conditions au bord de Neumann ou de Dirichlet]
 \label{th:pbPoisson}
+\leancheck{th:pbPoisson}%
 Soit $\Omega \subset \bR^d$ un ouvert borné, et soit $f \in L^2(\Omega)$. %Alors~:
 \begin{itemize}
 	\item (Problème de Neumann)
@@ -716,6 +730,7 @@ pour tout $0< \alpha \leq d$. Par contraste, ces fonctions n'appartiennent à au
 
 \begin{theorem}[Inégalité de Young faible, admis]
 \label{th:YoungFaible}
+\claudereport{Dans la formalisation Lean, ce résultat est posé comme axiome, sous la forme $\big\|\int |f(t)|\,|g(\cdot-t)| \diff t\big\|_{r'} \leq C(p,q,d)\|f\|_p \|g\|_{q,w}$, qui porte sur des fonctions positives et ne pose donc aucune question d'existence de l'intégrale. Il en découle que l'intégrale de Lebesgue $f\star g(x) = \int f(t)g(x-t)\diff t$ converge absolument pour presque tout $x$, et vérifie l'inégalité annoncée : la convolution formalisée est cette intégrale, qui coïncide avec le prolongement continu évoqué ci-dessous.}
 	Soient $p,q,r'\in ]1,\infty[$ tels que $1+ \frac 1 {r'} = \frac 1 p + \frac 1 q$. 
 	On a 
 	$\|f\star g \|_{r'} \leq C(p,q,d) \|f\|_p \|g\|_{q,w}$ pour tous $f \in L^p(\bR^d)$ et $g\in L^{q,w}(\bR^d)$.
