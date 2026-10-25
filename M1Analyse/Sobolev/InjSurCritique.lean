@@ -19,7 +19,7 @@ constante `r^d/d`). `eq:normLqPow` : `integral_fun_norm_addHaar`. `th:injSurCrit
 boule `B((x+y)/2, |x-y|/2)`, resp. `B(x,1)`) ; puis densité de `𝓓(ℝ^d)`
 (`prop_testDenseWsp_dense`) : la suite approchante est uniformément de Cauchy, sa limite
 uniforme `v` est continue, tend vers `0` à l'infini, et coïncide p.p. avec `u` (sous-suite
-convergeant p.p.). `corol:ingSurCritOm` : via l'opérateur de prolongement.
+convergeant p.p.). `corol:injSurCritOm` : via l'opérateur de prolongement.
 -/
 
 open MeasureTheory Set Filter Topology Metric
@@ -692,7 +692,7 @@ theorem th_injSurCrit (hd : 1 ≤ d) {p : ℝ≥0∞} [Fact (1 ≤ p)] (hdp : (d
     rw [dist_comm]
     linarith
 
-/-- **Cor. `corol:ingSurCritOm`.** Si `Ω` a la propriété de prolongement de Sobolev pour
+/-- **Cor. `corol:injSurCritOm`.** Si `Ω` a la propriété de prolongement de Sobolev pour
 `p ∈ ]d, ∞[` (au lieu de « `Ω` régulier », \claudereport), toute `u ∈ W^{1,p}(Ω)` admet un
 représentant continu sur `Ω` avec `‖v‖_{∞,Ω} ≤ C ‖u‖_{W^{1,p}}` et
 `|v(x) - v(y)| ≤ C' |x - y|^{1-d/p} ‖u‖_{W^{1,p}}` sur `Ω`. Preuve : `th_injSurCrit` appliqué à
