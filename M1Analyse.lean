@@ -33,6 +33,7 @@ import M1Analyse.Dualite.Reflexivite
 import M1Analyse.Dualite.DualiteLebesgue
 import M1Analyse.Dualite.HahnBanachGeometrique
 import M1Analyse.Dualite.CompaciteFaible
+import M1Analyse.Sobolev.FonctionsTest
 import M1Analyse.Sobolev.ConvolutionLp
 import M1Analyse.Sobolev.ConvolutionSobolev
 import M1Analyse.Sobolev.FrechetKolmogorov
