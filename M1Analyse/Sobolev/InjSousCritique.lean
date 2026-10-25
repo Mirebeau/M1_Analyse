@@ -18,13 +18,15 @@ de Lebesgue `volume`. La quasi-norme faible `‖·‖_{p,w}`, absente de Mathlib
 (`normeFaible`) avec sa formule littérale.
 
 La proposition `prop:convolPow` est formalisée dans `M1Analyse/Sobolev/NoyauGreen.lean`
-(`prop_convolPow`). Ne sont pas formalisés : `th:YoungFaible` (admis dans le cours),
-`th:injSousCrit` et `corol:injSousCritOm` (les espaces de Sobolev `W^{s,p}` ne sont pas dans
-Mathlib). Les deux identités de `eq:homog_lp` sont `eq_homog_lp` et `eq_homog_lp_deriv`.
+(`prop_convolPow`). `th:YoungFaible` (admis dans le cours) est posé comme
+**axiome** (`th_YoungFaible_lintegral`, décision de l'auteur), sous une forme positive dont
+se déduit l'énoncé du cours (`th_YoungFaible`). Ne sont pas formalisés : `th:injSousCrit` et
+`corol:injSousCritOm` (seul `W^{1,p}` est formalisé, dans `M1Analyse/Sobolev/W1p.lean`).
+Les deux identités de `eq:homog_lp` sont `eq_homog_lp` et `eq_homog_lp_deriv`.
 -/
 
 open Set Filter MeasureTheory Metric
-open scoped ENNReal Convolution
+open scoped ENNReal NNReal Convolution
 open ContinuousLinearMap (lsmul)
 
 namespace M1Analyse
@@ -112,6 +114,7 @@ theorem eq_powLpw {α : ℝ} (hα : 0 < α) (hαd : α ≤ d) :
   exact ((iSup₂_le key).trans_lt measure_ball_lt_top).ne
 
 /-! ### Homogénéité -/
+
 
 /-- **Éq. `eq:homog_lp` (Homogénéité, remarque `rem:homogSobolev`), première identité.** Pour
 `u : ℝ^d → ℝ`, `p ∈ [1, ∞]` et `λ > 0` (noté `c`), la fonction `u_λ(x) := u(λ x)` vérifie
@@ -494,5 +497,68 @@ theorem th_Young_convol {p q r' : ℝ≥0∞} (hp : 1 ≤ p) (hq : 1 ≤ q)
       exact (ENNReal.rpow_lt_top_iff_of_pos hS0).1 hx
   filter_upwards [hae] with x hx
   exact convolutionExistsAt_of_lintegral_lt_top hf.aestronglyMeasurable hg.aestronglyMeasurable hx
+
+section YoungFaible
+
+/-- **Th. `th:YoungFaible` (Inégalité de Young faible), AXIOME.** Pour `p, q, r' ∈ ]1, ∞[` avec
+`1 + 1/r' = 1/p + 1/q`, il existe `C = C(p, q, d)` tel que, pour `f ∈ L^p(ℝ^d)` et
+`g ∈ L^{q,w}(ℝ^d)` mesurable, `‖∫ |f(t)| |g(· - t)| dt‖_{r'} ≤ C ‖f‖_p ‖g‖_{q,w}`.
+Remarque : la preuve est admise dans le cours et le résultat est absent de Mathlib ; à la
+demande de l'auteur, il est posé comme **axiome** Lean, sous une forme portant sur des fonctions
+positives (sans question d'existence de l'intégrale). Les résultats qui en dépendent le
+mentionnent dans `#print axioms` (`M1Analyse.th_YoungFaible_lintegral`). -/
+axiom th_YoungFaible_lintegral {p q r : ℝ} (hp : 1 < p) (hq : 1 < q) (hr : 1 < r)
+    (hpqr : 1 + 1 / r = 1 / p + 1 / q) :
+    ∃ C : ℝ≥0, ∀ f g : ℝᵈ → ℝ, MemLp f (ENNReal.ofReal p) → AEStronglyMeasurable g →
+      normeFaible volume q g < ∞ →
+        eLpNorm (fun x => ∫⁻ t, ‖f t‖ₑ * ‖g (x - t)‖ₑ) (ENNReal.ofReal r) ≤
+          C * eLpNorm f (ENNReal.ofReal p) * normeFaible volume q g
+
+/-- **Th. `th:YoungFaible` (Inégalité de Young faible).** Pour `p, q, r' ∈ ]1, ∞[` avec
+`1 + 1/r' = 1/p + 1/q`, il existe `C = C(p, q, d)` tel que pour `f ∈ L^p(ℝ^d)` et
+`g ∈ L^{q,w}(ℝ^d)`, la convolution `f ⋆ g` existe presque partout, est dans `L^{r'}`, et
+`‖f ⋆ g‖_{r'} ≤ C ‖f‖_p ‖g‖_{q,w}`.
+Remarque : la convolution est l'intégrale de Lebesgue, absolument convergente presque partout,
+qui coïncide avec le prolongement continu du cours (\claudereport). Déduit de l'axiome
+`th_YoungFaible_lintegral`, comme `th_Young_convol` de l'inégalité positive. -/
+theorem th_YoungFaible {p q r : ℝ} (hp : 1 < p) (hq : 1 < q) (hr : 1 < r)
+    (hpqr : 1 + 1 / r = 1 / p + 1 / q) :
+    ∃ C : ℝ≥0, ∀ f g : ℝᵈ → ℝ, MemLp f (ENNReal.ofReal p) → AEStronglyMeasurable g →
+      normeFaible volume q g < ∞ →
+        (∀ᵐ x, ConvolutionExistsAt f g x (lsmul ℝ ℝ) volume) ∧
+          MemLp (f ⋆ g) (ENNReal.ofReal r) ∧
+          eLpNorm (f ⋆ g) (ENNReal.ofReal r) ≤
+            C * eLpNorm f (ENNReal.ofReal p) * normeFaible volume q g := by
+  obtain ⟨C, hC⟩ := th_YoungFaible_lintegral (d := d) hp hq hr hpqr
+  refine ⟨C, fun f g hf hg hgw => ?_⟩
+  set F : ℝᵈ → ℝ≥0∞ := fun x => ∫⁻ t, ‖f t‖ₑ * ‖g (x - t)‖ₑ with hF_def
+  have hFm : AEMeasurable F :=
+    aemeasurable_lintegral_conv hf.aestronglyMeasurable.enorm hg.enorm
+  have hFle := hC f g hf hg hgw
+  have hfin : (C : ℝ≥0∞) * eLpNorm f (ENNReal.ofReal p) * normeFaible volume q g < ∞ :=
+    ENNReal.mul_lt_top (ENNReal.mul_lt_top ENNReal.coe_lt_top hf.eLpNorm_lt_top) hgw
+  have hfg : AEStronglyMeasurable (f ⋆ g) volume :=
+    hf.aestronglyMeasurable.convolution (lsmul ℝ ℝ) hg
+  have hle : eLpNorm (f ⋆ g) (ENNReal.ofReal r) ≤
+      C * eLpNorm f (ENNReal.ofReal p) * normeFaible volume q g :=
+    (eLpNorm_mono_enorm hfg fun x => by
+      rw [enorm_eq_self]; exact enorm_convolution_le_lintegral f g x).trans hFle
+  have hmem : MemLp (f ⋆ g) (ENNReal.ofReal r) := hle.trans_lt hfin
+  refine ⟨?_, hmem, hle⟩
+  have hr0 : ENNReal.ofReal r ≠ 0 := by simp; linarith
+  have hrt : ENNReal.ofReal r ≠ ∞ := ENNReal.ofReal_ne_top
+  have hae : ∀ᵐ x, F x < ∞ := by
+    have hS0 : 0 < (ENNReal.ofReal r).toReal := ENNReal.toReal_pos hr0 hrt
+    have h2 : ∫⁻ x, F x ^ (ENNReal.ofReal r).toReal ≠ ∞ := by
+      have h3 := hFle.trans_lt hfin
+      rw [eLpNorm_eq_lintegral_rpow_enorm_toReal hr0 hrt hFm.aestronglyMeasurable] at h3
+      simp only [enorm_eq_self] at h3
+      exact ((ENNReal.rpow_lt_top_iff_of_pos (by positivity)).1 h3).ne
+    filter_upwards [ae_lt_top' (hFm.pow_const _) h2] with x hx
+    exact (ENNReal.rpow_lt_top_iff_of_pos hS0).1 hx
+  filter_upwards [hae] with x hx
+  exact convolutionExistsAt_of_lintegral_lt_top hf.aestronglyMeasurable hg hx
+
+end YoungFaible
 
 end M1Analyse
