@@ -16,7 +16,7 @@ import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 Source : `Include/Compacite.tex`, corollaire suivant `th:Brouwer`, et sous-section
 `subsec:Schauder`.
 
-Ces résultats dépendent de l'axiome `lem_chgVarLax` (via `th_Brouwer`). Non formalisés :
+Ces résultats reposent sur `th_Brouwer`. Non formalisés :
 `rem:SchauderEvt` (admis), `rem:preuveCauchyPeano` (mention d'une preuve alternative).
 -/
 
@@ -52,8 +52,7 @@ private theorem schauder_simplexe_convex (m : ℕ) : Convex ℝ (schauder_simple
 /-- **Corollaire de `th:Brouwer` (sans étiquette), convexes compacts.** Toute application
 continue d'un convexe compact non vide `K` de `ℝ^d` dans lui-même admet un point fixe.
 Preuve : celle du cours (homothétie ramenant `K` dans la boule unité, et projection sur `K`,
-`projConvexe`, comme rétraction), appliquée directement avec `th_Brouwer`. Dépend de l'axiome
-`lem_chgVarLax`. -/
+`projConvexe`, comme rétraction), appliquée directement avec `th_Brouwer`. -/
 theorem corol_Brouwer_convexe {d : ℕ} {K : Set (EuclideanSpace ℝ (Fin d))} (hK : Convex ℝ K)
     (hKc : IsCompact K) (hKne : K.Nonempty)
     {f : EuclideanSpace ℝ (Fin d) → EuclideanSpace ℝ (Fin d)}
@@ -152,7 +151,7 @@ Banach et `f ∈ C^0(K, K)`. Si `f(K)` est d'adhérence compacte, `f` admet un p
 Preuve : celle du cours (réduction à `closure (Hull f(K))`, compact par `prop:hullCompact`,
 projection de Schauder `g_ε`, Brouwer, extraction). Variante : `g_ε ∘ f` est lue en
 coordonnées barycentriques sur le simplexe de `ℝ^m`, au lieu de transporter `K_ε` dans un
-espace euclidien. Dépend de l'axiome `lem_chgVarLax`. -/
+espace euclidien. -/
 theorem th_Schauder {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X] [CompleteSpace X]
     {K : Set X} (hK : Convex ℝ K) (hKc : IsClosed K) (hKne : K.Nonempty) {f : X → X}
     (hf : ContinuousOn f K) (hfK : MapsTo f K K) (hfc : IsCompact (closure (f '' K))) :
@@ -188,8 +187,7 @@ open BoundedContinuousFunction in
 `u(0) = x₀` et `u'(t) = f(t, u(t))` pour tout `t ∈ [0, t₀]` (même forme que
 `th_Cauchy_Lipschitz`).
 Preuve : celle du cours (Schauder appliqué à `F u(t) = x₀ + ∫_0^t f(s, u(s)) ds` sur
-`K = C^0([0, t₀], B'(x₀, r₀))`, compacité par Arzelà–Ascoli de Mathlib). Dépend de l'axiome
-`lem_chgVarLax`. -/
+`K = C^0([0, t₀], B'(x₀, r₀))`, compacité par Arzelà–Ascoli de Mathlib). -/
 theorem th_CauchyPeano {d : ℕ} (Ω : Set (EuclideanSpace ℝ (Fin d))) (hΩ : IsOpen Ω)
     (f : ℝ → EuclideanSpace ℝ (Fin d) → EuclideanSpace ℝ (Fin d))
     (hf : ContinuousOn (Function.uncurry f) (Ici 0 ×ˢ Ω)) :

@@ -14,7 +14,7 @@ Source : `Include/Compacite.tex`, sous-section `subsec:Schauder`.
 
 Le théorème de point fixe de Schauder (`th:Schauder`) et le théorème de Cauchy-Arzelà-Peano
 (`th:CauchyPeano`) sont dans `M1Analyse/Compacite/SchauderPeano.lean` (ils reposent sur
-`th:Brouwer`, donc sur l'axiome de Lax).
+`th:Brouwer`).
 
 On formalise ici l'étape élémentaire de la preuve du `th:Schauder` : la « projection de
 Schauder » `g_ε`, définie à partir d'un recouvrement `K ⊆ ⋃ᵢ B(xᵢ, ε)`, est continue sur `K`,

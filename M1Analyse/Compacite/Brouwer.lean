@@ -10,6 +10,7 @@ import Mathlib.Analysis.Calculus.ContDiff.Basic
 import Mathlib.Topology.Order.IntermediateValue
 import Mathlib.Topology.Order.ProjIcc
 import Mathlib.Analysis.Calculus.BumpFunction.Convolution
+import M1Analyse.Compacite.Lax
 
 /-!
 # §3.5 Point fixe de Brouwer (`subsec:Brouwer`)
@@ -17,8 +18,9 @@ import Mathlib.Analysis.Calculus.BumpFunction.Convolution
 Source : `Include/Compacite.tex`, sous-section `subsec:Brouwer`.
 
 Le théorème de point fixe de Brouwer (`th:Brouwer`) est absent de Mathlib. Le lemme de Lax
-(`lem:chgVarLax`), démontré dans le cours pour `d = 2` seulement, est posé comme **axiome**
-(décision de l'auteur) ; on en déduit `lem:noretractSmooth`, `corol:noretract` et `th:Brouwer`.
+(`lem:chgVarLax`), démontré dans le cours pour `d = 2` seulement, est démontré en toute dimension
+dans `M1Analyse/Compacite/Lax.lean` ; on en déduit `lem:noretractSmooth`, `corol:noretract` et
+`th:Brouwer`.
 
 On formalise :
 * la formule de changement de variable `th:chgVarIntegr`, citée sans preuve par le cours, et
@@ -107,17 +109,19 @@ variable {d : ℕ}
 
 local notation "ℝᵈ" => EuclideanSpace ℝ (Fin d)
 
-/-- **Lem. `lem:chgVarLax` (Lax), AXIOME.** Soient `φ ∈ C^2(ℝ^d, ℝ^d)` telle que `φ(x) = x`
-pour tout `x ∉ B` (`B` boule unité fermée), et `f ∈ 𝓓(ℝ^d)`. Alors
-`∫ f(x) dx = ∫ f(φ(x)) det J(x) dx`, où `det J(x)` est le jacobien de `φ`, avec son signe.
-Remarque : le cours ne démontre que le cas `d = 2` et renvoie à la littérature pour le cas
-général ; Mathlib ne contient que la formule pour `φ` injective (`th_chgVarIntegr`). À la
-demande de l'auteur, l'énoncé est posé comme **axiome** (\claudereport). Les résultats qui en
-dépendent le mentionnent dans `#print axioms` (`M1Analyse.lem_chgVarLax`). -/
-axiom lem_chgVarLax {φ : ℝᵈ → ℝᵈ} (hφ : ContDiff ℝ 2 φ)
+/-- **Lem. `lem:chgVarLax` (Lax).** Soient `φ ∈ C^2(ℝ^d, ℝ^d)` telle que `φ(x) = x` pour tout
+`x ∉ B` (`B` boule unité fermée), et `f ∈ 𝓓(ℝ^d)`. Alors `∫ f(x) dx = ∫ f(φ(x)) det J(x) dx`, où
+`det J(x)` est le jacobien de `φ`, avec son signe.
+Remarque : Mathlib ne contient que la formule pour `φ` injective (`th_chgVarIntegr`) ; d'abord
+posé comme axiome à la demande de l'auteur, l'énoncé est maintenant démontré.
+Preuve (différente du cours, qui ne traite que `d = 2`) : par homotopie `φ_t = Id + t(φ - Id)`,
+la dérivée de `t ↦ ∫ f(φ_t) det Dφ_t` est l'intégrale d'une divergence (identité de Piola), donc
+nulle (`lem_chgVarLax_proof`, `M1Analyse/Compacite/Lax.lean`). -/
+theorem lem_chgVarLax {φ : ℝᵈ → ℝᵈ} (hφ : ContDiff ℝ 2 φ)
     (hφB : ∀ x, x ∉ closedBall (0 : ℝᵈ) 1 → φ x = x) {f : ℝᵈ → ℝ}
     (hf : ContDiff ℝ (⊤ : ℕ∞) f) (hfc : HasCompactSupport f) :
-    ∫ x, f x = ∫ x, f (φ x) * (fderiv ℝ φ x).det
+    ∫ x, f x = ∫ x, f (φ x) * (fderiv ℝ φ x).det :=
+  lem_chgVarLax_proof hφ hφB hf hfc
 
 /-- **Lem. `lem:noretractSmooth`.** Si `φ ∈ C^2(ℝ^d, ℝ^d)` et `φ(x) = x` pour tout `x ∉ B`, alors
 `B ⊂ φ(B)`. Preuve : celle du cours (fonction plateau d'intégrale `1` dans une boule évitant
@@ -274,7 +278,7 @@ theorem corol_noretract {φ : ℝᵈ → ℝᵈ} (hφc : ContinuousOn φ (closed
 
 /-- **Th. `th:Brouwer` (Point fixe de Brouwer).** Toute `f ∈ C^0(B, B)` admet un point fixe.
 Preuve : celle du cours (rétraction `x ↦ x + λ(x)(x - f(x))` sur la sphère, contredisant
-`corol:noretract`). Dépend de l'axiome `lem_chgVarLax`. -/
+`corol:noretract`). -/
 theorem th_Brouwer {f : ℝᵈ → ℝᵈ} (hfc : ContinuousOn f (closedBall 0 1))
     (hfB : MapsTo f (closedBall 0 1) (closedBall 0 1)) :
     ∃ x ∈ closedBall (0 : ℝᵈ) 1, f x = x := by
