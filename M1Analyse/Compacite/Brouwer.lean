@@ -82,8 +82,8 @@ theorem brouwer_dim_one (f : C(Icc (-1 : ℝ) 1, Icc (-1 : ℝ) 1)) : ∃ x, f x
 /-- Argument de rétraction (corollaire suivant `th:Brouwer`, premier point). Soit `K ⊆ B`, et
 `P ∈ C⁰(B, K)` une rétraction (`P|_K = Id`). Si toute `g ∈ C⁰(B, B)` admet un point fixe, alors
 toute `f ∈ C⁰(K, K)` admet un point fixe.
-Remarque : le cours applique ceci avec `B` la boule unité de `ℝ^d` et le `th:Brouwer` (non
-formalisé), qui est ici une hypothèse. -/
+Remarque : le cours applique ceci avec `B` la boule unité de `ℝ^d`, l'hypothèse étant alors
+fournie par `th:Brouwer` (`th_Brouwer`) ; voir `corol_Brouwer_convexe`. -/
 theorem fixedPoint_of_retract {X : Type*} [TopologicalSpace X] {B K : Set X} (hKB : K ⊆ B)
     (hB : ∀ g : C(B, B), ∃ x, g x = x) (P : C(B, K)) (hP : ∀ x : K, P ⟨x, hKB x.2⟩ = x)
     (f : C(K, K)) : ∃ x, f x = x := by

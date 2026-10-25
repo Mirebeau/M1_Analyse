@@ -121,7 +121,9 @@ l'image de `𝓓(Ω)` dans `L^q(Ω)`, prolongée à `L^q(Ω)` par Hahn–Banach,
 par `f ∈ L^p` par `th:lpDualLq` (`th_lpDualLq_bijectif` si `p < ∞`,
 `th_lpDualLq_bijectif_un` si `p = ∞`), au lieu du prolongement par densité de `𝓓(Ω)` dans
 `L^q(Ω)` (`corol:testDenseLp`) ;
-(b) ⇒ (a), inégalité de Hölder avec `C = ‖f‖_p`.) -/
+(b) ⇒ (a), inégalité de Hölder avec `C = ‖f‖_p`.)
+Dépend de l'axiome de Milman–Pettis (`th_unifCvxReflex`) via `th_lpDualLq_bijectif` (cas
+`p < ∞`). -/
 theorem corol_distribLp (Ω : TopologicalSpace.Opens ℝᵈ) (T : 𝓓'(Ω, ℝ)) {p q : ℝ≥0∞}
     (hp : 1 < p) (hpq : p⁻¹ + q⁻¹ = 1) :
     (∃ C : ℝ, ∀ φ : 𝓓(Ω, ℝ), |T φ| ≤ C * (eLpNorm φ q (volume.restrict (Ω : Set ℝᵈ))).toReal) ↔

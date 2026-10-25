@@ -579,8 +579,9 @@ private lemma rellich_transl {Ω : TopologicalSpace.Opens ℝᵈ} {p pstar q : �
 /-- **Th. `th:Rellich` (Rellich), cas sous-critique.** Soient `Ω` borné ayant la propriété de
 prolongement de Sobolev, `1 < p < d`, `1/p* = 1/p - 1/d` et `q ∈ [1, p*[`. Tout `u ∈ W^{1,p}(Ω)`
 est dans `L^q(Ω)`, et la boule unité fermée de `W^{1,p}(Ω)` est précompacte dans `L^q(Ω)`.
-Preuve : critères de Fréchet–Kolmogorov comme dans le cours ; variante : l'interpolation se
-fait entre les exposants `1/2` et `p*` (au lieu de `1` et `p*`), ce qui évite `W^{1,1}`.
+Preuve (différente du cours) : critères de Fréchet–Kolmogorov comme dans le cours, mais
+l'interpolation se fait entre les exposants `1/2` et `p*` (au lieu de `1` et `p*`), ce qui
+évite `W^{1,1}` et le cas dégénéré `q = 1`.
 Dépend de l'axiome de Young faible (via `corol_injSousCritOm`). -/
 theorem th_Rellich_sousCritique (Ω : TopologicalSpace.Opens ℝᵈ)
     (hΩb : Bornology.IsBounded (Ω : Set ℝᵈ)) (hΩ : ProlongementSobolevTout Ω)

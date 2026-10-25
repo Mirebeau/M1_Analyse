@@ -74,7 +74,8 @@ private lemma clarkson_enorm {p : ℝ} (hp : 2 ≤ p) (a b : ℝ) :
   rw [hd, hd, ← ENNReal.ofReal_add (by positivity) (by positivity)]
   exact ENNReal.ofReal_le_ofReal (clarkson_real hp a b)
 
-/-- **Première inégalité de Clarkson** (`prop:ClarksonIneq`) : « Soient $2 \leq p < \infty$ et
+/-- **Prop. `prop:ClarksonIneq` (Première inégalité de Clarkson).**
+« Soient $2 \leq p < \infty$ et
 $f,g\in L^p(X,\mu)$. Alors
 $\|\frac{f+g}2\|_p^p + \|\frac{f-g}2\|_p^p \leq \frac12 \|f\|_p^p + \frac12 \|g\|_p^p$. » -/
 theorem prop_ClarksonIneq {p : ℝ≥0∞} (hp : 2 ≤ p) (hp' : p ≠ ∞) {f g : X → ℝ}

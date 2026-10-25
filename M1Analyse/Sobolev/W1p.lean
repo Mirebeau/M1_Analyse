@@ -957,7 +957,7 @@ theorem prop_testDenseWsp {p : ℝ≥0∞} [Fact (1 ≤ p)] (hp : p ≠ ∞)
 
 /-- **Prop. `prop:testDenseWsp`, `s = 1`, densité.** Pour `p ∈ [1, ∞[`, `𝓓(ℝ^d)` est dense dans
 `W^{1,p}(ℝ^d)`, i.e. `W^{1,p}_0(ℝ^d) = W^{1,p}(ℝ^d)`.
-Preuve (ordre différent du cours) : on régularise d'abord (`ρ_ε ⋆ f` est `C^∞`, avec ses
+Preuve (différente du cours, ordre inversé) : on régularise d'abord (`ρ_ε ⋆ f` est `C^∞`, avec ses
 dérivées dans `L^p`), puis on tronque par `χ(x/(n+1))`, `χ` fonction plateau (convergence
 dominée). -/
 theorem prop_testDenseWsp_dense {p : ℝ≥0∞} [Fact (1 ≤ p)] (hp : p ≠ ∞) :

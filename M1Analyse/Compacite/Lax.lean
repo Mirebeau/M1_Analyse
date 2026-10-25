@@ -3,7 +3,10 @@ Copyright (c) 2026 Jean-Marie Mirebeau. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Jean-Marie Mirebeau
 -/
-import Mathlib
+import Mathlib.Analysis.Calculus.FDeriv.Symmetric
+import Mathlib.Analysis.Calculus.LineDeriv.IntegrationByParts
+import Mathlib.Analysis.Calculus.ParametricIntegral
+import Mathlib.Analysis.InnerProductSpace.NormDet
 
 /-!
 # Preuve du lemme de Lax (`lem:chgVarLax`, `subsec:Brouwer`)
@@ -26,31 +29,31 @@ namespace M1Analyse.LaxAux
 
 variable {d : ℕ}
 
-noncomputable def detCML (d : ℕ) :
+private noncomputable def detCML (d : ℕ) :
     ContinuousMultilinearMap ℝ (fun _ : Fin d => Fin d → ℝ) ℝ :=
   { (Matrix.detRowAlternating : (Fin d → ℝ) [⋀^Fin d]→ₗ[ℝ] ℝ).toMultilinearMap with
     cont := by
       change Continuous fun M : Fin d → Fin d → ℝ => (Matrix.of M).det
       exact (continuous_id.matrix_det) }
 
-@[simp] lemma detCML_apply (M : Fin d → Fin d → ℝ) : detCML d M = (Matrix.of M).det := rfl
+@[simp] private lemma detCML_apply (M : Fin d → Fin d → ℝ) : detCML d M = (Matrix.of M).det := rfl
 
-lemma detCML_swap (M : Fin d → Fin d → ℝ) {i k : Fin d} (h : i ≠ k) :
+private lemma detCML_swap (M : Fin d → Fin d → ℝ) {i k : Fin d} (h : i ≠ k) :
     detCML d (M ∘ Equiv.swap i k) = - detCML d M :=
   (Matrix.detRowAlternating : (Fin d → ℝ) [⋀^Fin d]→ₗ[ℝ] ℝ).map_swap M h
 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
 /-- Ligne `i` de la « jacobienne » de `c` relativement à la famille `b`. -/
-noncomputable def gradRow (c : E → ℝ) (b : Fin d → E) (y : E) : Fin d → ℝ :=
+private noncomputable def gradRow (c : E → ℝ) (b : Fin d → E) (y : E) : Fin d → ℝ :=
   fun l => fderiv ℝ c y (b l)
 
 /-- Ligne de dérivées secondes. -/
-noncomputable def hessRow (c : E → ℝ) (b : Fin d → E) (x : E) : E →L[ℝ] (Fin d → ℝ) :=
+private noncomputable def hessRow (c : E → ℝ) (b : Fin d → E) (x : E) : E →L[ℝ] (Fin d → ℝ) :=
   ContinuousLinearMap.pi fun l =>
     (ContinuousLinearMap.apply ℝ ℝ (b l)).comp (fderiv ℝ (fderiv ℝ c) x)
 
-lemma hasFDerivAt_gradRow {c : E → ℝ} (hc : ContDiff ℝ 2 c) (b : Fin d → E) (x : E) :
+private lemma hasFDerivAt_gradRow {c : E → ℝ} (hc : ContDiff ℝ 2 c) (b : Fin d → E) (x : E) :
     HasFDerivAt (gradRow c b) (hessRow c b x) x := by
   have hd : DifferentiableAt ℝ (fderiv ℝ c) x :=
     (hc.fderiv_right (m := 1) (by norm_num)).differentiable (by norm_num) x
@@ -61,7 +64,7 @@ lemma hasFDerivAt_gradRow {c : E → ℝ} (hc : ContDiff ℝ 2 c) (b : Fin d →
 
 /-- **Identité de Piola** (forme par lignes) : les cofacteurs de la ligne `k` d'une jacobienne
 `C²` sont à divergence nulle. -/
-theorem piola (c : Fin d → E → ℝ) (hc : ∀ i, ContDiff ℝ 2 (c i)) (b : Fin d → E)
+private theorem piola (c : Fin d → E → ℝ) (hc : ∀ i, ContDiff ℝ 2 (c i)) (b : Fin d → E)
     (k : Fin d) (x : E) :
     ∑ j, fderiv ℝ (fun y => detCML d
       (Function.update (fun i => gradRow (c i) b y) k (Pi.single j 1))) x (b j) = 0 := by
@@ -146,16 +149,16 @@ theorem piola (c : Fin d → E → ℝ) (hc : ∀ i, ContDiff ℝ 2 (c i)) (b : 
   linarith
 
 
-lemma contDiff_gradRow {c : E → ℝ} (hc : ContDiff ℝ 2 c) (b : Fin d → E) :
+private lemma contDiff_gradRow {c : E → ℝ} (hc : ContDiff ℝ 2 c) (b : Fin d → E) :
     ContDiff ℝ 1 (gradRow c b) := by
   have h1 : ContDiff ℝ 1 (fderiv ℝ c) := hc.fderiv_right (m := 1) (by norm_num)
   exact contDiff_pi.2 fun l => h1.clm_apply contDiff_const
 
 /-- Cofacteur de la ligne `k`, colonne `j`. -/
-noncomputable def cof (c : Fin d → E → ℝ) (b : Fin d → E) (k j : Fin d) (x : E) : ℝ :=
+private noncomputable def cof (c : Fin d → E → ℝ) (b : Fin d → E) (k j : Fin d) (x : E) : ℝ :=
   detCML d (Function.update (fun i => gradRow (c i) b x) k (Pi.single j 1))
 
-lemma contDiff_cof {c : Fin d → E → ℝ} (hc : ∀ i, ContDiff ℝ 2 (c i)) (b : Fin d → E)
+private lemma contDiff_cof {c : Fin d → E → ℝ} (hc : ∀ i, ContDiff ℝ 2 (c i)) (b : Fin d → E)
     (k j : Fin d) : ContDiff ℝ 1 (cof c b k j) := by
   classical
   unfold cof
@@ -165,7 +168,7 @@ lemma contDiff_cof {c : Fin d → E → ℝ} (hc : ∀ i, ContDiff ℝ 2 (c i)) 
   · simpa [Function.update_of_ne hik] using contDiff_gradRow (hc i) b
 
 /-- Développement selon la ligne `k`. -/
-lemma detCML_update_eq_sum (M : Fin d → Fin d → ℝ) (k : Fin d) (w : Fin d → ℝ) :
+private lemma detCML_update_eq_sum (M : Fin d → Fin d → ℝ) (k : Fin d) (w : Fin d → ℝ) :
     detCML d (Function.update M k w) =
       ∑ j, w j * detCML d (Function.update M k (Pi.single j 1)) := by
   classical
@@ -181,7 +184,7 @@ open MeasureTheory
 
 /-- **Lemme clé** : l'intégrale d'un déterminant jacobien dont une ligne est le gradient d'une
 fonction à support compact est nulle. -/
-theorem integral_det_update_grad_eq_zero [FiniteDimensional ℝ E] [MeasurableSpace E]
+private theorem integral_det_update_grad_eq_zero [FiniteDimensional ℝ E] [MeasurableSpace E]
     [BorelSpace E] (μ : Measure E) [μ.IsAddHaarMeasure]
     {c : Fin d → E → ℝ} (hc : ∀ i, ContDiff ℝ 2 (c i)) (b : Fin d → E) (k : Fin d)
     {h : E → ℝ} (hh : ContDiff ℝ 1 h) (hhs : HasCompactSupport h) :
@@ -227,7 +230,7 @@ theorem integral_det_update_grad_eq_zero [FiniteDimensional ℝ E] [MeasurableSp
 
 
 /-- Ligne `k` remplacée par une combinaison des lignes : seul le `k`-ième coefficient reste. -/
-lemma detCML_update_comb (M : Fin d → Fin d → ℝ) (k : Fin d) (a : Fin d → ℝ) :
+private lemma detCML_update_comb (M : Fin d → Fin d → ℝ) (k : Fin d) (a : Fin d → ℝ) :
     detCML d (Function.update M k (∑ i, a i • M i)) = a k * detCML d M := by
   classical
   have h1 := (detCML d).toMultilinearMap.map_update_sum Finset.univ k (fun i => a i • M i) M
@@ -244,7 +247,7 @@ lemma detCML_update_comb (M : Fin d → Fin d → ℝ) (k : Fin d) (a : Fin d �
 
 /-- **Constance d'une intégrale à paramètre** dont la dérivée en `t`, à support compact et
 conjointement continue, est d'intégrale nulle. -/
-theorem integral_eq_of_hasDerivAt {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+private theorem integral_eq_of_hasDerivAt {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [MeasurableSpace E] [BorelSpace E] (μ : Measure E) [IsFiniteMeasureOnCompacts μ]
     {F G : ℝ → E → ℝ} (hF : ∀ t, Continuous (F t)) (hFc : ∀ t, HasCompactSupport (F t))
     (hG : Continuous (Function.uncurry G)) {K : Set E} (hK : IsCompact K)
@@ -277,11 +280,11 @@ section Euclid
 local notation "Eu" => EuclideanSpace ℝ (Fin d)
 
 /-- Base canonique de `ℝᵈ`. -/
-noncomputable abbrev eb (d : ℕ) : Fin d → EuclideanSpace ℝ (Fin d) :=
+private noncomputable abbrev eb (d : ℕ) : Fin d → EuclideanSpace ℝ (Fin d) :=
   fun l => EuclideanSpace.single l 1
 
 /-- `det Dφ(x)` est le déterminant de la matrice des dérivées partielles `∂_l φ_i`. -/
-theorem det_fderiv_eq_det_partials (φ : Eu → Eu) (x : Eu) (hφ : DifferentiableAt ℝ φ x) :
+private theorem det_fderiv_eq_det_partials (φ : Eu → Eu) (x : Eu) (hφ : DifferentiableAt ℝ φ x) :
     (fderiv ℝ φ x).det = (Matrix.of fun i l =>
       fderiv ℝ (fun y => φ y i) x (EuclideanSpace.single l 1)).det := by
   rw [ContinuousLinearMap.det,
@@ -295,32 +298,33 @@ theorem det_fderiv_eq_det_partials (φ : Eu → Eu) (x : Eu) (hφ : Differentiab
     exact this.fderiv
   simp [h]
 
-lemma contDiff_coord {n : WithTop ℕ∞} {g : Eu → Eu} (hg : ContDiff ℝ n g) (i : Fin d) :
+private lemma contDiff_coord {n : WithTop ℕ∞} {g : Eu → Eu} (hg : ContDiff ℝ n g) (i : Fin d) :
     ContDiff ℝ n (fun y => g y i) :=
   (EuclideanSpace.proj i : Eu →L[ℝ] ℝ).contDiff.comp hg
 
-lemma fderiv_coord {g : Eu → Eu} {x : Eu} (hg : DifferentiableAt ℝ g x) (i : Fin d) (v : Eu) :
+private lemma fderiv_coord {g : Eu → Eu} {x : Eu} (hg : DifferentiableAt ℝ g x) (i : Fin d)
+    (v : Eu) :
     fderiv ℝ (fun y => g y i) x v = fderiv ℝ g x v i := by
   have := ((EuclideanSpace.proj i : Eu →L[ℝ] ℝ).hasFDerivAt).comp x hg.hasFDerivAt
   rw [show (fun y => g y i) = (EuclideanSpace.proj i : Eu →L[ℝ] ℝ) ∘ g from rfl, this.fderiv]
   rfl
 
-lemma clm_apply_eq_sum (L : Eu →L[ℝ] ℝ) (w : Eu) : L w = ∑ i, w i * L (eb d i) := by
+private lemma clm_apply_eq_sum (L : Eu →L[ℝ] ℝ) (w : Eu) : L w = ∑ i, w i * L (eb d i) := by
   have hw : w = ∑ i, w i • eb d i := by
     ext j; simp [Pi.single_apply]
   conv_lhs => rw [hw]
   simp [map_sum, map_smul, smul_eq_mul]
 
 /-- Matrice jacobienne de `y ↦ y + t ψ(y)` en `x`, par lignes. -/
-noncomputable def Jac (ψ : Eu → Eu) (t : ℝ) (x : Eu) : Fin d → Fin d → ℝ :=
+private noncomputable def Jac (ψ : Eu → Eu) (t : ℝ) (x : Eu) : Fin d → Fin d → ℝ :=
   fun i => Pi.single i 1 + t • gradRow (fun y => ψ y i) (eb d) x
 
-lemma Jac_apply {ψ : Eu → Eu} {x : Eu} (hψ : DifferentiableAt ℝ ψ x) (t : ℝ) (i l : Fin d) :
+private lemma Jac_apply {ψ : Eu → Eu} {x : Eu} (hψ : DifferentiableAt ℝ ψ x) (t : ℝ) (i l : Fin d) :
     Jac ψ t x i l = (eb d l + t • fderiv ℝ ψ x (eb d l)) i := by
   simp only [Jac, gradRow, Pi.add_apply, Pi.smul_apply, smul_eq_mul, fderiv_coord hψ]
   simp [Pi.single_apply, eq_comm]
 
-lemma gradRow_affine {ψ : Eu → Eu} (hψ : Differentiable ℝ ψ) (t : ℝ) (i : Fin d) (x : Eu) :
+private lemma gradRow_affine {ψ : Eu → Eu} (hψ : Differentiable ℝ ψ) (t : ℝ) (i : Fin d) (x : Eu) :
     gradRow (fun y => y i + t * ψ y i) (eb d) x = Jac ψ t x i := by
   have hψi : DifferentiableAt ℝ (fun y => ψ y i) x :=
     ((EuclideanSpace.proj i : Eu →L[ℝ] ℝ).differentiable.comp hψ) x
@@ -335,15 +339,15 @@ variable {f : EuclideanSpace ℝ (Fin d) → ℝ}
   {ψ : EuclideanSpace ℝ (Fin d) → EuclideanSpace ℝ (Fin d)}
 
 /-- L'intégrande `F(t, x) = f(x + t ψ(x)) det(I + t Dψ(x))`. -/
-noncomputable def FF (f : Eu → ℝ) (ψ : Eu → Eu) (t : ℝ) (x : Eu) : ℝ :=
+private noncomputable def FF (f : Eu → ℝ) (ψ : Eu → Eu) (t : ℝ) (x : Eu) : ℝ :=
   f (x + t • ψ x) * detCML d (Jac ψ t x)
 
 /-- Sa dérivée en `t`. -/
-noncomputable def GG (f : Eu → ℝ) (ψ : Eu → Eu) (t : ℝ) (x : Eu) : ℝ :=
+private noncomputable def GG (f : Eu → ℝ) (ψ : Eu → Eu) (t : ℝ) (x : Eu) : ℝ :=
   fderiv ℝ f (x + t • ψ x) (ψ x) * detCML d (Jac ψ t x) + f (x + t • ψ x) *
     ∑ k, detCML d (Function.update (Jac ψ t x) k (gradRow (fun y => ψ y k) (eb d) x))
 
-lemma hasDerivAt_FF (hf : Differentiable ℝ f) (t : ℝ) (x : Eu) :
+private lemma hasDerivAt_FF (hf : Differentiable ℝ f) (t : ℝ) (x : Eu) :
     HasDerivAt (fun s => FF f ψ s x) (GG f ψ t x) t := by
   have h1 : HasDerivAt (fun s : ℝ => x + s • ψ x) (ψ x) t := by
     simpa using ((hasDerivAt_id t).smul_const (ψ x)).const_add x
@@ -363,7 +367,7 @@ lemma hasDerivAt_FF (hf : Differentiable ℝ f) (t : ℝ) (x : Eu) :
     simp [ContinuousMultilinearMap.toContinuousLinearMap_apply]
   exact h2.mul h5
 
-lemma gradRow_h (hf : Differentiable ℝ f) (hψ : Differentiable ℝ ψ) (t : ℝ) (k : Fin d)
+private lemma gradRow_h (hf : Differentiable ℝ f) (hψ : Differentiable ℝ ψ) (t : ℝ) (k : Fin d)
     (x : Eu) :
     gradRow (fun y => f (y + t • ψ y) * ψ y k) (eb d) x =
       f (x + t • ψ x) • gradRow (fun y => ψ y k) (eb d) x +
@@ -385,7 +389,7 @@ lemma gradRow_h (hf : Differentiable ℝ f) (hψ : Differentiable ℝ ψ) (t : �
   congr 2
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
-lemma GG_eq (hf : Differentiable ℝ f) (hψ : Differentiable ℝ ψ) (t : ℝ) (x : Eu) :
+private lemma GG_eq (hf : Differentiable ℝ f) (hψ : Differentiable ℝ ψ) (t : ℝ) (x : Eu) :
     GG f ψ t x = ∑ k, detCML d (Function.update (Jac ψ t x) k
       (gradRow (fun y => f (y + t • ψ y) * ψ y k) (eb d) x)) := by
   simp only [gradRow_h hf hψ, ContinuousMultilinearMap.map_update_add,
@@ -397,7 +401,7 @@ lemma GG_eq (hf : Differentiable ℝ f) (hψ : Differentiable ℝ ψ) (t : ℝ) 
     Finset.sum_congr rfl fun k _ => by ring
   rw [e]; ring
 
-lemma integrable_det_update [MeasurableSpace E] [BorelSpace E] (μ : Measure E)
+private lemma integrable_det_update [MeasurableSpace E] [BorelSpace E] (μ : Measure E)
     [IsFiniteMeasureOnCompacts μ] {c : Fin d → E → ℝ} (hc : ∀ i, ContDiff ℝ 2 (c i))
     (b : Fin d → E) (k : Fin d) {h : E → ℝ} (hh : ContDiff ℝ 1 h) (hhs : HasCompactSupport h) :
     Integrable (fun x => detCML d (Function.update (fun i => gradRow (c i) b x) k
@@ -413,7 +417,7 @@ lemma integrable_det_update [MeasurableSpace E] [BorelSpace E] (μ : Measure E)
   simp only [this]
   exact (detCML d).map_update_zero _ _
 
-lemma gradRow_eq_zero_of_notMem {g : Eu → Eu} (hg : ∀ x ∉ Metric.closedBall 0 1, g x = 0)
+private lemma gradRow_eq_zero_of_notMem {g : Eu → Eu} (hg : ∀ x ∉ Metric.closedBall 0 1, g x = 0)
     (i : Fin d) {x : Eu} (hx : x ∉ Metric.closedBall 0 1) :
     gradRow (fun y => g y i) (eb d) x = 0 := by
   have : (fun y => g y i) =ᶠ[nhds x] fun _ => 0 := by
@@ -422,24 +426,25 @@ lemma gradRow_eq_zero_of_notMem {g : Eu → Eu} (hg : ∀ x ∉ Metric.closedBal
   funext l
   simp [gradRow, this.fderiv_eq]
 
-lemma detCML_one : detCML d (fun i => Pi.single i 1) = 1 := by
+private lemma detCML_one : detCML d (fun i => Pi.single i 1) = 1 := by
   rw [detCML_apply]
   convert Matrix.det_one (n := Fin d) (R := ℝ)
   ext i j
   simp [Matrix.one_apply, Pi.single_apply, eq_comm]
 
-lemma Jac_of_notMem (hψB : ∀ x ∉ Metric.closedBall 0 1, ψ x = 0) (t : ℝ) {x : Eu}
+private lemma Jac_of_notMem (hψB : ∀ x ∉ Metric.closedBall 0 1, ψ x = 0) (t : ℝ) {x : Eu}
     (hx : x ∉ Metric.closedBall 0 1) : Jac ψ t x = fun i => Pi.single i 1 := by
   funext i
   simp [Jac, gradRow_eq_zero_of_notMem hψB i hx]
 
-lemma continuous_Jac (hψ : ContDiff ℝ 1 ψ) : Continuous fun p : ℝ × Eu => Jac ψ p.1 p.2 := by
+private lemma continuous_Jac (hψ : ContDiff ℝ 1 ψ) :
+    Continuous fun p : ℝ × Eu => Jac ψ p.1 p.2 := by
   unfold Jac
   refine continuous_pi fun i => continuous_const.add (continuous_fst.smul ?_)
   exact continuous_pi fun l => ((((contDiff_coord hψ i).continuous_fderiv one_ne_zero).comp
     continuous_snd).clm_apply continuous_const)
 
-lemma continuous_GG (hf : ContDiff ℝ 1 f) (hψ : ContDiff ℝ 1 ψ) :
+private lemma continuous_GG (hf : ContDiff ℝ 1 f) (hψ : ContDiff ℝ 1 ψ) :
     Continuous (Function.uncurry (GG f ψ)) := by
   have hΦ : Continuous fun p : ℝ × Eu => p.2 + p.1 • ψ p.2 :=
     continuous_snd.add (continuous_fst.smul (hψ.continuous.comp continuous_snd))
@@ -454,30 +459,30 @@ lemma continuous_GG (hf : ContDiff ℝ 1 f) (hψ : ContDiff ℝ 1 ψ) :
     ((hf.continuous.comp hΦ).mul (continuous_finsetSum _ fun k _ => ?_))
   exact (detCML d).cont.comp (hJ.update k (hg k))
 
-lemma GG_of_notMem (hψB : ∀ x ∉ Metric.closedBall 0 1, ψ x = 0) (t : ℝ) {x : Eu}
+private lemma GG_of_notMem (hψB : ∀ x ∉ Metric.closedBall 0 1, ψ x = 0) (t : ℝ) {x : Eu}
     (hx : x ∉ Metric.closedBall 0 1) : GG f ψ t x = 0 := by
   simp only [GG, gradRow_eq_zero_of_notMem hψB _ hx, hψB x hx, map_zero, zero_mul, zero_add]
   have h0 : ∀ k, detCML d (Function.update (Jac ψ t x) k 0) = 0 := fun k =>
     (detCML d).map_update_zero _ _
   simp only [h0, Finset.sum_const_zero, mul_zero]
 
-lemma FF_of_notMem (hψB : ∀ x ∉ Metric.closedBall 0 1, ψ x = 0) (t : ℝ) {x : Eu}
+private lemma FF_of_notMem (hψB : ∀ x ∉ Metric.closedBall 0 1, ψ x = 0) (t : ℝ) {x : Eu}
     (hx : x ∉ Metric.closedBall 0 1) : FF f ψ t x = f x := by
   simp only [FF, Jac_of_notMem hψB t hx, hψB x hx, smul_zero, add_zero, detCML_one, mul_one]
 
-lemma continuous_FF (hf : ContDiff ℝ 1 f) (hψ : ContDiff ℝ 1 ψ) (t : ℝ) :
+private lemma continuous_FF (hf : ContDiff ℝ 1 f) (hψ : ContDiff ℝ 1 ψ) (t : ℝ) :
     Continuous (FF f ψ t) :=
   (hf.continuous.comp (continuous_id.add (hψ.continuous.const_smul t))).mul
     ((detCML d).cont.comp ((continuous_Jac hψ).comp (Continuous.prodMk_right t)))
 
-lemma hasCompactSupport_FF (hψB : ∀ x ∉ Metric.closedBall 0 1, ψ x = 0)
+private lemma hasCompactSupport_FF (hψB : ∀ x ∉ Metric.closedBall 0 1, ψ x = 0)
     (hfc : HasCompactSupport f) (t : ℝ) : HasCompactSupport (FF f ψ t) := by
   refine HasCompactSupport.intro ((isCompact_closedBall 0 1).union hfc) fun x hx => ?_
   simp only [Set.mem_union, not_or] at hx
   rw [FF_of_notMem hψB t hx.1]
   exact image_eq_zero_of_notMem_tsupport hx.2
 
-lemma integral_GG (hf : ContDiff ℝ 1 f) (hψ : ContDiff ℝ 2 ψ)
+private lemma integral_GG (hf : ContDiff ℝ 1 f) (hψ : ContDiff ℝ 2 ψ)
     (hψB : ∀ x ∉ Metric.closedBall 0 1, ψ x = 0) (t : ℝ) : ∫ x, GG f ψ t x = 0 := by
   have hf1 := hf.differentiable one_ne_zero
   have hψ1 := hψ.differentiable two_ne_zero
@@ -503,7 +508,7 @@ lemma integral_GG (hf : ContDiff ℝ 1 f) (hψ : ContDiff ℝ 2 ψ)
     integral_det_update_grad_eq_zero volume hc (eb d) k (hh k) (hhs k)
 
 /-- Lemme de Lax sous la forme `φ = id + ψ`. -/
-theorem lax_psi (hf : ContDiff ℝ 1 f) (hfc : HasCompactSupport f) (hψ : ContDiff ℝ 2 ψ)
+private theorem lax_psi (hf : ContDiff ℝ 1 f) (hfc : HasCompactSupport f) (hψ : ContDiff ℝ 2 ψ)
     (hψB : ∀ x ∉ Metric.closedBall 0 1, ψ x = 0) : ∫ x, FF f ψ 1 x = ∫ x, f x := by
   have hψ1 : ContDiff ℝ 1 ψ := hψ.of_le (by norm_num)
   rw [integral_eq_of_hasDerivAt volume (continuous_FF hf hψ1) (hasCompactSupport_FF hψB hfc)
