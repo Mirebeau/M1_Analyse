@@ -26,6 +26,7 @@ import M1Analyse.Compacite.DimensionFinie
 import M1Analyse.Compacite.Produits
 import M1Analyse.Compacite.Brouwer
 import M1Analyse.Compacite.Schauder
+import M1Analyse.Compacite.SchauderPeano
 import M1Analyse.Compacite.StoneWeierstrass
 import M1Analyse.Compacite.OperateursCompacts
 import M1Analyse.Dualite.HahnBanach

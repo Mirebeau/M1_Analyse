@@ -12,11 +12,11 @@ import Mathlib.Topology.Algebra.Module.Basic
 
 Source : `Include/Compacite.tex`, sous-section `subsec:Schauder`.
 
-Le théorème de point fixe de Schauder (`th:Schauder`) repose sur le théorème de Brouwer
-(`th:Brouwer`), absent de Mathlib : il n'est pas formalisé, non plus que ses conséquences
-(`rem:SchauderEvt`, théorème de Cauchy-Arzelà-Peano `th:CauchyPeano`, `rem:preuveCauchyPeano`).
+Le théorème de point fixe de Schauder (`th:Schauder`) et le théorème de Cauchy-Arzelà-Peano
+(`th:CauchyPeano`) sont dans `M1Analyse/Compacite/SchauderPeano.lean` (ils reposent sur
+`th:Brouwer`, donc sur l'axiome de Lax).
 
-On formalise seulement l'étape élémentaire de la preuve du `th:Schauder` : la « projection de
+On formalise ici l'étape élémentaire de la preuve du `th:Schauder` : la « projection de
 Schauder » `g_ε`, définie à partir d'un recouvrement `K ⊆ ⋃ᵢ B(xᵢ, ε)`, est continue sur `K`,
 à valeurs dans l'enveloppe convexe `K_ε := Hull{xᵢ}`, et vérifie `‖g_ε(x) - x‖ ≤ ε`.
 -/
