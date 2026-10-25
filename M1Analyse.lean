@@ -40,6 +40,7 @@ import M1Analyse.Sobolev.W1p
 import M1Analyse.Sobolev.FrechetKolmogorov
 import M1Analyse.Sobolev.InjSousCritique
 import M1Analyse.Sobolev.InjSousCritiqueW1p
+import M1Analyse.Sobolev.InjSurCritique
 import M1Analyse.Sobolev.NoyauGreen
 import M1Analyse.Sobolev.Rellich
 import M1Analyse.Bosse.Bosse
