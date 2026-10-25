@@ -18,8 +18,8 @@ Formalisés : `prop:interpLp` (avec `eLpNorm`), `prop:trans_grad_lp`, et `th:Rel
 théorèmes (cas sous-critique, critique, sur-critique), pour `p > 1` (et `p < ∞` dans le cas
 sur-critique), sous l'hypothèse `Ω` borné et `ProlongementSobolevTout Ω` (au lieu de « `Ω` borné
 régulier », \claudereport). Les espaces `W^{1,p}(Ω)` sont ceux de
-`M1Analyse/Sobolev/W1p.lean`. Non formalisés (pour l'instant) : `corol:Rellich`,
-`ex:nonLinMinH1`, `rem:bouleW1pFerme`.
+`M1Analyse/Sobolev/W1p.lean`. `corol:Rellich` est dans `M1Analyse/Sobolev/RellichCorollaire.lean`.
+Non formalisés (pour l'instant) : `ex:nonLinMinH1`, `rem:bouleW1pFerme`.
 -/
 
 open MeasureTheory
