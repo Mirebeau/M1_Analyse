@@ -311,12 +311,11 @@ Preuve : cas lisse comme dans le cours (accroissements finis, Jensen, Fubini) ; 
 `u ∈ W^{1,p}(Ω)` se fait par régularisation locale `ρ_ε ⋆ u` près de `ω + B'(0, |h|)`, avec
 `∇(ρ_ε ⋆ u) = ρ_ε ⋆ ∇u` (identité de la dérivée faible) et `‖ρ_ε ⋆ |∇u|‖_p ≤ ‖|∇u|‖_p`. -/
 theorem prop_trans_grad_lp (Ω : TopologicalSpace.Opens ℝᵈ) {p : ℝ≥0∞} [Fact (1 ≤ p)]
-    (hp : p ≠ ∞) (u : W1p Ω p) (h : ℝᵈ) {ω : Set ℝᵈ} (hω : IsCompact ω)
+    (hp : p ≠ ∞) (u : Sobolev1 Ω p) (h : ℝᵈ) {ω : Set ℝᵈ} (hω : IsCompact ω)
     (hωh : cthickening ‖h‖ ω ⊆ Ω) :
-    eLpNorm (fun x => (u : LpGrad Ω p).fst (x + h) - (u : LpGrad Ω p).fst x) p
-        (volume.restrict ω) ≤
-      ‖h‖ₑ * eLpNorm (fun x => √(∑ i, ((u : LpGrad Ω p).snd i x) ^ 2)) p
-        (volume.restrict (Ω : Set ℝᵈ)) := by
+    eLpNorm (fun x => u.val (x + h) - u.val x) p (volume.restrict ω) ≤
+      ‖h‖ₑ * eLpNorm (fun x => √(∑ i, (u.grad i x) ^ 2)) p (volume.restrict (Ω : Set ℝᵈ)) := by
+  simp only [Sobolev1.val_def, Sobolev1.grad_def]
   have hp1 : 1 ≤ p := Fact.out
   set K := cthickening ‖h‖ ω with hK_def
   have hKc : IsCompact K := hω.cthickening
@@ -586,9 +585,10 @@ theorem th_Rellich_sousCritique (Ω : TopologicalSpace.Opens ℝᵈ)
     (hΩb : Bornology.IsBounded (Ω : Set ℝᵈ)) (hΩ : ProlongementSobolevTout Ω)
     {p pstar q : ℝ≥0∞} [Fact (1 ≤ p)] [Fact (1 ≤ q)] (hp : 1 < p) (hpd : p < d)
     (hpstar : pstar⁻¹ = p⁻¹ - (d : ℝ≥0∞)⁻¹) (hq : q < pstar) :
-    (∀ u : W1p Ω p, MemLp ((u : LpGrad Ω p).fst : ℝᵈ → ℝ) q (volume.restrict (Ω : Set ℝᵈ))) ∧
-      TotallyBounded {f : Lp ℝ q (volume.restrict (Ω : Set ℝᵈ)) | ∃ u : W1p Ω p, ‖u‖ ≤ 1 ∧
-        (f : ℝᵈ → ℝ) =ᵐ[volume.restrict (Ω : Set ℝᵈ)] (u : LpGrad Ω p).fst} := by
+    (∀ u : Sobolev1 Ω p, MemLp (u.val : ℝᵈ → ℝ) q (volume.restrict (Ω : Set ℝᵈ))) ∧
+      TotallyBounded {f : Lp ℝ q (volume.restrict (Ω : Set ℝᵈ)) | ∃ u : Sobolev1 Ω p, ‖u‖ ≤ 1 ∧
+        (f : ℝᵈ → ℝ) =ᵐ[volume.restrict (Ω : Set ℝᵈ)] u.val} := by
+  simp only [Sobolev1.val_def]
   have hpt : p ≠ ∞ := (hpd.trans (ENNReal.natCast_lt_top d)).ne
   have hqt : q ≠ ∞ := hq.ne_top
   have hq1 : 1 ≤ q := Fact.out
@@ -784,15 +784,16 @@ que le cas sous-critique. Preuve : celle du cours, via l'injection continue
 theorem th_Rellich_critique (Ω : TopologicalSpace.Opens ℝᵈ)
     (hΩb : Bornology.IsBounded (Ω : Set ℝᵈ)) (hΩ : ProlongementSobolevTout Ω)
     {p q : ℝ≥0∞} [Fact (1 ≤ p)] [Fact (1 ≤ q)] (hp : 1 < p) (hpd : p = d) (hq : q ≠ ∞) :
-    (∀ u : W1p Ω p, MemLp ((u : LpGrad Ω p).fst : ℝᵈ → ℝ) q (volume.restrict (Ω : Set ℝᵈ))) ∧
-      TotallyBounded {f : Lp ℝ q (volume.restrict (Ω : Set ℝᵈ)) | ∃ u : W1p Ω p, ‖u‖ ≤ 1 ∧
-        (f : ℝᵈ → ℝ) =ᵐ[volume.restrict (Ω : Set ℝᵈ)] (u : LpGrad Ω p).fst} := by
+    (∀ u : Sobolev1 Ω p, MemLp (u.val : ℝᵈ → ℝ) q (volume.restrict (Ω : Set ℝᵈ))) ∧
+      TotallyBounded {f : Lp ℝ q (volume.restrict (Ω : Set ℝᵈ)) | ∃ u : Sobolev1 Ω p, ‖u‖ ≤ 1 ∧
+        (f : ℝᵈ → ℝ) =ᵐ[volume.restrict (Ω : Set ℝᵈ)] u.val} := by
   have hd : (1 : ℝ≥0∞) < d := hpd ▸ hp
   obtain ⟨p', pstar', hp'1, hp'd, hpstar', hqp'⟩ := rellich_exists_exponent hd Fact.out hq
   have : Fact (1 ≤ p') := ⟨hp'1.le⟩
   have hpt : p ≠ ∞ := hpd ▸ ENNReal.natCast_ne_top d
   obtain ⟨c, hc0, hc⟩ := rellich_incl hΩb.measure_lt_top.ne hpt (hpd ▸ hp'd.le : p' ≤ p)
   obtain ⟨hM, hT⟩ := th_Rellich_sousCritique Ω hΩb hΩ hp'1 hp'd hpstar' hqp'
+  simp only [Sobolev1.val_def] at hM hT ⊢
   refine ⟨fun u => ?_, ?_⟩
   · obtain ⟨v, -, hv⟩ := hc u
     exact (hM v).ae_eq hv
@@ -954,12 +955,13 @@ uniformément continu à `Ω̄`, Arzelà–Ascoli de Mathlib). -/
 theorem th_Rellich_surCritique (Ω : TopologicalSpace.Opens ℝᵈ)
     (hΩb : Bornology.IsBounded (Ω : Set ℝᵈ)) (hΩ : ProlongementSobolevTout Ω)
     {p : ℝ≥0∞} [Fact (1 ≤ p)] (hdp : (d : ℝ≥0∞) < p) (hp : p ≠ ∞) :
-    (∀ u : W1p Ω p, ∃ g : C(closure (Ω : Set ℝᵈ), ℝ),
+    (∀ u : Sobolev1 Ω p, ∃ g : C(closure (Ω : Set ℝᵈ), ℝ),
       ∀ᵐ x ∂(volume.restrict (Ω : Set ℝᵈ)), ∀ hx : x ∈ closure (Ω : Set ℝᵈ),
-        (u : LpGrad Ω p).fst x = g ⟨x, hx⟩) ∧
-      TotallyBounded {g : C(closure (Ω : Set ℝᵈ), ℝ) | ∃ u : W1p Ω p, ‖u‖ ≤ 1 ∧
+        u.val x = g ⟨x, hx⟩) ∧
+      TotallyBounded {g : C(closure (Ω : Set ℝᵈ), ℝ) | ∃ u : Sobolev1 Ω p, ‖u‖ ≤ 1 ∧
         ∀ᵐ x ∂(volume.restrict (Ω : Set ℝᵈ)), ∀ hx : x ∈ closure (Ω : Set ℝᵈ),
-          (u : LpGrad Ω p).fst x = g ⟨x, hx⟩} := by
+          u.val x = g ⟨x, hx⟩} := by
+  simp only [Sobolev1.val_def]
   have hΩm : MeasurableSet (Ω : Set ℝᵈ) := Ω.isOpen.measurableSet
   have hP0 : 0 < p.toReal :=
     ENNReal.toReal_pos (zero_lt_one.trans_le (Fact.out : 1 ≤ p)).ne' hp

@@ -603,14 +603,14 @@ fonctions test approchant `u` est uniformément de Cauchy, sa limite uniforme `v
 tend vers `0` à l'infini (limite uniforme de fonctions à support compact). -/
 theorem th_injSurCrit (hd : 1 ≤ d) {p : ℝ≥0∞} [Fact (1 ≤ p)] (hdp : (d : ℝ≥0∞) < p)
     (hp : p ≠ ∞) :
-    ∃ C C' : ℝ, ∀ u : W1p (⊤ : TopologicalSpace.Opens ℝᵈ) p, ∃ v : ℝᵈ → ℝ, Continuous v ∧
-      ((u : LpGrad (⊤ : TopologicalSpace.Opens ℝᵈ) p).fst : ℝᵈ → ℝ) =ᵐ[volume] v ∧
+    ∃ C C' : ℝ, ∀ u : Sobolev1 (⊤ : TopologicalSpace.Opens ℝᵈ) p, ∃ v : ℝᵈ → ℝ, Continuous v ∧
+      (u.val : ℝᵈ → ℝ) =ᵐ[volume] v ∧
       (∀ x, |v x| ≤ C * ‖u‖) ∧
-      (∀ x y, |v x - v y| ≤ C' * dist x y ^ (1 - d / p.toReal) *
-        ‖(u : LpGrad (⊤ : TopologicalSpace.Opens ℝᵈ) p).snd‖) ∧
+      (∀ x y, |v x - v y| ≤ C' * dist x y ^ (1 - d / p.toReal) * ‖u.gradL‖) ∧
       Tendsto v (cocompact ℝᵈ) (𝓝 0) := by
   obtain ⟨C, C', hC, hC', hT⟩ := injSurCrit_test hd hdp hp
   refine ⟨C, C', fun u => ?_⟩
+  simp only [Sobolev1.val_def, Sobolev1.gradL_def]
   set U : LpGrad (⊤ : TopologicalSpace.Opens ℝᵈ) p := u.1 with hUdef
   have hu : U ∈ W1p0 (⊤ : TopologicalSpace.Opens ℝᵈ) p := by
     rw [prop_testDenseWsp_dense hp]; exact u.2
@@ -699,8 +699,8 @@ représentant continu sur `Ω` avec `‖v‖_{∞,Ω} ≤ C ‖u‖_{W^{1,p}}` e
 `P u`. -/
 theorem corol_injSurCritOm (Ω : TopologicalSpace.Opens ℝᵈ) (hd : 1 ≤ d) {p : ℝ≥0∞}
     [Fact (1 ≤ p)] (hdp : (d : ℝ≥0∞) < p) (hp : p ≠ ∞) (hP : ProlongementSobolev Ω p) :
-    ∃ C C' : ℝ, ∀ u : W1p Ω p, ∃ v : ℝᵈ → ℝ, ContinuousOn v Ω ∧
-      ((u : LpGrad Ω p).fst : ℝᵈ → ℝ) =ᵐ[volume.restrict (Ω : Set ℝᵈ)] v ∧
+    ∃ C C' : ℝ, ∀ u : Sobolev1 Ω p, ∃ v : ℝᵈ → ℝ, ContinuousOn v Ω ∧
+      (u.val : ℝᵈ → ℝ) =ᵐ[volume.restrict (Ω : Set ℝᵈ)] v ∧
       (∀ x ∈ (Ω : Set ℝᵈ), |v x| ≤ C * ‖u‖) ∧
       (∀ x ∈ (Ω : Set ℝᵈ), ∀ y ∈ (Ω : Set ℝᵈ),
         |v x - v y| ≤ C' * dist x y ^ (1 - d / p.toReal) * ‖u‖) := by
@@ -716,12 +716,9 @@ theorem corol_injSurCritOm (Ω : TopologicalSpace.Opens ℝᵈ) (hd : 1 ≤ d) {
           mul_le_mul_of_nonneg_left (P.le_opNorm u) (le_max_right _ _)
       _ = _ := by ring
   · have hα : 0 ≤ dist x y ^ (1 - d / p.toReal) := Real.rpow_nonneg dist_nonneg _
-    have hs : ‖((P u : W1p (⊤ : TopologicalSpace.Opens ℝᵈ) p) :
-        LpGrad (⊤ : TopologicalSpace.Opens ℝᵈ) p).snd‖ ≤ ‖P‖ * ‖u‖ :=
+    have hs : ‖(P u).gradL‖ ≤ ‖P‖ * ‖u‖ :=
       (WithLp.norm_snd_le _ _).trans (P.le_opNorm u)
-    calc |v x - v y| ≤ C' * dist x y ^ (1 - d / p.toReal) *
-          ‖((P u : W1p (⊤ : TopologicalSpace.Opens ℝᵈ) p) :
-            LpGrad (⊤ : TopologicalSpace.Opens ℝᵈ) p).snd‖ := hvh x y
+    calc |v x - v y| ≤ C' * dist x y ^ (1 - d / p.toReal) * ‖(P u).gradL‖ := hvh x y
       _ ≤ max C' 0 * dist x y ^ (1 - d / p.toReal) * (‖P‖ * ‖u‖) := by
           refine mul_le_mul (mul_le_mul_of_nonneg_right (le_max_left _ _) hα) hs
             (norm_nonneg _) (mul_nonneg (le_max_right _ _) hα)

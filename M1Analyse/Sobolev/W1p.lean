@@ -17,7 +17,8 @@ Source : `Include/Sobolev.tex`, sous-section `subsec:convolSobolev`, de `def:Sob
 
 Décision de l'auteur : seul le cas `s = 1` est formalisé. `W^{1,p}(Ω)` est le sous-espace
 (fermé) `W1p Ω p` de `L^p(Ω) × L^p(Ω)^d` (`LpGrad`, `WithLp p` de Mathlib, de norme
-`(‖f‖_p^p + ∑ᵢ ‖gᵢ‖_p^p)^{1/p}`) formé des couples `(f, ∇f)` ; `H^1(Ω) = H1 Ω`,
+`(‖f‖_p^p + ∑ᵢ ‖gᵢ‖_p^p)^{1/p}`) formé des couples `(f, ∇f)` ; ses éléments forment le type
+`Sobolev1 Ω p`, avec `u.val = f` et `u.grad i = ∂ᵢ f` ; `H^1(Ω) = H1 Ω`,
 `H^1_0(Ω) = H10 Ω`. `L^p(Ω)` est `Lp ℝ p (volume.restrict Ω)`.
 
 `th:prolSobolev` (admis) n'est pas formalisé : sa conclusion définit la propriété
@@ -125,29 +126,68 @@ theorem mem_W1p {Ω : TopologicalSpace.Opens ℝᵈ} {p : ℝ≥0∞} [Fact (1 �
         Distribution.ofFun Ω (u.snd i : ℝᵈ → ℝ) volume ⊤ :=
   Iff.rfl
 
+/-- Type des éléments de `W^{1,p}(Ω)` (`def:Sobolev`, `s = 1`) : couples `(f, ∇f)`. -/
+abbrev Sobolev1 (Ω : TopologicalSpace.Opens ℝᵈ) (p : ℝ≥0∞) [Fact (1 ≤ p)] : Type := W1p Ω p
+
+namespace Sobolev1
+
+/-- La fonction `u ∈ L^p(Ω)`. -/
+noncomputable def val {Ω : TopologicalSpace.Opens ℝᵈ} {p : ℝ≥0∞} [Fact (1 ≤ p)]
+    (u : Sobolev1 Ω p) : Lp ℝ p (volume.restrict (Ω : Set ℝᵈ)) :=
+  u.1.fst
+
+/-- La dérivée faible `∂ᵢ u ∈ L^p(Ω)`. -/
+noncomputable def grad {Ω : TopologicalSpace.Opens ℝᵈ} {p : ℝ≥0∞} [Fact (1 ≤ p)]
+    (u : Sobolev1 Ω p) (i : Fin d) : Lp ℝ p (volume.restrict (Ω : Set ℝᵈ)) :=
+  u.1.snd i
+
+/-- Le gradient faible `∇u ∈ L^p(Ω)^d`. -/
+noncomputable def gradL {Ω : TopologicalSpace.Opens ℝᵈ} {p : ℝ≥0∞} [Fact (1 ≤ p)]
+    (u : Sobolev1 Ω p) : PiLp p (fun _ : Fin d => Lp ℝ p (volume.restrict (Ω : Set ℝᵈ))) :=
+  u.1.snd
+
+theorem val_def {Ω : TopologicalSpace.Opens ℝᵈ} {p : ℝ≥0∞} [Fact (1 ≤ p)]
+    (u : Sobolev1 Ω p) : u.val = (u : LpGrad Ω p).fst :=
+  rfl
+
+theorem grad_def {Ω : TopologicalSpace.Opens ℝᵈ} {p : ℝ≥0∞} [Fact (1 ≤ p)]
+    (u : Sobolev1 Ω p) (i : Fin d) : u.grad i = (u : LpGrad Ω p).snd i :=
+  rfl
+
+theorem gradL_def {Ω : TopologicalSpace.Opens ℝᵈ} {p : ℝ≥0∞} [Fact (1 ≤ p)]
+    (u : Sobolev1 Ω p) : u.gradL = (u : LpGrad Ω p).snd :=
+  rfl
+
+theorem gradL_apply {Ω : TopologicalSpace.Opens ℝᵈ} {p : ℝ≥0∞} [Fact (1 ≤ p)]
+    (u : Sobolev1 Ω p) (i : Fin d) : u.gradL i = u.grad i :=
+  rfl
+
+end Sobolev1
+
 /-- Norme de `def:Sobolev` (`p < ∞`) : `‖u‖^p = ‖f‖_p^p + ∑ᵢ ‖∂ᵢ f‖_p^p`. -/
 theorem norm_W1p {Ω : TopologicalSpace.Opens ℝᵈ} {p : ℝ≥0∞} [Fact (1 ≤ p)] (hp : p ≠ ∞)
-    (u : W1p Ω p) :
-    ‖u‖ ^ p.toReal = ‖(u : LpGrad Ω p).fst‖ ^ p.toReal +
-      ∑ i, ‖(u : LpGrad Ω p).snd i‖ ^ p.toReal := by
+    (u : Sobolev1 Ω p) :
+    ‖u‖ ^ p.toReal = ‖u.val‖ ^ p.toReal + ∑ i, ‖u.grad i‖ ^ p.toReal := by
   have hp0 : 0 < p.toReal :=
     ENNReal.toReal_pos (zero_lt_one.trans_le (Fact.out : 1 ≤ p)).ne' hp
   have hu : ‖u‖ = ‖(u : LpGrad Ω p)‖ := rfl
   rw [hu, WithLp.prod_norm_eq_add hp0, PiLp.norm_eq_sum hp0, one_div,
     Real.rpow_inv_rpow (by positivity) hp0.ne', Real.rpow_inv_rpow (by positivity) hp0.ne']
+  rfl
 
 /-- Norme de `def:Sobolev` (`p = ∞`) : `‖u‖ = max(‖f‖_∞, maxᵢ ‖∂ᵢ f‖_∞)`. -/
-theorem norm_W1p_top {Ω : TopologicalSpace.Opens ℝᵈ} (u : W1p Ω ∞) :
-    ‖u‖ = max ‖(u : LpGrad Ω ∞).fst‖ (⨆ i, ‖(u : LpGrad Ω ∞).snd i‖) := by
+theorem norm_W1p_top {Ω : TopologicalSpace.Opens ℝᵈ} (u : Sobolev1 Ω ∞) :
+    ‖u‖ = max ‖u.val‖ (⨆ i, ‖u.grad i‖) := by
   have hu : ‖u‖ = ‖(u : LpGrad Ω ∞)‖ := rfl
   rw [hu, WithLp.prod_norm_eq_sup, PiLp.norm_eq_ciSup]
+  rfl
 
 /-- Unicité du gradient faible : `(f, ∇f) ↦ f` est injective sur `W^{1,p}(Ω)`, qui s'identifie
 donc (isométriquement, pour la norme du cours) à un sous-espace de `L^p(Ω)`. -/
 theorem W1p_fst_injective (Ω : TopologicalSpace.Opens ℝᵈ) (p : ℝ≥0∞) [Fact (1 ≤ p)] :
-    Function.Injective fun u : W1p Ω p => (u : LpGrad Ω p).fst := by
+    Function.Injective fun u : Sobolev1 Ω p => u.val := by
   intro u v h
-  simp only at h
+  simp only [Sobolev1.val_def] at h
   refine Subtype.ext (WithLp.ofLp_injective p (Prod.ext h (PiLp.ext fun i => Lp.ext ?_)))
   refine prop_distribL1Loc_injective Ω (w1p_locInt _) (w1p_locInt _) ?_
   have hu := mem_W1p.mp u.2 i
@@ -216,13 +256,13 @@ private lemma w1p_inner (Ω : TopologicalSpace.Opens ℝᵈ) (u v : LpGrad Ω 2)
   rfl
 
 /-- Espace de Sobolev `H^1(Ω) := W^{1,2}(Ω)` (`prop:SobolevBanach`), espace de Hilbert. -/
-noncomputable abbrev H1 (Ω : TopologicalSpace.Opens ℝᵈ) : Submodule ℝ (LpGrad Ω 2) := W1p Ω 2
+abbrev H1 (Ω : TopologicalSpace.Opens ℝᵈ) : Type := Sobolev1 Ω 2
 
 /-- **Prop. `prop:SobolevBanach`, `p = 2`.** `H^1(Ω)` est un espace de Hilbert (structure héritée
 de `L^2(Ω) × L^2(Ω)^d`), de produit scalaire `⟪u, v⟫ = ∫_Ω u v + ∑ᵢ ∫_Ω ∂ᵢu ∂ᵢv`. -/
 theorem prop_SobolevBanach_inner (Ω : TopologicalSpace.Opens ℝᵈ) (u v : H1 Ω) :
-    ⟪u, v⟫_ℝ = (∫ x in (Ω : Set ℝᵈ), (u : LpGrad Ω 2).fst x * (v : LpGrad Ω 2).fst x) +
-      ∑ i, ∫ x in (Ω : Set ℝᵈ), (u : LpGrad Ω 2).snd i x * (v : LpGrad Ω 2).snd i x :=
+    ⟪u, v⟫_ℝ = (∫ x in (Ω : Set ℝᵈ), u.val x * v.val x) +
+      ∑ i, ∫ x in (Ω : Set ℝᵈ), u.grad i x * v.grad i x :=
   w1p_inner Ω (u : LpGrad Ω 2) v
 
 /-- Fonction test vue dans `L^p(Ω) × L^p(Ω)^d` : `φ ↦ (φ, ∇φ)`. -/
@@ -292,8 +332,45 @@ theorem rem_bcDirichlet_isClosed (Ω : TopologicalSpace.Opens ℝᵈ) (p : ℝ�
     IsClosed (W1p0 Ω p : Set (LpGrad Ω p)) :=
   Submodule.isClosed_topologicalClosure _
 
+instance (Ω : TopologicalSpace.Opens ℝᵈ) (p : ℝ≥0∞) [Fact (1 ≤ p)] :
+    CompleteSpace (W1p0 Ω p) :=
+  (rem_bcDirichlet_isClosed Ω p).completeSpace_coe
+
 /-- `H^1_0(Ω) := W^{1,2}_0(Ω)` (`rem:bcDirichlet`). -/
-noncomputable abbrev H10 (Ω : TopologicalSpace.Opens ℝᵈ) : Submodule ℝ (LpGrad Ω 2) := W1p0 Ω 2
+abbrev H10 (Ω : TopologicalSpace.Opens ℝᵈ) : Type := W1p0 Ω 2
+
+namespace H10
+
+/-- La fonction `u ∈ L^2(Ω)`. -/
+noncomputable def val {Ω : TopologicalSpace.Opens ℝᵈ} (u : H10 Ω) :
+    Lp ℝ 2 (volume.restrict (Ω : Set ℝᵈ)) :=
+  u.1.fst
+
+/-- La dérivée faible `∂ᵢ u ∈ L^2(Ω)`. -/
+noncomputable def grad {Ω : TopologicalSpace.Opens ℝᵈ} (u : H10 Ω) (i : Fin d) :
+    Lp ℝ 2 (volume.restrict (Ω : Set ℝᵈ)) :=
+  u.1.snd i
+
+/-- Le gradient faible `∇u ∈ L^2(Ω)^d`. -/
+noncomputable def gradL {Ω : TopologicalSpace.Opens ℝᵈ} (u : H10 Ω) :
+    PiLp 2 (fun _ : Fin d => Lp ℝ 2 (volume.restrict (Ω : Set ℝᵈ))) :=
+  u.1.snd
+
+theorem val_def {Ω : TopologicalSpace.Opens ℝᵈ} (u : H10 Ω) : u.val = (u : LpGrad Ω 2).fst :=
+  rfl
+
+theorem grad_def {Ω : TopologicalSpace.Opens ℝᵈ} (u : H10 Ω) (i : Fin d) :
+    u.grad i = (u : LpGrad Ω 2).snd i :=
+  rfl
+
+theorem gradL_def {Ω : TopologicalSpace.Opens ℝᵈ} (u : H10 Ω) : u.gradL = (u : LpGrad Ω 2).snd :=
+  rfl
+
+theorem gradL_apply {Ω : TopologicalSpace.Opens ℝᵈ} (u : H10 Ω) (i : Fin d) :
+    u.gradL i = u.grad i :=
+  rfl
+
+end H10
 
 private lemma w1p_integrable_mul {Ω : TopologicalSpace.Opens ℝᵈ}
     (f g : Lp ℝ 2 (volume.restrict (Ω : Set ℝᵈ))) :
@@ -344,9 +421,8 @@ représentation de Riesz. -/
 theorem th_pbPoisson_Neumann (Ω : TopologicalSpace.Opens ℝᵈ)
     (f : Lp ℝ 2 (volume.restrict (Ω : Set ℝᵈ))) :
     ∃! u : H1 Ω, ∀ v : H1 Ω,
-      ∫ x in (Ω : Set ℝᵈ), ((∑ i, (u : LpGrad Ω 2).snd i x * (v : LpGrad Ω 2).snd i x) +
-          (u : LpGrad Ω 2).fst x * (v : LpGrad Ω 2).fst x) =
-        ∫ x in (Ω : Set ℝᵈ), f x * (v : LpGrad Ω 2).fst x :=
+      ∫ x in (Ω : Set ℝᵈ), ((∑ i, u.grad i x * v.grad i x) + u.val x * v.val x) =
+        ∫ x in (Ω : Set ℝᵈ), f x * v.val x :=
   w1p_poisson Ω (W1p Ω 2) f
 
 /-- **Th. `th:pbPoisson` (Problème de Poisson), problème de Dirichlet.** Pour `f ∈ L^2(Ω)`, il
@@ -356,10 +432,8 @@ Preuve : `Q` est le produit scalaire de `H^1_0(Ω)`, sous-espace fermé donc com
 theorem th_pbPoisson_Dirichlet (Ω : TopologicalSpace.Opens ℝᵈ)
     (f : Lp ℝ 2 (volume.restrict (Ω : Set ℝᵈ))) :
     ∃! u : H10 Ω, ∀ v : H10 Ω,
-      ∫ x in (Ω : Set ℝᵈ), ((∑ i, (u : LpGrad Ω 2).snd i x * (v : LpGrad Ω 2).snd i x) +
-          (u : LpGrad Ω 2).fst x * (v : LpGrad Ω 2).fst x) =
-        ∫ x in (Ω : Set ℝᵈ), f x * (v : LpGrad Ω 2).fst x :=
-  have : CompleteSpace (W1p0 Ω 2) := (rem_bcDirichlet_isClosed Ω 2).completeSpace_coe
+      ∫ x in (Ω : Set ℝᵈ), ((∑ i, u.grad i x * v.grad i x) + u.val x * v.val x) =
+        ∫ x in (Ω : Set ℝᵈ), f x * v.val x :=
   w1p_poisson Ω (W1p0 Ω 2) f
 
 /-- Propriété de prolongement de Sobolev de `Ω`, pour l'exposant `p` : conclusion de
@@ -367,8 +441,8 @@ theorem th_pbPoisson_Dirichlet (Ω : TopologicalSpace.Opens ℝᵈ)
 linéaire continu `P : W^{1,p}(Ω) → W^{1,p}(ℝ^d)` tel que `(P u)|_Ω = u`. Elle remplace
 l'hypothèse « `Ω` régulier » (`corol_testDenseWspO`). -/
 def ProlongementSobolev (Ω : TopologicalSpace.Opens ℝᵈ) (p : ℝ≥0∞) [Fact (1 ≤ p)] : Prop :=
-  ∃ P : W1p Ω p →L[ℝ] W1p (⊤ : TopologicalSpace.Opens ℝᵈ) p, ∀ u : W1p Ω p,
-    ((P u : LpGrad ⊤ p).fst : ℝᵈ → ℝ) =ᵐ[volume.restrict (Ω : Set ℝᵈ)] (u : LpGrad Ω p).fst
+  ∃ P : Sobolev1 Ω p →L[ℝ] Sobolev1 (⊤ : TopologicalSpace.Opens ℝᵈ) p, ∀ u : Sobolev1 Ω p,
+    ((P u).val : ℝᵈ → ℝ) =ᵐ[volume.restrict (Ω : Set ℝᵈ)] u.val
 
 open Filter Topology Metric
 open scoped Convolution NNReal
@@ -871,14 +945,12 @@ son gradient classique) est dans `W^{1,p}(ℝ^d)` et converge vers `u` dans `W^{
 contre `ρ_ε(x - ·)`), et `‖ρ_ε ⋆ h - h‖_p ≤ ‖ρ‖_1 ω_p(εR)` (variante de `lem:convolTranslat`
 pour `ρ` de signe quelconque). -/
 theorem prop_testDenseWsp {p : ℝ≥0∞} [Fact (1 ≤ p)] (hp : p ≠ ∞)
-    (u : W1p (⊤ : TopologicalSpace.Opens ℝᵈ) p) {ρ : ℝᵈ → ℝ} (hρ : ContDiff ℝ (⊤ : ℕ∞) ρ)
+    (u : Sobolev1 (⊤ : TopologicalSpace.Opens ℝᵈ) p) {ρ : ℝᵈ → ℝ} (hρ : ContDiff ℝ (⊤ : ℕ∞) ρ)
     (hρc : HasCompactSupport ρ) (hρ1 : ∫ x, ρ x = 1) :
-    ∃ U : ℝ → W1p (⊤ : TopologicalSpace.Opens ℝᵈ) p,
-      (∀ ε > 0, ((U ε : LpGrad ⊤ p).fst : ℝᵈ → ℝ) =ᵐ[volume]
-          (noyauEps ρ ε ⋆ ((u : LpGrad ⊤ p).fst : ℝᵈ → ℝ)) ∧
-        ∀ i, ((U ε : LpGrad ⊤ p).snd i : ℝᵈ → ℝ) =ᵐ[volume] fun x =>
-          fderiv ℝ (noyauEps ρ ε ⋆ ((u : LpGrad ⊤ p).fst : ℝᵈ → ℝ)) x
-            (EuclideanSpace.single i (1 : ℝ))) ∧
+    ∃ U : ℝ → Sobolev1 (⊤ : TopologicalSpace.Opens ℝᵈ) p,
+      (∀ ε > 0, ((U ε).val : ℝᵈ → ℝ) =ᵐ[volume] (noyauEps ρ ε ⋆ (u.val : ℝᵈ → ℝ)) ∧
+        ∀ i, ((U ε).grad i : ℝᵈ → ℝ) =ᵐ[volume] fun x =>
+          fderiv ℝ (noyauEps ρ ε ⋆ (u.val : ℝᵈ → ℝ)) x (EuclideanSpace.single i (1 : ℝ))) ∧
       Tendsto U (𝓝[>] 0) (𝓝 u) := by
   obtain ⟨U, hU, hlim⟩ := w1pDens_approx hp u hρ hρc hρ1
   exact ⟨U, fun ε hε => ⟨(hU ε hε).1, (hU ε hε).2.1⟩, hlim⟩

@@ -191,12 +191,12 @@ passage à `W^{1,p}(ℝ^d)` « par densité » se fait par extraction d'une sous
 presque partout et lemme de Fatou pour la norme `L^{p*}`. -/
 theorem th_injSousCrit {p pstar : ℝ≥0∞} [Fact (1 ≤ p)] (hp : 1 < p) (hpd : p < d)
     (hpstar : pstar⁻¹ = p⁻¹ - (d : ℝ≥0∞)⁻¹) :
-    ∃ C : ℝ≥0, ∀ u : W1p (⊤ : TopologicalSpace.Opens ℝᵈ) p,
-      MemLp ((u : LpGrad ⊤ p).fst : ℝᵈ → ℝ) pstar ∧
-        eLpNorm ((u : LpGrad ⊤ p).fst : ℝᵈ → ℝ) pstar ≤
-          C * ∑ i, eLpNorm ((u : LpGrad ⊤ p).snd i : ℝᵈ → ℝ) p := by
+    ∃ C : ℝ≥0, ∀ u : Sobolev1 (⊤ : TopologicalSpace.Opens ℝᵈ) p,
+      MemLp (u.val : ℝᵈ → ℝ) pstar ∧
+        eLpNorm (u.val : ℝᵈ → ℝ) pstar ≤ C * ∑ i, eLpNorm (u.grad i : ℝᵈ → ℝ) p := by
   obtain ⟨C, hC⟩ := injSousCrit_test hp hpd hpstar
   refine ⟨C, fun u => ?_⟩
+  simp only [Sobolev1.val_def, Sobolev1.grad_def]
   have hpt : p ≠ ∞ := (hpd.trans (ENNReal.natCast_lt_top d)).ne
   have hμ : volume.restrict (𝕋 : Set ℝᵈ) = volume := by simp
   have hu : (u : LpGrad 𝕋 p) ∈ closure (SetLike.coe (LinearMap.range (testGrad 𝕋 p))) := by
@@ -267,13 +267,14 @@ Preuve : `th_injSousCrit` appliqué au prolongement `P u`, avec `‖P u‖ ≤ �
 theorem corol_injSousCritOm (Ω : TopologicalSpace.Opens ℝᵈ) {p pstar : ℝ≥0∞} [Fact (1 ≤ p)]
     (hp : 1 < p) (hpd : p < d) (hpstar : pstar⁻¹ = p⁻¹ - (d : ℝ≥0∞)⁻¹)
     (hP : ProlongementSobolev Ω p) :
-    ∃ C : ℝ≥0, ∀ u : W1p Ω p,
-      MemLp ((u : LpGrad Ω p).fst : ℝᵈ → ℝ) pstar (volume.restrict (Ω : Set ℝᵈ)) ∧
-        eLpNorm ((u : LpGrad Ω p).fst : ℝᵈ → ℝ) pstar (volume.restrict (Ω : Set ℝᵈ)) ≤
-          C * ‖u‖ₑ := by
+    ∃ C : ℝ≥0, ∀ u : Sobolev1 Ω p,
+      MemLp (u.val : ℝᵈ → ℝ) pstar (volume.restrict (Ω : Set ℝᵈ)) ∧
+        eLpNorm (u.val : ℝᵈ → ℝ) pstar (volume.restrict (Ω : Set ℝᵈ)) ≤ C * ‖u‖ₑ := by
   obtain ⟨C, hC⟩ := th_injSousCrit hp hpd hpstar
   obtain ⟨P, hPu⟩ := hP
+  simp only [Sobolev1.val_def, Sobolev1.grad_def] at hC hPu
   refine ⟨C * d * ‖P‖₊, fun u => ?_⟩
+  simp only [Sobolev1.val_def]
   have hi : ∀ i, eLpNorm ((P u : LpGrad 𝕋 p).snd i : ℝᵈ → ℝ) p ≤ (‖P‖₊ : ℝ≥0∞) * ‖u‖ₑ := by
     intro i
     refine (injSousCrit_snd_le _ i).trans ?_
