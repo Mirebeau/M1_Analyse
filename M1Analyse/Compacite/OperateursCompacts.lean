@@ -165,10 +165,10 @@ point.** Soit `T ∈ L_c(E, F)` et `x_n ⇀ x_*` une suite de `E` convergeant fa
 la topologie faible `WeakSpace 𝕜 E`). Alors `T x_n → T x_*` en norme.
 Le second point est `prop_opCompactComplCont_boule`. -/
 theorem prop_opCompactComplCont (T : E →L[𝕜] F) (hT : IsCompactOperator T) (x : ℕ → E)
-    (x₀ : E) (hx : Tendsto (fun n => toWeakSpace 𝕜 E (x n)) atTop (𝓝 (toWeakSpace 𝕜 E x₀))) :
-    Tendsto (fun n => T (x n)) atTop (𝓝 (T x₀)) := by
-  -- convergence faible : `φ (x n) → φ x₀` pour toute forme linéaire continue `φ`
-  have hφ : ∀ φ : StrongDual 𝕜 E, Tendsto (fun n => φ (x n)) atTop (𝓝 (φ x₀)) := fun φ =>
+    (xLim : E) (hx : Tendsto (fun n => toWeakSpace 𝕜 E (x n)) atTop (𝓝 (toWeakSpace 𝕜 E xLim))) :
+    Tendsto (fun n => T (x n)) atTop (𝓝 (T xLim)) := by
+  -- convergence faible : `φ (x n) → φ xLim` pour toute forme linéaire continue `φ`
+  have hφ : ∀ φ : StrongDual 𝕜 E, Tendsto (fun n => φ (x n)) atTop (𝓝 (φ xLim)) := fun φ =>
     ((WeakBilin.eval_continuous (topDualPairing 𝕜 E).flip φ).tendsto _).comp hx
   -- la suite est bornée (Banach-Steinhaus dans le bidual)
   obtain ⟨C, hC⟩ := banach_steinhaus (g := fun n => NormedSpace.inclusionInDoubleDual 𝕜 E (x n))
@@ -179,7 +179,7 @@ theorem prop_opCompactComplCont (T : E →L[𝕜] F) (hT : IsCompactOperator T) 
     rw [mem_closedBall_zero_iff]
     have := (NormedSpace.inclusionInDoubleDualLi 𝕜 (E := E)).norm_map (x n)
     exact this ▸ hC n
-  -- les `T x_n` restent dans le compact `\overline{T(B'(0, C))}`, et y ont `T x₀` pour unique
+  -- les `T x_n` restent dans le compact `\overline{T(B'(0, C))}`, et y ont `T xLim` pour unique
   -- valeur d'adhérence
   refine (hT.isCompact_closure_image_closedBall C).tendsto_nhds_of_unique_mapClusterPt
     (Eventually.of_forall fun n => subset_closure (mem_image_of_mem _ (hxC n))) ?_

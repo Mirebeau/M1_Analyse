@@ -108,12 +108,12 @@ theorem generateFrom_preimage_eq_iInf (f : ∀ i, E → Yi i) :
     exact continuous_def.mp this U hU
 
 /-- **Rem. `rem:topoFunc` (Convergence des suites).** Pour la topologie engendrée par les
-`fᵢ⁻¹(Uᵢ)`, une suite `(xₙ)` converge vers `a` ssi `(fᵢ(xₙ))` converge vers `fᵢ(a)` pour tout
-`i` (la limite `a` joue le rôle de `x_*` du cours). -/
-theorem rem_topoFunc_suites (f : ∀ i, E → Yi i) (u : ℕ → E) (a : E) :
+`fᵢ⁻¹(Uᵢ)`, une suite `(xₙ)` converge vers `x_*` ssi `(fᵢ(xₙ))` converge vers `fᵢ(x_*)` pour
+tout `i`. -/
+theorem rem_topoFunc_suites (f : ∀ i, E → Yi i) (u : ℕ → E) (xLim : E) :
     Tendsto u atTop
-        (@nhds E (generateFrom {s | ∃ i, ∃ U : Set (Yi i), IsOpen U ∧ s = f i ⁻¹' U}) a) ↔
-      ∀ i, Tendsto (f i ∘ u) atTop (𝓝 (f i a)) := by
+        (@nhds E (generateFrom {s | ∃ i, ∃ U : Set (Yi i), IsOpen U ∧ s = f i ⁻¹' U}) xLim) ↔
+      ∀ i, Tendsto (f i ∘ u) atTop (𝓝 (f i xLim)) := by
   rw [generateFrom_preimage_eq_iInf, nhds_iInf, tendsto_iInf]
   simp only [nhds_induced, tendsto_comap_iff]
 

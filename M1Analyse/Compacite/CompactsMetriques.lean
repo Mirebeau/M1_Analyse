@@ -127,8 +127,8 @@ theorem th_Heine_equicontinue [CompactSpace X] {ι : Type*} {f : ι → X → Y}
 
 /-- **Prop. `prop:noAdhCv`.** Soit `(x_n)` une suite à valeurs dans un espace métrique compact
 `X`, n'admettant pas d'autre valeur d'adhérence que (peut-être) `x_*`. Alors `x_n → x_*`. -/
-theorem prop_noAdhCv [CompactSpace X] (x : ℕ → X) (xs : X)
-    (h : ∀ a, MapClusterPt a atTop x → a = xs) : Tendsto x atTop (𝓝 xs) :=
+theorem prop_noAdhCv [CompactSpace X] (x : ℕ → X) (xLim : X)
+    (h : ∀ a, MapClusterPt a atTop x → a = xLim) : Tendsto x atTop (𝓝 xLim) :=
   tendsto_nhds_of_unique_mapClusterPt h
 
 end M1Analyse

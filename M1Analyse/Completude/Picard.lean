@@ -43,8 +43,8 @@ Preuve (via Mathlib, même stratégie que le cours) : `ContractingWith.fixedPoin
 `d(x_n, x_{n+1}) ≤ K^n d(x_0, x_1)`, limite fixe par continuité). -/
 theorem th_fixe_Picard [MetricSpace X] [CompleteSpace X] [Nonempty X] (K : ℝ≥0) (hK : K < 1)
     (f : X → X) (hf : LipschitzWith K f) :
-    ∃ xs : X, (f xs = xs ∧ ∀ y, f y = y → y = xs) ∧
-      ∀ (x₀ : X) (n : ℕ), dist (f^[n] x₀) xs ≤ (K : ℝ) ^ n * dist x₀ (f^[1] x₀) / (1 - K) := by
+    ∃ uFixe : X, (f uFixe = uFixe ∧ ∀ y, f y = y → y = uFixe) ∧
+      ∀ (x₀ : X) (n : ℕ), dist (f^[n] x₀) uFixe ≤ (K : ℝ) ^ n * dist x₀ (f^[1] x₀) / (1 - K) := by
   have hc : ContractingWith K f := ⟨hK, hf⟩
   refine ⟨ContractingWith.fixedPoint f hc, ⟨hc.fixedPoint_isFixedPt,
     fun y hy => hc.fixedPoint_unique hy⟩, fun x₀ n => ?_⟩
