@@ -46,6 +46,7 @@ import M1Analyse.Sobolev.NoyauGreen
 import M1Analyse.Sobolev.Rellich
 import M1Analyse.Sobolev.RellichCorollaire
 import M1Analyse.Sobolev.MinNonLinH1
+import M1Analyse.Sobolev.BouleW1pFerme
 import M1Analyse.Bosse.Bosse
 import M1Analyse.Hilbert.Hilbert
 import M1Analyse.LegendreFenchel.LegendreFenchel
