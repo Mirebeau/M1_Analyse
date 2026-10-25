@@ -9,16 +9,16 @@ import Mathlib.MeasureTheory.Measure.Haar.InnerProductSpace
 import Mathlib.Analysis.Calculus.ContDiff.Basic
 import Mathlib.Topology.Order.IntermediateValue
 import Mathlib.Topology.Order.ProjIcc
+import Mathlib.Analysis.Calculus.BumpFunction.Convolution
 
 /-!
 # §3.5 Point fixe de Brouwer (`subsec:Brouwer`)
 
 Source : `Include/Compacite.tex`, sous-section `subsec:Brouwer`.
 
-Le théorème de point fixe de Brouwer (`th:Brouwer`) est absent de Mathlib, de même que les
-outils de la preuve de Lax suivie par le cours (`lem:chgVarLax`, `lem:noretractSmooth`,
-`corol:noretract`, équivalents en substance au théorème de Brouwer) : ces énoncés ne sont pas
-formalisés.
+Le théorème de point fixe de Brouwer (`th:Brouwer`) est absent de Mathlib. Le lemme de Lax
+(`lem:chgVarLax`), démontré dans le cours pour `d = 2` seulement, est posé comme **axiome**
+(décision de l'auteur) ; on en déduit `lem:noretractSmooth`, `corol:noretract` et `th:Brouwer`.
 
 On formalise :
 * la formule de changement de variable `th:chgVarIntegr`, citée sans preuve par le cours, et
@@ -97,5 +97,262 @@ theorem fixedPoint_of_retract {X : Type*} [TopologicalSpace X] {B K : Set X} (hK
   have := congrArg Subtype.val hx
   simp only [ContinuousMap.comp_apply, hPx] at this
   exact this
+
+section Lax
+
+open Metric ContinuousLinearMap
+open scoped Convolution
+
+variable {d : ℕ}
+
+local notation "ℝᵈ" => EuclideanSpace ℝ (Fin d)
+
+/-- **Lem. `lem:chgVarLax` (Lax), AXIOME.** Soient `φ ∈ C^2(ℝ^d, ℝ^d)` telle que `φ(x) = x`
+pour tout `x ∉ B` (`B` boule unité fermée), et `f ∈ 𝓓(ℝ^d)`. Alors
+`∫ f(x) dx = ∫ f(φ(x)) det J(x) dx`, où `det J(x)` est le jacobien de `φ`, avec son signe.
+Remarque : le cours ne démontre que le cas `d = 2` et renvoie à la littérature pour le cas
+général ; Mathlib ne contient que la formule pour `φ` injective (`th_chgVarIntegr`). À la
+demande de l'auteur, l'énoncé est posé comme **axiome** (\claudereport). Les résultats qui en
+dépendent le mentionnent dans `#print axioms` (`M1Analyse.lem_chgVarLax`). -/
+axiom lem_chgVarLax {φ : ℝᵈ → ℝᵈ} (hφ : ContDiff ℝ 2 φ)
+    (hφB : ∀ x, x ∉ closedBall (0 : ℝᵈ) 1 → φ x = x) {f : ℝᵈ → ℝ}
+    (hf : ContDiff ℝ (⊤ : ℕ∞) f) (hfc : HasCompactSupport f) :
+    ∫ x, f x = ∫ x, f (φ x) * (fderiv ℝ φ x).det
+
+/-- **Lem. `lem:noretractSmooth`.** Si `φ ∈ C^2(ℝ^d, ℝ^d)` et `φ(x) = x` pour tout `x ∉ B`, alors
+`B ⊂ φ(B)`. Preuve : celle du cours (fonction plateau d'intégrale `1` dans une boule évitant
+le compact `φ(B)`, et `lem:chgVarLax`). -/
+theorem lem_noretractSmooth {φ : ℝᵈ → ℝᵈ} (hφ : ContDiff ℝ 2 φ)
+    (hφB : ∀ x, x ∉ closedBall (0 : ℝᵈ) 1 → φ x = x) :
+    closedBall (0 : ℝᵈ) 1 ⊆ φ '' closedBall 0 1 := by
+  intro y₀ hy₀
+  by_contra hnot
+  have hK : IsClosed (φ '' closedBall (0 : ℝᵈ) 1) :=
+    ((isCompact_closedBall 0 1).image hφ.continuous).isClosed
+  -- un point `z` de la boule ouverte hors de `φ(B)`
+  obtain ⟨z, hzU, hzB⟩ : ∃ z, z ∈ (φ '' closedBall (0 : ℝᵈ) 1)ᶜ ∧ z ∈ ball (0 : ℝᵈ) 1 := by
+    have hcl : y₀ ∈ closure (ball (0 : ℝᵈ) 1) := by
+      rwa [closure_ball (0 : ℝᵈ) one_ne_zero]
+    exact mem_closure_iff.1 hcl _ hK.isOpen_compl hnot
+  obtain ⟨ε, hε, hεsub⟩ : ∃ ε > 0, ball z ε ⊆ (φ '' closedBall (0 : ℝᵈ) 1)ᶜ ∩ ball 0 1 :=
+    Metric.isOpen_iff.1 (hK.isOpen_compl.inter isOpen_ball) z ⟨hzU, hzB⟩
+  let b : ContDiffBump z := ⟨ε / 2, ε, half_pos hε, half_lt_self hε⟩
+  set f : ℝᵈ → ℝ := b.normed volume with hf_def
+  have hsupp : Function.support f = ball z ε := b.support_normed_eq
+  have hzero : ∀ x, f (φ x) = 0 := by
+    intro x
+    by_contra hx
+    have hmem : φ x ∈ ball z ε := hsupp ▸ hx
+    by_cases hxB : x ∈ closedBall (0 : ℝᵈ) 1
+    · exact (hεsub hmem).1 ⟨x, hxB, rfl⟩
+    · rw [hφB x hxB] at hmem
+      exact hxB (ball_subset_closedBall (hεsub hmem).2)
+  have h1 : ∫ x, f x = 1 := b.integral_normed
+  have h2 := lem_chgVarLax hφ hφB (f := f) b.contDiff_normed b.hasCompactSupport_normed
+  simp only [hzero, zero_mul, integral_zero] at h2
+  rw [h1] at h2
+  exact one_ne_zero h2
+
+/-- **Cor. `corol:noretract` (Non rétractation de la boule sur la sphère).** Si `φ ∈ C^0(B, B)`
+et `φ(x) = x` pour tout `x ∈ ∂B`, alors `φ(B) = B`.
+Preuve (variante du cours) : on régularise `(φ - Id) ∘ π` (`π` rétraction radiale sur `B`),
+uniformément continue et nulle hors de `B`, ce qui évite un noyau radial centré ; on applique
+`lem:noretractSmooth` à une version dilatée, et l'on conclut par fermeture de `φ(B)` au lieu
+d'une extraction de sous-suite. -/
+theorem corol_noretract {φ : ℝᵈ → ℝᵈ} (hφc : ContinuousOn φ (closedBall 0 1))
+    (hφB : MapsTo φ (closedBall 0 1) (closedBall 0 1))
+    (hφS : ∀ x ∈ sphere (0 : ℝᵈ) 1, φ x = x) :
+    φ '' closedBall 0 1 = closedBall 0 1 := by
+  refine Subset.antisymm hφB.image_subset ?_
+  have hK : IsClosed (φ '' closedBall (0 : ℝᵈ) 1) :=
+    ((isCompact_closedBall 0 1).image_of_continuousOn hφc).isClosed
+  intro y hy
+  rw [← hK.closure_eq, Metric.mem_closure_iff]
+  intro δ hδ
+  -- rétraction radiale `π` de `ℝᵈ` sur `B`, et `g := (φ - id) ∘ π`, nulle hors de `B`
+  set π : ℝᵈ → ℝᵈ := fun x => (max 1 ‖x‖)⁻¹ • x with hπ_def
+  have hπc : Continuous π := by
+    have h : Continuous fun x : ℝᵈ => (max 1 ‖x‖)⁻¹ :=
+      (continuous_const.max continuous_norm).inv₀ fun x => by positivity
+    exact h.smul continuous_id
+  have hπB : ∀ x, π x ∈ closedBall (0 : ℝᵈ) 1 := by
+    intro x
+    rw [mem_closedBall_zero_iff, hπ_def, norm_smul, norm_inv, Real.norm_eq_abs,
+      abs_of_pos (by positivity : (0 : ℝ) < max 1 ‖x‖)]
+    rw [inv_mul_le_iff₀ (by positivity)]
+    simp
+  have hπid : ∀ x, ‖x‖ ≤ 1 → π x = x := by
+    intro x hx
+    simp [hπ_def, max_eq_left hx]
+  have hπS : ∀ x, 1 < ‖x‖ → π x ∈ sphere (0 : ℝᵈ) 1 := by
+    intro x hx
+    rw [mem_sphere_zero_iff_norm, hπ_def, norm_smul, max_eq_right hx.le, norm_inv, norm_norm,
+      inv_mul_cancel₀ (by positivity)]
+  set g : ℝᵈ → ℝᵈ := fun x => φ (π x) - π x with hg_def
+  have hgc : Continuous g := (hφc.comp_continuous hπc hπB).sub hπc
+  have hg0 : ∀ x, 1 < ‖x‖ → g x = 0 := by
+    intro x hx
+    simp [hg_def, hφS _ (hπS x hx)]
+  have hgcs : HasCompactSupport g := by
+    refine HasCompactSupport.intro (isCompact_closedBall (0 : ℝᵈ) 1) fun x hx => hg0 x ?_
+    simpa using hx
+  obtain ⟨η, hη, hηg⟩ := Metric.uniformContinuous_iff.1
+    (hgcs.uniformContinuous_of_continuous hgc) (δ / 2) (half_pos hδ)
+  -- régularisation de `g` par un noyau `C^∞` de rayon `r`
+  set r : ℝ := min (η / 2) (δ / 4) with hr_def
+  have hr : 0 < r := lt_min (half_pos hη) (by positivity)
+  have hrη : r < η := (min_le_left _ _).trans_lt (half_lt_self hη)
+  have hrδ : r ≤ δ / 4 := min_le_right _ _
+  let bump : ContDiffBump (0 : ℝᵈ) := ⟨r / 2, r, half_pos hr, half_lt_self hr⟩
+  set gr : ℝᵈ → ℝᵈ := bump.normed volume ⋆[lsmul ℝ ℝ, volume] g with hgr_def
+  have hgr_smooth : ContDiff ℝ 2 gr :=
+    bump.hasCompactSupport_normed.contDiff_convolution_left _ bump.contDiff_normed
+      hgc.locallyIntegrable
+  have hgr_close : ∀ x, dist (gr x) (g x) ≤ δ / 2 := fun x =>
+    bump.dist_normed_convolution_le hgc.aestronglyMeasurable fun t ht =>
+      (hηg (lt_trans (mem_ball.1 ht) hrη)).le
+  have hgr0 : ∀ x, 1 + r < ‖x‖ → gr x = 0 := by
+    intro x hx
+    have hball : ∀ t ∈ ball x bump.rOut, g t = g x := by
+      intro t ht
+      have ht' : dist t x < r := ht
+      have : 1 < ‖t‖ := by
+        have := norm_sub_norm_le x t
+        rw [← dist_eq_norm, dist_comm] at this
+        linarith
+      rw [hg0 t this, hg0 x (by linarith)]
+    rw [hgr_def, bump.normed_convolution_eq_right hball, hg0 x (by linarith)]
+  -- l'application lisse `ψ`, égale à l'identité hors de `B`
+  set ψ : ℝᵈ → ℝᵈ := fun x => (1 + r)⁻¹ • ((1 + r) • x + gr ((1 + r) • x)) with hψ_def
+  have hψ : ContDiff ℝ 2 ψ := by
+    have h1 : ContDiff ℝ 2 fun x : ℝᵈ => (1 + r) • x := contDiff_id.const_smul _
+    exact (h1.add (hgr_smooth.comp h1)).const_smul (1 + r)⁻¹
+  have hψB : ∀ x, x ∉ closedBall (0 : ℝᵈ) 1 → ψ x = x := by
+    intro x hx
+    have hx1 : 1 < ‖x‖ := by simpa using hx
+    have : 1 + r < ‖(1 + r) • x‖ := by
+      rw [norm_smul, Real.norm_eq_abs, abs_of_pos (by linarith)]
+      nlinarith
+    simp only [hψ_def, hgr0 _ this, add_zero, smul_smul,
+      inv_mul_cancel₀ (by linarith : (1 + r) ≠ 0), one_smul]
+  have hy' : (1 + r)⁻¹ • y ∈ closedBall (0 : ℝᵈ) 1 := by
+    have hy1 : ‖y‖ ≤ 1 := by simpa using hy
+    rw [mem_closedBall_zero_iff, norm_smul, norm_inv, Real.norm_eq_abs, abs_of_pos (by linarith),
+      inv_mul_le_iff₀ (by linarith)]
+    linarith
+  obtain ⟨x, hx, hxy⟩ := lem_noretractSmooth hψ hψB hy'
+  set z : ℝᵈ := (1 + r) • x with hz_def
+  have hz : z + gr z = y := by
+    have := congrArg (fun v => (1 + r) • v) hxy
+    simpa only [hψ_def, smul_smul, mul_inv_cancel₀ (by linarith : (1 + r) ≠ 0), one_smul]
+      using this
+  have hzn : ‖z‖ ≤ 1 + r := by
+    have hx1 : ‖x‖ ≤ 1 := by simpa using hx
+    rw [hz_def, norm_smul, Real.norm_eq_abs, abs_of_pos (by linarith)]
+    nlinarith
+  have hzπ : ‖z - π z‖ ≤ r := by
+    by_cases h1 : ‖z‖ ≤ 1
+    · rw [hπid z h1, sub_self, norm_zero]; exact hr.le
+    · push Not at h1
+      have : z - π z = (1 - ‖z‖⁻¹) • z := by
+        simp only [hπ_def, max_eq_right h1.le, sub_smul, one_smul]
+      rw [this, norm_smul, Real.norm_eq_abs, abs_of_nonneg, sub_mul,
+        inv_mul_cancel₀ (by positivity)]
+      · linarith
+      · rw [sub_nonneg]; exact inv_le_one_of_one_le₀ h1.le
+  refine ⟨φ (π z), ⟨π z, hπB z, rfl⟩, ?_⟩
+  have hφπ : φ (π z) = g z + π z := by simp [hg_def]
+  rw [hφπ, ← hz, dist_eq_norm]
+  have : z + gr z - (g z + π z) = (gr z - g z) + (z - π z) := by abel
+  rw [this]
+  calc ‖(gr z - g z) + (z - π z)‖ ≤ ‖gr z - g z‖ + ‖z - π z‖ := norm_add_le _ _
+    _ ≤ δ / 2 + δ / 4 := by
+        gcongr
+        · rw [← dist_eq_norm]; exact hgr_close z
+        · exact hzπ.trans hrδ
+    _ < δ := by linarith
+
+/-- **Th. `th:Brouwer` (Point fixe de Brouwer).** Toute `f ∈ C^0(B, B)` admet un point fixe.
+Preuve : celle du cours (rétraction `x ↦ x + λ(x)(x - f(x))` sur la sphère, contredisant
+`corol:noretract`). Dépend de l'axiome `lem_chgVarLax`. -/
+theorem th_Brouwer {f : ℝᵈ → ℝᵈ} (hfc : ContinuousOn f (closedBall 0 1))
+    (hfB : MapsTo f (closedBall 0 1) (closedBall 0 1)) :
+    ∃ x ∈ closedBall (0 : ℝᵈ) 1, f x = x := by
+  by_contra hno
+  push Not at hno
+  -- coefficients du trinôme `P_x(λ) = a λ² + 2 b λ + c`
+  set a : ℝᵈ → ℝ := fun x => ‖x - f x‖ ^ 2 with ha_def
+  set b : ℝᵈ → ℝ := fun x => inner ℝ x (x - f x) with hb_def
+  set c : ℝᵈ → ℝ := fun x => ‖x‖ ^ 2 - 1 with hc_def
+  set lam : ℝᵈ → ℝ := fun x => (-b x + √(b x ^ 2 - a x * c x)) / a x with hlam_def
+  set φ : ℝᵈ → ℝᵈ := fun x => x + lam x • (x - f x) with hφ_def
+  have ha0 : ∀ x ∈ closedBall (0 : ℝᵈ) 1, a x ≠ 0 := by
+    intro x hx
+    have : x - f x ≠ 0 := sub_ne_zero.2 (hno x hx).symm
+    simp only [ha_def]
+    positivity
+  have hc0 : ∀ x ∈ closedBall (0 : ℝᵈ) 1, c x ≤ 0 := by
+    intro x hx
+    have : ‖x‖ ≤ 1 := by simpa using hx
+    simp only [hc_def]
+    nlinarith [norm_nonneg x]
+  have hcont : ContinuousOn φ (closedBall 0 1) := by
+    have hfx : ContinuousOn (fun x => x - f x) (closedBall (0 : ℝᵈ) 1) :=
+      continuousOn_id.sub hfc
+    have hacont : ContinuousOn a (closedBall (0 : ℝᵈ) 1) := (hfx.norm).pow 2
+    have hbcont : ContinuousOn b (closedBall (0 : ℝᵈ) 1) := continuousOn_id.inner hfx
+    have hccont : ContinuousOn c (closedBall (0 : ℝᵈ) 1) :=
+      (continuous_norm.pow 2).continuousOn.sub continuousOn_const
+    have hlc : ContinuousOn lam (closedBall (0 : ℝᵈ) 1) :=
+      (hbcont.neg.add ((hbcont.pow 2).sub (hacont.mul hccont)).sqrt).div hacont ha0
+    exact continuousOn_id.add (hlc.smul hfx)
+  have hnorm : ∀ x ∈ closedBall (0 : ℝᵈ) 1, ‖φ x‖ = 1 := by
+    intro x hx
+    have hD : 0 ≤ b x ^ 2 - a x * c x := by
+      have : 0 ≤ a x := by simp only [ha_def]; positivity
+      nlinarith [hc0 x hx, sq_nonneg (b x)]
+    have hs := Real.sq_sqrt hD
+    have hla : lam x * a x = -b x + √(b x ^ 2 - a x * c x) := by
+      simp only [hlam_def]; field_simp [ha0 x hx]
+    have hkey : a x * lam x ^ 2 + 2 * b x * lam x + c x = 0 := by
+      have : a x * (a x * lam x ^ 2 + 2 * b x * lam x + c x) = 0 := by
+        linear_combination (lam x * a x + b x + √(b x ^ 2 - a x * c x)) * hla + hs
+      rcases mul_eq_zero.1 this with h | h
+      · exact absurd h (ha0 x hx)
+      · exact h
+    have hsq : ‖φ x‖ ^ 2 = 1 := by
+      simp only [hφ_def]
+      rw [norm_add_sq_real, real_inner_smul_right, norm_smul, mul_pow, Real.norm_eq_abs, sq_abs]
+      simp only [ha_def, hb_def, hc_def] at hkey
+      linear_combination hkey
+    have := norm_nonneg (φ x)
+    nlinarith [sq_nonneg (‖φ x‖ - 1)]
+  have hmaps : MapsTo φ (closedBall 0 1) (closedBall 0 1) := fun x hx => by
+    simp [hnorm x hx]
+  have hfix : ∀ x ∈ sphere (0 : ℝᵈ) 1, φ x = x := by
+    intro x hx
+    have hx1 : ‖x‖ = 1 := by simpa using hx
+    have hxB : x ∈ closedBall (0 : ℝᵈ) 1 := sphere_subset_closedBall hx
+    have hcx : c x = 0 := by simp [hc_def, hx1]
+    have hbx : 0 ≤ b x := by
+      have h1 : inner ℝ x (f x) ≤ 1 := by
+        have h2 := real_inner_le_norm x (f x)
+        have h3 : ‖f x‖ ≤ 1 := by simpa using hfB hxB
+        rw [hx1] at h2
+        linarith
+      simp only [hb_def, inner_sub_right, real_inner_self_eq_norm_sq, hx1]
+      linarith
+    have : lam x = 0 := by
+      simp only [hlam_def, hcx, mul_zero, sub_zero, Real.sqrt_sq hbx, neg_add_cancel, zero_div]
+    simp [hφ_def, this]
+  have himg := corol_noretract hcont hmaps hfix
+  have h0 : (0 : ℝᵈ) ∈ φ '' closedBall 0 1 := by
+    rw [himg]; simp
+  obtain ⟨x, hx, hx0⟩ := h0
+  have := hnorm x hx
+  rw [hx0, norm_zero] at this
+  exact zero_ne_one this
+
+end Lax
 
 end M1Analyse
