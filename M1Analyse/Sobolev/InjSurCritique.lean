@@ -612,7 +612,7 @@ theorem th_injSurCrit (hd : 1 ≤ d) {p : ℝ≥0∞} [Fact (1 ≤ p)] (hdp : (d
   refine ⟨C, C', fun u => ?_⟩
   simp only [Sobolev1.val_def, Sobolev1.gradL_def]
   set U : LpGrad (⊤ : TopologicalSpace.Opens ℝᵈ) p := u.1 with hUdef
-  have hu : U ∈ W1p0 (⊤ : TopologicalSpace.Opens ℝᵈ) p := by
+  have hu : U ∈ W1p0 (⊤ : TopologicalSpace.Opens ℝᵈ) p hp := by
     rw [prop_testDenseWsp_dense hp]; exact u.2
   rw [W1p0, ← SetLike.mem_coe, Submodule.topologicalClosure_coe] at hu
   obtain ⟨w, hw, hlim⟩ := mem_closure_iff_seq_limit.1 hu

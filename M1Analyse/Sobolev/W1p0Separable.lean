@@ -92,17 +92,15 @@ private lemma sepW10_continuous (Ω : TopologicalSpace.Opens ℝᵈ) (p : ℝ≥
     hfst.prodMk ((PiLp.continuousLinearEquiv p ℝ _).symm.continuous.comp hsnd)
   exact (WithLp.prodContinuousLinearEquiv p ℝ _ _).symm.continuous.comp h
 
-/-- **Rem. `rem:bcDirichlet`, séparabilité.** `W^{1,p}_0(Ω)` est séparable, pour tout
-`p ∈ [1, ∞]`.
-Preuve (différente du cours, qui la déduit de celle de `W^{1,p}(Ω)`, `p < ∞`) : l'injection
+/-- **Rem. `rem:bcDirichlet`, séparabilité.** Pour `1 ≤ p < ∞`, `W^{1,p}_0(Ω)` est séparable.
+Preuve (différente du cours, qui la déduit de celle de `W^{1,p}(Ω)`) : l'injection
 `φ ↦ (φ, ∇φ)` de `𝓓(Ω)` dans `L^p(Ω) × L^p(Ω)^d` est continue (sur chaque `𝓓_K`,
 `‖φ‖_{L^p} ≤ |K|^{1/p} ‖φ‖_∞`) ; `𝓓(Ω)` est séparable (`prop_testFunSeparab`), donc l'image et
-son adhérence `W^{1,p}_0(Ω)` aussi. Le cas `p = ∞` est couvert, bien que `W^{1,∞}(Ω)` ne soit
-pas séparable. -/
-theorem rem_bcDirichlet_separable (Ω : TopologicalSpace.Opens ℝᵈ) (p : ℝ≥0∞) [Fact (1 ≤ p)] :
-    TopologicalSpace.SeparableSpace (W1p0 Ω p) := by
+son adhérence `W^{1,p}_0(Ω)` aussi. -/
+theorem rem_bcDirichlet_separable (Ω : TopologicalSpace.Opens ℝᵈ) (p : ℝ≥0∞) [Fact (1 ≤ p)]
+    (hp : p ≠ ∞) : TopologicalSpace.SeparableSpace (W1p0 Ω p hp) := by
   have := prop_testFunSeparab Ω
-  have h : TopologicalSpace.IsSeparable (W1p0 Ω p : Set (LpGrad Ω p)) := by
+  have h : TopologicalSpace.IsSeparable (W1p0 Ω p hp : Set (LpGrad Ω p)) := by
     rw [W1p0, Submodule.topologicalClosure_coe, LinearMap.coe_range]
     exact (TopologicalSpace.isSeparable_range (sepW10_continuous Ω p)).closure
   exact h.separableSpace

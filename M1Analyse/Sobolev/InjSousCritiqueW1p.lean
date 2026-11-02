@@ -201,7 +201,7 @@ theorem th_injSousCrit {p pstar : ℝ≥0∞} [Fact (1 ≤ p)] (hp : 1 < p) (hpd
   have hμ : volume.restrict (𝕋 : Set ℝᵈ) = volume := by simp
   have hu : (u : LpGrad 𝕋 p) ∈ closure (SetLike.coe (LinearMap.range (testGrad 𝕋 p))) := by
     rw [← Submodule.topologicalClosure_coe]
-    change (u : LpGrad 𝕋 p) ∈ W1p0 𝕋 p
+    change (u : LpGrad 𝕋 p) ∈ W1p0 𝕋 p hpt
     rw [prop_testDenseWsp_dense hpt]
     exact u.2
   obtain ⟨w, hwr, hw⟩ := mem_closure_iff_seq_limit.1 hu

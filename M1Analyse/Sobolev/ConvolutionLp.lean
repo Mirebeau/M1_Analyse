@@ -376,6 +376,19 @@ theorem prop_convolLp {p : ℝ≥0∞} (hp : 1 ≤ p) {f g : ℝᵈ → ℝ} (hf
     refine h1.trans ((ENNReal.rpow_le_rpow key (by positivity)).trans (le_of_eq ?_))
     rw [← ENNReal.rpow_mul, mul_one_div_cancel hr0.ne', ENNReal.rpow_one]
 
+open scoped Pointwise in
+/-- **Éq. `eq:suppConvol` (Support d'une convolution).** `supp(f ⋆ g) ⊂ adh(supp f + supp g)`.
+Encodage : `f, g : ℝ^d → ℝ` sont des fonctions (et non des classes), `supp` est le support
+topologique `tsupport` (adhérence de `{f ≠ 0}`), et `f ⋆ g` est la convolution
+`x ↦ ∫ f(h) g(x - h) dh` (valant `0` là où l'intégrale n'existe pas). L'inclusion vaut sans
+hypothèse d'intégrabilité, pour tout représentant de `f` et `g` ; comme `f ⋆ g` ne dépend que
+des classes de `f` et `g`, elle implique la version pour les supports essentiels des classes
+`f ∈ L^1`, `g ∈ L^p` du cours. -/
+theorem eq_suppConvol (f g : ℝᵈ → ℝ) :
+    tsupport (f ⋆ g) ⊆ closure (tsupport f + tsupport g) :=
+  closure_mono (Subset.trans (support_convolution_subset (lsmul ℝ ℝ))
+    (add_subset_add (subset_tsupport f) (subset_tsupport g)))
+
 /-- **Lemme `lem:convolTranslat` (Convolution et translation).** Soit `f ∈ L^1(ℝ^d, ℝ_+)`
 d'intégrale unité, `g ∈ L^p(ℝ^d)` (`1 ≤ p < ∞`) et `A ⊆ ℝ^d` mesurable. Alors
 `‖f ⋆ g - g‖^p_{L^p(A)} ≤ ∫ f(h) ‖τ_h g - g‖^p_{L^p(A)} dh`, où `τ_h g(x) = g(x - h)`.

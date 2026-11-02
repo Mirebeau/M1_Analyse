@@ -283,12 +283,14 @@ theorem testGrad_snd (Ω : TopologicalSpace.Opens ℝᵈ) (p : ℝ≥0∞) [Fact
   (w1p_toLp_coe Ω p (w1p_partial Ω i φ)).trans
     (Filter.Eventually.of_forall (w1p_partial_apply Ω i φ))
 
-/-- **Rem. `rem:bcDirichlet` (Conditions au bord de Dirichlet).** `W^{1,p}_0(Ω)` est l'adhérence
-de `𝓓(Ω)`, plongé par `φ ↦ (φ, ∇φ)`. C'est un sous-espace fermé (`rem_bcDirichlet_isClosed`),
-donc complet, de `W^{1,p}(Ω)` (`rem_bcDirichlet`), et séparable (`rem_bcDirichlet_separable`,
-`Sobolev/W1p0Separable.lean`). -/
-noncomputable def W1p0 (Ω : TopologicalSpace.Opens ℝᵈ) (p : ℝ≥0∞) [Fact (1 ≤ p)] :
-    Submodule ℝ (LpGrad Ω p) :=
+/-- **Rem. `rem:bcDirichlet` (Conditions au bord de Dirichlet).** Pour `1 ≤ p < ∞`,
+`W^{1,p}_0(Ω)` est l'adhérence de `𝓓(Ω)`, plongé par `φ ↦ (φ, ∇φ)`. C'est un sous-espace
+fermé (`rem_bcDirichlet_isClosed`), donc complet, de `W^{1,p}(Ω)` (`rem_bcDirichlet`), et
+séparable (`rem_bcDirichlet_separable`, `Sobolev/W1p0Separable.lean`). Le cas `p = ∞` est
+exclu, comme dans le cours : l'adhérence de `𝓓(Ω)` dans `W^{1,∞}(Ω)` n'est pas une bonne
+définition de `W^{1,∞}_0(Ω)`. -/
+noncomputable def W1p0 (Ω : TopologicalSpace.Opens ℝᵈ) (p : ℝ≥0∞) [Fact (1 ≤ p)]
+    (_hp : p ≠ ∞) : Submodule ℝ (LpGrad Ω p) :=
   (LinearMap.range (testGrad Ω p)).topologicalClosure
 
 /-- Intégration par parties pour deux fonctions test : `∫ φ ∂ᵢψ + ∫ ∂ᵢφ ψ = 0`. -/
@@ -312,8 +314,8 @@ private lemma w1p_ibp (Ω : TopologicalSpace.Opens ℝᵈ) (i : Fin d) (φ ψ : 
 
 /-- **Rem. `rem:bcDirichlet`.** `W^{1,p}_0(Ω) ⊆ W^{1,p}(Ω)` (intégration par parties pour les
 fonctions test, et fermeture de `W^{1,p}(Ω)`). -/
-theorem rem_bcDirichlet (Ω : TopologicalSpace.Opens ℝᵈ) (p : ℝ≥0∞) [Fact (1 ≤ p)] :
-    W1p0 Ω p ≤ W1p Ω p := by
+theorem rem_bcDirichlet (Ω : TopologicalSpace.Opens ℝᵈ) (p : ℝ≥0∞) [Fact (1 ≤ p)]
+    (hp : p ≠ ∞) : W1p0 Ω p hp ≤ W1p Ω p := by
   refine Submodule.topologicalClosure_minimal _ ?_ (prop_SobolevBanach_isClosed Ω p)
   rintro _ ⟨φ, rfl⟩
   rw [w1p_mem_iff]
@@ -329,16 +331,16 @@ theorem rem_bcDirichlet (Ω : TopologicalSpace.Opens ℝᵈ) (p : ℝ≥0∞) [F
   exact w1p_ibp Ω i φ ψ
 
 /-- **Rem. `rem:bcDirichlet`.** `W^{1,p}_0(Ω)` est fermé, donc complet. -/
-theorem rem_bcDirichlet_isClosed (Ω : TopologicalSpace.Opens ℝᵈ) (p : ℝ≥0∞) [Fact (1 ≤ p)] :
-    IsClosed (W1p0 Ω p : Set (LpGrad Ω p)) :=
+theorem rem_bcDirichlet_isClosed (Ω : TopologicalSpace.Opens ℝᵈ) (p : ℝ≥0∞) [Fact (1 ≤ p)]
+    (hp : p ≠ ∞) : IsClosed (W1p0 Ω p hp : Set (LpGrad Ω p)) :=
   Submodule.isClosed_topologicalClosure _
 
-instance (Ω : TopologicalSpace.Opens ℝᵈ) (p : ℝ≥0∞) [Fact (1 ≤ p)] :
-    CompleteSpace (W1p0 Ω p) :=
-  (rem_bcDirichlet_isClosed Ω p).completeSpace_coe
+instance (Ω : TopologicalSpace.Opens ℝᵈ) (p : ℝ≥0∞) [Fact (1 ≤ p)] (hp : p ≠ ∞) :
+    CompleteSpace (W1p0 Ω p hp) :=
+  (rem_bcDirichlet_isClosed Ω p hp).completeSpace_coe
 
 /-- `H^1_0(Ω) := W^{1,2}_0(Ω)` (`rem:bcDirichlet`). -/
-abbrev H10 (Ω : TopologicalSpace.Opens ℝᵈ) : Type := W1p0 Ω 2
+abbrev H10 (Ω : TopologicalSpace.Opens ℝᵈ) : Type := W1p0 Ω 2 ENNReal.ofNat_ne_top
 
 namespace H10
 
@@ -435,7 +437,7 @@ theorem th_pbPoisson_Dirichlet (Ω : TopologicalSpace.Opens ℝᵈ)
     ∃! u : H10 Ω, ∀ v : H10 Ω,
       ∫ x in (Ω : Set ℝᵈ), ((∑ i, u.grad i x * v.grad i x) + u.val x * v.val x) =
         ∫ x in (Ω : Set ℝᵈ), f x * v.val x :=
-  w1p_poisson Ω (W1p0 Ω 2) f
+  w1p_poisson Ω (W1p0 Ω 2 ENNReal.ofNat_ne_top) f
 
 /-- Propriété de prolongement de Sobolev de `Ω`, pour l'exposant `p` : conclusion de
 `th:prolSobolev` (admis dans le cours, non formalisé), cas `s = 1`. Il existe un opérateur
@@ -838,7 +840,7 @@ private lemma w1pDens_mem_W1p0 {p : ℝ≥0∞} [Fact (1 ≤ p)] (hp : p ≠ ∞
     (h1 : (w.fst : ℝᵈ → ℝ) =ᵐ[volume] φ)
     (h2 : ∀ i, (w.snd i : ℝᵈ → ℝ) =ᵐ[volume]
       fun x => fderiv ℝ φ x (EuclideanSpace.single i (1 : ℝ))) :
-    w ∈ W1p0 ⊤ p := by
+    w ∈ W1p0 ⊤ p hp := by
   obtain ⟨ψ, hψ1, hψ2⟩ := w1pDens_troncature Fact.out hp hφ hφp hdφ
   change w ∈ (LinearMap.range (testGrad ⊤ p)).topologicalClosure
   rw [← SetLike.mem_coe, Submodule.topologicalClosure_coe]
@@ -865,7 +867,7 @@ private lemma w1pDens_approx {p : ℝ≥0∞} [Fact (1 ≤ p)] (hp : p ≠ ∞)
         (∀ i, ((U ε : LpGrad ⊤ p).snd i : ℝᵈ → ℝ) =ᵐ[volume] fun x =>
           fderiv ℝ (noyauEps ρ ε ⋆ ((u : LpGrad ⊤ p).fst : ℝᵈ → ℝ)) x
             (EuclideanSpace.single i (1 : ℝ))) ∧
-        (U ε).1 ∈ W1p0 ⊤ p) ∧
+        (U ε).1 ∈ W1p0 ⊤ p hp) ∧
       Tendsto U (𝓝[>] 0) (𝓝 u) := by
   obtain ⟨f, hf_def⟩ : ∃ f : ℝᵈ → ℝ, f = ((u : LpGrad ⊤ p).fst : ℝᵈ → ℝ) := ⟨_, rfl⟩
   obtain ⟨g, hg_def⟩ : ∃ g : Fin d → ℝᵈ → ℝ,
@@ -910,11 +912,11 @@ private lemma w1pDens_approx {p : ℝ≥0∞} [Fact (1 ≤ p)] (hp : p ≠ ∞)
   have hw2 : ∀ (ε : ℝ) (hε : 0 < ε) i, ((w ε hε).snd i : ℝᵈ → ℝ) =ᵐ[volume]
       fun x => fderiv ℝ (noyauEps ρ ε ⋆ f) x (EuclideanSpace.single i 1) :=
     fun ε hε i => w1pDens_ae_top (MemLp.coeFn_toLp (hdp' ε hε i))
-  have hw0 : ∀ (ε : ℝ) (hε : 0 < ε), w ε hε ∈ W1p0 ⊤ p := fun ε hε =>
+  have hw0 : ∀ (ε : ℝ) (hε : 0 < ε), w ε hε ∈ W1p0 ⊤ p hp := fun ε hε =>
     w1pDens_mem_W1p0 hp (((hkc ε hε).contDiff_convolution_left (lsmul ℝ ℝ) (hk ε) hfl))
       (hφp ε hε) (hdp ε hε) (hw1 ε hε) (hw2 ε hε)
   let U : ℝ → W1p (⊤ : TopologicalSpace.Opens ℝᵈ) p := fun ε =>
-    if hε : 0 < ε then ⟨w ε hε, rem_bcDirichlet ⊤ p (hw0 ε hε)⟩ else u
+    if hε : 0 < ε then ⟨w ε hε, rem_bcDirichlet ⊤ p hp (hw0 ε hε)⟩ else u
   have hU : ∀ (ε : ℝ) (hε : 0 < ε), (U ε).1 = w ε hε := fun ε hε => by
     simp [U, hε]
   refine ⟨U, fun ε hε => ⟨?_, fun i => ?_, ?_⟩, ?_⟩
@@ -966,12 +968,12 @@ Preuve (différente du cours, ordre inversé) : on régularise d'abord (`ρ_ε �
 dérivées dans `L^p`), puis on tronque par `χ(x/(n+1))`, `χ` fonction plateau (convergence
 dominée). -/
 theorem prop_testDenseWsp_dense {p : ℝ≥0∞} [Fact (1 ≤ p)] (hp : p ≠ ∞) :
-    W1p0 (⊤ : TopologicalSpace.Opens ℝᵈ) p = W1p ⊤ p := by
-  refine le_antisymm (rem_bcDirichlet ⊤ p) fun u hu => ?_
+    W1p0 (⊤ : TopologicalSpace.Opens ℝᵈ) p hp = W1p ⊤ p := by
+  refine le_antisymm (rem_bcDirichlet ⊤ p hp) fun u hu => ?_
   let χ : ContDiffBump (0 : ℝᵈ) := ⟨1, 2, one_pos, one_lt_two⟩
   obtain ⟨U, hU, hlim⟩ := w1pDens_approx hp ⟨u, hu⟩ (χ.contDiff_normed (μ := volume))
     (χ.hasCompactSupport_normed (μ := volume)) (χ.integral_normed (μ := volume))
-  exact (rem_bcDirichlet_isClosed ⊤ p).mem_of_tendsto (tendsto_subtype_rng.1 hlim)
+  exact (rem_bcDirichlet_isClosed ⊤ p hp).mem_of_tendsto (tendsto_subtype_rng.1 hlim)
     (eventually_mem_nhdsWithin.mono fun ε hε => (hU ε hε).2.2)
 
 /-- `f ∈ L^p(ℝ^d) ⇒ f|_Ω ∈ L^p(Ω)`. -/
@@ -1114,8 +1116,8 @@ theorem corol_testDenseWspO (Ω : TopologicalSpace.Opens ℝᵈ) {p : ℝ≥0∞
     rintro _ ⟨φ, rfl⟩
     rw [w1pDens_restrGrad_apply]
     exact w1pDens_restr_mem Ω
-      (rem_bcDirichlet ⊤ p (Submodule.le_topologicalClosure _ ⟨φ, rfl⟩))
-  · have hPu : (P ⟨u, hu⟩).1 ∈ W1p0 ⊤ p := by
+      (rem_bcDirichlet ⊤ p hp (Submodule.le_topologicalClosure _ ⟨φ, rfl⟩))
+  · have hPu : (P ⟨u, hu⟩).1 ∈ W1p0 ⊤ p hp := by
       rw [prop_testDenseWsp_dense hp]
       exact (P ⟨u, hu⟩).2
     have heq : w1pDens_restr Ω p (P ⟨u, hu⟩) = u := by
