@@ -721,6 +721,73 @@ Alors %, en notant $J$ la matrice jacobienne de $\vp$,
 \end{align}	
 \end{theorem}
 
+Rappelons que la matrice des co-facteurs de $A \in \bR^{d\times d}$  est définie par
+\begin{equation*}
+	[\cof A]_{ij} = \frac{\partial \det A}{\partial A_{ij}} = \det [A_1,\cdots,A_{j-1}, b_i, A_{j+1},\cdots, A_d],
+\end{equation*}
+où $A_{ij}$ (resp.\ $A_i$) désignent les coefficients (resp.\ colonnes) de $A$, pour tous $1 \leq i, j \leq d$, et $(b_i)_{1 \leq i \leq d}$ est la base canonique de $\bR^d$. On a $\cof A = (\mathrm{com} A)^\top = (\det A) A^{-1}$ si $A$ est inversible. On note également $\nabla \vp = J^\top$ la transposée de la matrice Jacobienne.
+
+\begin{lemma}[Identité de Piola]
+Pour toute $\vp \in C^2(\bR^d,\bR^d)$, on a $\diver( \cof \nabla \vp) = 0$ sur $\bR^d$.
+\end{lemma}
+
+\begin{proof}
+	Notons $\vp = (\vp_1,\cdots,\vp_d)$, $A = \nabla \vp$, et observons que ses colonnes sont $A_i = \nabla \vp_i$, $1 \leq i \leq d$. On a
+	\begin{equation*}
+		\frac{\partial [\cof A]_{ij}}{\partial x_i} 
+		= \sum_{1 \leq k,l \leq d} 
+		\frac{\partial [\cof A]_{ij}}{\partial A_{kl}} 
+		\frac {\partial A_{kl}}{\partial x_i} 
+		= \sum_{1 \leq k,l \leq d} 
+		\frac{\partial \det A}{\partial A_{ij} \partial A_{kl}} 
+		\frac {\partial^2 \phi_l}{\partial x_i \partial x_k},
+%		\frac{\partial A_{kl}}{\partial x_i}		 
+	\end{equation*}
+par dérivation composée. Par ailleurs, nous avons la propriété d'anti-symétrie: si $j<l$
+\begin{equation*}
+	\frac{\partial^2 \det A}{\partial A_{ij} \partial A_{kl}} 
+	= \det [A_1,\cdots,A_{j-1}, b_i, A_{j+1}, \cdots, A_{l-1}, b_k, A_{l+1}, \cdots, A_d] 
+	= - \frac{\partial^2 \det A}{\partial A_{kj} \partial A_{il}}
+\end{equation*}
+de même si $j>l$, tandis que $\frac{\partial^2 \det A}{\partial A_{ij} \partial A_{kl}} = 0$ si $j=l$ par linéarité du déterminant par rapport aux colonnes. Ainsi, pour tout $1 \leq j \leq d$, par anti-symétrie et via l'identité de Schwartz
+\begin{equation*}
+\diver(\cof \nabla \vp)_j 
+= \sum_{1 \leq i \leq d}
+\frac{\partial [\cof A]_{ij}}{\partial x_i} 
+= \sum_{1 \leq l \leq d} \Big(\sum_{1 \leq i,k \leq d} 
+\frac{\partial \det A}{\partial A_{ij} \partial A_{kl}} 
+\frac {\partial^2 \phi_l}{\partial x_i \partial x_k}\Big) = 0.
+\qedhere
+\end{equation*}
+\end{proof}
+
+\begin{lemma}[Lax]
+\label{lem:chgVarLax}
+Soit $\vp \in C^2(\bR^d,\bR^d)$ telle que $\vp(x) = x$ pour tout $x \notin B$, et soit $f \in \cD(\bR^d)$. Alors 
+	\begin{equation}		
+	\label{eq:chgmt_var_nondiff}
+		\int_{\bR^d} f(x) \diff x = \int_{\bR^d} f(\vp(x)) \det J(x) \diff x.
+	\end{equation}
+\end{lemma}
+
+\begin{proof}
+	Commençons par calculer, en notant $\id$ (resp.\ $\Id$) l'application (resp.\ la matrice) identité
+	\begin{align} \nonumber
+		&\diver( f\circ \vp \, [\cof \nabla \vp]  (\vp - \id)) \\ \nonumber
+		&= \<\nabla \vp^\top \nabla f \circ \phi, [\cof \nabla \vp] (\vp-\id)\> + f\circ \vp \<\diver (\cof \nabla \vp), \vp-\id\> + f\circ \vp \Tr((\cof \nabla \vp)^\top  (\nabla \vp - \Id))\\ \label{eq:divLax}
+		&= \<\nabla f \circ \vp, \vp-\id\> \det (\nabla \vp) + f \circ \vp \Tr((\cof \nabla \vp)^\top  (\nabla \vp - \Id)),
+	\end{align}
+	où l'on a distribué la divergence, puis utilisé l'identité de Piola, et l'égalité $A \cof A = (\det A) \Id$ avec $A = \nabla \vp$.
+	Introduisons maintenant $\vp_t := (1-t) \Id + t \vp$, et calculons pour tout $t \in ]0,1]$
+	\begin{align*}
+		&\partial_t \int_{\bR^d} f \circ \vp_t \, \det (\nabla \vp_t) 
+		= \int_{\bR^d} \<\nabla f \circ \vp_t, \partial_t \vp_t\> \det \nabla \vp_t + f \circ \vp_t \Tr((\cof \nabla \vp_t)^\top \partial_t \nabla \vp_t)\\
+		&= t^{-1} \int_{\bR^d} \<\nabla f \circ \vp_t, \vp_t-\id\> \det \nabla \vp_t + f \circ \vp_t \Tr((\cof \nabla \vp_t)^\top (\nabla \vp_t- \Id))\\
+		&= t^{-1} \int_{\bR^d} \diver( f \circ \vp_t [\cof \nabla \vp_t] (\vp_t - \id)) = 0.
+	\end{align*}
+	On a successivement (i) dérivé sous le signe intégral, et distribué $\partial_t$ sur le produit, (ii) remarqué que $\partial_t \vp_t = \vp-\id = t^{-1} (\vp_t-\id)$ et de même $\partial_t \nabla \vp_t = t^{-1} (\nabla \vp_t - \Id)$, (iii) utilisé \eqref{eq:divLax}, et la nullité de l'intégrale de la divergence d'un champ de vecteurs à support compact. Ainsi $t\in [0,1] \mapsto \int_{\bR^d} f \circ \vp_t \, \det (\nabla \vp_t)$ est continu et de dérivée nulle sur $]0,1]$, donc constant.
+\end{proof}
+
 \begin{lemma}[Lax]
 \label{lem:chgVarLax}
 \leancheck{lem:chgVarLax}%
