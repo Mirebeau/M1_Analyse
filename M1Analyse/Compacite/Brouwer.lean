@@ -114,7 +114,7 @@ local notation "ℝᵈ" => EuclideanSpace ℝ (Fin d)
 `det J(x)` est le jacobien de `φ`, avec son signe.
 Remarque : Mathlib ne contient que la formule pour `φ` injective (`th_chgVarIntegr`) ; d'abord
 posé comme axiome à la demande de l'auteur, l'énoncé est maintenant démontré.
-Preuve (différente du cours, qui ne traite que `d = 2`) : par homotopie `φ_t = Id + t(φ - Id)`,
+Preuve (celle du cours) : par homotopie `φ_t = Id + t(φ - Id)`,
 la dérivée de `t ↦ ∫ f(φ_t) det Dφ_t` est l'intégrale d'une divergence (identité de Piola), donc
 nulle (`lem_chgVarLax_proof`, `M1Analyse/Compacite/Lax.lean`). -/
 theorem lem_chgVarLax {φ : ℝᵈ → ℝᵈ} (hφ : ContDiff ℝ 2 φ)

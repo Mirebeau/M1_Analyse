@@ -38,6 +38,7 @@ import M1Analyse.Sobolev.FonctionsTest
 import M1Analyse.Sobolev.ConvolutionLp
 import M1Analyse.Sobolev.ConvolutionSobolev
 import M1Analyse.Sobolev.W1p
+import M1Analyse.Sobolev.W1p0Separable
 import M1Analyse.Sobolev.FrechetKolmogorov
 import M1Analyse.Sobolev.InjSousCritique
 import M1Analyse.Sobolev.InjSousCritiqueW1p

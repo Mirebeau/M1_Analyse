@@ -285,7 +285,8 @@ theorem testGrad_snd (Ω : TopologicalSpace.Opens ℝᵈ) (p : ℝ≥0∞) [Fact
 
 /-- **Rem. `rem:bcDirichlet` (Conditions au bord de Dirichlet).** `W^{1,p}_0(Ω)` est l'adhérence
 de `𝓓(Ω)`, plongé par `φ ↦ (φ, ∇φ)`. C'est un sous-espace fermé (`rem_bcDirichlet_isClosed`),
-donc complet, de `W^{1,p}(Ω)` (`rem_bcDirichlet`). La séparabilité n'est pas formalisée. -/
+donc complet, de `W^{1,p}(Ω)` (`rem_bcDirichlet`), et séparable (`rem_bcDirichlet_separable`,
+`Sobolev/W1p0Separable.lean`). -/
 noncomputable def W1p0 (Ω : TopologicalSpace.Opens ℝᵈ) (p : ℝ≥0∞) [Fact (1 ≤ p)] :
     Submodule ℝ (LpGrad Ω p) :=
   (LinearMap.range (testGrad Ω p)).topologicalClosure

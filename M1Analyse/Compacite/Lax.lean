@@ -14,7 +14,7 @@ import Mathlib.Analysis.InnerProductSpace.NormDet
 Pour `φ ∈ C²(ℝᵈ, ℝᵈ)` égale à l'identité hors de la boule unité fermée et `f` lisse à support
 compact, `∫ f = ∫ (f ∘ φ) det Dφ`.
 
-Preuve (différente du cours, qui ne traite que `d = 2`) : par homotopie. On pose `ψ = φ - id`,
+Preuve (celle du cours, à une variante de présentation près) : par homotopie. On pose `ψ = φ - id`,
 `F(t, x) = f(x + t ψ x) det(I + t Dψ x)` (`FF`). Sa dérivée en `t` (`GG`) s'écrit, par
 multilinéarité du déterminant, dérivation composée et alternance,
 `∑ₖ det(jacobienne de y ↦ y + t ψ y, ligne k remplacée par ∇hₖ)`, `hₖ = (f ∘ φₜ) ψₖ`. Par
