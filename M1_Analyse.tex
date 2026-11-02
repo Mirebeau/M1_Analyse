@@ -1,6 +1,6 @@
 \documentclass[11pt]{article} 
 \usepackage{etoolbox} \newtoggle{perso}
-%\toggletrue{perso} % Comment for student version
+\toggletrue{perso} % Comment for student version
 \usepackage[mathletters]{ucs}
 \usepackage[utf8x]{inputenc}
 
@@ -198,6 +198,7 @@ Chaque sous-chapitre contient une liste de résultats à retenir absolument, fon
 
 \paragraph{Auto-formalisation Lean.}
 Une partie de ce cours a été auto-formalisée dans le langage de preuves Lean, via l'IA Claude$^{\small \textregistered}$ muni des \href{https://www.scottnarmstrong.com/2026/10/autoformalization-is-now-very-easy/}{skills de Scott Armstrong}. Ceci dans le but de montrer que les énoncés mathématiques ont un sens précis, formalisable, prouvable en Lean, et d'expurger les typos. Nous renvoyons les étudiants intéressés par la formalisation Lean au livre \href{https://leanprover-community.github.io/mathematics_in_lean/}{Mathematics in Lean}, au cours \href{https://www.imo.universite-paris-saclay.fr/~patrick.massot/mdd154/}{MDD154 : Logique et démonstrations assistées par ordinateur} donné par P. Massot à l'Université Paris-Saclay, et aux diverses ressources accessibles en ligne.
+\claudereport{État de la formalisation Lean. (1) Deux résultats admis dans le cours sont posés comme axiomes Lean : le théorème de Milman-Pettis (\cref{th:unifCvxReflex}, absent de Mathlib) et l'inégalité de Young faible (\cref{th:YoungFaible}, dont la preuve requiert l'interpolation de Marcinkiewicz). Les résultats qui en dépendent (dualité et réflexivité des $L^p$, réflexivité de $W^{1,p}$, injection sous-critique de Sobolev, cas sous-critique et critique de Rellich, etc.) le signalent dans leur page Lean. (2) Le cas $p=1$ du \cref{th:Rellich} n'est pas formalisé. Pour $d\geq 2$ et $q\in ]1,1^*[$, il repose sur l'inégalité de Gagliardo-Nirenberg ($p=1$ dans le \cref{th:injSousCrit}), qui n'est pas démontrée dans le cours. Pour $p=d=1$ (cas critique), la preuve du cours ne s'applique pas, faute d'exposant $q\in [1,p[$ : il faudrait l'injection $W^{1,1}(I)\subset L^\infty(I)$ en dimension $1$. Le cas $p=q=1$ serait formalisable directement par Fréchet-Kolmogorov.}
 
 \newpage
 \section{Topologie générale}

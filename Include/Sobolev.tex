@@ -1111,13 +1111,13 @@ Sur un ouvert $\Omega\subset \bR^d$ régulier, l'espace $W^{1,\infty}$ coïncide
 	\end{equation*}
 	On en déduit que $|\int_\Omega \<\nabla \vp,v\> f| \leq K \|v\| \|\vp\|_{L^1}$, car $(\vp(x+tv)-\vp(x))/t$ converge uniformément vers $\<\nabla \vp,v\>$ et est à support dans un compact fixe. Ainsi $\<\nabla f,v\> \in L^\infty$ au sens des distributions par le \nref{corol:distribLp}, et $\|\<\nabla f,v\>\|_\infty \leq K \|v\|$ par la propriété d'isométrie \cref{th:lpDualLq}. On en déduit que $f \in W^{1,\infty}(\Omega)$, et plus précisément $\|\nabla f\|_\infty \leq K$ en prenant le suprémum sur les éléments $v$ d'une partie dénombrable dense de $\bS^{d-1}$.
 
-	Réciproquement, soit $f\in W^{1,\infty}(\Omega)$ sur un domaine régulier, et soit $f_\ve := (Pf) \star \rho_\ve$ où $P$ désigne l'opérateur de prolongement de Sobolev, et où $\rho\in \cD(\bR^d)$ est positive. 
-	Etant donnés $x,y\in \bR^d$, on a avec  $x_t := (1-t) x+t y$
+	Réciproquement, soit $f\in W^{1,\infty}(\Omega)$ sur un domaine régulier, et soit $f_\ve := (Pf) \star \rho_\ve$ où $P$ désigne l'opérateur de prolongement de Sobolev, et où $\rho\in \cD(\bR^d)$ est positive et d'intégrale unité. 
+	Étant donnés $x,y\in \bR^d$, on a avec  $x_t := (1-t) x+t y$
 	\begin{equation*}
 		|f_\ve(y)-f_\ve(x)| \leq \int_0^1 |\<\nabla f_\ve (x_t) ,y-x\>| \diff t \leq \int_0^1 |\<\nabla Pf (x_t-h),y-x\>|\rho_\ve (h) \diff t \diff h \leq \|\nabla P f\|_\infty |y-x|.
 	\end{equation*}
-	De plus $\|f_\ve\|_\infty \leq \|P f\|_\infty$. Par le \nref{th:AscoliLip}, on peut donc on peut extraire une sous-suite $f_{\ve_n}$ convergeant localement uniformément sur $\bR^d$ vers une limite $f_*$ , où $\ve_n>0$ et $\ve_n \to 0$ lorsque $n \to \infty$. 
-	Cette limite $f_*$ fournit un représentant continu, et $\|\nabla P f\|_\infty$-Lipschitz, de $P f \in W^{1,\infty}(\bR^d)$, et donc aussi de $f$ par restriction.
+	De plus $\|f_\ve\|_\infty \leq \|P f\|_\infty$. Par le \nref{th:AscoliLip} associé au choix d'une suite exhaustive de compacts de $\bR^d$ et un procédé d'extraction diagonal, on peut extraire une sous-suite $f_{\ve_n}$ convergeant localement uniformément sur $\bR^d$ vers une limite $f_*$, où $\ve_n>0$ et $\ve_n \to 0$ lorsque $n \to \infty$. 
+	La suite $f_{\ve_n}$ converge dans $L^1_\loc$ vers $f_*$ et vers $P f$, donc $f_* = P f$ presque partout. Ceci fournit un représentant continu, et $\|\nabla P f\|_\infty$-Lipschitz, de $P f \in W^{1,\infty}(\bR^d)$, et donc aussi de $f$ par restriction.
 	
 	Finalement, considérons $\Omega$ convexe et $x,y \in \Omega$. Le prolongement $P f$ est alors inutile car l'estimation intégrale précédente ne fait intervenir que des points $x_t - h$, $t \in [0,1]$, $h \in \ve \supp(\rho)$, appartenant à $\Omega$ pour $\ve$ assez petit, ce qui permet de conclure.
 \end{proof}
