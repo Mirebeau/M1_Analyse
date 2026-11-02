@@ -527,6 +527,31 @@ namespace M1Analyse
 
 open LaxAux
 
+/-- **Lem. `lem:Piola` (Identité de Piola).** Pour toute `φ ∈ C²(ℝ^d, ℝ^d)`, la comatrice de
+`∇φ` (transposée de la jacobienne, `[∇φ]_{kl} = ∂_k φ_l`) est à divergence nulle, colonne par
+colonne : pour tout `j`, `∑_i ∂_i [com ∇φ]_{ij} = 0`, où `[com A]_{ij}` est le déterminant de `A`
+dont la colonne `j` est remplacée par le vecteur de base `b_i`.
+Preuve (celle du cours) : dérivation composée, antisymétrie des dérivées secondes du
+déterminant, symétrie de la hessienne (Schwarz). -/
+theorem lem_Piola {d : ℕ} {φ : EuclideanSpace ℝ (Fin d) → EuclideanSpace ℝ (Fin d)}
+    (hφ : ContDiff ℝ 2 φ) (j : Fin d) (x : EuclideanSpace ℝ (Fin d)) :
+    ∑ i, fderiv ℝ (fun y => (Matrix.updateCol (Matrix.of fun k l =>
+      fderiv ℝ φ y (EuclideanSpace.single k 1) l) j (Pi.single i 1)).det) x
+      (EuclideanSpace.single i 1) = 0 := by
+  have key := piola (fun l y => φ y l) (fun l => contDiff_coord hφ l) (eb d) j x
+  refine Eq.trans ?_ key
+  refine Finset.sum_congr rfl fun i _ => ?_
+  congr 2
+  funext y
+  rw [← Matrix.det_transpose, detCML_apply]
+  congr 1
+  ext a b
+  simp only [Matrix.updateCol_apply, Function.update_apply, Matrix.transpose_apply,
+    Matrix.of_apply]
+  split_ifs
+  · rfl
+  · simp only [gradRow, eb, fderiv_coord (hφ.differentiable (by norm_num) y)]
+
 /-- Lemme de Lax (`lem:chgVarLax`), preuve ; voir `lem_chgVarLax` (`Compacite/Brouwer.lean`). -/
 theorem lem_chgVarLax_proof {d : ℕ} {φ : EuclideanSpace ℝ (Fin d) → EuclideanSpace ℝ (Fin d)}
     (hφ : ContDiff ℝ 2 φ)
