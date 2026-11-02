@@ -775,10 +775,15 @@ lemma W1p_inclusion_of_le {Ω : TopologicalSpace.Opens ℝᵈ} (hΩf : volume (�
   have hK₂ : (0 : ℝ) ≤ K₂ := by positivity
   have hmax : max ‖ι (u : LpGrad Ω p).fst‖ ‖WithLp.toLp p' fun i => ι ((u : LpGrad Ω p).snd i)‖
       ≤ (1 + K₂) * V * ‖u‖ := by
-    refine max_le (hfst.trans ?_) (hB.trans ?_) <;> nlinarith [mul_nonneg hV0 hu0]
+    have hVu : 0 ≤ V * ‖u‖ := mul_nonneg hV0 hu0
+    have e : (1 + K₂) * V * ‖u‖ = V * ‖u‖ + K₂ * (V * ‖u‖) := by ring
+    refine max_le (hfst.trans ?_) (hB.trans ?_) <;> rw [e]
+    · exact le_add_of_nonneg_right (mul_nonneg hK₂ hVu)
+    · exact le_add_of_nonneg_left hVu
+  have e' : (K₁ * (1 + K₂) * V + 1) * ‖u‖ = K₁ * ((1 + K₂) * V * ‖u‖) + ‖u‖ := by ring
   calc ‖(⟨w, hw⟩ : W1p Ω p')‖ = ‖w‖ := rfl
     _ ≤ K₁ * ((1 + K₂) * V * ‖u‖) := hA.trans (mul_le_mul_of_nonneg_left hmax (by positivity))
-    _ ≤ (K₁ * (1 + K₂) * V + 1) * ‖u‖ := by nlinarith
+    _ ≤ (K₁ * (1 + K₂) * V + 1) * ‖u‖ := by rw [e']; exact le_add_of_nonneg_right hu0
 
 /-- **Th. `th:Rellich` (Rellich), cas critique** (`p = d > 1`, `q ∈ [1, ∞[`). Mêmes conclusions
 que le cas sous-critique. Preuve : celle du cours, via l'injection continue
@@ -898,7 +903,10 @@ private lemma rellich_surCrit_rep (Ω : TopologicalSpace.Opens ℝᵈ) {p : ℝ�
   · refine ⟨1, 0, fun u => ⟨fun _ => ((u : LpGrad Ω p).fst : EuclideanSpace ℝ (Fin 0) → ℝ) 0,
       continuousOn_const, Eventually.of_forall fun y => by rw [Subsingleton.elim y 0],
       fun x hx => ?_, fun x _ y _ => by simp⟩⟩
-    rw [one_mul, Subsingleton.elim (0 : EuclideanSpace ℝ (Fin 0)) x]
+    have h0 : ((u : LpGrad Ω p).fst : EuclideanSpace ℝ (Fin 0) → ℝ) 0 =
+        ((u : LpGrad Ω p).fst : EuclideanSpace ℝ (Fin 0) → ℝ) x :=
+      congrArg ((u : LpGrad Ω p).fst : EuclideanSpace ℝ (Fin 0) → ℝ) (Subsingleton.elim _ _)
+    rw [one_mul, h0]
     exact rellich_rep_zero u hx
   · exact corol_injSurCritOm Ω hd hdp hp hP
 

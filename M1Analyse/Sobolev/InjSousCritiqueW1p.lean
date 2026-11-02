@@ -167,14 +167,11 @@ private lemma injSousCrit_test {p pstar : ℝ≥0∞} (hp : 1 < p) (hpd : p < d)
       ((hdf i).aestronglyMeasurable.norm.congr (ae_of_all _ fun x => ?_)) fun x => ?_
     · exact Real.norm_eq_abs _
     · simp [Real.enorm_eq_ofReal_abs]
-  calc eLpNorm f pstar ≤ _ := h1
-    _ ≤ _ := hle
-    _ ≤ C0 * (‖c‖ₑ * ∑ i, eLpNorm (fun x => fderiv ℝ f x (EuclideanSpace.single i 1)) p) *
-        normeFaible volume ((d : ℝ) / ((d : ℝ) - 1)) g := by gcongr
-    _ = ↑(C0 * ‖c‖₊ * (normeFaible volume ((d : ℝ) / ((d : ℝ) - 1)) g).toNNReal) *
-        ∑ i, eLpNorm (fun x => fderiv ℝ f x (EuclideanSpace.single i 1)) p := by
-      rw [ENNReal.coe_mul, ENNReal.coe_mul, ENNReal.coe_toNNReal hgw.ne, enorm_eq_nnnorm]
-      ring
+  refine h1.trans (hle.trans (le_of_le_of_eq (b := C0 * (‖c‖ₑ * ∑ i, eLpNorm
+    (fun x => fderiv ℝ f x (EuclideanSpace.single i 1)) p) *
+      normeFaible volume ((d : ℝ) / ((d : ℝ) - 1)) g) (by gcongr) ?_))
+  rw [ENNReal.coe_mul, ENNReal.coe_mul, ENNReal.coe_toNNReal hgw.ne, enorm_eq_nnnorm]
+  ring
 
 private lemma injSousCrit_eLpNorm_top {q : ℝ≥0∞} (F : ℝᵈ → ℝ) :
     eLpNorm F q (volume.restrict ((⊤ : TopologicalSpace.Opens ℝᵈ) : Set ℝᵈ)) =
@@ -278,8 +275,7 @@ theorem corol_injSousCritOm (Ω : TopologicalSpace.Opens ℝᵈ) {p pstar : ℝ�
   have hi : ∀ i, eLpNorm ((P u : LpGrad 𝕋 p).snd i : ℝᵈ → ℝ) p ≤ (‖P‖₊ : ℝ≥0∞) * ‖u‖ₑ := by
     intro i
     refine (injSousCrit_snd_le _ i).trans ?_
-    rw [enorm_eq_nnnorm u, ← ENNReal.coe_mul, ENNReal.coe_le_coe]
-    exact P.le_opNNNorm u
+    exact P.le_opENorm u
   have hle : eLpNorm ((u : LpGrad Ω p).fst : ℝᵈ → ℝ) pstar (volume.restrict (Ω : Set ℝᵈ)) ≤
       ↑(C * d * ‖P‖₊) * ‖u‖ₑ := by
     have hPC := (hC (P u)).2
