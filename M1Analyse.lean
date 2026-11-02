@@ -39,6 +39,7 @@ import M1Analyse.Sobolev.ConvolutionLp
 import M1Analyse.Sobolev.ConvolutionSobolev
 import M1Analyse.Sobolev.W1p
 import M1Analyse.Sobolev.W1p0Separable
+import M1Analyse.Sobolev.Rademacher
 import M1Analyse.Sobolev.ConvolDistrib
 import M1Analyse.Sobolev.FrechetKolmogorov
 import M1Analyse.Sobolev.InjSousCritique
