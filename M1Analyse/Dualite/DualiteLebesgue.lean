@@ -814,9 +814,6 @@ private lemma nonReflex_l1_expand (φ : StrongDual ℝ (ℓ 1)) (x : ℓ 1) :
 private def nonReflexMkC0 (f : ℕ → ℝ) (hf : Tendsto f atTop (𝓝 0)) : C₀(ℕ, ℝ) :=
   ⟨⟨f, continuous_of_discreteTopology⟩, by rwa [cocompact_eq_cofinite, Nat.cofinite_eq_atTop]⟩
 
-private lemma nonReflexMkC0_apply (f : ℕ → ℝ) (hf : Tendsto f atTop (𝓝 0)) (n : ℕ) :
-    nonReflexMkC0 f hf n = f n := rfl
-
 private lemma nonReflex_c0_tendsto (x : C₀(ℕ, ℝ)) : Tendsto (fun n => x n) atTop (𝓝 0) := by
   have := x.zero_at_infty'
   rwa [cocompact_eq_cofinite, Nat.cofinite_eq_atTop] at this

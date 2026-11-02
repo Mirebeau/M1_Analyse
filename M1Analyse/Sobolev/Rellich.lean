@@ -444,11 +444,6 @@ private lemma rellich_ae_comp_sub {Ω : Set ℝᵈ} {f g : ℝᵈ → ℝ} (hfg 
   filter_upwards [ae_restrict_of_ae this, ae_restrict_mem hK] with x hx hxK
   exact hx (hKh x hxK)
 
-private lemma rellich_fst_le {Ω : TopologicalSpace.Opens ℝᵈ} {p : ℝ≥0∞} [Fact (1 ≤ p)]
-    (v : LpGrad Ω p) : eLpNorm (v.fst : ℝᵈ → ℝ) p (volume.restrict (Ω : Set ℝᵈ)) ≤ ‖v‖ₑ := by
-  rw [← Lp.enorm_def, enorm_eq_nnnorm, enorm_eq_nnnorm, ENNReal.coe_le_coe]
-  exact WithLp.nnnorm_fst_le _ v
-
 private lemma rellich_snd_le {Ω : TopologicalSpace.Opens ℝᵈ} {p : ℝ≥0∞} [Fact (1 ≤ p)]
     (v : LpGrad Ω p) (i : Fin d) :
     eLpNorm (v.snd i : ℝᵈ → ℝ) p (volume.restrict (Ω : Set ℝᵈ)) ≤ ‖v‖ₑ := by
