@@ -345,7 +345,7 @@ private lemma corolRellich_sur (Ω : TopologicalSpace.Opens ℝᵈ)
     isFiniteMeasure_restrict.2 hΩb.measure_lt_top.ne
   have : CompactSpace (closure (Ω : Set ℝᵈ)) :=
     isCompact_iff_compactSpace.1 hΩb.isCompact_closure
-  obtain ⟨hM, hTB⟩ := th_Rellich_surCritique Ω hΩb hΩ hdp hp
+  obtain ⟨hM, hTB⟩ := th_Rellich_surCritique Ω hΩb hΩ hdp
   choose G hG using hM
   obtain ⟨uLim, φ₁, hφ₁, hT⟩ := corolRellich_weakSobolev Ω hp1 hp u C hC
   obtain ⟨c, hc_def⟩ : ∃ c : ℝ, c = max C 1 := ⟨_, rfl⟩

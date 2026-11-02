@@ -154,7 +154,6 @@ private lemma nonLinMinH1_totBdd_surCrit {Ω : TopologicalSpace.Opens ℝᵈ}
   have : CompactSpace (closure (Ω : Set ℝᵈ)) :=
     isCompact_iff_compactSpace.1 hΩb.isCompact_closure
   obtain ⟨hrep, hS⟩ := th_Rellich_surCritique Ω hΩb hΩ (p := 2) (by exact_mod_cast hd)
-    (by norm_num)
   set K : ℝ := (measureUnivNNReal (volume.restrict (Ω : Set ℝᵈ)) : ℝ) ^
     (2 : ℝ≥0∞).toReal⁻¹
   have hK0 : 0 ≤ K := by positivity

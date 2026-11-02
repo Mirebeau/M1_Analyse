@@ -311,6 +311,7 @@ Chacune fait l'objet d'un \claudereport dans le texte.
 - eq:W1p_sev_Lp (2 novembre, `Sobolev/W1pReflexif.lean`) : `W1p_reflexif` (1 < p < ∞, via Milman–Pettis), `W1p_separable` (p < ∞).
 - rem:separable_partie (2 novembre, `TopologieGenerale/Metrique.lean`) : `rem_separable_partie` (instance Mathlib).
 - rem:bouleW1pFerme : la preuve du cours suit désormais celle de Lean (docstrings mises à jour).
+- th:Rellich, cas sur-critique étendu à `p = ∞` (2 novembre) : `th_Rellich_surCritique` sans l'hypothèse `p ≠ ∞` (réduction à `p = d + 1` via `W1p_inclusion_of_le`, généralisé à `p = ∞`). Le cas `p = 1` n'est pas formalisé (\claudereport).
 
 ## Points techniques de la formalisation (2 novembre)
 

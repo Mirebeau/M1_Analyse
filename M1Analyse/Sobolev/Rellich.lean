@@ -717,20 +717,22 @@ private lemma rellich_exists_exponent {q : ℝ≥0∞} (hd : (1 : ℝ≥0∞) < 
       ← hQ_def, ← one_div]
     exact htq
 
-/-- **Point technique (Inclusion `W^{1,p} ⊂ W^{1,p'}`).** Pour `p' ≤ p < ∞` et `Ω` de mesure
-finie, l'inclusion `W^{1,p}(Ω) ⊂ W^{1,p'}(Ω)` est continue (Hölder sur `u` et `∇u`). Dans
+/-- **Point technique (Inclusion `W^{1,p} ⊂ W^{1,p'}`).** Pour `p' ≤ p ≤ ∞`, `p' < ∞`, et `Ω`
+de mesure finie, l'inclusion `W^{1,p}(Ω) ⊂ W^{1,p'}(Ω)` est continue (Hölder sur `u` et `∇u`). Dans
 Lean, `W^{1,p}` et `W^{1,p'}` sont des types distincts, et l'inclusion doit être construite.
 Utilisé pour `th:Rellich`. -/
 lemma W1p_inclusion_of_le {Ω : TopologicalSpace.Opens ℝᵈ} (hΩf : volume (Ω : Set ℝᵈ) ≠ ∞)
-    {p p' : ℝ≥0∞} [Fact (1 ≤ p)] [Fact (1 ≤ p')] (hpt : p ≠ ∞) (hpp : p' ≤ p) :
+    {p p' : ℝ≥0∞} [Fact (1 ≤ p)] [Fact (1 ≤ p')] (hp't : p' ≠ ∞) (hpp : p' ≤ p) :
     ∃ c : ℝ, 0 < c ∧ ∀ u : W1p Ω p, ∃ v : W1p Ω p', ‖v‖ ≤ c * ‖u‖ ∧
       ((v : LpGrad Ω p').fst : ℝᵈ → ℝ) =ᵐ[volume.restrict (Ω : Set ℝᵈ)]
         (u : LpGrad Ω p).fst := by
   have : IsFiniteMeasure (volume.restrict (Ω : Set ℝᵈ)) := isFiniteMeasure_restrict.2 hΩf
   have hp'0 : 0 < p'.toReal :=
-    ENNReal.toReal_pos (zero_lt_one.trans_le (Fact.out : 1 ≤ p')).ne' (ne_top_of_le_ne_top hpt hpp)
-  have hex : 0 ≤ 1 / p'.toReal - 1 / p.toReal :=
-    sub_nonneg.2 (one_div_le_one_div_of_le hp'0 (ENNReal.toReal_mono hpt hpp))
+    ENNReal.toReal_pos (zero_lt_one.trans_le (Fact.out : 1 ≤ p')).ne' hp't
+  have hex : 0 ≤ 1 / p'.toReal - 1 / p.toReal := by
+    rcases eq_or_ne p ∞ with rfl | hpt
+    · simp [hp'0.le]
+    · exact sub_nonneg.2 (one_div_le_one_div_of_le hp'0 (ENNReal.toReal_mono hpt hpp))
   let ι : Lp ℝ p (volume.restrict (Ω : Set ℝᵈ)) → Lp ℝ p' (volume.restrict (Ω : Set ℝᵈ)) :=
     fun f => ((Lp.memLp f).mono_exponent hpp).toLp f
   have hι : ∀ f, (ι f : ℝᵈ → ℝ) =ᵐ[volume.restrict (Ω : Set ℝᵈ)] f := fun f =>
@@ -796,7 +798,8 @@ theorem th_Rellich_critique (Ω : TopologicalSpace.Opens ℝᵈ)
   obtain ⟨p', pstar', hp'1, hp'd, hpstar', hqp'⟩ := rellich_exists_exponent hd Fact.out hq
   have : Fact (1 ≤ p') := ⟨hp'1.le⟩
   have hpt : p ≠ ∞ := hpd ▸ ENNReal.natCast_ne_top d
-  obtain ⟨c, hc0, hc⟩ := W1p_inclusion_of_le hΩb.measure_lt_top.ne hpt (hpd ▸ hp'd.le : p' ≤ p)
+  obtain ⟨c, hc0, hc⟩ :=
+    W1p_inclusion_of_le hΩb.measure_lt_top.ne hp'd.ne_top (hpd ▸ hp'd.le : p' ≤ p)
   obtain ⟨hM, hT⟩ := th_Rellich_sousCritique Ω hΩb hΩ hp'1 hp'd hpstar' hqp'
   simp only [Sobolev1.val_def] at hM hT ⊢
   refine ⟨fun u => ?_, ?_⟩
@@ -956,11 +959,9 @@ private lemma rellich_totallyBounded_holder {X : Type*} [MetricSpace X] [Compact
   rwa [← Set.image_comp, show ⇑Φ.symm ∘ ⇑Φ = id from funext Φ.symm_apply_apply,
     Set.image_id] at this
 
-/-- **Th. `th:Rellich` (Rellich), cas sur-critique** (`d < p < ∞`). Tout `u ∈ W^{1,p}(Ω)` a un
-représentant continu sur `Ω̄`, et la boule unité fermée de `W^{1,p}(Ω)` est précompacte dans
-`C(Ω̄)`. Preuve : celle du cours (bornes de Morrey `corol_injSurCritOm`, prolongement
-uniformément continu à `Ω̄`, Arzelà–Ascoli de Mathlib). -/
-theorem th_Rellich_surCritique (Ω : TopologicalSpace.Opens ℝᵈ)
+/-- Cas sur-critique `d < p < ∞` de `th:Rellich` : celle du cours (bornes de Morrey
+`corol_injSurCritOm`, prolongement uniformément continu à `Ω̄`, Arzelà–Ascoli de Mathlib). -/
+private theorem rellich_surCritique_fini (Ω : TopologicalSpace.Opens ℝᵈ)
     (hΩb : Bornology.IsBounded (Ω : Set ℝᵈ)) (hΩ : ProlongementSobolevTout Ω)
     {p : ℝ≥0∞} [Fact (1 ≤ p)] (hdp : (d : ℝ≥0∞) < p) (hp : p ≠ ∞) :
     (∀ u : Sobolev1 Ω p, ∃ g : C(closure (Ω : Set ℝᵈ), ℝ),
@@ -1002,6 +1003,53 @@ theorem th_Rellich_surCritique (Ω : TopologicalSpace.Opens ℝᵈ)
   · have hd0 : 0 ≤ dist x y ^ α := Real.rpow_nonneg dist_nonneg _
     nlinarith [mul_nonneg (mul_nonneg (sub_nonneg.2 (le_max_left C' 0)) hd0) hu0,
       mul_nonneg (mul_nonneg (le_max_right C' 0) hd0) (sub_nonneg.2 hu)]
+
+/-- **Th. `th:Rellich` (Rellich), cas sur-critique** (`d < p ≤ ∞`). Tout `u ∈ W^{1,p}(Ω)` a un
+représentant continu sur `Ω̄`, et la boule unité fermée de `W^{1,p}(Ω)` est précompacte dans
+`C(Ω̄)`. Preuve : celle du cours pour `p < ∞` (bornes de Morrey `corol_injSurCritOm`,
+prolongement uniformément continu à `Ω̄`, Arzelà–Ascoli de Mathlib). Pour `p = ∞`, `Ω` étant
+borné, l'inclusion `W^{1,∞}(Ω) ⊂ W^{1,d+1}(Ω)` est continue (`W1p_inclusion_of_le`), ce qui
+ramène au cas `p = d + 1`. -/
+theorem th_Rellich_surCritique (Ω : TopologicalSpace.Opens ℝᵈ)
+    (hΩb : Bornology.IsBounded (Ω : Set ℝᵈ)) (hΩ : ProlongementSobolevTout Ω)
+    {p : ℝ≥0∞} [Fact (1 ≤ p)] (hdp : (d : ℝ≥0∞) < p) :
+    (∀ u : Sobolev1 Ω p, ∃ g : C(closure (Ω : Set ℝᵈ), ℝ),
+      ∀ᵐ x ∂(volume.restrict (Ω : Set ℝᵈ)), ∀ hx : x ∈ closure (Ω : Set ℝᵈ),
+        u.val x = g ⟨x, hx⟩) ∧
+      TotallyBounded {g : C(closure (Ω : Set ℝᵈ), ℝ) | ∃ u : Sobolev1 Ω p, ‖u‖ ≤ 1 ∧
+        ∀ᵐ x ∂(volume.restrict (Ω : Set ℝᵈ)), ∀ hx : x ∈ closure (Ω : Set ℝᵈ),
+          u.val x = g ⟨x, hx⟩} := by
+  rcases ne_or_eq p ∞ with hp | rfl
+  · exact rellich_surCritique_fini Ω hΩb hΩ hdp hp
+  have : Fact (1 ≤ (d : ℝ≥0∞) + 1) := ⟨le_add_self⟩
+  have hdp0 : (d : ℝ≥0∞) < d + 1 := ENNReal.lt_add_right (ENNReal.natCast_ne_top d) one_ne_zero
+  have hp0 : (d : ℝ≥0∞) + 1 ≠ ∞ :=
+    ENNReal.add_ne_top.2 ⟨ENNReal.natCast_ne_top d, ENNReal.one_ne_top⟩
+  obtain ⟨hrep, hTB⟩ := rellich_surCritique_fini Ω hΩb hΩ hdp0 hp0
+  obtain ⟨c, hc0, hc⟩ := W1p_inclusion_of_le hΩb.measure_lt_top.ne hp0 le_top
+  simp only [Sobolev1.val_def] at hrep hTB ⊢
+  refine ⟨fun u => ?_, ?_⟩
+  · obtain ⟨v, -, hv⟩ := hc u
+    obtain ⟨g, hg⟩ := hrep v
+    refine ⟨g, ?_⟩
+    filter_upwards [hg, hv] with x hgx hvx hx
+    rw [← hvx]
+    exact hgx hx
+  have : CompactSpace (closure (Ω : Set ℝᵈ)) := isCompact_iff_compactSpace.1 hΩb.isCompact_closure
+  refine (hTB.image (f := fun g => c • g) (uniformContinuous_const_smul c)).subset ?_
+  rintro g ⟨u, hu, hgu⟩
+  obtain ⟨v, hvn, hv⟩ := hc u
+  refine ⟨c⁻¹ • g, ⟨c⁻¹ • v, ?_, ?_⟩, by simp [smul_smul, hc0.ne']⟩
+  · rw [norm_smul, Real.norm_of_nonneg (inv_nonneg.2 hc0.le)]
+    calc c⁻¹ * ‖v‖ ≤ c⁻¹ * (c * ‖u‖) := mul_le_mul_of_nonneg_left hvn (inv_nonneg.2 hc0.le)
+      _ = ‖u‖ := by field_simp
+      _ ≤ 1 := hu
+  · have hs : (((c⁻¹ • v : W1p Ω ((d : ℝ≥0∞) + 1)) : LpGrad Ω ((d : ℝ≥0∞) + 1)).fst :
+        ℝᵈ → ℝ) =ᵐ[volume.restrict (Ω : Set ℝᵈ)] c⁻¹ • ((v : LpGrad Ω ((d : ℝ≥0∞) + 1)).fst :
+          ℝᵈ → ℝ) := Lp.coeFn_smul _ _
+    filter_upwards [hs, hv, hgu] with x hsx hvx hgx hx
+    rw [hsx, Pi.smul_apply, hvx, hgx hx]
+    simp
 
 end RellichW1p
 
