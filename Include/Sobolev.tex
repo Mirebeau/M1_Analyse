@@ -48,7 +48,7 @@ En préliminaire de cette section, nous énonçons deux résultats de densité, 
 \Nref{subsec:injSurCrit}\\
 \Nref{prop:convolPow2} (Lemme type convolution, sur boule bornée)\\
 \Nref{th:injSurCrit}\\
-\Nref{corol:ingSurCritOm} (Injection sur-critique, dans un domaine)\\
+\Nref{corol:injSurCritOm} (Injection sur-critique, dans un domaine)\\
 
 \Nref{subsec:injCompacte}\\
 \Nref{prop:interpLp}\\
@@ -498,6 +498,7 @@ Réciproquement, supposons (b). On a $L^p(\Omega) \subset L^1_\loc(\Omega)$ par 
 
 \begin{proposition}[Dérivation d'une distribution]
 \label{prop:deriv_distrib}
+\leancheck{prop:deriv_distrib}%
 Soit $T \in \cD(\Omega)^*$, $\alpha \in \bN^d$ et $s:=|\alpha|_1$. On définit
 \begin{equation*}
 	\<\partial_\alpha T, \phi\> := (-1)^s \<T,\partial_\alpha \phi\>, %{|\alpha|_1}
@@ -727,10 +728,11 @@ Cet espace a l'avantage de contenir une fonction radiale puissance :
 \end{equation}
 pour tout $0< \alpha \leq d$. Par contraste, ces fonctions n'appartiennent à aucun espace $L^p (\bR^d)$.
 
+\claudereport{Dans la formalisation Lean, ce résultat est posé comme axiome, sous la forme $\big\|\int |f(t)|\,|g(\cdot-t)| \diff t\big\|_{r'} \leq C(p,q,d)\|f\|_p \|g\|_{q,w}$, qui porte sur des fonctions positives et ne pose donc aucune question d'existence de l'intégrale. Il en découle que l'intégrale de Lebesgue $f\star g(x) = \int f(t)g(x-t)\diff t$ converge absolument pour presque tout $x$, et vérifie l'inégalité annoncée : la convolution formalisée est cette intégrale, qui coïncide avec le prolongement continu évoqué ci-dessous.}
 
 \begin{theorem}[Inégalité de Young faible, admis]
 \label{th:YoungFaible}
-\claudereport{Dans la formalisation Lean, ce résultat est posé comme axiome, sous la forme $\big\|\int |f(t)|\,|g(\cdot-t)| \diff t\big\|_{r'} \leq C(p,q,d)\|f\|_p \|g\|_{q,w}$, qui porte sur des fonctions positives et ne pose donc aucune question d'existence de l'intégrale. Il en découle que l'intégrale de Lebesgue $f\star g(x) = \int f(t)g(x-t)\diff t$ converge absolument pour presque tout $x$, et vérifie l'inégalité annoncée : la convolution formalisée est cette intégrale, qui coïncide avec le prolongement continu évoqué ci-dessous.}
+\leancheck{th:YoungFaible}%
 	Soient $p,q,r'\in ]1,\infty[$ tels que $1+ \frac 1 {r'} = \frac 1 p + \frac 1 q$. 
 	On a 
 	$\|f\star g \|_{r'} \leq C(p,q,d) \|f\|_p \|g\|_{q,w}$ pour tous $f \in L^p(\bR^d)$ et $g\in L^{q,w}(\bR^d)$.
@@ -789,6 +791,8 @@ Dans le résultat suivant la notation ``$C(s,p,d)$'' désigne ``une constante d�
 
 \begin{theorem}[Injection sous critique $W^{s,p}(\bR^d) \subset L^{p^*}(\bR^d)$, $s p < d$]
 \label{th:injSousCrit}
+\leancheck{th:injSousCrit}%
+\claudereport{La formalisation Lean ne traite que le cas $s=1$, $p>1$ (celui démontré ci-dessous). Le passage "par densité" y est réalisé en extrayant une suite de fonctions test convergeant presque partout, puis par le lemme de Fatou pour la norme $L^{p^*}$.}
 	Soient $d\in \bN^*$, $s\in \bN$, $p \in [1,\infty[$. Supposons $s p<d$ (hypothèse de sous-criticité) et définissons $p^* \in [p,\infty[$ par 
 	\begin{equation*}	
 	\frac 1 {p^*} = \frac 1 p - \frac s d.
@@ -815,6 +819,8 @@ L'estimation annoncée s'ensuit par densité de $\cD(\bR^d)$ dans $W^{1,p}(\bR^d
 
 \begin{corollary}
 \label{corol:injSousCritOm}
+\leancheck{corol:injSousCritOm}%
+\claudereport{La formalisation Lean (cas $s=1$, $p>1$) remplace l'hypothèse "$\Omega$ régulier" par la propriété de prolongement de Sobolev, conclusion du \cref{th:prolSobolev}.}
 	Soient $\Omega\subset \bR^d$ un ouvert régulier, $s\in \bN$ et $p \in [1,\infty[$. Supposons $s p <d$ (hypothèse de sous-criticité) et définissons $p^* \in [p,\infty[$ par $\frac 1 {p^*} = \frac 1 p - \frac s d$.
 	Alors $W^{s,p}(\Omega) \subset L^{p^*}(\Omega)$ et pour tout $u \in W^{s,p}(\Omega)$ on a 
 	\begin{equation*}
@@ -936,6 +942,7 @@ Ces deux résultats laissent ouverte la question des injections dites \emph{crit
 La preuve est fondée sur une variante de l'identité de convolution établie à la \cref{prop:convolPow}.
 \begin{proposition}
 \label{prop:convolPow2}
+\leancheck{prop:convolPow2}%
 Pour toute $f \in C^1(\bR^d)$, et tous $x \in \bR^d$ et $r>0$, on a 
 \begin{equation*}
 	\int_{B(x,r)} |f(x) -  f(y)| \diff y \leq \frac{r^d}{d}\int_{B(0,r)} \|\nabla f(x-y)\| \frac{\diff y}{\|y\|^{d-1}}.
@@ -975,12 +982,14 @@ Pour exploiter la proposition précédente, nous aurons besoin du calcul suivant
 \begin{equation}
 \label{eq:normLqPow}
 	\|h\|^q_{L^q(B(0,r))} = |\bS| \int_0^r s^{-q(d-1)} s^{d-1} \diff s = |\bS| \frac{r^{(d-1)(1-q)+1}}{(d-1)(1-q)+1}
+\leancheck{eq:normLqPow}%
 \end{equation}
 pour tout $r>0$, où $\bS := \bS_{d-1}$ désigne la sphère unité de $\bR^d$.
 On désigne par $C^\alpha$ l'espace des fonctions de régularité $\alpha$-Hölder, où $\alpha\in ]0,1[$, et on note $C^\alpha_0$ le sous espace de celles qui tendent vers $0$ à l'infini. 
 
 \begin{theorem}[Injection sur-critique $W^{1,p} \subset C^{1-d/p}_0$, $p>d$, inégalité de Morrey]
 \label{th:injSurCrit}
+\leancheck{th:injSurCrit}%
 Soit $d \in \bN^*$ la dimension, et $p \in ]d,\infty[$ un exposant. Toute fonction $u\in W^{1,p}(\bR^d)$ admet un représentant continu satisfaisant
 \begin{align}
 \label{eq:inj_sur_critique}
@@ -1022,7 +1031,9 @@ Finalement, reste à établir la convergence vers $0$ à l'infini de toute $u \i
 Pour compléter le résultat précédent, mentionnons que $W^{1,\infty}$ est l'espace des fonctions bornées et Lipschitz. (L'énoncé précédent ne s'applique pas au cas $p=\infty$ : en général ces fonctions ne sont pas $C^1$, et ne tendent pas vers $0$ à l'infini.)
 
 \begin{corollary}
-\label{corol:ingSurCritOm}
+\label{corol:injSurCritOm}
+\leancheck{corol:injSurCritOm}%
+\claudereport{La formalisation Lean remplace l'hypothèse "$\Omega$ régulier" par la propriété de prolongement de Sobolev, conclusion du \cref{th:prolSobolev}.}
 Soit $\Omega \subset \bR^d$ un ouvert régulier, et $p\in ]d,\infty[$. Alors $W^{1,p}(\Omega) \subset C^\alpha_b(\Omega)$ avec $\alpha := 1-d/p$.
 Toute $u\in W^{1,p}(\Omega)$ admet un représentant continu satisfaisant
 \begin{align*}
@@ -1077,6 +1088,7 @@ Le Théorème de Rellich et son corollaire.
 
 \begin{proposition}
 \label{prop:trans_grad_lp}
+\leancheck{prop:trans_grad_lp}%
 Soient $\Omega\subset \bR^d$ un ouvert, $p\in [1,\infty[$, $u \in W^{1,p}(\Omega)$, et $h\in \bR^d$.
 Soit $\omega \csubset \Omega$ compact tel que $\omega_h := \omega+B'(0,|h|) \subset \Omega$. Alors 
 %$\|\tau_h u - u\|_{L^p(\omega)} \leq |h| \|\nabla u\|_{L^p(\Omega)}$.
@@ -1102,7 +1114,7 @@ Soit $\omega \csubset \Omega$ compact tel que $\omega_h := \omega+B'(0,|h|) \sub
 \begin{proposition}[Inégalité d'interpolation $L^p$]
 \label{prop:interpLp}
 \leancheck{prop:interpLp}%
-	Soit $(X,\mu)$ un espace mesuré, et $f: X \to \bR$ mesurable, et $p_0,p_1\in [1,\infty]$ des exposants. Alors pour tout $\theta \in ]0,1[$ on a
+	Soit $(X,\mu)$ un espace mesuré, $f: X \to \bR$ mesurable, et $p_0,p_1\in [1,\infty]$ des exposants. Alors pour tout $\theta \in ]0,1[$ on a
 	\begin{align*}
 		\|f\|_{p_\theta} &\leq \|f\|_{p_0}^{1-\theta} \|f\|_{p_1}^\theta, &
 		\text{où } \frac 1 {p_\theta} := \frac {1-\theta} {p_0} + \frac \theta {p_1}.
@@ -1121,6 +1133,8 @@ Soit $\omega \csubset \Omega$ compact tel que $\omega_h := \omega+B'(0,|h|) \sub
 
 \begin{theorem}[Rellich]
 \label{th:Rellich}
+\leancheck{th:Rellich}%
+\claudereport{La formalisation Lean ne traite que les exposants $p>1$, et exclut $p=\infty$ dans le cas sur-critique (la caractérisation de $W^{1,\infty}$ par les fonctions lipschitziennes bornées n'étant pas démontrée). L'hypothèse "$\Omega$ régulier" y est remplacée par la propriété de prolongement de Sobolev pour tous les exposants, conclusion du \cref{th:prolSobolev}.}
 	Soit $\Omega\subset \bR^d$ un ouvert borné régulier, et $p \in [1,\infty]$ un exposant. La boule unité fermée de $W^{1,p}(\Omega)$ est : 
 	\begin{itemize}
 		\item (cas sous-critique, $p<d$) précompacte dans $L^q(\Omega)$ fort, pour tout $q \in [1,p^*[$ où $\frac 1 {p^*} = \frac 1 p - \frac 1 d$.
@@ -1156,9 +1170,10 @@ Soit $\omega \csubset \Omega$ compact tel que $\omega_h := \omega+B'(0,|h|) \sub
 En combinant les résultats de compacité du \nref{th:Rellich} et du \nref{th:BanachAlaoglu}, on s'assure de la convergence forte d'une suite extraite de fonctions, et de la convergence faible de ses dérivées, dans les espaces adéquats, comme l'illustrent le corollaire et l'exemple suivants.
 
 %, ce qui permet de montrer l'existence de solutions à des problèmes d'optimisation 
-
 \begin{corollary}
 \label{corol:Rellich}
+\leancheck{corol:Rellich}%
+\claudereport{La formalisation Lean évite la réflexivité de $W^{1,p}(\Omega)$, dont la preuve par uniforme convexité demanderait, pour $1<p<2$, la seconde inégalité de Clarkson. Les fonctions $u_n$ et leurs dérivées $\partial_i u_n$ sont bornées dans $L^p(\Omega)$, qui est réflexif pour tout $p\in]1,\infty[$ par le \cref{th:lpDualLq} (sans recours à la seconde inégalité de Clarkson), et de dual séparable : des extractions successives donnent la convergence faible de $(u_n, \partial_1 u_n, \cdots, \partial_d u_n)$ dans $L^p(\Omega)^{1+d}$. La limite appartient à $W^{1,p}(\Omega)$, sous-espace fermé et convexe, donc faiblement fermé. Le \nref{th:Rellich} fournit enfin une nouvelle extraction convergeant fortement dans $L^q(\Omega)$ (resp. $C(\overline \Omega)$), et les deux limites coïncident presque partout, comme on le voit en testant contre les fonctions indicatrices. Le résultat est formalisé en trois énoncés, suivant les cas du \nref{th:Rellich}, avec les mêmes hypothèses sur $\Omega$.}
 	Soit $\Omega \subset \bR^d$ un ouvert borné régulier et $p \in ]1,\infty[$ un exposant.
 	Pour toute suite $(u_n)_{n \in \bN}$ bornée dans $W^{1,p}(\Omega)$, il existe $u_* \in W^{1,p}(\Omega)$ et une extractrice $\vp$ tels que $\nabla u_{\vp(n)} \weakto \nabla u_* \in L^p(\Omega,\bR^d)$ faiblement, et de plus $u_{\vp(n)} \to u_*$ fortement dans $L^q(\Omega)$ ou $C(\overline \Omega)$ selon les conditions du \nref{th:Rellich}. 
 \end{corollary}
@@ -1172,6 +1187,8 @@ En combinant les résultats de compacité du \nref{th:Rellich} et du \nref{th:Ba
 
 \begin{exemple}[Minimisation d'une fonctionnelle non-linéaire sur $H^1$]
 \label{ex:nonLinMinH1}
+\leancheck{ex:nonLinMinH1}%
+\claudereport{La formalisation Lean remplace l'hypothèse "$\Omega$ borné régulier" par "$\Omega$ borné, ayant la propriété de prolongement de Sobolev pour tous les exposants", comme pour le \nref{th:Rellich}. Elle comporte deux preuves : la preuve directe ci-dessous, via le \cref{corol:Rellich}, et une preuve par le \cref{corol:minFctCvxRefl}, appliqué sur $E=H^1(\Omega)$ (réflexif car hilbertien) à $f := J_0-J_1$ et $g := J_2$, cette dernière étant faiblement continue sur les bornés car l'injection de $H^1(\Omega)$ dans $L^2(\Omega)$ est un opérateur compact (\nref{th:Rellich}, \cref{prop:opCompactComplCont}). La seconde preuve évite le recours à la réflexivité des espaces $L^p$.}
 	Soit $\Omega\subset \bR^d$ un ouvert borné régulier, $F\in C^1_b(\bR)$ (i.e.\ $F$ et sa dérivée sont bornées), et $f \in L^2(\Omega)$. Alors il existe $u\in H^1(\Omega)$ minimisant 
 	\begin{equation*}
 		J(u) := \int_\Omega \Big(\frac 1 2 |\nabla u|^2 + \frac 1 2 u^2 - f u + F(u) \Big).
@@ -1194,6 +1211,8 @@ Le théorème de Rellich soulève naturellement la question de la fermeture, et 
 
 \begin{remark}[Fermeture dans $L^q$ de la boule unité de $W^{1,p}$]
 \label{rem:bouleW1pFerme}
+\leancheck{rem:bouleW1pFerme}%
+\claudereport{La formalisation Lean n'utilise ni la régularité de $\Omega$, ni l'inclusion continue $W^{1,p}(\Omega)\subset L^q(\Omega)$ : pour tout ouvert $\Omega$ et tout $q\in[1,\infty]$, l'ensemble des $f\in L^q(\Omega)$ égales presque partout à un élément de la boule unité de $W^{1,p}(\Omega)$ est fermé dans $L^q(\Omega)$. La preuve évite la réflexivité de $W^{1,p}(\Omega)$, et couvre ainsi le cas $p=\infty$ (énoncé séparé). Soit $u_n\to f$ dans $L^q(\Omega)$ avec $\|u_n\|_{W^{1,p}}\leq 1$. Quitte à extraire, les normes $\|u_n\|_p$ et $\|\partial_i u_n\|_p$ convergent, vers $a$ et $b_i$. Pour $\psi\in \cD(\Omega)$, on a $\int_\Omega u_n \psi \to \int_\Omega f\psi$ et $\int_\Omega \partial_i u_n\, \psi = -\int_\Omega u_n \partial_i \psi\to -\int_\Omega f\partial_i\psi$, et ces formes linéaires sont bornées par $a\|\psi\|_{p'}$ et $b_i\|\psi\|_{p'}$. On les prolonge par Hahn-Banach à $L^{p'}(\Omega)$, puis on les représente par des fonctions $g_0,g_i\in L^p(\Omega)$ de normes au plus $a$ et $b_i$, par la dualité $L^p = (L^{p'})^*$ du \cref{th:lpDualLq} (avec $p'=1$ si $p=\infty$). Alors $f=g_0$, $\partial_i f = g_i$ au sens des distributions, et $\|f\|_{W^{1,p}}\leq 1$.}
 Soit $\Omega$ un ouvert régulier, et $p \in ]1,\infty]$ et $q \in [1,\infty]$ des exposants tels qu'on ait une inclusion continue $W^{1,p}(\Omega) \subset L^q(\Omega)$. Alors la boule unité de $W^{1,p}(\Omega)$ est fermée dans $L^q(\Omega)$.  	
 \end{remark}
 
