@@ -177,6 +177,13 @@ theorem prop_baseVoisMetric_sep [MetricSpace X] (u : ℕ → X) (hu : DenseRange
     · rw [Metric.mem_ball] at hy ⊢
       linarith [dist_triangle y (u n) a, dist_comm a (u n)]
 
+/-- **Rem. `rem:separable_partie` (Séparabilité d'une partie).** Toute partie d'un espace
+métrique séparable est séparable (Mathlib : un espace métrique séparable est à base dénombrable
+d'ouverts, propriété héritée par ses parties). -/
+theorem rem_separable_partie [PseudoMetricSpace X] [SeparableSpace X] (A : Set X) :
+    SeparableSpace A :=
+  inferInstance
+
 /-! ### Modules de continuité -/
 
 /-- **Déf. `def:moduleCont` (Module de continuité).** Un module de continuité est une

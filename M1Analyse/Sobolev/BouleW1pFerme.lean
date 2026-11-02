@@ -215,7 +215,7 @@ private lemma bouleW1p_subseq {Ω : TopologicalSpace.Opens ℝᵈ} {p : ℝ≥0�
 /-- **Rem. `rem:bouleW1pFerme` (Fermeture dans `L^q` de la boule unité de `W^{1,p}`).** Soient
 `Ω` un ouvert, `p ∈ ]1, ∞[` et `q ∈ [1, ∞]`. Alors l'ensemble des `f ∈ L^q(Ω)` égales p.p. à
 un `u ∈ W^{1,p}(Ω)` de norme `≤ 1` est fermé dans `L^q(Ω)`.
-Preuve (différente du cours) : pas de réflexivité de `W^{1,p}(Ω)` ni d'extraction faible.
+Preuve (celle du cours) : pas de réflexivité de `W^{1,p}(Ω)` ni d'extraction faible.
 Si `u_n → f` dans `L^q` avec `‖u_n‖ ≤ 1`, on extrait seulement une sous-suite des normes
 `‖u_n‖_p`, `‖∂ᵢu_n‖_p` (nombres réels bornés). La limite de `∫ u_n ψ` (resp. de `∫ ∂ᵢu_n ψ`)
 est connue pour `ψ ∈ 𝓓(Ω)` grâce à la convergence forte ; ces formes linéaires, bornées pour la
@@ -262,13 +262,12 @@ theorem rem_bouleW1pFerme (Ω : TopologicalSpace.Opens ℝᵈ) {p q : ℝ≥0∞
 
 /-- **Rem. `rem:bouleW1pFerme`, cas `p = ∞`.** Pour tout ouvert `Ω` et `q ∈ [1, ∞]`,
 l'ensemble des `f ∈ L^q(Ω)` égales p.p. à un `u ∈ W^{1,∞}(Ω)` de norme `≤ 1` est fermé.
-Preuve (différente du cours) : pas de réflexivité de `W^{1,p}(Ω)` ni d'extraction faible.
+Preuve (celle du cours) : pas de réflexivité de `W^{1,p}(Ω)` ni d'extraction faible.
 Si `u_n → f` dans `L^q` avec `‖u_n‖ ≤ 1`, on extrait seulement une sous-suite des normes
 `‖u_n‖_p`, `‖∂ᵢu_n‖_p` (nombres réels bornés). La limite de `∫ u_n ψ` (resp. de `∫ ∂ᵢu_n ψ`)
 est connue pour `ψ ∈ 𝓓(Ω)` grâce à la convergence forte ; ces formes linéaires, bornées pour la
 norme `L^{p'}` par la limite des normes, se prolongent par Hahn–Banach et sont représentées
-par dualité `L^∞ = (L^1)^*` (`th_lpDualLq_bijectif_un`). `W^{1,∞}(Ω)` n'étant pas réflexif, la
-preuve du cours ne s'applique pas ici. -/
+par dualité `L^∞ = (L^1)^*` (`th_lpDualLq_bijectif_un`). -/
 theorem rem_bouleW1pFerme_top (Ω : TopologicalSpace.Opens ℝᵈ) {q : ℝ≥0∞} [Fact (1 ≤ q)] :
     IsClosed {f : Lp ℝ q (volume.restrict (Ω : Set ℝᵈ)) | ∃ u : Sobolev1 Ω ∞, ‖u‖ ≤ 1 ∧
       (f : ℝᵈ → ℝ) =ᵐ[volume.restrict (Ω : Set ℝᵈ)] u.val} := by

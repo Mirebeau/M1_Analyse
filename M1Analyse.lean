@@ -40,6 +40,7 @@ import M1Analyse.Sobolev.ConvolutionSobolev
 import M1Analyse.Sobolev.W1p
 import M1Analyse.Sobolev.W1p0Separable
 import M1Analyse.Sobolev.W1infLip
+import M1Analyse.Sobolev.W1pReflexif
 import M1Analyse.Sobolev.ConvolDistrib
 import M1Analyse.Sobolev.FrechetKolmogorov
 import M1Analyse.Sobolev.InjSousCritique

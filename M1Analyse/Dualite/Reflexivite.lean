@@ -6,6 +6,7 @@ Authors: Jean-Marie Mirebeau
 import Mathlib.Analysis.Normed.Module.DoubleDual
 import Mathlib.Analysis.Normed.Module.HahnBanach
 import Mathlib.Analysis.LocallyConvex.WeakSpace
+import Mathlib.Analysis.LocallyConvex.Separation
 import Mathlib.Analysis.Normed.Operator.BanachSteinhaus
 import Mathlib.Analysis.InnerProductSpace.Convex
 import Mathlib.Analysis.InnerProductSpace.Dual
@@ -168,6 +169,114 @@ theorem th_unifCvxReflex_uniformConvexSpace [CompleteSpace E] [UniformConvexSpac
     Reflexif E :=
   th_unifCvxReflex (unifCvx_iff_uniformConvexSpace.2 inferInstance)
 end MilmanPettis
+
+section SousEspace
+
+/-! ### Stabilité de la réflexivité (`prop:reflex_sev`) -/
+
+/-- Si `Φ(x) = φ ∘ T^*`, où `T^* : f ↦ f ∘ T`, alors `g(x) = φ(g ∘ T)` pour tout `g ∈ E^*`. -/
+private lemma reflexif_precomp_eval {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [NormedAddCommGroup F] [NormedSpace ℝ F] (T : F →L[ℝ] E) (φ : StrongDual ℝ (StrongDual ℝ F))
+    {x : E}
+    (hx : inclusionInDoubleDual ℝ E x = φ.comp ((ContinuousLinearMap.compL ℝ F E ℝ).flip T))
+    (g : StrongDual ℝ E) : g x = φ (g.comp T) := by
+  simpa using congrArg (fun ψ => ψ g) hx
+
+/-- La réflexivité est préservée par isomorphisme linéaire continu. -/
+theorem Reflexif.of_continuousLinearEquiv {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [NormedAddCommGroup F] [NormedSpace ℝ F] (e : E ≃L[ℝ] F) (hE : Reflexif E) : Reflexif F := by
+  rw [def_reflexif_iff_surjective] at hE ⊢
+  intro ψ
+  obtain ⟨x, hx⟩ := hE (ψ.comp ((ContinuousLinearMap.compL ℝ F E ℝ).flip (e.symm : F →L[ℝ] E)))
+  refine ⟨e x, ContinuousLinearMap.ext fun f => ?_⟩
+  have h := reflexif_precomp_eval _ ψ hx (f.comp (e : E →L[ℝ] F))
+  have he : (f.comp (e : E →L[ℝ] F)).comp (e.symm : F →L[ℝ] E) = f := by ext; simp
+  rw [he] at h
+  simpa using h
+
+/-- **Prop. `prop:reflex_sev`, produit (remarque précédant l'énoncé).** Le produit de deux evn
+réflexifs est réflexif, grâce à `(E × F)^* ≃ E^* × F^*`, `f ↦ (f|_E, f|_F)`. -/
+theorem reflexif_prod {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [NormedAddCommGroup F] [NormedSpace ℝ F] (hE : Reflexif E) (hF : Reflexif F) :
+    Reflexif (E × F) := by
+  rw [def_reflexif_iff_surjective] at hE hF ⊢
+  intro φ
+  obtain ⟨x, hx⟩ := hE (φ.comp ((ContinuousLinearMap.compL ℝ (E × F) E ℝ).flip
+    (ContinuousLinearMap.fst ℝ E F)))
+  obtain ⟨y, hy⟩ := hF (φ.comp ((ContinuousLinearMap.compL ℝ (E × F) F ℝ).flip
+    (ContinuousLinearMap.snd ℝ E F)))
+  refine ⟨(x, y), ContinuousLinearMap.ext fun h => ?_⟩
+  have h1 := reflexif_precomp_eval _ φ hx (h.comp (ContinuousLinearMap.inl ℝ E F))
+  have h2 := reflexif_precomp_eval _ φ hy (h.comp (ContinuousLinearMap.inr ℝ E F))
+  have hsum : (h.comp (ContinuousLinearMap.inl ℝ E F)).comp (ContinuousLinearMap.fst ℝ E F) +
+      (h.comp (ContinuousLinearMap.inr ℝ E F)).comp (ContinuousLinearMap.snd ℝ E F) = h := by
+    ext <;>
+    simp only [ContinuousLinearMap.add_comp, add_apply, ContinuousLinearMap.comp_apply,
+      ContinuousLinearMap.inl_apply, ContinuousLinearMap.inr_apply, ContinuousLinearMap.coe_fst',
+      ContinuousLinearMap.coe_snd', add_eq_left, add_eq_right] <;>
+    exact map_zero h
+  rw [def_reflexif_eval, ← hsum, map_add, ← h1, ← h2]
+  simp [← map_add]
+
+/-- **Prop. `prop:reflex_sev`, produit fini (remarque précédant l'énoncé).** Un produit fini
+d'evn réflexifs est réflexif (même argument, `(∏ Eᵢ)^* ≃ ∏ Eᵢ^*`). -/
+theorem reflexif_pi {ι : Type*} [Fintype ι] {E : ι → Type*} [∀ i, NormedAddCommGroup (E i)]
+    [∀ i, NormedSpace ℝ (E i)] (hE : ∀ i, Reflexif (E i)) : Reflexif (∀ i, E i) := by
+  classical
+  simp_rw [def_reflexif_iff_surjective] at hE ⊢
+  intro φ
+  choose x hx using fun i => hE i (φ.comp ((ContinuousLinearMap.compL ℝ (∀ i, E i) (E i) ℝ).flip
+    (ContinuousLinearMap.proj i)))
+  refine ⟨x, ContinuousLinearMap.ext fun h => ?_⟩
+  have hi := fun i => reflexif_precomp_eval _ φ (hx i) (h.comp (ContinuousLinearMap.single ℝ E i))
+  have hv : ∀ v : ∀ i, E i, ∑ i, h (Pi.single i (v i)) = h v := fun v => by
+    rw [← map_sum, Finset.univ_sum_single]
+  have hsum : ∑ i, (h.comp (ContinuousLinearMap.single ℝ E i)).comp
+      (ContinuousLinearMap.proj i) = h := by
+    ext v
+    simpa using hv v
+  rw [def_reflexif_eval, ← hv x]
+  conv_rhs => rw [← hsum]
+  rw [map_sum]
+  refine Finset.sum_congr rfl fun i _ => ?_
+  simpa using hi i
+
+/-- **Prop. `prop:reflex_sev` (Réflexivité d'un s.e.v. fermé).** Un s.e.v. fermé `V` d'un evn
+réflexif `E` est réflexif.
+Preuve (celle du cours) : `φ_E(f) := φ_V(f|_V)` ; réflexivité de `E` ; `x ∈ V` par
+Hahn–Banach (séparation géométrique du point `x` et du convexe fermé `V`) ; prolongement de
+Hahn–Banach des formes linéaires de `V`. -/
+theorem prop_reflex_sev {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (hE : Reflexif E)
+    (V : Submodule ℝ E) (hV : IsClosed (V : Set E)) : Reflexif V := by
+  rw [def_reflexif_iff_surjective] at hE ⊢
+  intro φ
+  obtain ⟨x, hx⟩ := hE (φ.comp ((ContinuousLinearMap.compL ℝ V E ℝ).flip V.subtypeL))
+  have hφ : ∀ f : StrongDual ℝ E, f x = φ (f.comp V.subtypeL) := fun f => by
+    have := congrArg (fun ψ => ψ f) hx
+    simpa using this
+  have hxV : x ∈ V := by
+    by_contra hxV
+    obtain ⟨f, u, hfV, hux⟩ := geometric_hahn_banach_closed_point V.convex hV hxV
+    have hu : 0 < u := by simpa using hfV 0 V.zero_mem
+    have h0 : f.comp V.subtypeL = 0 := by
+      ext ⟨v, hv⟩
+      by_contra hne
+      have := hfV _ (V.smul_mem (u / f v) hv)
+      simp only [map_smul, smul_eq_mul] at this
+      simp only [ContinuousLinearMap.comp_apply, Submodule.subtypeL_apply,
+        zero_apply] at hne
+      rw [div_mul_cancel₀ _ hne] at this
+      exact lt_irrefl _ this
+    have := hφ f
+    rw [h0, map_zero] at this
+    linarith
+  refine ⟨⟨x, hxV⟩, ContinuousLinearMap.ext fun g => ?_⟩
+  obtain ⟨f, hf, -⟩ := exists_extension_norm_eq V g
+  have hfg : f.comp V.subtypeL = g := ContinuousLinearMap.ext fun v => by simpa using hf v
+  rw [def_reflexif_eval, ← hfg, ← hφ]
+  simp
+
+end SousEspace
 
 section Hilbert
 

@@ -307,6 +307,10 @@ Chacune fait l'objet d'un \claudereport dans le texte.
 - LegendreFenchel lem:cvxImplLip : supposer f(x) < ∞ (sinon l'hypothèse f ≤ f(x)+M est vide).
 
 - th:W1inf_iff_Lip (ex th:Rademacher, 2 novembre, `Sobolev/W1infLip.lean`) : `th_W1inf_iff_Lip` (W^{1,∞}(Ω) = fonctions bornées lipschitziennes, sous `ProlongementSobolev Ω ∞` au lieu de « Ω régulier », \claudereport), `th_W1inf_iff_Lip_convexe` (Ω convexe, constante ess sup |∇u|, sans régularité). Preuve : IBP de Mathlib (`integral_lineDeriv_mul_eq`) ; régularisation, convergence p.p. et prolongement de McShane (sans th:injSurCrit).
+- prop:reflex_sev (2 novembre, `Dualite/Reflexivite.lean`) : `prop_reflex_sev` (preuve du cours, séparation géométrique + prolongement de Hahn–Banach), avec la remarque précédente `reflexif_prod`, `reflexif_pi` et le transport `Reflexif.of_continuousLinearEquiv`.
+- eq:W1p_sev_Lp (2 novembre, `Sobolev/W1pReflexif.lean`) : `W1p_reflexif` (1 < p < ∞, via Milman–Pettis), `W1p_separable` (p < ∞).
+- rem:separable_partie (2 novembre, `TopologieGenerale/Metrique.lean`) : `rem_separable_partie` (instance Mathlib).
+- rem:bouleW1pFerme : la preuve du cours suit désormais celle de Lean (docstrings mises à jour).
 
 ## Points techniques de la formalisation (2 novembre)
 
