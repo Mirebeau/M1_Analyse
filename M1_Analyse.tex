@@ -1,7 +1,6 @@
 \documentclass[11pt]{article} 
 \usepackage{etoolbox} \newtoggle{perso}
-\toggletrue{perso} % Comment for student version
-%\newcommand\leancheck[1]{} % Comment to show the lean anchor links 
+%\toggletrue{perso} % Comment for student version
 \usepackage[mathletters]{ucs}
 \usepackage[utf8x]{inputenc}
 
@@ -19,7 +18,10 @@
 \newcommand\overpar[1]{\aoverbrace[L1R]{#1}}
 \usepackage{hyperref}
 
+%\newcommand\leancheck[1]{} \newcommand\leannote[1]{} % Comment to show the lean anchor links 
 \input{leananchors} % \leancheck{<label>} : lien vers la formalisation Lean (généré par scripts/lean_pages/leancheck.py)
+\newcommand\leannote[1]{\emph{Note sur la formalisation}: #1}
+
 \usepackage{pifont} \def\facultatif{\ding{40}} % avion
 
 \def\cA{\mathcal{A}}
@@ -63,10 +65,8 @@
 \newcommand\todoi[1]{\todo[inline]{#1}}
 \newcommand\notei[1]{\todo[inline,color=yellow]{#1}}
 \newcommand\hiddenproof[1]{\begin{proof}[Preuve (brouillon seul)] #1 \end{proof}}
-\newcommand\leannote[1]{\emph{Note sur la formalisation}: #1}
-
-\newcommand\inventaire[1]{}
-%\newcommand\inventaire[1]{\paragraph{Inventaire (pour le cours)\\} #1 \hfill $\square$}
+%\newcommand\inventaire[1]{}
+\newcommand\inventaire[1]{\paragraph{Inventaire (pour le cours)\\} #1 \hfill $\square$}
 
 \newcommand\formalizationInstruction[1]{\todo[inline,color=yellow]{#1}}
 \newcommand\claudereport[1]{\todo[inline,color=green]{#1}}

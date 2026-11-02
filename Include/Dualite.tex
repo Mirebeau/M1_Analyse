@@ -334,21 +334,27 @@ Un espace de Hilbert $H$ satisfait l'identité du parallélogramme $\|x+y\|^2 + 
 
 \todoi{L'uniforme convexité de l'espace dual implique l'unicité du conjugué dual.}
 
+% -- DO NOT REMOVE -- Propriété codée en Lean sur la même page que la réflexivité d'un sous-espace.
+Le produit de deux espaces réflexifs est clairement réflexif, grâce à l'isomorphisme $(E \times F)^* \simeq E^* \times F^*$, $f \mapsto (f_{|E}, f_{|F})$, itéré deux fois. Dans le même esprit:
+\begin{proposition}
+\label{prop:reflex_sev}
+\leancheck{prop:reflex_sev}%
+	Un s.e.v.\ fermé $V$ d'un evn réflexif $E$ est également réflexif.
+\end{proposition}
+
+\begin{proof}
+	Notons d'abord que $E$ est complet, car isomorphe à $E^{**}$.
+	Considérons $\vp_V \in V^{**}$, et définissons $\vp_E \in E^{**}$ par $\vp_E(f) := \vp_V(f_{|V})$ pour toute $f \in E^*$, qui est bien continue en tant que composition de $\vp_V$ et de la restriction $f\in E^*\mapsto f_{|V}$. Par réflexivité de $E$ il existe $x\in E$ tel que $\vp_E(f) = f(x)$, pour toute $f \in E^*$. 
+	Si par l'absurde $x \notin V$, alors la forme linéaire $v+\lambda x \mapsto \lambda$ est continue par fermeture de $V$, puisque $\|v+\lambda x\| \geq |\lambda| d(x,V)$, donc s'étend en $f \in E^*$, et alors $1 = f(x) = \vp_E(f) = \vp_V(f_{|V}) = 0$, ce qui est la contradiction attendue. Nous avons obtenu que $\vp_V(f_{|V}) = f_{|V}(x)$ pour toute $f \in E^*$, donc $\vp_V(f) = f(x)$ pour toute $f \in V^*$ car toutes ces formes linéaires sont prolongeables à $E$ par Hahn-Banach.	
+\end{proof}
+
+
 \paragraph{Dualité dans les espaces de Lebesgue.}
 Deux exposants $p,q \in [1,\infty]$ sont dits conjugués si 
-%Commençons par l'inégalité de Holder, qui montre que $L^p$ s'injecte isométriquement dans $(L^q)^*$ si les exposants $p$ et $q$ sont conjugués, c'est-à-dire si 
 \begin{equation*}
 	\frac 1 p + \frac 1 q = 1.
 \end{equation*}
 L'objectif de cette fin de section est d'établir l'identification $L^p(X,\mu)^* = L^q(X,\mu)$, lorsque $p$ et $q$ sont conjugués et $p<\infty$, et où $(X,\mu)$ désigne un espace mesuré. 
-%. Le crochet de dualité est donné par l'intégrale $\int_X f g\, \diff \mu$,%utilisant l'intégrale comme crochet de dualité,
-%\begin{align*}
-%	L^p(X,\mu)^* &= L^q(X,\mu), 
-%	\<f,g\> := \int f g
-%\end{align*}
-%
-%et qui donne par son cas d'égalité le conjugué dual d'un élément. %On montre ensuite dans le \cref{th:lpDualLq} que cette injection est bijective, pour $p<\infty$. 
-%Dans toute la suite, $(X,\mu)$ désigne un espace mesuré. 
 
 \begin{theorem}[Inégalité de Hölder]	
 \label{th:HolderIneq}
@@ -358,10 +364,6 @@ Soient $p,q\in [1,\infty]$ satisfaisant $\frac 1 p + \frac 1 q = 1$. Pour tous $
 \label{eq:Holder}
 	\int_X f g \leq \|f\|_p \|g\|_q.
 \end{equation}
-%\begin{align*}
-%	\int_X f g &\leq \|f\|_p \|g\|_q,&
-%	\text{si}\quad \tfrac 1 p + \tfrac 1 q &= 1.
-%\end{align*}
 Supposons $\|f\|_p \|g\|_q \neq 0$. Dans le cas $1< p < \infty$, on a égalité dans \eqref{eq:Holder} ssi $f = \lambda \sign(g) |g|^{q/p}$ $\mu$-presque partout, avec $\lambda > 0$. (Dans le cas $p=1$, on a égalité dans \eqref{eq:Holder} ssi $g = \lambda \sign(f)$ $\mu$-presque partout où $|f|>0$, et $\|g\|_\infty = \lambda$.)
 \end{theorem}
 \begin{proof}

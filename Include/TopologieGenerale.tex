@@ -449,6 +449,13 @@ Une suite $(x_n)_{n \in \bN}$ a valeurs dans un espace topologique $(X,\bU)$ con
 	Réciproquement, s'il existe une extractrice $\vp$ telle que $x_{\vp(n)} \to x$ lorsque $n \to \infty$, alors tout voisinage $V \in \cV_x$ contient tous les termes $(x_{\vp(n)})_{n \geq N(V)}$ à partir d'un certain rang $N(V)$. Ainsi $V$ intersecte $\{x_n\mid n \geq N\}$, quel que soit l'entier $N\in \bN$, donc $x\in \overline{\{x_n\mid n \geq N\}}$ ce qui conclut. (Ce sens n'utilise pas la base dénombrable.)
 \end{proof}
 
+\begin{remark}[Séparabilité d'une partie]
+\label{rem:separable_partie}
+\leancheck{rem:separable_partie}%
+	Si un espace métrique est à base dénombrable d'ouverts, alors ses parties le sont aussi (prendre l'intersection des ouverts de la base avec la partie concernée), et il est séparable (prendre un point arbitraire dans chaque ouvert de la base). En particulier, toute partie d'un espace métrique séparable est séparable, voir la \cref{prop:baseVoisMetric}.
+\end{remark}
+
+
 Finalement, expliquons le terme ``filtre'' en entête de la \cref{def:filtre_vois}.
 
 \begin{remark}[Axiomes de Filtre \facultatif]
