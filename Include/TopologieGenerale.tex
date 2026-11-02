@@ -1153,10 +1153,12 @@ On utilise dans les \cref{def:lploc,def:cont_nonbornee} une suite exhaustive de 
 \forall n \in \bN,\, K_n &\csubset \mathring K_{n+1}. 
 \leancheck{eqdef:exhaustive_compacts}%
 \end{align}
+Si $K \csubset \Omega$, alors $K \csubset \mathring K_n$ pour tout $n$ assez grand.
 \end{proposition}
 
 \begin{proof}
-	Prendre par exemple $K_n := \{x \in B'(0,n)\mid d(x,\bR^d \sm \Omega) \geq \frac 1{n+1}\}$. 
+	\emph{Existence}: prendre par exemple $K_n := \{x \in B'(0,n)\mid d(x,\bR^d \sm \Omega) \geq \frac 1{n+1}\}$. 
+	\emph{Inclusion $K \csubset \mathring K_n$}: Remarquer que $K$ est couvert par l'union croissante d'ouverts $\cup_{n\in \bN} \mathring K_{n+1} = \Omega$, puis appliquer l'axiome de Borel-Lebesgue, voir la \cref{def:compact}.
 \end{proof}
 
 Par convention $\|f\|_{L^p(K)}$ désigne $\|f_{|K}\|_{L^p(K)}$ si $f$ est définie sur un domaine contenant $K \subset \bR^d$, $f$ et $K$ étant supposés mesurables. 
