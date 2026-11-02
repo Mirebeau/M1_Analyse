@@ -396,7 +396,7 @@ Soient $2 \leq p < \infty$ et $f,g\in L^p(X,\mu)$. Alors
 	\end{equation*}
 \end{proposition}
 
-\begin{proof}%[Preuve de la première inégalité (la plus facile)]
+\begin{proof}
 Étant donné $a,b\geq 0$ et $s\geq 1$, on a $a^s+b^s\leq (a+b)^s$; en effet, on peut supposer $a+b=1$ par homogénéité, et remarquer alors que $a^s \leq a$ et $b^s\leq b$. On en déduit que, ponctuellement
 \begin{equation*}
 	\big|\frac{f+g} 2\big|^p + \big|\frac{f-g} 2\big|^p \leq \Big(\big|\frac{f+g} 2\big|^2 + \big|\frac{f-g} 2\big|^2\Big)^\frac p 2 = \big(\frac{f^2+g^2} 2\big)^\frac p 2 \leq \frac 1 2 |f|^p + \frac 1 2 |g|^p.
@@ -405,24 +405,13 @@ Soient $2 \leq p < \infty$ et $f,g\in L^p(X,\mu)$. Alors
 	Par intégration sur le domaine $X$, on obtient le résultat annoncé.
 \end{proof}
 
-%Il existe une seconde inégalité de Clarkson, s'appliquant aux exposants $1 < p \leq 2$, et un peu plus difficile à établir. Elle énonce que 
-%	\begin{align*}
-%		\big\|\frac{f+g} 2\big\|_p^q + \big\|\frac{f-g} 2\big\|_p^q &\leq \big(\frac 1 2 \|f\|_p^p + \frac 1 2 \|g\|_p^p\big)^\frac q p, 
-%		& & \text{si } 1<p \leq 2 \text{ et } \frac 1 p + \frac 1 q =1.
-%	\end{align*}
-
-%Les inégalités de Clarkson impliquent que $L^p$ est uniformément convexe pour tout $1 < p < \infty$. 
-%En effet si $\|f\|_p=\|g\|_p=1$ et $\|f-g\|_p=\delta$, alors $\|\frac {f+g} 2\|_p \leq (1-(\delta/2)^p)^\frac 1 p$ si $p\geq 2$ en utilisant la première inégalité, et par ailleurs $\|\frac {f+g} 2\|_p \leq (1-(\delta/2)^q)^\frac 1 q$ si $p<2$ en utilisant la seconde. 
-
-
-
-%Noter que la preuve de $(L^p(X,\mu) )^* = L^q(X,\mu)$, pour tout $1 < p < \infty$, peut s'établir en utilisant seulement la première inégalité de Clarkson. 
-
 \begin{theorem}[Dualité dans les espaces de Lebesgue]
 \label{th:lpDualLq}
 \leancheck{th:lpDualLq}%
-\claudereport{Pour $p=1$ (donc $q=\infty$), l'énoncé requiert une hypothèse sur la mesure. Si $X=\{*\}$ et $\mu(\{*\})=\infty$, alors $L^1(X,\mu)=\{0\}$ et $L^\infty(X,\mu)=\bR$, de sorte que $g\mapsto \vp_g$ n'est pas injective. L'isométrie vaut si $\mu$ est semi-finie (par exemple $\sigma$-finie), et la bijectivité si $\mu$ est $\sigma$-finie. La formalisation Lean suppose $\mu$ $\sigma$-finie dans le cas $p=1$. La bijectivité pour $p=1$ est également formalisée, sous l'hypothèse $\sigma$-finie, bien que non démontrée dans le cours.}
-Soit $1 \leq p \leq \infty$, et $q$ l'exposant conjugué, i.e. $\frac 1 p + \frac 1 q =1$. Posons pour tous $f\in L^p(X,\mu)$ et $g \in L^q(X,\mu)$
+Soit $1 \leq p \leq \infty$, et $q$ l'exposant conjugué, i.e. $\frac 1 p + \frac 1 q =1$. 
+Soit $(X,\mu)$ un espace mesuré, supposé $\sigma$-fini\footnote{I.e.\ il existe une suite  $(X_n)_{n\in \bN}$ de parties $X_n\subset X$ mesurables et de mesure finie, telles que $X = \cup_{n\in \bN} X_n$.} dans le cas $p=1$.
+% --- DO NOT REMOVE --- Contre exemple de Claude dans le cas $p=1$ sans cette hypothèse: $X=\{*\}$ et $\mu(\{*\})=\infty$, donc $L^1(X,\mu)=\{0\}$ et $L^\infty(X,\mu)=\bR$
+Posons pour tous $f\in L^p(X,\mu)$ et $g \in L^q(X,\mu)$
 \begin{equation*}
 	\vp_g(f) := \int_X fg.
 \end{equation*}
@@ -438,11 +427,9 @@ Supposons par l'absurde que $F \neq E$, de sorte qu'il existe $\vp \in E^*\sm \{
 
 Par la \nref{prop:ClarksonIneq}, l'espace $L^p$ est uniformément convexe donc réflexif. L'élément du bidual $\vp \in E^* = (L^p)^{**}$ s'écrit donc $\vp = \Phi(f)$, c'est-à-dire $\vp(\psi) =  \psi(f)$ pour toute $\psi \in E$, pour un certain $f \in L^p$, non-nul car $\vp$ l'est. Par le cas d'égalité dans l'inégalité de Hölder, il existe $g \in L^q$ telle que $\Phi(f)(g) := \int_X f g \neq 0$, ce qui contredit l'hypothèse que $\vp$ s'annule sur $F$. 
 
-Nous avons établi que $F=E$, c'est-à-dire l'identification isométrique bijective $L^p(X,\mu)^* = L^q (X,\mu)$. Par ailleurs $L^q(X,\mu)^* = L^p(X,\mu)^{**} = L^p(X,\mu)$ par réflexivité de $L^p$, ce qui conclut.
+Nous avons établi que $F=E$, c'est-à-dire l'identification isométrique bijective $L^p(X,\mu)^* = L^q (X,\mu)$. 
+Observons par ailleurs que $L^q(X,\mu)^* = L^p(X,\mu)^{**} = L^p(X,\mu)$ par réflexivité de $L^p$; ainsi, le cas $2\leq p <\infty$ implique le cas $1<p<2$ que nous avions omis jusque là, ce qui conclut.
 \end{proof}
-
-%Les normes $\|x\|_1 := \sum_{i=1}^d |x_i|$ et $\|x\|_\infty := \max_{i=1}^d |x_i|$ sont bien duales sur l'espace de dimension finie $\bR^d$. En revanche
-%L'espace $\bR^d$ de dimension finie $d$, 
 
 Pour terminer, nous montrons que $\ell^1\subsetneq (\ell^\infty)^*$, où $\ell^p := L^p(\bN)$ muni de la mesure de comptage, c'est-à-dire la non-bijectivité de l'inclusion du \cref{th:lpDualLq} dans le cas $p=\infty$, et la non-réflexivité de $\ell^1$. En revanche, les evn de dimension finie $(\bR^d,\|\cdot\|_1)$ et $(\bR^d,\|\cdot\|_\infty)$, correspondant à un domaine $X$ fini, sont bien duaux isométriques l'un de l'autre. 
 
