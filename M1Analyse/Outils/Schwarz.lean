@@ -56,10 +56,13 @@ private lemma iteratedFDeriv_apply_eq {G : Type*} [NormedAddCommGroup G] [Normed
   rw [h2, (ContinuousLinearMap.apply ℝ F a).iteratedFDeriv_comp_left hg le_rfl]
   rfl
 
-/-- Lemme de Schwarz itéré : si `f` est de classe `C^n` sur `E`, sa différentielle `n`-ième
-`D^n f(x)` est symétrique. (Mathlib ne contient ce résultat que pour `n = 2`,
-`ContDiffAt.isSymmSndFDerivAt`, ou pour `f` analytique, `ContDiffAt.iteratedFDeriv_comp_perm` ;
-on l'en déduit par récurrence, les transpositions adjacentes engendrant `𝔖_n`.) -/
+/-- **Point technique (Lemme de Schwarz itéré).** Si `f` est de classe `C^n` sur `E`, sa
+différentielle `n`-ième `D^n f(x)` est symétrique. Le cours manipule les dérivées partielles
+`∂_α` indexées par des multi-indices, ce qui suppose que l'ordre des dérivations est
+indifférent ; Mathlib travaille avec les différentielles itérées, et ne contient ce résultat
+que pour `n = 2` (`ContDiffAt.isSymmSndFDerivAt`) ou pour `f` analytique. On l'en déduit par
+récurrence, les transpositions adjacentes engendrant `𝔖_n`. Utilisé pour `def:cinf_bornee`,
+`def:distribution`, `prop:deriv_distrib`, `prop:convolDistrib`. -/
 theorem iteratedFDeriv_comp_perm_of_contDiff : ∀ (n : ℕ) {f : E → F}, ContDiff ℝ n f →
     ∀ (x : E) (v : Fin n → E) (σ : Perm (Fin n)),
       iteratedFDeriv ℝ n f x (v ∘ σ) = iteratedFDeriv ℝ n f x v

@@ -230,9 +230,11 @@ private lemma dualLp_norm_integral_le {p q : ℝ≥0∞} (hpq : p⁻¹ + q⁻¹ 
       rw [eLpNorm_norm _ (Lp.aestronglyMeasurable f), eLpNorm_norm _ (Lp.aestronglyMeasurable g),
         Lp.norm_def, Lp.norm_def]
 
-/-- Cas d'égalité de Hölder : pour `h ∈ L^r` non nulle (`1 < r < ∞`), la fonction
-`k = sign(h) |h|^{r/s}` est dans `L^s`, non nulle, et réalise l'égalité. -/
-private lemma dualLp_exists_eq {r s : ℝ≥0∞} (hrs : s⁻¹ + r⁻¹ = 1) (hs : 1 < s) (hs' : s < ∞)
+/-- **Point technique (Cas d'égalité de Hölder).** Pour `h ∈ L^r` non nulle (`1 < r < ∞`), la
+fonction `k = sign(h) |h|^{r/s}` est dans `L^s`, non nulle, et réalise l'égalité
+`∫ k h = ‖k‖_s ‖h‖_r`. Le cours invoque ce cas d'égalité sans le détailler. Utilisé pour
+`th:lpDualLq`. -/
+lemma holder_cas_egalite {r s : ℝ≥0∞} (hrs : s⁻¹ + r⁻¹ = 1) (hs : 1 < s) (hs' : s < ∞)
     (hr : 1 < r) (hr' : r < ∞) {h : X → ℝ} (hh : MemLp h r μ) (h0 : eLpNorm h r μ ≠ 0) :
     ∃ k : X → ℝ, MemLp k s μ ∧ eLpNorm k s μ ≠ 0 ∧
       ∫ x, k x * h x ∂μ = (eLpNorm k s μ).toReal * (eLpNorm h r μ).toReal := by
@@ -284,7 +286,7 @@ private lemma dualLp_exists_eq_Lp {r s : ℝ≥0∞} [Fact (1 ≤ r)] [Fact (1 �
     have := norm_ne_zero_iff.2 hf
     rw [Lp.norm_def] at this
     exact (ENNReal.toReal_ne_zero.1 this).1
-  obtain ⟨k, hk, hk0, hkf⟩ := dualLp_exists_eq hrs hs hs' hr hr' (Lp.memLp f) h0
+  obtain ⟨k, hk, hk0, hkf⟩ := holder_cas_egalite hrs hs hs' hr hr' (Lp.memLp f) h0
   refine ⟨hk.toLp k, ?_, ?_⟩
   · rw [← norm_ne_zero_iff, Lp.norm_toLp]
     exact ENNReal.toReal_ne_zero.2 ⟨hk0, hk.eLpNorm_ne_top⟩

@@ -47,6 +47,7 @@ aside { padding: 18px; display: flex; flex-direction: column; gap: 14px; }
 .sec.l1 { text-transform: uppercase; letter-spacing: 0.06em; }
 .sec button { all: unset; cursor: pointer; }
 .sec button:hover { color: var(--accent); }
+.sec.tech { margin-top: 28px; padding-top: 12px; border-top: 2px solid var(--line); }
 .sec .n { font-variant-numeric: tabular-nums; margin-right: 6px; }
 .row { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr) auto; gap: 10px; align-items: baseline; width: 100%; text-align: left; border: 0; border-bottom: 1px solid var(--line); background: transparent; color: var(--fg); padding: 6px 4px; cursor: pointer; font: 14px var(--f-ui); }
 .row:hover, .row[aria-current="true"] { background: var(--accent-soft); }
@@ -136,6 +137,7 @@ for (const d of D.decls) for (const l of d.labels) (byLabel[l] ||= []).push(d);
 const nStmt = Object.keys(byLabel).length;
 document.getElementById("stats").textContent =
   `${nStmt} énoncé${nStmt > 1 ? "s" : ""} du cours, ${D.decls.length} déclarations Lean`;
+const TECH = D.decls.filter(d => d.tech);  // technical points of the formalization
 
 // The statement owning a label (an item or an equation inside a statement points to it)
 const owner = l => (L[l] && L[l].env && L[l].env !== l && L[L[l].env]) ? L[l].env : l;
@@ -162,6 +164,18 @@ const ITEMS = rowsInOrder();
 const secOf = {};  // label -> its subsubsection (or subsection) label
 { let s = null; for (const it of ITEMS) { if (it.sec) s = it.l; else secOf[it.l] = s; } }
 const moduleOf = l => D.modules.find(m => m.labels.includes(l));
+const chapOf = {};  // label -> its chapter (top-level section) label
+{ let c = null; for (const it of ITEMS) { if (it.sec && it.level === 0) c = it.l; else if (!it.sec) chapOf[it.l] = c; } }
+const rankItem = {};
+ITEMS.forEach((it, k) => rankItem[it.l] = k);
+function techGroups(ds) {  // technical points grouped by the chapter of the first statement they serve
+  const g = new Map();
+  const key = d => (d.techUses.length && chapOf[owner(d.techUses[0])]) || "";
+  const sorted = [...ds].sort((a, b) => (rankItem[owner(a.techUses[0])] ?? 1e9) - (rankItem[owner(b.techUses[0])] ?? 1e9));
+  for (const d of sorted) { const k = key(d); if (!g.has(k)) g.set(k, []); g.get(k).push(d); }
+  return g;
+}
+const inlineDoc = t => esc(t).replace(/`([^`]+)`/g, "<code>$1</code>");
 
 function renderList() {
   const q = document.getElementById("q").value.trim().toLowerCase();
@@ -196,9 +210,20 @@ function renderList() {
         <span class="rcount">${n ? "Lean ✓" + (n > 1 ? " ×" + n : "") : ""}</span></button>`;
     }
   }
+  const techShown = TECH.filter(d => !q || [d.name, d.tech, d.doc, d.code].join(" ").toLowerCase().includes(q));
+  if (techShown.length) {
+    h += `<div class="sec l0 tech"><button type="button" data-t="">Points techniques de la formalisation</button></div>`;
+    for (const [c, ds] of techGroups(techShown)) {
+      if (c) h += `<div class="sec l1"><button type="button" data-l="${esc(c)}"><span class="n">${esc(L[c].num)}</span>${L[c].title}</button></div>`;
+      for (const d of ds) h += `<button type="button" class="row" data-t="${esc(d.name)}"${"tech:" + d.name === current ? ' aria-current="true"' : ""}>
+        <span class="rref">Point technique</span><span class="rtitle">${inlineDoc(d.tech)}</span><span class="rcount">Lean ✓</span></button>`;
+    }
+  }
   list.innerHTML = h || '<p class="empty">Aucun énoncé ne correspond.</p>';
 }
 list.addEventListener("click", e => {
+  const t = e.target.closest("[data-t]");
+  if (t) { location.hash = "tech=" + t.dataset.t; return; }
   const b = e.target.closest("[data-l]");
   if (b) location.hash = "label=" + b.dataset.l;
 });
@@ -306,6 +331,34 @@ function show(l) {
   const r = list.querySelector('[aria-current="true"]');
   if (r) r.scrollIntoView({block: "nearest"});
 }
+function techUsesHtml(d) {
+  if (!d.techUses.length) return "";
+  return `<div class="uses"><b>Énoncés du cours concernés</b>` + d.techUses.map(l =>
+    `<a href="#label=${encodeURIComponent(l)}">${esc(L[l].kind === "equation" ? "Éq. " + L[l].ref : L[l].ref)}</a>`).join("") + "</div>";
+}
+function showTech(name) {
+  const d = byName[name];
+  if (name && !d) { intro(); return; }
+  let h = `<p class="eyebrow"><a class="pref" href="#tech=">Points techniques de la formalisation</a></p>`;
+  if (d) {
+    current = "tech:" + name;
+    h += `<h2 style="margin:0;font:600 1.4rem var(--f-display)">${inlineDoc(d.tech)}</h2>` + techUsesHtml(d) + declHtml(d);
+  } else {
+    current = null;
+    h += `<h2 style="margin:0;font:600 1.4rem var(--f-display)">Points techniques de la formalisation</h2>
+      <p class="ddoc">Lemmes auxiliaires qu'il a fallu démontrer pour la formalisation : résultats utilisés par le cours sans démonstration, détails passés sous silence, ou ponts entre les définitions du cours et celles de Mathlib. Ils sont regroupés par chapitre, selon les énoncés du cours qu'ils servent.</p>`;
+    for (const [c, ds] of techGroups(TECH)) {
+      if (c) h += `<p class="eyebrow">${esc(L[c].num)} ${L[c].title}</p>`;
+      h += ds.map(x => `<div class="course"><div class="course-h"><a class="pref" href="#tech=${encodeURIComponent(x.name)}">${inlineDoc(x.tech)}</a><span class="pg">${esc(x.name.replace(/^M1Analyse\./, ""))}</span></div>${techUsesHtml(x)}</div>`).join("");
+    }
+  }
+  panel.innerHTML = h;
+  panel.scrollTop = 0;
+  math(panel);
+  renderList();
+  const r = list.querySelector('[aria-current="true"]');
+  if (r) r.scrollIntoView({block: "nearest"});
+}
 function intro() {
   current = null;
   panel.innerHTML = `<div class="intro">
@@ -313,6 +366,7 @@ function intro() {
     <p>À gauche, le plan du cours. Les énoncés marqués <span class="lean">Lean ✓</span> sont formalisés : un clic affiche l'énoncé du cours, puis sa version Lean ; la démonstration, vérifiée par l'ordinateur, s'affiche d'un clic.</p>
     <p>Les objets du cours (topologie, adhérence, densité, …) sont ceux de la bibliothèque Mathlib. Chaque énoncé Lean indique les énoncés du cours sur lesquels il s'appuie (avec un lien vers leur page), les notions de Mathlib qu'il utilise, et les lemmes de Mathlib invoqués dans sa preuve, avec un lien vers leur documentation.</p>
     <p>Dans le PDF du cours, la marque « Lean✓ » placée à côté d'un énoncé mène directement à sa page ici.</p>
+    <p>En fin de plan, la section <a class="pref" href="#tech=">Points techniques de la formalisation</a> recense les principaux lemmes auxiliaires qu'il a fallu démontrer : résultats que le cours utilise sans démonstration, ou détails qu'il passe sous silence.</p>
   </div>`;
   renderList();
 }
@@ -324,8 +378,8 @@ function math(el) {
 
 // --------------------------------------------------------------------- routing
 function route() {
-  const m = location.hash.match(/^#label=(.+)$/);
-  if (m) show(decodeURIComponent(m[1])); else intro();
+  const m = location.hash.match(/^#label=(.+)$/), t = location.hash.match(/^#tech=(.*)$/);
+  if (m) show(decodeURIComponent(m[1])); else if (t) showTech(decodeURIComponent(t[1])); else intro();
 }
 window.addEventListener("hashchange", route);
 document.getElementById("q").addEventListener("input", renderList);

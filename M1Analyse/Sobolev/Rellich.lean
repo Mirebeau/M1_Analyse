@@ -717,8 +717,11 @@ private lemma rellich_exists_exponent {q : ℝ≥0∞} (hd : (1 : ℝ≥0∞) < 
       ← hQ_def, ← one_div]
     exact htq
 
-/-- Injection continue `W^{1,p}(Ω) ⊂ W^{1,p'}(Ω)` pour `p' ≤ p < ∞` et `Ω` de mesure finie. -/
-private lemma rellich_incl {Ω : TopologicalSpace.Opens ℝᵈ} (hΩf : volume (Ω : Set ℝᵈ) ≠ ∞)
+/-- **Point technique (Inclusion `W^{1,p} ⊂ W^{1,p'}`).** Pour `p' ≤ p < ∞` et `Ω` de mesure
+finie, l'inclusion `W^{1,p}(Ω) ⊂ W^{1,p'}(Ω)` est continue (Hölder sur `u` et `∇u`). Dans
+Lean, `W^{1,p}` et `W^{1,p'}` sont des types distincts, et l'inclusion doit être construite.
+Utilisé pour `th:Rellich`. -/
+lemma W1p_inclusion_of_le {Ω : TopologicalSpace.Opens ℝᵈ} (hΩf : volume (Ω : Set ℝᵈ) ≠ ∞)
     {p p' : ℝ≥0∞} [Fact (1 ≤ p)] [Fact (1 ≤ p')] (hpt : p ≠ ∞) (hpp : p' ≤ p) :
     ∃ c : ℝ, 0 < c ∧ ∀ u : W1p Ω p, ∃ v : W1p Ω p', ‖v‖ ≤ c * ‖u‖ ∧
       ((v : LpGrad Ω p').fst : ℝᵈ → ℝ) =ᵐ[volume.restrict (Ω : Set ℝᵈ)]
@@ -793,7 +796,7 @@ theorem th_Rellich_critique (Ω : TopologicalSpace.Opens ℝᵈ)
   obtain ⟨p', pstar', hp'1, hp'd, hpstar', hqp'⟩ := rellich_exists_exponent hd Fact.out hq
   have : Fact (1 ≤ p') := ⟨hp'1.le⟩
   have hpt : p ≠ ∞ := hpd ▸ ENNReal.natCast_ne_top d
-  obtain ⟨c, hc0, hc⟩ := rellich_incl hΩb.measure_lt_top.ne hpt (hpd ▸ hp'd.le : p' ≤ p)
+  obtain ⟨c, hc0, hc⟩ := W1p_inclusion_of_le hΩb.measure_lt_top.ne hpt (hpd ▸ hp'd.le : p' ≤ p)
   obtain ⟨hM, hT⟩ := th_Rellich_sousCritique Ω hΩb hΩ hp'1 hp'd hpstar' hqp'
   simp only [Sobolev1.val_def] at hM hT ⊢
   refine ⟨fun u => ?_, ?_⟩
@@ -901,9 +904,12 @@ private lemma rellich_surCrit_rep (Ω : TopologicalSpace.Opens ℝᵈ) {p : ℝ�
     exact rellich_rep_zero u hx
   · exact corol_injSurCritOm Ω hd hdp hp hP
 
-/-- Un représentant `g ∈ C(closure Ω)` de `f`, où `f` admet un représentant continu `v` sur `Ω`
-borné et höldérien, vérifie les mêmes estimations sur `closure Ω`. -/
-private lemma rellich_holder_of_ae {Ω : TopologicalSpace.Opens ℝᵈ} {f v : ℝᵈ → ℝ} {C K α : ℝ}
+/-- **Point technique (Représentant höldérien sur l'adhérence).** Si `f` admet sur `Ω` un
+représentant continu `v`, borné par `C` et `α`-höldérien de constante `K`, alors tout
+représentant `g ∈ C(adh Ω)` de `f` vérifie les mêmes estimations sur `adh Ω`. Le cours passe
+sous silence le choix du représentant continu, et son prolongement à l'adhérence. Utilisé
+pour `th:Rellich`. -/
+lemma holder_representant_adherence {Ω : TopologicalSpace.Opens ℝᵈ} {f v : ℝᵈ → ℝ} {C K α : ℝ}
     (hα : 0 < α) (g : C(closure (Ω : Set ℝᵈ), ℝ))
     (hgu : ∀ᵐ x ∂(volume.restrict (Ω : Set ℝᵈ)), ∀ hx : x ∈ closure (Ω : Set ℝᵈ),
       f x = g ⟨x, hx⟩)
@@ -990,7 +996,7 @@ theorem th_Rellich_surCritique (Ω : TopologicalSpace.Opens ℝᵈ)
   rintro g ⟨u, hu, hgu⟩
   obtain ⟨v, hvc, hvae, hvb, hvh⟩ := hCC u
   have hu0 : 0 ≤ ‖u‖ := norm_nonneg _
-  refine rellich_holder_of_ae hα g hgu hvc hvae (fun x hx => (hvb x hx).trans ?_)
+  refine holder_representant_adherence hα g hgu hvc hvae (fun x hx => (hvb x hx).trans ?_)
     (fun x hx y hy => (hvh x hx y hy).trans ?_)
   · nlinarith [le_max_left C 0, le_max_right C 0]
   · have hd0 : 0 ≤ dist x y ^ α := Real.rpow_nonneg dist_nonneg _

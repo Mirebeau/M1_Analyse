@@ -11,7 +11,9 @@ With `--publish`, the page is also copied to the public website repository (defa
 pushed; GitHub Pages serves it at `https://mirebeau.github.io/lean-proof-maps/M1Analyse/`.
 
 Steps: read the declarations of `M1Analyse/**/*.lean` (a declaration formalizes the course labels
-cited between backticks in its docstring, e.g. `def:topo`); ask Lean (`build/Mathlib.lean`, run
+cited between backticks in the bold lead of its docstring, e.g. `def:topo`; a lead
+`**Point technique (title).**` marks instead a technical point of the formalization, listed in a
+separate section); ask Lean (`build/Mathlib.lean`, run
 with `lake env lean`) for the Mathlib declarations that each one uses directly; read the course
 statements (`paper.py`); fill `template.html`. Default output: `scripts/lean_pages/index.html`.
 """
@@ -92,10 +94,18 @@ def read_decls(labels):
                 lead = re.match(r"\*\*(.*?)\*\*", doc, re.S)
                 cited = re.findall(r"`([A-Za-z]+:[A-Za-z0-9_]+)`", lead.group(1) if lead else
                                    "" if dm.group(1) in ("theorem", "lemma") else doc)
+                # a technical point of the formalization (lead `**Point technique (title).**`):
+                # listed in a separate section, with the course labels its docstring cites
+                tm = lead and re.fullmatch(r"Point technique \((.*)\)\.?", lead.group(1).strip(),
+                                           re.S)
                 decls.append(dict(
                     name=name, short=dm.group(2), kind=dm.group(1), module=mod, file=rel,
                     line=j + 2, doc=doc, code=code,
-                    labels=list(dict.fromkeys(l for l in cited if l in labels))))
+                    labels=list(dict.fromkeys(l for l in cited if l in labels)),
+                    tech=tm.group(1) if tm else None,
+                    techUses=list(dict.fromkeys(
+                        l for l in re.findall(r"`([A-Za-z]+:[A-Za-z0-9_]+)`", doc) if l in labels))
+                    if tm else []))
             i = k
     return decls, modules
 
@@ -217,7 +227,9 @@ def main():
                       ensure_ascii=False).replace("</", "<\\/")
     out.write_text((HERE / "template.html").read_text().replace("__DATA__", data))
     covered = {l for d in decls for l in d["labels"]}
-    print(f"{out}: {len(decls)} Lean declarations, {len(covered)} course labels formalized")
+    ntech = sum(1 for d in decls if d["tech"])
+    print(f"{out}: {len(decls)} Lean declarations, {len(covered)} course labels formalized, "
+          f"{ntech} technical points")
     if args.publish:
         publish(out, Path(args.site))
 

@@ -81,6 +81,20 @@ theorem EstSuiteExhaustive.exists_subset {X : Type*} [TopologicalSpace X] {Ω : 
     (Monotone.directed_le fun a b hab => interior_mono (hmono (Nat.succ_le_succ hab)))
   exact ⟨n + 1, hn.trans interior_subset⟩
 
+/-- **Prop. `prop:exhaustComp` (Suite exhaustive de compacts), seconde assertion.** Si `(K_n)`
+est une suite exhaustive de compacts de `Ω` et si `L ⊆ Ω` est compact, alors `L ⊆ int(K_n)`
+pour tout `n` assez grand. (Énoncé dans un espace topologique quelconque.)
+Preuve (celle du cours) : `L` est recouvert par l'union croissante d'ouverts `int(K_{n+1})`,
+puis Borel–Lebesgue. -/
+theorem prop_exhaustComp_subset {X : Type*} [TopologicalSpace X] {Ω : Set X}
+    {K : ℕ → Set X} (hK : EstSuiteExhaustive Ω K) {L : Set X} (hL : IsCompact L)
+    (hLΩ : L ⊆ Ω) : ∀ᶠ n in atTop, L ⊆ interior (K n) := by
+  obtain ⟨n, hn⟩ := hK.exists_subset hL hLΩ
+  have hmono : Monotone K :=
+    monotone_nat_of_le_succ fun n => (hK.2.2 n).trans interior_subset
+  refine eventually_atTop.2 ⟨n + 1, fun m hm => hn.trans ((hK.2.2 n).trans
+    (interior_mono (hmono hm)))⟩
+
 /-! ### `L^p_loc` -/
 
 section Lploc
@@ -299,8 +313,11 @@ lemma normeK_le_sup_seminorm (n : ℕ) (g : 𝓓_{K}(EuclideanSpace ℝ (Fin d),
       (ContDiffMapSupportedIn.seminorm ℝ (EuclideanSpace ℝ (Fin d)) ℝ ⊤ K) g :=
   normeK_le (apply_nonneg _ _) fun _ _ _ hα => norm_deriveePartielle_le_sup_seminorm g _ hα
 
-/-- Pour `g ∈ 𝓓_K` et `i ≤ n`, la `i`-ème semi-norme de Mathlib est majorée par
-`(d+1)^n` fois la semi-norme du cours (lemme de Schwarz). -/
+/-- **Point technique (Semi-normes de `𝓓_K`).** Pour `g ∈ 𝓓_K` et `i ≤ n`, la `i`-ème
+semi-norme de Mathlib (norme de la différentielle itérée `D^i g`) est majorée par `(d+1)^n`
+fois la semi-norme du cours `max_{|α|_1 ≤ n} ‖∂_α g‖_∞` (lemme de Schwarz itéré). Avec
+l'inégalité inverse (`normeK_le_sup_seminorm`), les deux familles définissent la même
+topologie sur `𝓓_K`. Utilisé pour `def:cinf_bornee`, `def:distribution`. -/
 lemma seminorm_le_normeK {i n : ℕ} (hi : i ≤ n) (g : 𝓓_{K}(EuclideanSpace ℝ (Fin d), ℝ)) :
     ContDiffMapSupportedIn.seminorm ℝ (EuclideanSpace ℝ (Fin d)) ℝ ⊤ K i g ≤
       ((d : ℝ) + 1) ^ n * normeK K n g := by
@@ -344,8 +361,11 @@ theorem def_cinf_bornee_DK (n : ℕ) (g : 𝓓_{K}(EuclideanSpace ℝ (Fin d), �
     (mul_nonneg (by positivity) (normeK_nonneg _ _ _)) fun _ hi =>
       seminorm_le_normeK (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)) g⟩
 
-/-- Critère de continuité sur `𝓓_K` : une forme linéaire `ψ` sur `𝓓_K` est continue si et
-seulement si elle vérifie une estimation `|ψ(g)| ≤ C max_{|α|_1 ≤ n} ‖∂_α g‖_{L^∞(K)}`. -/
+/-- **Point technique (Continuité sur `𝓓_K`).** Une forme linéaire `ψ` sur `𝓓_K` est continue
+si et seulement si elle vérifie une estimation `|ψ(g)| ≤ C max_{|α|_1 ≤ n} ‖∂_α g‖_{L^∞(K)}`.
+C'est la forme sous laquelle le cours définit les distributions ; la topologie de Mathlib sur
+`𝓓(Ω)` est une limite inductive, et ce critère fait le lien. Utilisé pour
+`def:distribution`. -/
 lemma continuous_iff_normeK (ψ : 𝓓_{K}(EuclideanSpace ℝ (Fin d), ℝ) →ₗ[ℝ] ℝ) :
     Continuous ψ ↔ ∃ C : ℝ, ∃ n : ℕ, ∀ g, |ψ g| ≤ C * normeK K n g := by
   have hp := ContDiffMapSupportedIn.withSeminorms ℝ (EuclideanSpace ℝ (Fin d)) ℝ ⊤ K

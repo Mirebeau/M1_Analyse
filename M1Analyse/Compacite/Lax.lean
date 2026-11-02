@@ -245,9 +245,11 @@ private lemma detCML_update_comb (M : Fin d → Fin d → ℝ) (k : Fin d) (a : 
     rw [hz, mul_zero]
   · simp
 
-/-- **Constance d'une intégrale à paramètre** dont la dérivée en `t`, à support compact et
-conjointement continue, est d'intégrale nulle. -/
-private theorem integral_eq_of_hasDerivAt {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+/-- **Point technique (Dérivation sous le signe intégral).** Si `t ↦ F(t, x)` a pour dérivée
+`G(t, x)`, avec `G` conjointement continue et nulle hors d'un compact fixe, et si
+`∫ G(t, ·) = 0` pour tout `t`, alors `∫ F(1, ·) = ∫ F(0, ·)`. Le cours dérive sous le signe
+intégral sans détailler les hypothèses de domination. Utilisé pour `lem:chgVarLax`. -/
+theorem integral_eq_of_hasDerivAt {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [MeasurableSpace E] [BorelSpace E] (μ : Measure E) [IsFiniteMeasureOnCompacts μ]
     {F G : ℝ → E → ℝ} (hF : ∀ t, Continuous (F t)) (hFc : ∀ t, HasCompactSupport (F t))
     (hG : Continuous (Function.uncurry G)) {K : Set E} (hK : IsCompact K)
@@ -551,6 +553,32 @@ theorem lem_Piola {d : ℕ} {φ : EuclideanSpace ℝ (Fin d) → EuclideanSpace 
   split_ifs
   · rfl
   · simp only [gradRow, eb, fderiv_coord (hφ.differentiable (by norm_num) y)]
+
+open MeasureTheory in
+/-- **Point technique (Intégrale d'une divergence).** Pour `φ ∈ C²(ℝ^d, ℝ^d)`, `h ∈ C¹_c(ℝ^d)`
+et `1 ≤ k ≤ d`, l'intégrale du déterminant de `∇φ` dont la colonne `k` est remplacée par `∇h`
+est nulle. Ce déterminant vaut `∑_i [com ∇φ]_{ik} ∂_i h = div(h [com ∇φ]_{·k})` par
+l'identité de Piola (`lem:Piola`) ; c'est donc la nullité de l'intégrale de la divergence
+d'un champ de vecteurs `C¹` à support compact, admise dans le cours. Utilisé pour
+`lem:chgVarLax`. -/
+theorem integral_det_updateCol_grad_eq_zero {d : ℕ}
+    {φ : EuclideanSpace ℝ (Fin d) → EuclideanSpace ℝ (Fin d)} (hφ : ContDiff ℝ 2 φ) (k : Fin d)
+    {h : EuclideanSpace ℝ (Fin d) → ℝ} (hh : ContDiff ℝ 1 h) (hhs : HasCompactSupport h) :
+    ∫ x, (Matrix.updateCol (Matrix.of fun i l => fderiv ℝ φ x (EuclideanSpace.single i 1) l) k
+      (fun i => fderiv ℝ h x (EuclideanSpace.single i 1))).det = 0 := by
+  have key := integral_det_update_grad_eq_zero volume (fun l => contDiff_coord hφ l) (eb d) k
+    hh hhs
+  refine Eq.trans ?_ key
+  congr 1
+  funext x
+  rw [← Matrix.det_transpose, detCML_apply]
+  congr 1
+  ext a b
+  simp only [Matrix.updateCol_apply, Function.update_apply, Matrix.transpose_apply,
+    Matrix.of_apply]
+  split_ifs
+  · rfl
+  · simp only [gradRow, eb, fderiv_coord (hφ.differentiable (by norm_num) x)]
 
 /-- Lemme de Lax (`lem:chgVarLax`), preuve ; voir `lem_chgVarLax` (`Compacite/Brouwer.lean`). -/
 theorem lem_chgVarLax_proof {d : ℕ} {φ : EuclideanSpace ℝ (Fin d) → EuclideanSpace ℝ (Fin d)}

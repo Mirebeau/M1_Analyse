@@ -306,6 +306,10 @@ Chacune fait l'objet d'un \claudereport dans le texte.
 - LegendreFenchel lem:cvxImplBorne (preuve) : l'union des {f ≤ n} est Dom(f), pas E, donc le \cref{corol:BaireFerme} ne s'applique pas tel quel ; appliquer Baire dans la boule fermée (complète) B'(0,ε) ⊂ Dom(f), recouverte par les {f ≤ n} ∩ B'(0,ε) ; on obtient alors x_0 ∈ B'(0,ε), ce qui assure aussi -εx_0 ∈ Dom(f) (sinon f(-εx_0) peut valoir +∞).
 - LegendreFenchel lem:cvxImplLip : supposer f(x) < ∞ (sinon l'hypothèse f ≤ f(x)+M est vide).
 
+## Points techniques de la formalisation (2 novembre)
+
+Lemmes auxiliaires rendus publics, docstring commençant par `**Point technique (…).**` ; `build.py` les liste dans une section dédiée du site, groupés par chapitre (selon le premier label cité). 14 points : Schwarz itéré (`iteratedFDeriv_comp_perm_of_contDiff`), semi-normes et continuité sur 𝓓_K (`seminorm_le_normeK`, `continuous_iff_normeK`), intégrale d'une divergence (`integral_det_updateCol_grad_eq_zero`) et dérivation sous l'intégrale (`LaxAux.integral_eq_of_hasDerivAt`), cas d'égalité de Hölder (`holder_cas_egalite`), `integraleEtendue_comp_bienDefinie`, `convolTranslat_noyauSigne`, `convol_deriveeFaible`, `W1p_inclusion_of_le`, `holder_representant_adherence`, coordonnées polaires (`integral_polaire`), `integral_noyauGreen_mul_lapl`, `locallyIntegrable_noyauGreen`. Aussi : prop:exhaustComp, seconde assertion (`prop_exhaustComp_subset`).
+
 ## Non formalisé (absent de Mathlib, ou trop long)
 
 Voir les lignes « Non formalisé(s) » ci-dessus. En résumé : théorèmes de Brouwer et de Schauder, Cauchy–Peano, solutions maximales (Cauchy–Lipschitz autonome), dual de L^p, Milman–Pettis et Clarkson, espaces de Sobolev W^{s,p}(Ω) et les injections de Sobolev (sauf Young, interpolation et noyau de Green), espaces C^k_b / C^∞_b / C^k(Ω) comme espaces topologiques, lem:regModuleCont, divergence des séries de Fourier.

@@ -76,8 +76,11 @@ theorem toSphere_eq_cone_Ioc (hd : 1 ≤ d) {A : Set (sphere (0 : ℝᵈ) 1)} (h
           refine (measure_union_le _ _).trans ?_
           rw [Measure.addHaar_sphere, add_zero]
 
-/-- Coordonnées polaires : `∫_{ℝ^d} g = ∫_{𝕊} ∫_0^∞ r^{d-1} g(r z) dr dz`. -/
-private theorem integral_polaire (hd : 1 ≤ d) {g : ℝᵈ → ℝ} (hg : Integrable g) :
+/-- **Point technique (Coordonnées polaires).** Pour `g ∈ L^1(ℝ^d)`,
+`∫_{ℝ^d} g = ∫_{𝕊} ∫_0^∞ r^{d-1} g(r z) dr dz`, où `dz` est la mesure de surface sur la
+sphère unité (définie dans Mathlib comme image de la mesure de Lebesgue). Utilisé pour
+`corol:noyauGreen`, `prop:convolPow`. -/
+theorem integral_polaire (hd : 1 ≤ d) {g : ℝᵈ → ℝ} (hg : Integrable g) :
     ∫ y, g y = ∫ z, (∫ r in Ioi (0 : ℝ), r ^ (d - 1) * g (r • (z : ℝᵈ)))
       ∂(volume : Measure ℝᵈ).toSphere := by
   have := nontrivial_euclidean hd
@@ -433,9 +436,10 @@ private theorem integral_greenReg_mul_lapl (hd : 1 ≤ d) {ε : ℝ} (hε : 0 < 
       (hψ _).continuous (hψc _)
 
 
-/-- Forme intégrée de `-ΔG = δ₀` pour `φ ∈ C²_c(ℝ^d)` : `∫ G Δφ = -φ(0)` (laplacien écrit
-comme `∑_i ∂_i ∂_i φ`). -/
-private theorem integral_noyauGreen_mul_lapl (hd : 1 ≤ d) {φ : ℝᵈ → ℝ}
+/-- **Point technique (`-ΔG = δ₀`, forme intégrée).** Pour `φ ∈ C²_c(ℝ^d)`,
+`∫ G Δφ = -φ(0)` (laplacien écrit comme `∑_i ∂_i ∂_i φ`). Démontré en coordonnées polaires,
+par intégration en `r` sur chaque rayon. Utilisé pour `corol:noyauGreen`. -/
+theorem integral_noyauGreen_mul_lapl (hd : 1 ≤ d) {φ : ℝᵈ → ℝ}
     (hφ : ContDiff ℝ 2 φ) (hφc : HasCompactSupport φ) :
     ∫ x, noyauGreen d x * ∑ i, fderiv ℝ (fun y => fderiv ℝ φ y (𝐞 i)) x (𝐞 i) = -φ 0 := by
   have := nontrivial_euclidean hd
@@ -583,8 +587,9 @@ theorem measurable_noyauGreen : Measurable (noyauGreen d) := by
     · simp only [h2, OfNat.ofNat_ne_one, ↓reduceIte]; fun_prop
     · simp only [h1, h2, ↓reduceIte]; fun_prop
 
-/-- `G ∈ L¹_loc(ℝ^d)` (utilisé dans la preuve de `corol:noyauGreen` : la distribution
-associée à `G` et la convolution `G ⋆ φ` sont bien définies). -/
+/-- **Point technique (`G ∈ L^1_loc(ℝ^d)`).** Le noyau de Green est localement intégrable, de
+sorte que la distribution associée à `G` et la convolution `G ⋆ φ` sont bien définies.
+Utilisé pour `corol:noyauGreen`. -/
 theorem locallyIntegrable_noyauGreen (hd : 1 ≤ d) : LocallyIntegrable (noyauGreen d) := by
   rw [locallyIntegrable_iff]
   intro K hK

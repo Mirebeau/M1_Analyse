@@ -135,9 +135,11 @@ theorem integral_le_integraleEtendue {μ : Measure X} {u : X → ℝ} (hu : Inte
 
 variable {d : ℕ}
 
-/-- Bonne définition de `∫ g ∘ f dμ` : si `g : ℝ^d → ]-∞, ∞]` est convexe s.c.i. et `f`
-intégrable sur un espace de mesure finie, alors `g ∘ f` est (presque) mesurable et sa partie
-négative est d'intégrale finie, de sorte que `∫ g ∘ f dμ ∈ ]-∞, ∞]` est bien définie. -/
+/-- **Point technique (Intégrale d'une fonction convexe s.c.i.).** Si `g : ℝ^d → ]-∞, ∞]` est
+convexe s.c.i. et `f` intégrable sur un espace de mesure finie, alors `g ∘ f` est (presque)
+mesurable et sa partie négative est d'intégrale finie (`g` est minorée par une fonction
+affine), de sorte que `∫ g ∘ f dμ ∈ ]-∞, ∞]` est bien définie. Le cours utilise cette
+intégrale sans justifier qu'elle a un sens. Utilisé pour `prop:Jensen`. -/
 theorem integraleEtendue_comp_bienDefinie {μ : Measure X} [IsFiniteMeasure μ]
     {f : X → EuclideanSpace ℝ (Fin d)} (hf : Integrable f μ)
     {g : EuclideanSpace ℝ (Fin d) → EReal} (hbot : ∀ y, g y ≠ ⊥) (hc : ConvexeEtendue g)

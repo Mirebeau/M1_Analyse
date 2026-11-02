@@ -451,9 +451,11 @@ open ContinuousLinearMap (lsmul)
 
 /-! ### Lemmes auxiliaires : approximation par convolution, troncature -/
 
-/-- Variante de `lem_convolTranslat` pour un noyau `f` intégrable de signe quelconque,
-d'intégrale unité : `‖f ⋆ g - g‖_p^p ≤ ‖f‖_1^{p-1} ∫ |f(h)| ‖τ_h g - g‖_p^p dh`. -/
-private lemma w1pDens_convolTranslat {p : ℝ≥0∞} (hp : 1 ≤ p) (hpt : p ≠ ∞) {f g : ℝᵈ → ℝ}
+/-- **Point technique (Convolution par un noyau de signe quelconque).** Variante de
+`lem:convolTranslat` pour un noyau `f` intégrable de signe quelconque, d'intégrale unité :
+`‖f ⋆ g - g‖_p^p ≤ ‖f‖_1^{p-1} ∫ |f(h)| ‖τ_h g - g‖_p^p dh`, sans séparer parties positive et
+négative (cf. la remarque qui suit `prop:convolApprox`). Utilisé pour `prop:testDenseWsp`. -/
+lemma convolTranslat_noyauSigne {p : ℝ≥0∞} (hp : 1 ≤ p) (hpt : p ≠ ∞) {f g : ℝᵈ → ℝ}
     (hf : Integrable f) (hf1 : ∫ x, f x = 1) (hg : MemLp g p) :
     eLpNorm (f ⋆ g - g) p ^ p.toReal ≤ (∫⁻ h, ‖f h‖ₑ) ^ (p.toReal - 1) *
       ∫⁻ h, ‖f h‖ₑ * eLpNorm (fun x => g (x - h) - g x) p ^ p.toReal := by
@@ -530,7 +532,7 @@ private lemma w1pDens_convolApprox_le {ρ : ℝᵈ → ℝ} (hρ : Integrable ρ
     exact ENNReal.toReal_mono hpt hp
   have hr0 : 0 < r := zero_lt_one.trans_le hr
   have hint := integrable_noyauEps hρ hε
-  have H := w1pDens_convolTranslat hp hpt hint ((integral_noyauEps hε).trans hρ1) hf
+  have H := convolTranslat_noyauSigne hp hpt hint ((integral_noyauEps hε).trans hρ1) hf
   have hA : ∫⁻ h, ‖noyauEps ρ ε h‖ₑ = ENNReal.ofReal (∫ x, |ρ x|) := by
     have e : ∀ h, ‖noyauEps ρ ε h‖ₑ = ENNReal.ofReal (noyauEps (fun x => |ρ x|) ε h) := by
       intro h
@@ -760,9 +762,11 @@ private lemma w1pDens_fderiv_convol {k f : ℝᵈ → ℝ} (hk : ContDiff ℝ 1 
   rw [ContinuousLinearMap.integral_apply hint]
   rfl
 
-/-- Identité de la dérivée faible : si `∂_v f = g` au sens des distributions sur `ℝ^d` et
-`k ∈ C^∞_c`, alors `(∂_v k) ⋆ f = k ⋆ g`. -/
-private lemma w1pDens_convol_weak {f g : ℝᵈ → ℝ} (hf : LocallyIntegrable f)
+/-- **Point technique (Convolution et dérivée faible).** Si `∂_v f = g` au sens des
+distributions sur `ℝ^d` (`f, g ∈ L^1_loc`) et `k ∈ C^∞_c`, alors `(∂_v k) ⋆ f = k ⋆ g`
+partout. C'est la commutation de la dérivation faible et de la convolution, utilisée
+implicitement par le cours. Utilisé pour `prop:testDenseWsp`. -/
+lemma convol_deriveeFaible {f g : ℝᵈ → ℝ} (hf : LocallyIntegrable f)
     (hg : LocallyIntegrable g)
     {v : ℝᵈ} (H : ∂_{v} (Distribution.ofFun (⊤ : TopologicalSpace.Opens ℝᵈ) f volume ⊤) =
       Distribution.ofFun (⊤ : TopologicalSpace.Opens ℝᵈ) g volume ⊤)
@@ -884,7 +888,7 @@ private lemma w1pDens_approx {p : ℝ≥0∞} [Fact (1 ≤ p)] (hp : p ≠ ∞)
   have hd : ∀ ε, 0 < ε → ∀ i x, fderiv ℝ (noyauEps ρ ε ⋆ f) x (EuclideanSpace.single i 1) =
       (noyauEps ρ ε ⋆ g i) x := fun ε hε i x => by
     rw [w1pDens_fderiv_convol ((hk ε).of_le (by simp)) (hkc ε hε) hfl,
-      w1pDens_convol_weak hfl (hgl i) (hW i) (hk ε) (hkc ε hε)]
+      convol_deriveeFaible hfl (hgl i) (hW i) (hk ε) (hkc ε hε)]
   have hφp : ∀ ε, 0 < ε → MemLp (noyauEps ρ ε ⋆ f) p := fun ε hε =>
     (prop_convolLp Fact.out (integrable_noyauEps hρi hε) hf).2.1
   have hφp' : ∀ ε, 0 < ε → MemLp (noyauEps ρ ε ⋆ f) p
