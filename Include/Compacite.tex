@@ -721,26 +721,30 @@ Alors %, en notant $J$ la matrice jacobienne de $\vp$,
 \end{align}	
 \end{theorem}
 
-Rappelons que la matrice des co-facteurs de $A \in \bR^{d\times d}$  est définie par
+Rappelons que la comatrice de $A \in \bR^{d\times d}$  est définie par
 \begin{equation*}
-	[\cof A]_{ij} = \frac{\partial \det A}{\partial A_{ij}} = \det [A_1,\cdots,A_{j-1}, b_i, A_{j+1},\cdots, A_d],
+	[\com A]_{ij} = \frac{\partial \det A}{\partial A_{ij}} = \det [A_1,\cdots,A_{j-1}, b_i, A_{j+1},\cdots, A_d],
 \end{equation*}
-où $A_{ij}$ (resp.\ $A_i$) désignent les coefficients (resp.\ colonnes) de $A$, pour tous $1 \leq i, j \leq d$, et $(b_i)_{1 \leq i \leq d}$ est la base canonique de $\bR^d$. On a $\cof A = (\mathrm{com} A)^\top = (\det A) A^{-1}$ si $A$ est inversible. On note également $\nabla \vp = J^\top$ la transposée de la matrice Jacobienne.
+où $A_{ij}$ (resp.\ $A_i$) désignent les coefficients (resp.\ colonnes) de $A$, pour tous $1 \leq i, j \leq d$, et où $(b_i)_{1 \leq i \leq d}$ est la base canonique de $\bR^d$. On a $(\com A)^\top A = (\det A) \Id$, et $\det (A+H) = \det A + \Tr((\com A)^\top H) + o(\|H\|)$ lorsque $H \to 0$. 
 
-\begin{lemma}[Identité de Piola]
-Pour toute $\vp \in C^2(\bR^d,\bR^d)$, on a $\diver( \cof \nabla \vp) = 0$ sur $\bR^d$.
+On note $\nabla \vp = J^\top$ la transposée de la matrice Jacobienne.
+Par convention, la divergence d'un champ de matrices est calculée colonne par colonne.
+
+\begin{lemma}[Identité de Piola] \label{lem:Piola}
+\leancheck{lem:Piola}%
+Pour toute $\vp \in C^2(\bR^d,\bR^d)$, on a $\diver( \com \nabla \vp) = 0$ sur $\bR^d$.
 \end{lemma}
 
 \begin{proof}
 	Notons $\vp = (\vp_1,\cdots,\vp_d)$, $A = \nabla \vp$, et observons que ses colonnes sont $A_i = \nabla \vp_i$, $1 \leq i \leq d$. On a
 	\begin{equation*}
-		\frac{\partial [\cof A]_{ij}}{\partial x_i} 
+		\frac{\partial [\com A]_{ij}}{\partial x_i} 
 		= \sum_{1 \leq k,l \leq d} 
-		\frac{\partial [\cof A]_{ij}}{\partial A_{kl}} 
+		\frac{\partial [\com A]_{ij}}{\partial A_{kl}} 
 		\frac {\partial A_{kl}}{\partial x_i} 
 		= \sum_{1 \leq k,l \leq d} 
-		\frac{\partial \det A}{\partial A_{ij} \partial A_{kl}} 
-		\frac {\partial^2 \phi_l}{\partial x_i \partial x_k},
+		\frac{\partial^2 \det A}{\partial A_{ij} \partial A_{kl}} 
+		\frac {\partial^2 \vp_l}{\partial x_i \partial x_k},
 %		\frac{\partial A_{kl}}{\partial x_i}		 
 	\end{equation*}
 par dérivation composée. Par ailleurs, nous avons la propriété d'anti-symétrie: si $j<l$
@@ -749,21 +753,23 @@ par dérivation composée. Par ailleurs, nous avons la propriété d'anti-symét
 	= \det [A_1,\cdots,A_{j-1}, b_i, A_{j+1}, \cdots, A_{l-1}, b_k, A_{l+1}, \cdots, A_d] 
 	= - \frac{\partial^2 \det A}{\partial A_{kj} \partial A_{il}}
 \end{equation*}
-de même si $j>l$, tandis que $\frac{\partial^2 \det A}{\partial A_{ij} \partial A_{kl}} = 0$ si $j=l$ par linéarité du déterminant par rapport aux colonnes. Ainsi, pour tout $1 \leq j \leq d$, par anti-symétrie et via l'identité de Schwartz
+de même si $j>l$, tandis que $\frac{\partial^2 \det A}{\partial A_{ij} \partial A_{kl}} = 0$ si $j=l$ par linéarité du déterminant par rapport aux colonnes. Ainsi, pour tout $1 \leq j \leq d$, par anti-symétrie et via l'identité de Schwarz
 \begin{equation*}
-\diver(\cof \nabla \vp)_j 
+\diver(\com \nabla \vp)_j 
 = \sum_{1 \leq i \leq d}
-\frac{\partial [\cof A]_{ij}}{\partial x_i} 
+\frac{\partial [\com A]_{ij}}{\partial x_i} 
 = \sum_{1 \leq l \leq d} \Big(\sum_{1 \leq i,k \leq d} 
-\frac{\partial \det A}{\partial A_{ij} \partial A_{kl}} 
-\frac {\partial^2 \phi_l}{\partial x_i \partial x_k}\Big) = 0.
+\frac{\partial^2 \det A}{\partial A_{ij} \partial A_{kl}} 
+\frac {\partial^2 \vp_l}{\partial x_i \partial x_k}\Big) = 0.
 \qedhere
 \end{equation*}
 \end{proof}
 
 \begin{lemma}[Lax]
 \label{lem:chgVarLax}
-Soit $\vp \in C^2(\bR^d,\bR^d)$ telle que $\vp(x) = x$ pour tout $x \notin B$, et soit $f \in \cD(\bR^d)$. Alors 
+\leancheck{lem:chgVarLax}%
+% -- DO NOT REMOVE -- La preuve Lean évite la division par t^-1, et le cas t=0, avec un peu d'algèbre supplémentaire.
+Soit $\vp \in C^2(\bR^d,\bR^d)$ telle que $\vp(x) = x$ pour tout $x \notin B$, et soit $f \in C^1_c(\bR^d)$. Alors 
 	\begin{equation}		
 	\label{eq:chgmt_var_nondiff}
 		\int_{\bR^d} f(x) \diff x = \int_{\bR^d} f(\vp(x)) \det J(x) \diff x.
@@ -773,46 +779,46 @@ Soit $\vp \in C^2(\bR^d,\bR^d)$ telle que $\vp(x) = x$ pour tout $x \notin B$, e
 \begin{proof}
 	Commençons par calculer, en notant $\id$ (resp.\ $\Id$) l'application (resp.\ la matrice) identité
 	\begin{align} \nonumber
-		&\diver( f\circ \vp \, [\cof \nabla \vp]  (\vp - \id)) \\ \nonumber
-		&= \<\nabla \vp^\top \nabla f \circ \phi, [\cof \nabla \vp] (\vp-\id)\> + f\circ \vp \<\diver (\cof \nabla \vp), \vp-\id\> + f\circ \vp \Tr((\cof \nabla \vp)^\top  (\nabla \vp - \Id))\\ \label{eq:divLax}
-		&= \<\nabla f \circ \vp, \vp-\id\> \det (\nabla \vp) + f \circ \vp \Tr((\cof \nabla \vp)^\top  (\nabla \vp - \Id)),
+		&\diver( f\circ \vp \, [\com \nabla \vp]  (\vp - \id)) \\ \nonumber
+		&= \<\nabla \vp \nabla f \circ \vp, [\com \nabla \vp] (\vp-\id)\> + f\circ \vp \<\diver (\com \nabla \vp), \vp-\id\> + f\circ \vp \Tr((\com \nabla \vp)^\top  (\nabla \vp - \Id))\\ \label{eq:divLax}
+		&= \<\nabla f \circ \vp, \vp-\id\> \det (\nabla \vp) + f \circ \vp \Tr((\com \nabla \vp)^\top  (\nabla \vp - \Id)),
 	\end{align}
-	où l'on a distribué la divergence, puis utilisé l'identité de Piola, et l'égalité $A \cof A = (\det A) \Id$ avec $A = \nabla \vp$.
-	Introduisons maintenant $\vp_t := (1-t) \Id + t \vp$, et calculons pour tout $t \in ]0,1]$
+	où l'on a distribué la divergence, puis utilisé l'identité de Piola, et l'égalité $A^\top (\com A) = (\det A) \Id$ avec $A = \nabla \vp$.
+	Notons maintenant $\vp_t := (1-t) \id + t \vp$, et calculons pour $t \in ]0,1]$
 	\begin{align*}
 		&\partial_t \int_{\bR^d} f \circ \vp_t \, \det (\nabla \vp_t) 
-		= \int_{\bR^d} \<\nabla f \circ \vp_t, \partial_t \vp_t\> \det \nabla \vp_t + f \circ \vp_t \Tr((\cof \nabla \vp_t)^\top \partial_t \nabla \vp_t)\\
-		&= t^{-1} \int_{\bR^d} \<\nabla f \circ \vp_t, \vp_t-\id\> \det \nabla \vp_t + f \circ \vp_t \Tr((\cof \nabla \vp_t)^\top (\nabla \vp_t- \Id))\\
-		&= t^{-1} \int_{\bR^d} \diver( f \circ \vp_t [\cof \nabla \vp_t] (\vp_t - \id)) = 0.
+		= \int_{\bR^d} \<\nabla f \circ \vp_t, \partial_t \vp_t\> \det \nabla \vp_t + f \circ \vp_t \Tr((\com \nabla \vp_t)^\top \partial_t \nabla \vp_t)\\
+		&= t^{-1} \int_{\bR^d} \<\nabla f \circ \vp_t, \vp_t-\id\> \det \nabla \vp_t + f \circ \vp_t \Tr((\com \nabla \vp_t)^\top (\nabla \vp_t- \Id))\\
+		&= t^{-1} \int_{\bR^d} \diver( f \circ \vp_t [\com \nabla \vp_t] (\vp_t - \id)) = 0.
 	\end{align*}
 	On a successivement (i) dérivé sous le signe intégral, et distribué $\partial_t$ sur le produit, (ii) remarqué que $\partial_t \vp_t = \vp-\id = t^{-1} (\vp_t-\id)$ et de même $\partial_t \nabla \vp_t = t^{-1} (\nabla \vp_t - \Id)$, (iii) utilisé \eqref{eq:divLax}, et la nullité de l'intégrale de la divergence d'un champ de vecteurs à support compact. Ainsi $t\in [0,1] \mapsto \int_{\bR^d} f \circ \vp_t \, \det (\nabla \vp_t)$ est continu et de dérivée nulle sur $]0,1]$, donc constant.
 \end{proof}
 
-\begin{lemma}[Lax]
-\label{lem:chgVarLax}
-\leancheck{lem:chgVarLax}%
-\claudereport{Dans la formalisation Lean, ce lemme est démontré en toute dimension, par une preuve différente : on montre que $t\mapsto\int f(\vp_t)\det J_t$ est constante pour $\vp_t := \Id + t(\vp-\Id)$, sa dérivée étant l'intégrale d'une divergence (identité de Piola : les lignes de la comatrice d'une jacobienne $C^2$ sont à divergence nulle). Les \cref{lem:noretractSmooth,corol:noretract} et le \nref{th:Brouwer} en sont déduits.}
-	Soit $\vp \in C^2(\bR^d,\bR^d)$ telle que $\vp(x) = x$ pour tout $x \notin B$, et soit $f \in \cD(\bR^d)$. Alors 
-	\begin{equation}		
-	\label{eq:chgmt_var_nondiff}
-		\int_{\bR^d} f(x) \diff x = \int_{\bR^d} f(\vp(x)) \det J(x) \diff x.
-	\end{equation}
-\end{lemma}
-
-\begin{proof}[Preuve en dimension $d=2$] On renvoie à \cite{alazard2017analyse} pour le cas général. Soit $c\geq 1$ tel que $\supp(f)\subset Q := [-c,c]^d$.
-On note $g(x) := \int_{-c}^{x_1} f(s,x_2) \diff s$, de sorte que $\partial_1 g = f$. 
-Par dérivation composée, on obtient l'identité
-\begin{equation*}
-	f \circ \vp\, J = f \circ \vp\, (\partial_1 \vp_1 \,\partial_2 \vp_2 - \partial_1 \vp_2 \, \partial_2 \vp_1)
-	= \partial_1 (g \circ \vp) \, \partial_2 \vp_2  -\partial_2 (g \circ \vp) \, \partial_1 \vp_2 .
-\end{equation*}
-Par la formule usuelle de dérivation d'un produit
-%Par intégration par parties 
-\begin{equation*}
-	\int_Q f(\vp(x)) \det J(x)\diff x = \int_Q \Big[ \partial_1 (g\circ \vp \, \partial_2 \vp_2) - \partial_2(g \circ \vp \, \partial_1 \vp_2)\Big] - \int_Q g \circ \vp \, (\partial_1 \partial_2 \vp_2 - \partial_2\partial_1 \vp_2).
-\end{equation*}
-Le membre de droite est somme de deux intégrales. La première ne dépend des valeurs de $g$, $\vp$ et $\partial \vp$ que sur $\partial Q$ (par intégration de la primitive), tandis que la seconde s'annule par le théorème de Schwarz d'interversion des dérivées partielles. Le terme (\ref{eq:chgmt_var_nondiff}, droite) est donc identique pour $\tilde \vp := \Id$, car cette application coïncide avec $\vp$ sur $\partial Q$, ce qui conclut.
-\end{proof}
+%\begin{lemma}[Lax]
+%\label{lem:chgVarLax}
+%\leancheck{lem:chgVarLax}%
+%\claudereport{Dans la formalisation Lean, ce lemme est démontré en toute dimension, par une preuve différente : on montre que $t\mapsto\int f(\vp_t)\det J_t$ est constante pour $\vp_t := \Id + t(\vp-\Id)$, sa dérivée étant l'intégrale d'une divergence (identité de Piola : les lignes de la comatrice d'une jacobienne $C^2$ sont à divergence nulle). Les \cref{lem:noretractSmooth,corol:noretract} et le \nref{th:Brouwer} en sont déduits.}
+%	Soit $\vp \in C^2(\bR^d,\bR^d)$ telle que $\vp(x) = x$ pour tout $x \notin B$, et soit $f \in \cD(\bR^d)$. Alors 
+%	\begin{equation}		
+%	\label{eq:chgmt_var_nondiff}
+%		\int_{\bR^d} f(x) \diff x = \int_{\bR^d} f(\vp(x)) \det J(x) \diff x.
+%	\end{equation}
+%\end{lemma}
+%
+%\begin{proof}[Preuve en dimension $d=2$] On renvoie à \cite{alazard2017analyse} pour le cas général. Soit $c\geq 1$ tel que $\supp(f)\subset Q := [-c,c]^d$.
+%On note $g(x) := \int_{-c}^{x_1} f(s,x_2) \diff s$, de sorte que $\partial_1 g = f$. 
+%Par dérivation composée, on obtient l'identité
+%\begin{equation*}
+%	f \circ \vp\, J = f \circ \vp\, (\partial_1 \vp_1 \,\partial_2 \vp_2 - \partial_1 \vp_2 \, \partial_2 \vp_1)
+%	= \partial_1 (g \circ \vp) \, \partial_2 \vp_2  -\partial_2 (g \circ \vp) \, \partial_1 \vp_2 .
+%\end{equation*}
+%Par la formule usuelle de dérivation d'un produit
+%%Par intégration par parties 
+%\begin{equation*}
+%	\int_Q f(\vp(x)) \det J(x)\diff x = \int_Q \Big[ \partial_1 (g\circ \vp \, \partial_2 \vp_2) - \partial_2(g \circ \vp \, \partial_1 \vp_2)\Big] - \int_Q g \circ \vp \, (\partial_1 \partial_2 \vp_2 - \partial_2\partial_1 \vp_2).
+%\end{equation*}
+%Le membre de droite est somme de deux intégrales. La première ne dépend des valeurs de $g$, $\vp$ et $\partial \vp$ que sur $\partial Q$ (par intégration de la primitive), tandis que la seconde s'annule par le théorème de Schwarz d'interversion des dérivées partielles. Le terme (\ref{eq:chgmt_var_nondiff}, droite) est donc identique pour $\tilde \vp := \Id$, car cette application coïncide avec $\vp$ sur $\partial Q$, ce qui conclut.
+%\end{proof}
 
 \begin{remark}
 \label{rem:chgVarDiffeo}
@@ -964,7 +970,8 @@ Le théorème de Stone-Weierstrass, sa variante complexe, et leur application au
 	Alors $\overline A = C^0(X,\bR)$, pour la topologie de la convergence uniforme donnée par $\|\cdot\|_\infty$. 
 \end{theorem}
 
-Les deux premiers lemmes construisent des éléments bien choisis de l'algèbre fermée $\overline A$ sous la forme de séries. 
+Les deux premiers lemmes construisent des éléments bien choisis de l'algèbre fermée $\overline A$ sous la forme de séries.
+\leannote{Le théorème de Stone-Weierstrass étant déjà présent dans Mathlib, les résultats intermédiaires suivants ont été trivialement déduits de celui-ci plutôt que redémontrés en Lean.} 
 
 \begin{lemma} 
 \label{lem:StoneUnite}
