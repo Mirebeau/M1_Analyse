@@ -288,6 +288,8 @@ Dans le cas $p=\infty$, le \nref{th:Heine} appliqué sur une boule $B'(0,R)$ de 
 Dans le cas $p<\infty$, cela découle de la densité des fonctions continues à support compact dans $L^p(\bR^d)$, établie dans la \cref{prop:densC0Lp}.
 \end{proof}
 
+Le résultat s'étend aux noyaux $\rho\in L^1(\bR^d,\bR)$ de signe variable, par exemple en posant $\rho^\pm := \max \{\pm \rho, 0\}$ et $m^\pm := \int_{\bR^d} \rho^{\pm}$, de sorte que $\rho = \rho^+-\rho^-$ et $1 = m^+-m^-$, puis $\|f - \rho_\ve \star f \|_p \leq \|f m^+ - \rho^+_\ve \star f\|_p + \|f m^- - \rho^-_\ve \star f\|_p$ par linéarité et inégalité triangulaire.
+
 \begin{proposition}[Dérivation d'une convolution]
 \label{prop:convolDeriv}
 \leancheck{prop:convolDeriv}%
@@ -313,6 +315,8 @@ $\cD(\Omega)$ est dense dans $L^p(\Omega)$ pour tout $1 \leq p < \infty$.
 
 \begin{corollary}
 \label{corol:convolTestFun}
+\leancheck{corol:convolTestFun}%
+\claudereport{Formalisé en Lean dans le cas $\Omega = \bR^d$ seulement, utilisé par la \cref{prop:convolDistrib}. L'estimation uniforme est faite directement pour $\rho$ de signe quelconque, sans séparer parties positive et négative.}
 	Soient $\rho\in \cD(\bR^d)$ et $\phi \in \cD(\Omega)$. 
 	Alors $\rho_\ve \star \phi \to  (\int_{\bR^d} \rho)\, \phi$ lorsque $\ve \to 0$ dans $\cD(\Omega)$.
 \end{corollary}
@@ -554,6 +558,7 @@ Elle permet de régulariser, et de montrer des résultats de densité, au sein d
 
 \begin{definition}[Convolution d'une distribution]	
 \label{def:convolDistrib}
+\leancheck{def:convolDistrib}%
 	Soient $T \in \cD(\bR^d)^*$ et $\rho \in \cD(\bR^d)$. On définit la convolée $T \star \rho : \bR^d \to \bR$ par 
 	$
 		(T \star \rho) (x) := \<T, \rho(x - \cdot)\>.
@@ -562,6 +567,8 @@ Elle permet de régulariser, et de montrer des résultats de densité, au sein d
 
 \begin{proposition}
 \label{prop:convolDistrib}
+\leancheck{prop:convolDistrib}%
+\claudereport{La formalisation Lean suit une route directe, différente de la preuve ci-dessous. (i)-(ii) : on dérive directement $x \mapsto \<T, \rho(x-\cdot)\>$ ; le reste de Taylor $\rho(x+h-\cdot)-\rho(x-\cdot)-\partial_h\rho(x-\cdot)$ a son support dans un compact fixe et toutes ses dérivées d'ordre $\leq s$ sont $o(|h|)$ uniformément, d'où la différentiabilité, de différentielle $v\mapsto T\star\partial_v\rho$, et $C^\infty$ par récurrence ; cela évite l'étape "dérivées dans $L^\infty_\loc$ implique $C^\infty$". Identité : $T$ restreinte à $\cD_K$ est majorée par $C\max_{|\alpha|_1\leq s}\|\partial_\alpha\cdot\|_\infty$ ; par Hahn--Banach elle se prolonge à un produit fini d'espaces de fonctions continues bornées, où $\overline\rho\star\phi$ s'écrit comme une intégrale de Bochner, avec laquelle la forme prolongée commute. (iii) : convergence au sens des distributions (convergence simple sur $\cD$), déduite de l'identité et du \cref{corol:convolTestFun} ; la densité de $C^\infty$ s'entend au sens de cette convergence, par suites. Le tout en dimension $d$ quelconque, sans axiome.}
 	Soient $T \in \cD(\bR^d)^*$ et $\rho,\phi \in \cD(\bR^d)$. 
 	Alors $\<T \star \rho, \phi\> = \<T,\overline \rho \star \phi\>$, d'où l'on déduit que 
 	(i) $T \star \rho \in C^\infty (\bR^d)$, 
@@ -651,6 +658,7 @@ Une autre preuve alternative utilisant la compacité faible est présentée dans
 \begin{remark}[Conditions au bord de Dirichlet]
 \label{rem:bcDirichlet}
 \leancheck{rem:bcDirichlet}%
+\claudereport{La séparabilité est démontrée en Lean pour tout $p\in[1,\infty]$, directement : $W^{1,p}_0(\Omega)$ est l'adhérence de l'image de $\cD(\Omega)$, séparable (\cref{prop:testFunSeparab}), par l'injection continue $\vp \mapsto (\vp,\nabla \vp)$. Cela couvre le cas $p=\infty$, où $W^{1,\infty}(\Omega)$ n'est pas séparable.}
 L'adhérence de $\cD(\Omega)$ dans $W^{1,p}(\Omega)$ est notée $W^{1,p}_0(\Omega)$. Ce sous espace, strict en général, est donc séparable et complet. On dit qu'il implémente les conditions au bord nulles de Dirichlet.
 \end{remark}
 
@@ -1090,7 +1098,7 @@ Le Théorème de Rellich et son corollaire.
 \label{prop:trans_grad_lp}
 \leancheck{prop:trans_grad_lp}%
 Soient $\Omega\subset \bR^d$ un ouvert, $p\in [1,\infty[$, $u \in W^{1,p}(\Omega)$, et $h\in \bR^d$.
-Soit $\omega \csubset \Omega$ compact tel que $\omega_h := \omega+B'(0,|h|) \subset \Omega$. Alors 
+Soit $\omega \csubset \Omega$ compact tel que $\omega+B'(0,|h|) \subset \Omega$. Alors 
 %$\|\tau_h u - u\|_{L^p(\omega)} \leq |h| \|\nabla u\|_{L^p(\Omega)}$.
 	\begin{equation}
 	\label{eq:uhdup}
@@ -1104,11 +1112,15 @@ Soit $\omega \csubset \Omega$ compact tel que $\omega_h := \omega+B'(0,|h|) \sub
 		|u(x+h)-u(x)|^p = \Big|\int_0^1 \<\nabla u(x+t h),h\> \diff t\Big|^p \leq |h|^p \int_0^1 \|\nabla u(x+th)\|^p \diff t,
 	\end{equation*}
 	par les inégalités (i) des accroissements finis, et (ii) de Cauchy-Schwarz et de Jensen.
-		Ainsi 
+	Choisissons un ouvert $\omega_h$ régulier tel que $\omega + B'(0,|h|) \subset \omega_h$ et $\overline {\omega_h} \csubset \Omega$. Alors 
 	\begin{equation*}
 		\int_\omega |u(x+h)-u(x)|^p \diff x \leq |h|^p \int_0^1 \int_\omega \|\nabla u(x+t h) \|^p \diff x \diff t \leq |h|^p \int_{\omega_h} \|\nabla u(x)\|^p \diff x,
 	\end{equation*}
-	par (i) intégration sur $\omega$ du résultat précédent, et interversion de Fubini, puis (ii) par inclusion du domaine translaté $\omega + t h \subset \omega_h$. On conclut par densité de $C^1_c(\Omega)$ dans $W^{1,p}(\omega_h)$, puisque $\omega_h \csubset \Omega$. 
+	par (i) intégration sur $\omega$ du résultat précédent, et interversion de Fubini, puis (ii) par inclusion du domaine translaté $\omega + t h \subset \omega_h$. 
+	Par le \cref{corol:testDenseWspO}, $C^1_c (\bR^d)$ est dense dans $W^{1,p}(\omega_h)$; en multipliant par $\chi \in C^1_c(\Omega)$ telle que $\chi=1$ sur $\overline{\omega_h}$, voir la \cref{prop:cinfSupport}, on obtient que $C^1_c (\Omega)$ est dense dans $W^{1,p}(\omega_h)$, ce qui permet de conclure par densité.
+	\leannote{La preuve Lean contourne la construction de l'ouvert régulier $\omega_h$ par un argument différent de régularisation de la fonction $u$.}	
+%	On conclut par densité de $C^1_c(\Omega)$ dans $W^{1,p}(\omega_h)$, puisque $\omega_h \csubset \Omega$. 
+%	(Détail de cet argument: 
 \end{proof}
 
 \begin{proposition}[Inégalité d'interpolation $L^p$]
