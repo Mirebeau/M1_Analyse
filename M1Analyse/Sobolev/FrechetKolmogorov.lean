@@ -25,8 +25,8 @@ compacte (`th_FrechetKolmogorov_isCompact_closure`).
 `ex:operCompactL2` (`ex_operCompactL2`) est démontré par un argument de Hilbert–Schmidt
 (approximation par des opérateurs de rang fini) plutôt que par Fréchet–Kolmogorov.
 
-Non formalisé : `corol:convolTestFun` (convergence `ρ_ε ⋆ φ → (∫ ρ) φ` dans `𝓓(Ω)`) : la
-topologie de `𝓓(Ω)` (`TestFunction`, limite inductive) rend l'énoncé et la preuve longs.
+`corol:convolTestFun` (convergence `ρ_ε ⋆ φ → (∫ ρ) φ` dans `𝓓`) est formalisé dans le cas
+`Ω = ℝ^d` seulement (`corol_convolTestFun`, `Sobolev/ConvolDistrib.lean`).
 -/
 
 open Set Filter Topology MeasureTheory Metric

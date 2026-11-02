@@ -23,7 +23,7 @@ Décision de l'auteur : seul le cas `s = 1` est formalisé. `W^{1,p}(Ω)` est le
 
 `th:prolSobolev` (admis) n'est pas formalisé : sa conclusion définit la propriété
 `ProlongementSobolev`, prise en hypothèse à la place de la régularité de `Ω` (`def:ouvertReg`,
-non formalisée). `def:convolDistrib` et `prop:convolDistrib` ne sont pas formalisés.
+non formalisée). `def:convolDistrib` et `prop:convolDistrib` : `Sobolev/ConvolDistrib.lean`.
 -/
 
 open MeasureTheory Set
