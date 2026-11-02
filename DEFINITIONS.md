@@ -306,7 +306,7 @@ Chacune fait l'objet d'un \claudereport dans le texte.
 - LegendreFenchel lem:cvxImplBorne (preuve) : l'union des {f ≤ n} est Dom(f), pas E, donc le \cref{corol:BaireFerme} ne s'applique pas tel quel ; appliquer Baire dans la boule fermée (complète) B'(0,ε) ⊂ Dom(f), recouverte par les {f ≤ n} ∩ B'(0,ε) ; on obtient alors x_0 ∈ B'(0,ε), ce qui assure aussi -εx_0 ∈ Dom(f) (sinon f(-εx_0) peut valoir +∞).
 - LegendreFenchel lem:cvxImplLip : supposer f(x) < ∞ (sinon l'hypothèse f ≤ f(x)+M est vide).
 
-- th:Rademacher (2 novembre, `Sobolev/Rademacher.lean`) : `th_Rademacher` (W^{1,∞}(Ω) = fonctions bornées lipschitziennes, sous `ProlongementSobolev Ω ∞` au lieu de « Ω régulier », \claudereport), `th_Rademacher_convexe` (Ω convexe, constante ess sup |∇u|, sans régularité). Preuve : IBP de Mathlib (`integral_lineDeriv_mul_eq`) ; régularisation, convergence p.p. et prolongement de McShane (sans th:injSurCrit).
+- th:W1inf_iff_Lip (ex th:Rademacher, 2 novembre, `Sobolev/W1infLip.lean`) : `th_W1inf_iff_Lip` (W^{1,∞}(Ω) = fonctions bornées lipschitziennes, sous `ProlongementSobolev Ω ∞` au lieu de « Ω régulier », \claudereport), `th_W1inf_iff_Lip_convexe` (Ω convexe, constante ess sup |∇u|, sans régularité). Preuve : IBP de Mathlib (`integral_lineDeriv_mul_eq`) ; régularisation, convergence p.p. et prolongement de McShane (sans th:injSurCrit).
 
 ## Points techniques de la formalisation (2 novembre)
 

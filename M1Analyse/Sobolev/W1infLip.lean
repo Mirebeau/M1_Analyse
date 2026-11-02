@@ -8,7 +8,7 @@ import Mathlib.Analysis.Calculus.Rademacher
 import Mathlib.Analysis.Calculus.BumpFunction.Convolution
 
 /-!
-# Théorème de Rademacher (`th:Rademacher`)
+# Caractérisation lipschitzienne de `W^{1,∞}` (`th:W1inf_iff_Lip`)
 
 Caractérisation de `W^{1,∞}(Ω)` par les fonctions lipschitziennes bornées. Le théorème de
 Rademacher de Mathlib (`LipschitzWith.ae_differentiableAt`) n'est pas utilisé directement : le
@@ -339,16 +339,16 @@ private lemma radB_lip_n (Ω : TopologicalSpace.Opens ℝᵈ) (hΩc : Convex ℝ
     (left_mem_segment ℝ x y)
   rwa [← dist_eq_norm, ← dist_eq_norm] at h
 
-/-- **Th. `th:Rademacher`, cas convexe.** Si `Ω` est convexe (sans hypothèse de régularité),
+/-- **Th. `th:W1inf_iff_Lip`, cas convexe.** Si `Ω` est convexe (sans hypothèse de régularité),
 toute `u ∈ W^{1,∞}(Ω)` admet un représentant `‖∇u‖_∞`-lipschitzien sur `Ω`, où
 `‖∇u‖_∞ = ess sup_Ω |∇u|` (norme euclidienne du gradient).
-Preuve (celle du cours, sans prolongement, et sans passer par le `th:injSurCrit`) :
+Preuve (différente du cours, qui extrait une sous-suite par Ascoli) :
 `f_n := φ_n ⋆ u`, `φ_n` bosses normalisées de rayon `→ 0` ; près d'un segment `[x, y] ⊂ Ω`,
 `∇f_n = φ_n ⋆ ∇u` (définition de la dérivée faible), donc `|∇f_n| ≤ ‖∇u‖_∞` et
 `|f_n x - f_n y| ≤ ‖∇u‖_∞ |x - y|` ; `f_n → u` presque partout, donc `u` est
 `‖∇u‖_∞`-lipschitzienne sur une partie de mesure pleine de `Ω`, et son prolongement de McShane
 en est un représentant. -/
-theorem th_Rademacher_convexe (Ω : TopologicalSpace.Opens ℝᵈ) (hΩc : Convex ℝ (Ω : Set ℝᵈ))
+theorem th_W1inf_iff_Lip_convexe (Ω : TopologicalSpace.Opens ℝᵈ) (hΩc : Convex ℝ (Ω : Set ℝᵈ))
     (u : Sobolev1 Ω ∞) :
     ∃ v : ℝᵈ → ℝ, (u.val : ℝᵈ → ℝ) =ᵐ[volume.restrict (Ω : Set ℝᵈ)] v ∧
       ∀ x ∈ Ω, ∀ y ∈ Ω, |v x - v y| ≤
@@ -384,14 +384,15 @@ theorem th_Rademacher_convexe (Ω : TopologicalSpace.Opens ℝᵈ) (hΩc : Conve
   · rw [← Real.dist_eq]
     exact hg.dist_le_mul x y
 
-/-- **Th. `th:Rademacher` (Rademacher).** Soit `Ω` ayant la propriété de prolongement de Sobolev
-pour `p = ∞` (au lieu de « `Ω` régulier »). Une fonction `f` est dans `W^{1,∞}(Ω)` si et
-seulement si elle admet un représentant borné et lipschitzien sur `Ω`. (Le sens réciproque vaut
-pour tout ouvert `Ω`.)
-Preuve : sens réciproque, intégration par parties pour les fonctions lipschitziennes (Mathlib) ;
+/-- **Th. `th:W1inf_iff_Lip` (`W^{1,∞}` et fonctions lipschitziennes).** Soit `Ω` ayant la
+propriété de prolongement de Sobolev pour `p = ∞` (au lieu de « `Ω` régulier »). Une fonction
+`f` est dans `W^{1,∞}(Ω)` si et seulement si elle admet un représentant borné et lipschitzien
+sur `Ω`. (Le sens réciproque vaut pour tout ouvert `Ω`.)
+Preuve (différente du cours) : sens réciproque, intégration par parties pour les fonctions
+lipschitziennes (Mathlib) ;
 sens direct, cas convexe appliqué au prolongement `P u ∈ W^{1,∞}(ℝ^d)`, le représentant
 continu étant borné par `‖u‖_∞` sur `Ω` (borne presque partout et continuité). -/
-theorem th_Rademacher (Ω : TopologicalSpace.Opens ℝᵈ) (hΩ : ProlongementSobolev Ω ∞)
+theorem th_W1inf_iff_Lip (Ω : TopologicalSpace.Opens ℝᵈ) (hΩ : ProlongementSobolev Ω ∞)
     (f : ℝᵈ → ℝ) :
     (∃ u : Sobolev1 Ω ∞, (u.val : ℝᵈ → ℝ) =ᵐ[volume.restrict (Ω : Set ℝᵈ)] f) ↔
       ∃ v : ℝᵈ → ℝ, (∃ K : ℝ≥0, LipschitzOnWith K v Ω) ∧ (∃ C : ℝ, ∀ x ∈ Ω, |v x| ≤ C) ∧
@@ -399,7 +400,7 @@ theorem th_Rademacher (Ω : TopologicalSpace.Opens ℝᵈ) (hΩ : ProlongementSo
   constructor
   · rintro ⟨u, hu⟩
     obtain ⟨P, hP⟩ := hΩ
-    obtain ⟨v, hv, hlip⟩ := th_Rademacher_convexe ⊤ convex_univ (P u)
+    obtain ⟨v, hv, hlip⟩ := th_W1inf_iff_Lip_convexe ⊤ convex_univ (P u)
     set M := (eLpNorm (fun z => √(∑ i, ((P u).grad i : ℝᵈ → ℝ) z ^ 2)) ∞
       (volume.restrict ((⊤ : TopologicalSpace.Opens ℝᵈ) : Set ℝᵈ))).toReal
     have hlip' : LipschitzWith M.toNNReal v := by
