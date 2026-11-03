@@ -92,46 +92,64 @@ en particulier, $C^0_c(\Omega)$ est dense dans $L^p(\Omega)$, pour tout ouvert $
 
 Nous établissons dans la suite que l'espace $\cD(\Omega)$ des fonctions $C^\infty$ à support compact est dense dans de nombreux espaces fonctionnels, voir par exemple la \cref{prop:testDenseWsp}.
 La proposition suivante implique que ces espaces sont tous séparables. 
-On note $\alpha \preceq \beta$ l'ordre partiel coordonnée par coordonnée sur $\bN^d$. Le lemme suivant, présenté sans preuve, rappelle que l'intégration et la dérivation sont des opérations réciproques.
-
-\begin{lemma}
-\label{lem:intDerivIter}
-	Posons pour $1 \leq i \leq d$, $\alpha = (\alpha_1,\cdots,\alpha_d) \in \bN^d$, et toute $f \in C^\infty([0,1]^d)$ % élément de l'ensemble $E := \{f \in C^\infty([0,1]^d) \mid \supp(f) \subset ]0,1]^d\}$, 
-%	$f \in C^0([0,1]^d)$ nulle sur $\{(x_1,\cdots,x_d) \in [0,1]^d \mid x_1 \cdots x_d = 0\}$, 
-	\begin{align*}
-		I_i f(x_1,\cdots,x_d) &:= \int_0^{x_i} f(x_1,\cdots,s,\cdots, x_d) \diff s, &
-		I_\alpha f := (I_1)^{\alpha_1} \cdots (I_d)^{\alpha_d} f.
-	\end{align*}
-	Alors $\|I_\alpha f\|_\infty \leq \|f\|_\infty$, $\partial_\alpha I_\beta f = \partial_{\alpha-\beta} f$ si $\alpha \succeq \beta$, et $\partial_\beta I_\alpha f = I_{\alpha-\beta} f$ si $\beta\preceq\alpha$. 
-	De plus, $f = I_\alpha \partial_\alpha f$ pour toute $f \in C^\infty_c(]0,1]^d)$, $\alpha \in \bN^d$.
-\end{lemma}
-
 
 \begin{proposition}[Séparabilité de $\cD(\Omega)$]
 \label{prop:testFunSeparab}	
 \leancheck{prop:testFunSeparab}%
-	L'espace des fonctions test $\cD(\Omega)$ est séparable.
+	Pour tout ouvert $\Omega \subset \bR^d$, l'espace des fonctions test $\cD(\Omega)$ est séparable.
 \end{proposition}
 
 \begin{proof}
-Il suffit de traiter le cas où $\Omega$ est borné, car les fonctions test sont à support compact; quitte à faire une homothétie, on peut donc supposer que $\Omega \subset ]0,1[^d$.
-Soit $K \csubset \Omega$, et soit $\rho_K \in \cD(\Omega)$ égale à $1$ sur $K$, voir la \cref{prop:cinfSupport}.
-Soit $\vp \in \cD_K(\Omega)$ et $\alpha \in \bN^d$. Soit $(P_n)_{n \in \bN}$ une suite de polynômes à coefficients rationnels convergeant uniformément vers $\partial_\alpha \vp$ sur $[0,1]^d$. Une telle suite existe d'après la \cref{rem:polDens}, issue du \nref{th:StoneWeierstrass}. On a alors, pour tout $\beta \preceq \alpha$, %en utilisant le \cref{lem:intDerivIter},
-\begin{equation*}
-	\partial_\beta (\vp - \rho_K I_\alpha P_n) 
-	= \partial_\beta(\rho_K (\vp-I_\alpha P_n)) 
-	= \partial_\beta (\rho_K I_\alpha (\partial_\alpha \vp - P_n)) 
-	= \sum_{\gamma \preceq \beta} \binom \beta \gamma \partial_\gamma \rho_K I_{\alpha-\beta+\gamma} (\partial_\alpha \vp-P_n),
-\end{equation*}
-où l'on a utilisé successivement (i) $\vp = \rho_K \vp$, (ii) $I_\alpha \partial_\alpha \vp = \vp$ par le \cref{lem:intDerivIter}, et (iii) la règle de Leibniz de dérivation d'un produit, et $\partial_{\beta-\gamma} I_\alpha = I_{\alpha-\beta+\gamma}$ d'après le \cref{lem:intDerivIter} encore.
-Ainsi, pour tout $\beta \preceq \alpha$
-\begin{align*}
-	\|\partial_\beta (\vp - \rho_K I_\alpha P_n)\|_\infty &\leq C(K,\beta) \|\partial_\alpha \vp-P_n\|_\infty, &
-	C(K,\beta) := \sum_{\gamma \preceq \beta} \binom \beta \gamma \|\partial_\gamma \rho_K\|_\infty.
-\end{align*}
-Comme $\|\partial_\alpha \vp -  P_n\|_\infty \to 0$  lorsque $n \to \infty$, on obtient $\rho_K I_\alpha P_n \to \vp$ dans la norme $|f|_\alpha := \max_{\beta\preceq \alpha} \|\partial_\beta f\|_\infty$. 
-En notant que $I_\alpha P$ est un polynôme, et en introduisant une suite exhaustive $(K_r)_{r \in \bN}$ de compacts de $\Omega$, voir la \cref{prop:exhaustComp}, on conclut que $\{\rho_{K_r} Q \mid r \in \bN, Q \in \bQ[X_1,\cdots,X_d]\}$ est une partie dénombrable dense de $\cD(\Omega)$.
+	Étant donnée une suite exhaustive $(K_n)_{n\in \bN}$ de compacts de $\Omega$, on a $\cD(\Omega) = \cup_{n\in \bN} \cD_{K_n}(\Omega)$, et les injections $\cD_{K_n}(\Omega) \hookrightarrow \cD(\Omega)$ sont continues. Il suffit donc de montrer que $\cD_K(\Omega)$ est séparable quel que soit $K \csubset \Omega$. 
+	Introduisons  
+	\begin{equation}
+	\label{eq:DKO_subset_prodC0}
+		\{(\partial_\alpha f_{|K})_{\alpha \in \bN^d} \mid f \in \cD_K(\Omega)\} \subset \prod_{\alpha \in \bN^d} C^0(K).
+	\end{equation}
+	L'ensemble $C^0(K)$ est séparable par la \nref{rem:polDens}, donc le produit dénombrable (\ref{eq:DKO_subset_prodC0}, droite) est séparable par la \cref{prop:produit_separable}, et métrisable par la \cref{prop:distCvSimple}. De plus, $\cD_K(\Omega)$ s'identifie avec (\ref{eq:DKO_subset_prodC0}, gauche), et sa topologie coïncide avec la restriction de la topologie produit, donc il est séparable en tant que partie d'un espace métrique séparable par la \cref{rem:separable_partie}.
 \end{proof}
+
+
+% -- DO NOT REMOVE -- Version constructive de la séparabilité. 
+%On note $\alpha \preceq \beta$ l'ordre partiel coordonnée par coordonnée sur $\bN^d$. Le lemme suivant, présenté sans preuve, rappelle que l'intégration et la dérivation sont des opérations réciproques.
+%
+%\begin{lemma}
+%\label{lem:intDerivIter}
+%	Posons pour $1 \leq i \leq d$, $\alpha = (\alpha_1,\cdots,\alpha_d) \in \bN^d$, et toute $f \in C^\infty([0,1]^d)$
+%	\begin{align*}
+%		I_i f(x_1,\cdots,x_d) &:= \int_0^{x_i} f(x_1,\cdots,s,\cdots, x_d) \diff s, &
+%		I_\alpha f := (I_1)^{\alpha_1} \cdots (I_d)^{\alpha_d} f.
+%	\end{align*}
+%	Alors $\|I_\alpha f\|_\infty \leq \|f\|_\infty$, $\partial_\alpha I_\beta f = \partial_{\alpha-\beta} f$ si $\alpha \succeq \beta$, et $\partial_\beta I_\alpha f = I_{\alpha-\beta} f$ si $\beta\preceq\alpha$. 
+%	De plus, $f = I_\alpha \partial_\alpha f$ pour toute $f \in C^\infty_c(]0,1]^d)$, $\alpha \in \bN^d$.
+%\end{lemma}
+%
+%
+%\begin{proposition}[Séparabilité de $\cD(\Omega)$]
+%\label{prop:testFunSeparab}	
+%\leancheck{prop:testFunSeparab}%
+%	L'espace des fonctions test $\cD(\Omega)$ est séparable.
+%\end{proposition}
+%
+%\begin{proof}
+%Il suffit de traiter le cas où $\Omega$ est borné, car les fonctions test sont à support compact; quitte à faire une homothétie, on peut donc supposer que $\Omega \subset ]0,1[^d$.
+%Soit $K \csubset \Omega$, et soit $\rho_K \in \cD(\Omega)$ égale à $1$ sur $K$, voir la \cref{prop:cinfSupport}.
+%Soit $\vp \in \cD_K(\Omega)$ et $\alpha \in \bN^d$. Soit $(P_n)_{n \in \bN}$ une suite de polynômes à coefficients rationnels convergeant uniformément vers $\partial_\alpha \vp$ sur $[0,1]^d$. Une telle suite existe d'après la \cref{rem:polDens}, issue du \nref{th:StoneWeierstrass}. On a alors, pour tout $\beta \preceq \alpha$, %en utilisant le \cref{lem:intDerivIter},
+%\begin{equation*}
+%	\partial_\beta (\vp - \rho_K I_\alpha P_n) 
+%	= \partial_\beta(\rho_K (\vp-I_\alpha P_n)) 
+%	= \partial_\beta (\rho_K I_\alpha (\partial_\alpha \vp - P_n)) 
+%	= \sum_{\gamma \preceq \beta} \binom \beta \gamma \partial_\gamma \rho_K I_{\alpha-\beta+\gamma} (\partial_\alpha \vp-P_n),
+%\end{equation*}
+%où l'on a utilisé successivement (i) $\vp = \rho_K \vp$, (ii) $I_\alpha \partial_\alpha \vp = \vp$ par le \cref{lem:intDerivIter}, et (iii) la règle de Leibniz de dérivation d'un produit, et $\partial_{\beta-\gamma} I_\alpha = I_{\alpha-\beta+\gamma}$ d'après le \cref{lem:intDerivIter} encore.
+%Ainsi, pour tout $\beta \preceq \alpha$
+%\begin{align*}
+%	\|\partial_\beta (\vp - \rho_K I_\alpha P_n)\|_\infty &\leq C(K,\beta) \|\partial_\alpha \vp-P_n\|_\infty, &
+%	C(K,\beta) := \sum_{\gamma \preceq \beta} \binom \beta \gamma \|\partial_\gamma \rho_K\|_\infty.
+%\end{align*}
+%Comme $\|\partial_\alpha \vp -  P_n\|_\infty \to 0$  lorsque $n \to \infty$, on obtient $\rho_K I_\alpha P_n \to \vp$ dans la norme $|f|_\alpha := \max_{\beta\preceq \alpha} \|\partial_\beta f\|_\infty$. 
+%En notant que $I_\alpha P$ est un polynôme, et en introduisant une suite exhaustive $(K_r)_{r \in \bN}$ de compacts de $\Omega$, voir la \cref{prop:exhaustComp}, on conclut que $\{\rho_{K_r} Q \mid r \in \bN, Q \in \bQ[X_1,\cdots,X_d]\}$ est une partie dénombrable dense de $\cD(\Omega)$.
+%\end{proof}
 
 \subsection{Convolution dans les espaces $L^p$} %Densité et compacité d
 \label{subsec:convLp}
@@ -1279,6 +1297,10 @@ Soit $\Omega$ un ouvert, et $p \in ]1,\infty]$ et $q \in [1,\infty]$ des exposan
 %	Toute suite de telles fonctions admet une sous-suite uniformément convergente sur tout compact $K \subset \Omega$ par le \nref{th:AscoliLip}, ce qui permet de passer ces inégalités à la limite et donc d'établir la fermeture.
 \end{proof}
 
-En revanche, la boule unité de $W^{1,1}(]-1,1[)$ n'est pas fermée dans $L^p(]-1,1[)$, $p<\infty$. Par exemple, la suite d'approximations de la fonction de Heaviside définie par $u_n(x) := \max\{0,\min\{1,n x\}\}$ est bornée\footnote{
+En revanche, la boule unité de $W^{1,1}(]-1,1[)$ n'est pas fermée dans $L^p(]-1,1[)$. Dans le cas $1 \leq p < \infty$, considérer la suite d'approximations de la fonction de Heaviside définie par $u_n(x) := \max\{0,\min\{1,n x\}\}$, qui est bornée\footnote{
 On vérifie que $\|u_n\|_{W^{1,1}} = \|u_n\|_{L^1} + \|u'_n\|_{L^1} = (1-1/(2n)) + 1$, donc $u_n/2 \in B'_{W^{1,1}}(0,1)$ pour tout $n \geq 1$.
-} dans $W^{1,1}(]-1,1[)$, converge dans $L^p(]-1,1[)$ pour tout $p \in [1,\infty[$ (cas critique), mais sa limite a une discontinuité en $0$ donc n'appartient pas à $W^{1,1}$ (la fonction de Heaviside appartient en fait à l'espace $\mathrm{BV}(\Omega)$ des fonctions à variation bornée). 
+} dans $W^{1,1}(]-1,1[)$, mais dont la limite dans $L^p(]-1,1[)$ a une discontinuité en $0$ donc n'appartient pas à $W^{1,1}$. 
+
+Dans le cas $p = \infty$, considérer un escalier de Cantor $u\in C^0(\bR,[0,1])$, i.e.\ $u$ est croissante, de dérivée nulle en presque tout point, $u(-1)=0$ et $u(1)=1$. 
+Fixons un noyau de convolution $\rho \in \cD(\bR)$ positif, à support compact et d'intégrale unité, et observons que $u_\ve := u\star \rho_\ve$, est lisse, croissante et bornée. Ainsi $\|u'_\ve\|_1 = u_\ve(1)-u_\ve(-1) \leq 1$, et $\|u_\ve\|_{L^1(]-1,1[)} \leq 2$, de sorte que $\|u_\ve\|_{W^{1,1}(]-1,1[)} \leq 3$. En revanche, $u\notin  W^{1,1}(]-1,1[)$: en effet, dans le cas contraire, sa dérivée faible $g\in L^1(]-1,1[)$ satisfait $u(y)-u(x) = \int_x^y g$ pour tous $x,y \in ]-1,1[$, donc elle coïncide avec la dérivée classique presque partout, donc elle est nulle, et donc $u$ est constante ce qui est une contradiction. Ainsi $u_\ve \in B'_{W^{1,1}}(0,3) \to u\notin W^{1,1}(]-1,1[)$, la convergence ayant lieu dans $(C^0([-1,1]), \|\cdot\|_\infty)$. 
+(La fonction de Heaviside et l'escalier de Cantor appartiennent en fait à l'espace $\mathrm{BV}$ des fonctions à variation bornée.) 

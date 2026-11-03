@@ -1067,9 +1067,13 @@ La généralisation du \nref{th:StoneWeierstrass} aux fonctions complexes requie
 \begin{remark}[Application aux fonctions polynomiales]
 \label{rem:polDens}
 \leancheck{rem:polDens}%
-On déduit du \cref{th:StoneWeierstrass} la densité de $\bR[X_1,\cdots,X_d]$ dans $C^0([0,1]^d,\bR)$, pour la convergence uniforme, en toute dimension $d$. 
-De même, $\bC[X_1,\overline X_1,\cdots,X_d,\overline X_d]$ est dense dans $C^0(B^d,\bC)$ où $B := B'_\bC(0,1)$ désigne la boule unité fermée de $\bC$.
+Les polynômes réels $\bR[X_1,\cdots,\allowbreak X_d]$ sont denses dans $C^0(K,\bR)$,  pour la convergence uniforme, pour tout $K \csubset \bR^d$. 
+De même, $\bC[X_1,\overline X_1,\cdots,X_d,\overline X_d]$ est dense dans $C^0(K',\bC)$, pour tout $K'\csubset \bC^d$. En particulier, $C^0(K,\bR)$ et $C^0(K',\bC)$ sont séparables.
 \end{remark}
+
+\begin{proof}
+	Application directe du \cref{th:StoneWeierstrass}. La séparabilité découle de la densité de $\bQ[X_1,\cdots,\allowbreak X_d]$ dans $\bR[X_1,\cdots,X_d]$ (resp.\ $\bQ[i][X_1,\overline X_1,\cdots,X_d,\overline X_d]$ dans $\bC[X_1,\overline X_1,\cdots,X_d,\overline X_d]$).
+\end{proof}
 
 Attention : l'hypothèse (iii) de stabilité par conjugaison est essentielle dans le \nref{corol:StoneComplexe}, comme l'illustre le résultat élémentaire suivant d'analyse complexe. Celui-ci implique en effet que $\bC[X]$ \emph{n'est pas dense} dans $C^0(B,\bC)$, où $B:=B'_\bC(0,1)$, compte tenu de \eqref{eq:f_int_dB}. 
 %Rappelons que le rayon de convergence d'une suite $(a_n)_{n \in \bN}$ est défini par $R:= \sup\{r \geq 0 \mid a_n r^n \text{ est bornée}\}$.

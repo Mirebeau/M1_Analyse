@@ -325,6 +325,17 @@ Alors $\bU_0$ est une base d'ouverts pour la topologie $\bU$.
 
 Un cas particulier est celui où $X_i = X$ pour tout $i \in I$, et où le produit s'identifie à l'ensemble $X^I$ des fonctions de $I$ dans $X$. Dans ce cas, la topologie produit correspond à la convergence simple des fonctions. 
 
+\begin{proposition}
+\label{prop:produit_separable}
+\leancheck{prop:produit_separable}%
+Soit $(X_i,\bU_i)_{i\in \bN}$ une famille dénombrable d'espaces topologiques séparables. Alors leur produit $X = \prod_{i \in \bN} X_i$, muni de la topologie produit, est séparable.
+\end{proposition}
+
+\begin{proof}
+	Soit $A_i \subset X_i$ une famille dénombrable dense, et soit $a_i^* \in A_i$ pour tout $i \in \bN$ (dans le cas où l'un des $A_i$ est vide, on a également $X_i=\emptyset$, donc $X=\emptyset$, qui est bien séparable).
+	Posons $A := \{(a_0,\cdots, a_{n-1}, a_n^*,\cdots)\mid n\geq 0, (a_0,\cdots,a_{n-1}) \in A_0 \times \cdots \times A_{n-1}\}$ l'ensemble des suites de $\prod_{i \in \bN} A_i$ qui sont égales à partir d'un certain rang à la suite de référence $(a_i^*)_{i \in \bN}$. Notons que $A$ est dénombrable en tant qu'union d'ensembles dénombrables. Étant donné $U = \prod_{i \in \bN} U_i$ appartenant à la base d'ouverts de la topologie produit, il existe par construction $n\in \bN$ tel que $U_i = X_i$ pour tout $i \geq n$, et l'on peut choisir par densité de $A_i$ dans $X_i$ un élément $a_i \in A_i \cap U_i$ pour tout $i<n$; ainsi $(a_0,\cdots,a_{n-1},a_n^*,\cdots) \in A \cap U$ et la séparabilité de $X$ est établie.
+\end{proof}
+
 \subsubsection{Voisinages}
 \label{subsubsec:Vois}
 
