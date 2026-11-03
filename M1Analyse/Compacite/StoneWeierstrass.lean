@@ -5,9 +5,9 @@ Authors: Jean-Marie Mirebeau
 -/
 import Mathlib.Topology.ContinuousMap.StoneWeierstrass
 import Mathlib.Topology.UrysohnsLemma
-import Mathlib.Topology.UnitInterval
 import Mathlib.Algebra.MvPolynomial.Eval
 import Mathlib.Analysis.Complex.Basic
+import Mathlib.Topology.ContinuousMap.SecondCountableSpace
 
 /-!
 # §3.7 Théorème de Stone-Weierstrass (`subsec:StoneWeierstrass`)
@@ -314,34 +314,38 @@ theorem corol_StoneComplexe (A : NonUnitalSubalgebra ℂ C(X, ℂ))
 
 /-- **Rem. `rem:polDens` (Application aux fonctions polynomiales), cas réel.** Les fonctions
 polynomiales `ℝ[X₁, …, X_d]` (images des polynômes de `MvPolynomial (Fin d) ℝ` évalués en les
-fonctions coordonnées) sont denses dans `C⁰([0,1]^d, ℝ)` pour la convergence uniforme. -/
-theorem rem_polDens_reel (d : ℕ) :
+fonctions coordonnées) sont denses dans `C⁰(K, ℝ)` pour la convergence uniforme, pour tout
+compact `K ⊂ ℝ^d`. -/
+theorem rem_polDens_reel {d : ℕ} (K : Set (Fin d → ℝ)) (hK : IsCompact K) :
     closure ((MvPolynomial.aeval (R := ℝ) fun i : Fin d =>
-        (⟨fun x : Fin d → unitInterval => (x i : ℝ), by fun_prop⟩ :
-          C(Fin d → unitInterval, ℝ))).range : Set C(Fin d → unitInterval, ℝ)) = univ := by
-  set coord : Fin d → C(Fin d → unitInterval, ℝ) := fun i => ⟨fun x => (x i : ℝ), by fun_prop⟩
+        (⟨fun x : K => (x : Fin d → ℝ) i, (continuous_apply i).comp continuous_subtype_val⟩ :
+          C(K, ℝ))).range : Set C(K, ℝ)) = univ := by
+  have := isCompact_iff_compactSpace.mp hK
+  set coord : Fin d → C(K, ℝ) := fun i =>
+    ⟨fun x => (x : Fin d → ℝ) i, (continuous_apply i).comp continuous_subtype_val⟩
   set A := (MvPolynomial.aeval (R := ℝ) coord).range
   have hA : A.SeparatesPoints := by
     intro x y hxy
-    obtain ⟨i, hi⟩ := Function.ne_iff.1 hxy
-    refine ⟨coord i, ⟨coord i, ⟨MvPolynomial.X i, by simp⟩, rfl⟩, ?_⟩
-    exact fun h => hi (Subtype.ext h)
+    obtain ⟨i, hi⟩ := Function.ne_iff.1 fun h => hxy (Subtype.ext h)
+    exact ⟨coord i, ⟨coord i, ⟨MvPolynomial.X i, by simp⟩, rfl⟩, hi⟩
   have h := ContinuousMap.subalgebra_topologicalClosure_eq_top_of_separatesPoints A hA
-  have h' : (A.topologicalClosure : Set C(Fin d → unitInterval, ℝ)) = univ := by rw [h]; rfl
+  have h' : (A.topologicalClosure : Set C(K, ℝ)) = univ := by rw [h]; rfl
   rwa [Subalgebra.topologicalClosure_coe] at h'
 
 /-- **Rem. `rem:polDens` (Application aux fonctions polynomiales), cas complexe.** Les fonctions
 polynomiales `ℂ[X₁, X̄₁, …, X_d, X̄_d]` (polynômes en les coordonnées `zᵢ` et leurs conjuguées
-`z̄ᵢ`) sont denses dans `C⁰(B^d, ℂ)`, où `B := B'_ℂ(0,1)` est la boule unité fermée de `ℂ`. -/
-theorem rem_polDens_complexe (d : ℕ) :
+`z̄ᵢ`) sont denses dans `C⁰(K', ℂ)` pour la convergence uniforme, pour tout compact
+`K' ⊂ ℂ^d`. -/
+theorem rem_polDens_complexe {d : ℕ} (K : Set (Fin d → ℂ)) (hK : IsCompact K) :
     closure ((MvPolynomial.aeval (R := ℂ) (Sum.elim
-        (fun i : Fin d => (⟨fun x : Fin d → Metric.closedBall (0 : ℂ) 1 => (x i : ℂ),
-          by fun_prop⟩ : C(Fin d → Metric.closedBall (0 : ℂ) 1, ℂ)))
-        (fun i : Fin d => star (⟨fun x : Fin d → Metric.closedBall (0 : ℂ) 1 => (x i : ℂ),
-          by fun_prop⟩ : C(Fin d → Metric.closedBall (0 : ℂ) 1, ℂ))))).range :
-        Set C(Fin d → Metric.closedBall (0 : ℂ) 1, ℂ)) = univ := by
-  set Y := Fin d → Metric.closedBall (0 : ℂ) 1
-  set coord : Fin d → C(Y, ℂ) := fun i => ⟨fun x => (x i : ℂ), by fun_prop⟩
+        (fun i : Fin d => (⟨fun x : K => (x : Fin d → ℂ) i,
+          (continuous_apply i).comp continuous_subtype_val⟩ : C(K, ℂ)))
+        (fun i : Fin d => star (⟨fun x : K => (x : Fin d → ℂ) i,
+          (continuous_apply i).comp continuous_subtype_val⟩ : C(K, ℂ))))).range :
+        Set C(K, ℂ)) = univ := by
+  have := isCompact_iff_compactSpace.mp hK
+  set coord : Fin d → C(K, ℂ) := fun i =>
+    ⟨fun x => (x : Fin d → ℂ) i, (continuous_apply i).comp continuous_subtype_val⟩
   set S := StarAlgebra.adjoin ℂ (range coord)
   have hrange : (MvPolynomial.aeval (R := ℂ) (Sum.elim coord fun i => star (coord i))).range =
       S.toSubalgebra := by
@@ -355,15 +359,24 @@ theorem rem_polDens_complexe (d : ℕ) :
     · rintro ⟨i, hi⟩; exact ⟨i, by rw [hi, star_star]⟩
   have hS : S.SeparatesPoints := by
     intro x y hxy
-    obtain ⟨i, hi⟩ := Function.ne_iff.1 hxy
-    refine ⟨coord i, ⟨coord i, StarAlgebra.subset_adjoin ℂ _ ⟨i, rfl⟩, rfl⟩, ?_⟩
-    exact fun h => hi (Subtype.ext h)
+    obtain ⟨i, hi⟩ := Function.ne_iff.1 fun h => hxy (Subtype.ext h)
+    exact ⟨coord i, ⟨coord i, StarAlgebra.subset_adjoin ℂ _ ⟨i, rfl⟩, rfl⟩, hi⟩
   have h := ContinuousMap.starSubalgebra_topologicalClosure_eq_top_of_separatesPoints S hS
-  have h' : (S.topologicalClosure : Set C(Y, ℂ)) = univ := by rw [h]; rfl
+  have h' : (S.topologicalClosure : Set C(K, ℂ)) = univ := by rw [h]; rfl
   rw [StarSubalgebra.topologicalClosure_coe] at h'
-  change closure (((MvPolynomial.aeval (R := ℂ) (Sum.elim coord fun i => star (coord i))).range :
-    Subalgebra ℂ C(Y, ℂ)) : Set C(Y, ℂ)) = univ
   rw [hrange]
   exact h'
+
+/-- **Rem. `rem:polDens`, séparabilité.** Pour tous compacts `K ⊂ ℝ^d` et `K' ⊂ ℂ^d`, les
+espaces `C⁰(K, ℝ)` et `C⁰(K', ℂ)` sont séparables.
+Preuve (différente du cours) : instance Mathlib (`C(X, Y)` est à base dénombrable pour `X`
+compact métrisable et `Y` à base dénombrable), au lieu de la densité des polynômes à
+coefficients rationnels. -/
+theorem rem_polDens_separable {d : ℕ} (K : Set (Fin d → ℝ)) (hK : IsCompact K)
+    (K' : Set (Fin d → ℂ)) (hK' : IsCompact K') :
+    TopologicalSpace.SeparableSpace C(K, ℝ) ∧ TopologicalSpace.SeparableSpace C(K', ℂ) := by
+  have := isCompact_iff_compactSpace.mp hK
+  have := isCompact_iff_compactSpace.mp hK'
+  exact ⟨inferInstance, inferInstance⟩
 
 end M1Analyse

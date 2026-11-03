@@ -255,4 +255,10 @@ theorem ex_topoProduit_convergenceSimple {I : Type*} [TopologicalSpace X]
     Tendsto f atTop (𝓝 g) ↔ ∀ i, Tendsto (fun n => f n i) atTop (𝓝 (g i)) :=
   tendsto_pi_nhds
 
+/-- **Prop. `prop:produit_separable`.** Le produit `Πᵢ Xᵢ` d'une famille dénombrable d'espaces
+topologiques séparables, muni de la topologie produit, est séparable.
+Preuve : instance Mathlib. -/
+theorem prop_produit_separable {X : ℕ → Type*} [∀ i, TopologicalSpace (X i)]
+    [∀ i, SeparableSpace (X i)] : SeparableSpace (∀ i, X i) := inferInstance
+
 end M1Analyse

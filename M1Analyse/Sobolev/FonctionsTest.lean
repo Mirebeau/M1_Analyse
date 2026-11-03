@@ -15,9 +15,6 @@ Source : `Include/Sobolev.tex`, début du chapitre (avant `subsec:convLp`).
 
 `𝓓(Ω)` est l'espace `TestFunction` de Mathlib, muni de la topologie de limite inductive des
 `𝓓_K(Ω)` (`ContDiffMapSupportedIn`).
-
-Non formalisé : `lem:intDerivIter` (présenté sans preuve dans le cours), inutile pour la
-preuve suivie de `prop:testFunSeparab`.
 -/
 
 open MeasureTheory Set TopologicalSpace
@@ -80,12 +77,14 @@ private lemma testFunSeparab_secondCountable (K : Compacts ℝᵈ) :
 
 /-- **Prop. `prop:testFunSeparab` (Séparabilité de `𝓓(Ω)`).** L'espace des fonctions test
 `𝓓(Ω)` (muni de sa topologie de limite inductive) est séparable.
-Preuve (différente du cours) : sans `lem:intDerivIter` ni Stone–Weierstrass. La topologie de
-`𝓓_K` est la borne inférieure des topologies induites par `f ↦ D^i f` (`i ∈ ℕ`) ; comme `D^i f`
-est nulle hors de `K`, chacune est induite par `f ↦ (D^i f)|_K ∈ C(K, G_i)`, espace à base
-dénombrable (`K` compact, `G_i` de dimension finie) : `𝓓_K` est à base dénombrable. On conclut
-par une suite exhaustive de compacts `K_n` de `Ω` et la continuité des inclusions
-`𝓓_{K_n} → 𝓓(Ω)`. -/
+Preuve (celle du cours, à quelques nuances près) : la topologie de `𝓓_K` est la borne
+inférieure des topologies induites par `f ↦ D^i f` (`i ∈ ℕ`) ; comme `D^i f` est nulle hors de
+`K`, chacune est induite par `f ↦ (D^i f)|_K ∈ C(K, G_i)`, d'où le plongement de `𝓓_K` dans un
+produit dénombrable d'espaces `C(K, G_i)`. Nuances : dérivées totales `D^i` (à valeurs dans
+l'espace `G_i` des formes `i`-linéaires, de dimension finie) au lieu des `∂_α` ; séparabilité de
+`C(K, G_i)` tirée de Mathlib (base dénombrable) au lieu de Stone–Weierstrass ; on raisonne avec
+des bases dénombrables d'ouverts plutôt que par métrisabilité du produit. On conclut par une
+suite exhaustive de compacts `K_n` de `Ω` et la continuité des inclusions `𝓓_{K_n} → 𝓓(Ω)`. -/
 theorem prop_testFunSeparab (Ω : TopologicalSpace.Opens ℝᵈ) :
     TopologicalSpace.SeparableSpace 𝓓(Ω, ℝ) := by
   obtain ⟨K, hK⟩ := prop_exhaustComp Ω.isOpen
